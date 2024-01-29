@@ -781,7 +781,6 @@
     </style>
 </head>
 <body>
-{{dd($data)}}
 <div class="container" style="background-color: white">
     @if(session('success'))
         <div class="alert alert-success">
