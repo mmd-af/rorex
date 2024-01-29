@@ -13,9 +13,29 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->string('cod_staff');
+//            $table->foreignId('user_id')->nullable();
+//            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('cod_staff');
             $table->string('nume');
-            $table->string('on_work')->nullable();
+            $table->date('data');
+            $table->string('saptamana');
+            $table->string('nume_schimb');
+            $table->string('on_work1')->nullable();
+            $table->string('off_work1')->nullable();
+            $table->string('on_work2')->nullable();
+            $table->string('off_work2')->nullable();
+            $table->string('on_work3')->nullable();
+            $table->string('off_work3')->nullable();
+            $table->string('absenta_zile')->nullable();
+            $table->string('munca_ore')->nullable();
+            $table->string('ot_ore')->nullable();
+            $table->string('tarziu_minute')->nullable();
+            $table->string('devreme_minute')->nullable();
+            $table->string('lipsa_ceas_timpi')->nullable();
+            $table->string('sarbatoare_publica_ore')->nullable();
+            $table->string('concediu_ore')->nullable();
+            $table->string('remarca')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
