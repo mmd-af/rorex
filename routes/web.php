@@ -18,5 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/import-excel', [ExcelImportController::class, 'index'])->name('import.excel');
-Route::post('/import-excel', [ExcelImportController::class, 'import']);
+Route::post('/import-excel', [ExcelImportController::class, 'import'])->name('import.excel');
+Route::post('/import-user', [ExcelImportController::class, 'importUser'])->name('import.user');

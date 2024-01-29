@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\YourImportClass;
 use App\Models\Report;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -19,7 +20,11 @@ class ExcelImportController extends Controller
         // Get the uploaded file
         $file = $request->file('file');
         $excel2 = Excel::toArray(new YourImportClass, $file);
-        foreach ($excel2[0] as $item) {
+
+        foreach ($excel2[0] as $key => $item) {
+            if ($key === 0) {
+                continue;
+            }
             $date = date('Y-m-d', strtotime($item[2]));
             $codStaff = (int)$item[0];
             $report = new Report();
@@ -45,9 +50,61 @@ class ExcelImportController extends Controller
             $report->remarca = $item[19];
             $report->save();
         }
-        dd($excel2);
 
-//        dd("خطا");
-        return view('welcome');
+        return view('welcome')->with(['success' => 'Succeed']);
+    }
+
+    public function importUser(Request $request)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        // Get the uploaded file
+        $file = $request->file('file');
+        $excel2 = Excel::toArray(new YourImportClass, $file);
+        foreach ($excel2[0] as $key => $item) {
+            if ($key === 0) {
+                continue;
+            }
+            $dataAderarii = date('Y-m-d', strtotime($item[7]));
+            $dataNasterii = date('Y-m-d', strtotime($item[10]));
+            $dataAbsolvirii = date('Y-m-d', strtotime($item[21]));
+            $dataPlecarii = date('Y-m-d', strtotime($item[24]));
+            $codStaff = (int)$item[0];
+            $idUtilizator = (int)$item[1];
+            $report = new User();
+            $report->id = $codStaff;
+            $report->id_utilizator = $idUtilizator;
+            $report->name = $item[2];
+            $report->departament = $item[3];
+            $report->pozitie = $item[4];
+            $report->numar_card = $item[5];
+            $report->parola = $item[6];
+            $report->data_aderarii = $dataAderarii;
+            $report->sex = $item[8];
+            $report->starea_civila = $item[9];
+            $report->data_nasterii = $dataNasterii;
+            $report->telefon = $item[11];
+            $report->card_de_identitate = $item[13];
+            $report->functie = $item[14];
+            $report->tip_personal = $item[15];
+            $report->cod_postal = $item[16];
+            $report->status_politic = $item[17];
+            $report->rezidenta = $item[18];
+            $report->nationalitate = $item[19];
+            $report->educatie = $item[20];
+            $report->data_absolvirii = $dataAbsolvirii;
+            $report->scoala = $item[22];
+            $report->profesie = $item[23];
+            $report->data_plecarii = $dataPlecarii;
+            $report->prenumele_tatalui = $item[25];
+            $report->adresa = $item[26];
+            $report->email = $item[12];
+            $report->save();
+        }
+
+        return view('welcome')->with(['success' => 'Succeed']);
     }
 }

@@ -13,10 +13,34 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->integer('id_utilizator')->nullable();
+            $table->string('name')->nullable();
+            $table->string('departament')->nullable();
+            $table->string('pozitie')->nullable();
+            $table->string('numar_card')->nullable();
+            $table->string('parola')->nullable();
+            $table->date('data_aderarii')->nullable();
+            $table->string('sex')->nullable();
+            $table->string('starea_civila')->nullable();
+            $table->date('data_nasterii')->nullable();
+            $table->string('telefon')->nullable();
+            $table->string('card_de_identitate')->nullable();
+            $table->string('functie')->nullable();
+            $table->string('tip_personal')->nullable();
+            $table->string('cod_postal')->nullable();
+            $table->string('status_politic')->nullable();
+            $table->string('rezidenta')->nullable();
+            $table->string('nationalitate')->nullable();
+            $table->string('educatie')->nullable();
+            $table->date('data_absolvirii')->nullable();
+            $table->string('scoala')->nullable();
+            $table->string('profesie')->nullable();
+            $table->date('data_plecarii')->nullable();
+            $table->string('prenumele_tatalui')->nullable();
+            $table->string('adresa')->nullable();
+            $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

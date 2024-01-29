@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-//            $table->foreignId('user_id')->nullable();
-//            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('cod_staff');
+            $table->foreignId('cod_staff');
+            $table->foreign('cod_staff')->references('id')->on('users')->onDelete('cascade');
+//            $table->integer('cod_staff');
             $table->string('nume');
             $table->date('data');
             $table->string('saptamana');
