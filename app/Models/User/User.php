@@ -27,9 +27,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-//    public function getIsActiveAttribute($is_active)
-//    {
-//        return $is_active ? 'فعال' : 'غیرفعال';
-//    }
+    public function getIsActiveAttribute($is_active)
+    {
+        return $is_active ? 'فعال' : 'غیرفعال';
+    }
 
 }

@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('daily_reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cod_staff');
             $table->foreign('cod_staff')->references('id')->on('users')->onDelete('cascade');
-//            $table->integer('cod_staff');
             $table->string('nume');
             $table->date('data');
             $table->string('saptamana');
@@ -45,6 +44,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('daily_reports');
     }
 };

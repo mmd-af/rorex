@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\YourImportClass;
-use App\Models\Report;
+use App\Models\DailyReport\DailyReport;
 use App\Models\User\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -28,7 +28,7 @@ class ExcelImportController extends Controller
                 }
                 $date = date('Y-m-d', strtotime($item[2]));
                 $codStaff = (int)$item[0];
-                $report = new Report();
+                $report = new DailyReport();
                 $report->cod_staff = $codStaff;
                 $report->nume = $item[1];
                 $report->data = $date;
