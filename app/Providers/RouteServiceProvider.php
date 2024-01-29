@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dashboard';
+    public const HOME = '/admin/dashboard';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -36,5 +36,35 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+        $this->mapWebAuthRoutes();
+        $this->mapWebAdminRoutes();
+        $this->mapWebSiteRoutes();
+    }
+
+    protected function mapWebAuthRoutes()
+    {
+        $routeFiles = glob(base_path('routes/web/auth/*.php'));
+        foreach ($routeFiles as $routeFile) {
+            Route::middleware('web')
+                ->group($routeFile);
+        }
+    }
+
+    protected function mapWebAdminRoutes()
+    {
+        $routeFiles = glob(base_path('routes/web/admin/*.php'));
+        foreach ($routeFiles as $routeFile) {
+            Route::middleware(['web', 'auth'])
+                ->group($routeFile);
+        }
+    }
+
+    protected function mapWebSiteRoutes()
+    {
+        $routeFiles = glob(base_path('routes/web/site/*.php'));
+        foreach ($routeFiles as $routeFile) {
+            Route::middleware('web')
+                ->group($routeFile);
+        }
     }
 }

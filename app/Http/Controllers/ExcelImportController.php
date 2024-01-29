@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\YourImportClass;
 use App\Models\Report;
-use App\Models\User;
+use App\Models\User\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

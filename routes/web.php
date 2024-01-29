@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ExcelImportController;
 use App\Http\Controllers\ProfileController;
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,10 +22,6 @@ Route::get('/', function () {
 
 Route::post('/import-excel', [ExcelImportController::class, 'import'])->name('import.excel');
 Route::post('/import-user', [ExcelImportController::class, 'importUser'])->name('import.user');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
