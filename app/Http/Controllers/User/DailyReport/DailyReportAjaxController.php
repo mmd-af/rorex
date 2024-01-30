@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin\DailyReport;
+namespace App\Http\Controllers\User\DailyReport;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\DailyReportRepository;
+use App\Repositories\User\DailyReportRepository;
 use Illuminate\Http\Request;
 
 class DailyReportAjaxController extends Controller

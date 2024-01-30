@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\User;
 
 class DashboardRepository extends BaseRepository
 {

@@ -1,4 +1,4 @@
-@extends('admin.layouts.index')
+@extends('user.layouts.index')
 
 @section('title')
     Daily Reports
@@ -12,7 +12,7 @@
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            <form action="{{ route('admin.dailyReports.filter') }}" method="post">
+            <form action="{{ route('user.dailyReports.filter') }}" method="post">
                 @csrf
                 <div class="d-flex p-3 m-3">
                 <label for="start_date" class="px-4">Start Date:</label>
@@ -34,11 +34,7 @@
                     <th>Weeks</th>
                     <th>Shift</th>
                     <th>on_work1</th>
-                    <th>off_work1</th>
-                    <th>on_work2</th>
                     <th>off_work2</th>
-                    <th>on_work3</th>
-                    <th>off_work3</th>
                     <th>remarca</th>
                     <th>action</th>
                 </tr>
@@ -50,11 +46,7 @@
                     <th>Weeks</th>
                     <th>Shift</th>
                     <th>on_work1</th>
-                    <th>off_work1</th>
-                    <th>on_work2</th>
                     <th>off_work2</th>
-                    <th>on_work3</th>
-                    <th>off_work3</th>
                     <th>remarca</th>
                     <th>action</th>
                 </tr>
@@ -67,11 +59,7 @@
                         <td>{{$dailyReport->saptamana}}</td>
                         <td>{{$dailyReport->nume_schimb}}</td>
                         <td>{{$dailyReport->on_work1}}</td>
-                        <td>{{$dailyReport->off_work1}}</td>
-                        <td>{{$dailyReport->on_work2}}</td>
                         <td>{{$dailyReport->off_work2}}</td>
-                        <td>{{$dailyReport->on_work3}}</td>
-                        <td>{{$dailyReport->off_work3}}</td>
                         <td>{{$dailyReport->remarca}}</td>
                         <td><i class="fas fa-angle-down"></i></td>
                     </tr>

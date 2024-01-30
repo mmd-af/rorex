@@ -11,10 +11,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="sb-nav-fixed">
-@include('admin.layouts.partial.navbar')
+@include('user.layouts.partial.navbar')
 <div id="layoutSidenav">
     <div id="layoutSidenav_nav">
-        @include('admin.layouts.partial.sidebar')
+        @include('user.layouts.partial.sidebar')
     </div>
     <div id="layoutSidenav_content">
         <main>
@@ -22,7 +22,7 @@
                 @yield('content')
             </div>
         </main>
-        @include('admin.layouts.partial.footer')
+        @include('user.layouts.partial.footer')
     </div>
 </div>
 <script src="{{asset('admin-panel/js/scripts.js')}}"></script>

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Dashboard;
+namespace App\Http\Controllers\User\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\DashboardRepository;
+use App\Repositories\User\DashboardRepository;
 
 class DashboardController extends Controller
 {
@@ -16,6 +16,6 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('admin.dashboard.index');
+        return view('user.dashboard.index');
     }
 }

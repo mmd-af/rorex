@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\User;
 
 use App\Models\DailyReport\DailyReport;
 use Carbon\Carbon;
@@ -25,11 +25,7 @@ class DailyReportRepository extends BaseRepository
                 'saptamana',
                 'nume_schimb',
                 'on_work1',
-                'off_work1',
-                'on_work2',
                 'off_work2',
-                'on_work3',
-                'off_work3',
                 'remarca'
             ])
             ->where('cod_staff', $userId)

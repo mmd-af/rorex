@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Dashboard;
+namespace App\Http\Controllers\User\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\DashboardRepository;
+use App\Repositories\User\DashboardRepository;
 use Illuminate\Http\Request;
 
 class DashboardAjaxController extends Controller

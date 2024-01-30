@@ -1,4 +1,4 @@
-@extends('admin.layouts.index')
+@extends('user.layouts.index')
 
 @section('title')
     Dashboard

@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin\DailyReport;
+namespace App\Http\Controllers\User\DailyReport;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\DailyReportRepository;
-use Carbon\Carbon;
+use App\Repositories\User\DailyReportRepository;
 use Illuminate\Http\Request;
 
 class DailyReportController extends Controller
@@ -19,12 +18,12 @@ class DailyReportController extends Controller
     public function index()
     {
         $dailyReports = $this->dailyReportRepository->getOwnReport();
-        return view('admin.dailyReports.index', compact('dailyReports'));
+        return view('user.dailyReports.index', compact('dailyReports'));
     }
 
     public function filter(Request $request)
     {
         $dailyReports = $this->dailyReportRepository->getOwnReportFiltered($request);
-        return view('admin.dailyReports.index', compact('dailyReports'));
+        return view('user.dailyReports.index', compact('dailyReports'));
     }
 }
