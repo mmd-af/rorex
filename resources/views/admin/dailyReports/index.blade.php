@@ -12,7 +12,18 @@
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            DataTable Example
+            <form action="{{ route('admin.dailyReports.filter') }}" method="post">
+                @csrf
+                <div class="d-flex p-3 m-3">
+                <label for="start_date" class="px-4">Start Date:</label>
+                <input type="date" name="start_date" id="start_date" class="form-control form-control-sm" value="{{old('start-date')}}">
+
+                <label for="end_date" class="px-4">End Date:</label>
+                <input type="date" name="end_date" id="end_date" class="form-control form-control-sm" value="{{old('end_date')}}">
+
+                <button type="submit" class="btn btn-info btn-sm">Apply filter</button>
+                </div>
+            </form>
         </div>
         <div class="card-body">
             <table id="datatablesSimple" class="table table-striped">
@@ -69,4 +80,11 @@
             </table>
         </div>
     </div>
+@endsection
+@section('script')
+    <script>
+        let table = new DataTable('#datatablesSimple', {
+            responsive: false
+        });
+    </script>
 @endsection

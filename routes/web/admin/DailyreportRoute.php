@@ -9,6 +9,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'index',
                 'uses' => 'DailyreportController@index'
             ]);
+            Route::post('/filter', [
+                'as' => 'filter',
+                'uses' => 'DailyreportController@filter'
+            ]);
         });
         Route::group(['prefix' => 'dailyReports-ajax', 'as' => 'dailyReports.ajax.'], function () {
 
