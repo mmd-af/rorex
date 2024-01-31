@@ -15,18 +15,20 @@
             <form action="{{ route('user.dailyReports.filter') }}" method="post">
                 @csrf
                 <div class="d-flex p-3 m-3">
-                <label for="start_date" class="px-4">Start Date:</label>
-                <input type="date" name="start_date" id="start_date" class="form-control form-control-sm" value="{{old('start-date')}}">
+                    <label for="start_date" class="px-4">Start Date:</label>
+                    <input type="date" name="start_date" id="start_date" class="form-control form-control-sm"
+                           value="{{old('start-date')}}">
 
-                <label for="end_date" class="px-4">End Date:</label>
-                <input type="date" name="end_date" id="end_date" class="form-control form-control-sm" value="{{old('end_date')}}">
+                    <label for="end_date" class="px-4">End Date:</label>
+                    <input type="date" name="end_date" id="end_date" class="form-control form-control-sm"
+                           value="{{old('end_date')}}">
 
-                <button type="submit" class="btn btn-info btn-sm">Apply filter</button>
+                    <button type="submit" class="btn btn-info btn-sm">Apply filter</button>
                 </div>
             </form>
         </div>
         <div class="card-body">
-            <table id="datatablesSimple" class="table table-striped">
+            <table id="datatablesSimple1" class="table table-bordered table-striped text-center">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -58,14 +60,47 @@
                         <td>{{$dailyReport->data}}</td>
                         <td>{{$dailyReport->saptamana}}</td>
                         <td>{{$dailyReport->nume_schimb}}</td>
-                        <td>{{$dailyReport->on_work1}}</td>
-                        <td>{{$dailyReport->off_work2}}</td>
-                        <td>{{$dailyReport->remarca}}</td>
-                        <td><i class="fas fa-angle-down"></i></td>
+                        <td @if(empty($dailyReport->on_work1)) class="bg-danger" @endif>{{$dailyReport->on_work1}}</td>
+                        <td @if(empty($dailyReport->off_work2)) class="bg-danger" @endif>{{$dailyReport->off_work2}}</td>
+                        <td @if(isset($dailyReport->remarca)) class="bg-warning" @endif>{{$dailyReport->remarca}}</td>
+                        <td>
+                            {{--                            <i class="fas fa-angle-down"></i>--}}
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#forgetRequest">
+                                <i class="fa-solid fa-square-arrow-up-right"></i>
+                            </button>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div class="modal fade" id="forgetRequest" tabindex="-1" aria-labelledby="forgetRequestLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="forgetRequestLabel">New message</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Recipient:</label>
+                            <input type="text" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Message:</label>
+                            <textarea class="form-control" id="message-text"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Send message</button>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
