@@ -59,11 +59,12 @@ class RouteServiceProvider extends ServiceProvider
                 ->group($routeFile);
         }
     }
+
     protected function mapWebAdminRoutes()
     {
         $routeFiles = glob(base_path('routes/web/admin/*.php'));
         foreach ($routeFiles as $routeFile) {
-            Route::middleware(['web', 'auth'])
+            Route::middleware(['web', 'auth', 'super.admin'])
                 ->group($routeFile);
         }
     }
