@@ -13,15 +13,20 @@
             <i class="fas fa-table me-1"></i>
             <form action="{{ route('user.dailyReports.filter') }}" method="post">
                 @csrf
-                <div class="d-flex p-3 m-3">
-                    <label for="start_date" class="px-4">Start Date:</label>
-                    <input type="date" name="start_date" id="start_date" class="form-control form-control-sm"
-                           value="{{old('start-date')}}">
+                <div class="row p-3 m-3">
+                    <div class="col-sm-12 col-lg-6">
+                        <label for="start_date" class="px-4">Start Date:</label>
+                        <input type="date" name="start_date" id="start_date" class="form-control form-control-sm"
+                               value="{{old('start-date')}}">
+                    </div>
+                    <div class="col-sm-12 col-lg-6">
 
-                    <label for="end_date" class="px-4">End Date:</label>
-                    <input type="date" name="end_date" id="end_date" class="form-control form-control-sm"
-                           value="{{old('end_date')}}">
-
+                        <label for="end_date" class="px-4">End Date:</label>
+                        <input type="date" name="end_date" id="end_date" class="form-control form-control-sm"
+                               value="{{old('end_date')}}">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-info btn-sm">Apply filter</button>
                 </div>
             </form>
@@ -64,7 +69,8 @@
                         <td @if(isset($dailyReport->remarca)) class="bg-warning" @endif>{{$dailyReport->remarca}}</td>
                         <td>
                             {{--                            <i class="fas fa-angle-down"></i>--}}
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                            <button onclick="requestForm({{$dailyReport->id}})" type="button"
+                                    class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#forgetRequest">
                                 <i class="fa-solid fa-square-arrow-up-right"></i>
                             </button>
@@ -72,7 +78,10 @@
                     </tr>
                 @endforeach
                 </tbody>
+                {{ $dailyReports->links() }}
             </table>
+            {{ $dailyReports->links() }}
+
         </div>
     </div>
     <div class="modal fade" id="forgetRequest" tabindex="-1" aria-labelledby="forgetRequestLabel"
@@ -80,33 +89,89 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="forgetRequestLabel">New message</h1>
+                    <h1 class="modal-title fs-5" id="forgetRequestLabel">Request</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <div id="alert">
+                        <div class="row justify-content-center my-3">
+                            <div class="spinner-grow text-primary mx-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="spinner-grow text-secondary mx-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center my-3">
+                            <div class="spinner-grow text-secondary mx-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="spinner-grow text-primary mx-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action="{{route('user.dailyReports.supportRequest')}}" method="post">
+                        @csrf
                         <div class="mb-3">
-                            <label for="recipient-name" class="col-form-label">Recipient:</label>
-                            <input type="text" class="form-control" id="recipient-name">
+                            <label for="cod_staff" class="col-form-label">Staff:
+                                <div class="text-info" id="name_show"></div>
+                                <div class="text-info" id="cod_staff_show"></div>
+                            </label>
+                            <input type="hidden" class="form-control text-info" id="cod_staff" name="cod_staff"
+                                   value="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="date" class="col-form-label">Date:
+                                <div class="text-info" id="date_show"></div>
+                            </label>
+                            <input type="hidden" class="form-control text-info" id="date" name="date" value="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="col-form-label">Subject:</label>
+                            <input type="text" class="form-control" id="subject" name="subject" value="">
                         </div>
                         <div class="mb-3">
                             <label for="message-text" class="col-form-label">Message:</label>
-                            <textarea class="form-control" id="message-text"></textarea>
+                            <textarea class="form-control" name="message-text" id="message-text"></textarea>
                         </div>
+                        <button type="submit" class="btn btn-primary">Send message</button>
+
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Send message</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
 @section('script')
     <script>
-        let table = new DataTable('#datatablesSimple', {
-            responsive: false
-        });
+        function requestForm(id) {
+            let alert = document.getElementById('alert');
+            let name_show = document.getElementById('name_show');
+            let cod_staff = document.getElementById('cod_staff');
+            let cod_staff_show = document.getElementById('cod_staff_show');
+            let date = document.getElementById('date');
+            let date_show = document.getElementById('date_show');
+            let configInformation = {
+                dailyReport_id: id
+            }
+            axios.post('{{ route('user.dailyReports.ajax.getData') }}', configInformation)
+                .then(function (response) {
+                    alert.innerHTML = ``;
+                    name_show.innerHTML = response.data.data.nume;
+                    cod_staff.value = response.data.data.cod_staff;
+                    cod_staff_show.innerHTML = response.data.data.cod_staff;
+                    date.value = response.data.data.data;
+                    date_show.innerHTML = response.data.data.data;
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        }
     </script>
 @endsection

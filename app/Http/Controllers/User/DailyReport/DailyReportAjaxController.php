@@ -8,10 +8,17 @@ use Illuminate\Http\Request;
 
 class DailyReportAjaxController extends Controller
 {
-    protected $postRepository;
+    protected $dailyReportRepository;
 
-    public function __construct(DailyReportRepository $postRepository)
+    public function __construct(DailyReportRepository $dailyReportRepository)
     {
-        $this->postRepository = $postRepository;
+        $this->dailyReportRepository = $dailyReportRepository;
+    }
+
+    public function getData(Request $request)
+    {
+        return response()->json([
+            'data' => $this->dailyReportRepository->getData($request)
+        ]);
     }
 }

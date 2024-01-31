@@ -26,4 +26,12 @@ class DailyReportController extends Controller
         $dailyReports = $this->dailyReportRepository->getOwnReportFiltered($request);
         return view('user.dailyReports.index', compact('dailyReports'));
     }
+
+    public function supportRequest(Request $request)
+    {
+        dd($request->all());
+        $this->dailyReportRepository->supportRequest($request);
+        $dailyReports = $this->dailyReportRepository->getOwnReport();
+        return view('user.dailyReports.index', compact('dailyReports'))->with(['message', 'successful']);
+    }
 }

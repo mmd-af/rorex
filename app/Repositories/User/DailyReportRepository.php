@@ -29,8 +29,8 @@ class DailyReportRepository extends BaseRepository
                 'remarca'
             ])
             ->where('cod_staff', $userId)
-//            ->latest()
-            ->get();
+            ->orderBy('data', 'DESC')
+            ->paginate(10);
     }
 
     public function getOwnReportFiltered($request)
@@ -57,5 +57,18 @@ class DailyReportRepository extends BaseRepository
             ->where('cod_staff', $userId)
             ->whereBetween('data', [$startDate, $endDate])
             ->get();
+    }
+
+    public function getData($request)
+    {
+        return $this->query()
+            ->select([
+                'id',
+                'cod_staff',
+                'nume',
+                'data'
+            ])
+            ->where('id', $request->dailyReport_id)
+            ->first();
     }
 }

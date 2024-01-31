@@ -13,9 +13,16 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'filter',
                 'uses' => 'DailyreportController@filter'
             ]);
+            Route::post('/supportRequest', [
+                'as' => 'supportRequest',
+                'uses' => 'DailyreportController@supportRequest'
+            ]);
         });
         Route::group(['prefix' => 'dailyReports-ajax', 'as' => 'dailyReports.ajax.'], function () {
-
+            Route::post('/getData', [
+                'as' => 'getData',
+                'uses' => 'DailyReportAjaxController@getData'
+            ]);
         });
     });
 });
