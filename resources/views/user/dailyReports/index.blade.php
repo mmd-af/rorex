@@ -142,7 +142,7 @@
                             <label for="description" class="col-form-label">Message:</label>
                             <textarea class="form-control" name="description" id="description"></textarea>
                         </div>
-                        <button type="submit" class= ,"btn btn-primary">Send message</button>
+                        <button type="submit" class="btn btn-success">Send message</button>
 
                     </form>
                     <div class="modal-footer">

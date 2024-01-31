@@ -57,7 +57,8 @@ class DailyReportRepository extends BaseRepository
             ])
             ->where('cod_staff', $userId)
             ->whereBetween('data', [$startDate, $endDate])
-            ->get();
+            ->orderBy('data', 'DESC')
+            ->paginate(10);
     }
 
     public function getData($request)
@@ -80,7 +81,7 @@ class DailyReportRepository extends BaseRepository
         $support->email = $request->email;
         $support->mobile_phone = $request->mobile_phone;
         $support->subject = $request->subject;
-        $support->description = "Check For Date: " . $request->date . "<br>" . $request->messageText;
+        $support->description = "<strong>Check For Date: " . $request->date . "</strong><br>" . $request->description;
         $support->organization = $request->organization;
         $support->cod_staff = (int)$request->cod_staff;
         $support->save();
