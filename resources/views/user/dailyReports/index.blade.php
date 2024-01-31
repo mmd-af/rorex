@@ -9,6 +9,7 @@
         <li class="breadcrumb-item active">Daily Reports</li>
     </ol>
     <div class="card mb-4">
+        @include('user.layouts.partial.errors')
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
             <form action="{{ route('user.dailyReports.filter') }}" method="post">
@@ -119,24 +120,29 @@
                                 <div class="text-info" id="name_show"></div>
                                 <div class="text-info" id="cod_staff_show"></div>
                             </label>
-                            <input type="hidden" class="form-control text-info" id="cod_staff" name="cod_staff"
-                                   value="">
+                            <input type="hidden" id="name" name="name" value="">
+                            <input type="hidden" id="cod_staff" name="cod_staff" value="">
                         </div>
                         <div class="mb-3">
                             <label for="date" class="col-form-label">Date:
                                 <div class="text-info" id="date_show"></div>
                             </label>
-                            <input type="hidden" class="form-control text-info" id="date" name="date" value="">
+                            <input type="hidden" id="date" name="date" value="">
                         </div>
                         <div class="mb-3">
                             <label for="subject" class="col-form-label">Subject:</label>
                             <input type="text" class="form-control" id="subject" name="subject" value="">
                         </div>
                         <div class="mb-3">
-                            <label for="message-text" class="col-form-label">Message:</label>
-                            <textarea class="form-control" name="message-text" id="message-text"></textarea>
+                            <label for="organization" class="col-form-label">Organization:</label>
+                            <input type="text" class="form-control" value="accounting" disabled>
+                            <input type="hidden" id="organization" name="organization" value="accounting">
                         </div>
-                        <button type="submit" class="btn btn-primary">Send message</button>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Message:</label>
+                            <textarea class="form-control" name="description" id="description"></textarea>
+                        </div>
+                        <button type="submit" class= ,"btn btn-primary">Send message</button>
 
                     </form>
                     <div class="modal-footer">
@@ -152,6 +158,7 @@
     <script>
         function requestForm(id) {
             let alert = document.getElementById('alert');
+            let name = document.getElementById('name');
             let name_show = document.getElementById('name_show');
             let cod_staff = document.getElementById('cod_staff');
             let cod_staff_show = document.getElementById('cod_staff_show');
@@ -163,6 +170,7 @@
             axios.post('{{ route('user.dailyReports.ajax.getData') }}', configInformation)
                 .then(function (response) {
                     alert.innerHTML = ``;
+                    name.value = response.data.data.nume;
                     name_show.innerHTML = response.data.data.nume;
                     cod_staff.value = response.data.data.cod_staff;
                     cod_staff_show.innerHTML = response.data.data.cod_staff;

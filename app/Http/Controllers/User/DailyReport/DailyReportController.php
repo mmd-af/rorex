@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User\DailyReport;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\DailyReport\SupportRequest;
 use App\Repositories\User\DailyReportRepository;
 use Illuminate\Http\Request;
 
@@ -27,11 +28,9 @@ class DailyReportController extends Controller
         return view('user.dailyReports.index', compact('dailyReports'));
     }
 
-    public function supportRequest(Request $request)
+    public function supportRequest(SupportRequest $request)
     {
-        dd($request->all());
         $this->dailyReportRepository->supportRequest($request);
-        $dailyReports = $this->dailyReportRepository->getOwnReport();
-        return view('user.dailyReports.index', compact('dailyReports'))->with(['message', 'successful']);
+        return redirect()->route('user.dailyReports.index')->with(['message' => 'Your request has been successfully registered']);
     }
 }

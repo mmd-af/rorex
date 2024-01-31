@@ -3,6 +3,7 @@
 namespace App\Repositories\User;
 
 use App\Models\DailyReport\DailyReport;
+use App\Models\Support\Support;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -70,5 +71,18 @@ class DailyReportRepository extends BaseRepository
             ])
             ->where('id', $request->dailyReport_id)
             ->first();
+    }
+
+    public function supportRequest($request)
+    {
+        $support = new Support();
+        $support->name = $request->name;
+        $support->email = $request->email;
+        $support->mobile_phone = $request->mobile_phone;
+        $support->subject = $request->subject;
+        $support->description = "Check For Date: " . $request->date . "<br>" . $request->messageText;
+        $support->organization = $request->organization;
+        $support->cod_staff = (int)$request->cod_staff;
+        $support->save();
     }
 }
