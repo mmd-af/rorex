@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-    <h1 class="mt-4">Daily Reports</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">Daily Reports</li>
     </ol>
