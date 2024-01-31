@@ -7,7 +7,7 @@
     <title>Rorex - @yield('title')</title>
     <link href="{{asset('admin-panel/css/styles.css')}}" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body class="sb-nav-fixed">
 @include('user.layouts.partial.navbar')
