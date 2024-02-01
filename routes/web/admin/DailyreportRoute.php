@@ -17,6 +17,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'supportRequest',
                 'uses' => 'DailyreportController@supportRequest'
             ]);
+            Route::put('/import', [
+                'as' => 'import',
+                'uses' => 'DailyreportController@import'
+            ]);
         });
         Route::group(['prefix' => 'dailyReports-ajax', 'as' => 'dailyReports.ajax.'], function () {
             Route::post('/getData', [

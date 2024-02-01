@@ -12,8 +12,30 @@
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">Daily Reports</li>
     </ol>
+    @include('admin.layouts.partial.errors')
     <div class="card mb-4">
-        @include('admin.layouts.partial.errors')
+        <div class="row">
+            <div class="col-sm-12 col-md-6 bg-warning">
+                <form class="form-control bg-warning" action="{{ route('admin.dailyReports.import') }}" method="POST"
+                      enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="file">Update Daily Reports <small>support: xlsx,xls</small></label>
+                        <input type="file" name="file" id="file" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-primary mt-2">Import</button>
+                </form>
+            </div>
+            <div class="col-sm-12 col-md-6 bg-danger-subtle">
+                <strong>Important:</strong>
+                <ol>
+                    <li>The first row of the file is not added because it is the name of the column.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-4">
         <div class="card-body">
             <table id="dailyReportTable" class="table table-bordered table-striped text-center">
                 <thead>

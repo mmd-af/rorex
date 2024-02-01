@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\DailyReport;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DailyReport\SupportRequest;
+use App\Http\Requests\Admin\DailyReport\UpdateRequest;
 use App\Repositories\Admin\DailyReportRepository;
 use Illuminate\Http\Request;
 
@@ -32,4 +33,13 @@ class DailyReportController extends Controller
         $this->dailyReportRepository->supportRequest($request);
         return redirect()->route('admin.dailyReports.index')->with(['message' => 'Your request has been successfully registered']);
     }
+
+    public function import(UpdateRequest $request)
+    {
+        $import = $this->dailyReportRepository->import($request);
+        dd($import);
+        return redirect()->route('admin.dailyReports.index')->with(['message' => 'Your request has been successfully registered']);
+
+    }
+
 }
