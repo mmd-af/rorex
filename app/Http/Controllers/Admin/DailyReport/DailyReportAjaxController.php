@@ -17,13 +17,6 @@ class DailyReportAjaxController extends Controller
         $this->dailyReportRepository = $dailyReportRepository;
     }
 
-    public function getData(Request $request)
-    {
-        return response()->json([
-            'data' => $this->dailyReportRepository->getData($request)
-        ]);
-    }
-
     public function getDataTable(Request $request)
     {
         return $this->dailyReportRepository->getDataTable($request);
