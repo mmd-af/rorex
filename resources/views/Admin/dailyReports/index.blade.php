@@ -66,10 +66,20 @@
                     {data: 'remarca', name: 'remarca'}
                 ],
                 initComplete: function () {
+                    var table = this;
+
                     this.api().columns().every(function () {
                         var column = this;
+                        var header = $(column.header());
+
+                        var filterRow = header.closest('thead').find('.filter-row');
+
+                        if (!filterRow.length) {
+                            filterRow = $('<tr class="filter-row"></tr>').appendTo(header.closest('thead'));
+                        }
+
                         var input = $('<input type="text" class="form-control form-control-sm" placeholder="Search...">')
-                            .prependTo($(column.header()).empty())
+                            .appendTo($('<th></th>').appendTo(filterRow))
                             .on('keyup change', function () {
                                 if (column.search() !== this.value) {
                                     column
