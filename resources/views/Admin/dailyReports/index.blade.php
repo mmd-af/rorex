@@ -40,7 +40,7 @@
     </div>
     <div class="card mb-4">
         <div class="card-body">
-            <table id="dailyReportTable" claSheetss="table table-bordered table-striped text-center">
+            <table id="dailyReportTable" class="table table-bordered table-striped text-center">
                 <thead>
                 <tr>
                     <th>cod_staff</th>
