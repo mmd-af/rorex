@@ -8,7 +8,9 @@
     <link href="{{asset('admin-panel/css/styles.css')}}" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <script src="https://cdn.datatables.net/plug-ins/1.11.6/api/individual.columnFilter.js"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @yield('style')
 </head>
 <body class="sb-nav-fixed">
 @include('admin.layouts.partial.navbar')
