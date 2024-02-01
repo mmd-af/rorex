@@ -31,13 +31,15 @@
                 <strong>Important:</strong>
                 <ol>
                     <li>The first row of the file is not added because it is the name of the column.</li>
+                    <li>Only Sheet1 will be uploaded.</li>
+                    <li>Duplicate data is updated</li>
                 </ol>
             </div>
         </div>
     </div>
     <div class="card mb-4">
         <div class="card-body">
-            <table id="dailyReportTable" class="table table-bordered table-striped text-center">
+            <table id="dailyReportTable" claSheetss="table table-bordered table-striped text-center">
                 <thead>
                 <tr>
                     <th>cod_staff</th>

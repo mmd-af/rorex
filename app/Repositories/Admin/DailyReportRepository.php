@@ -7,6 +7,7 @@ use App\Models\DailyReport\DailyReport;
 use App\Models\Support\Support;
 use App\Repositories\User\BaseRepository;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
@@ -96,25 +97,19 @@ class DailyReportRepository extends BaseRepository
     {
         $files = $request->file('file');
         $files = Excel::toArray(new DailyReportExcel, $files);
+        $expectedHeaders = [
+            "Cod staff",
+            "Nume",
+            "Data",
+            "Remarca"
+        ];
 
-        foreach ($files[0] as $item) {
-            if (
-                $item[0] !== "Cod staff" ||
-                $item[1] !== "Nume" ||
-                $item[2] !== "Data" ||
-                $item[3] !== "Saptamana" ||
-                $item[4] !== "Nume schimb" ||
-                $item[5] !== "On Work1" ||
-                $item[6] !== "Off Work1" ||
-                $item[7] !== "On Work2" ||
-                $item[8] !== "Off Work2" ||
-                $item[9] !== "On Work3" ||
-                $item[10] != "Off Work3" ||
-                $item[19] !== "Remarca"
-            ) {
-                return response()->json(['error' => 'Invalid file format']);
-            }
-            break;
+        $actualHeaders = $files[0][0];
+
+        $missingHeaders = array_diff($expectedHeaders, $actualHeaders);
+
+        if (!empty($missingHeaders)) {
+            return response()->json(['error' => 'Invalid file format. Missing headers: ' . implode(', ', $missingHeaders)]);
         }
         DB::beginTransaction();
         try {
@@ -124,35 +119,40 @@ class DailyReportRepository extends BaseRepository
                 }
                 $date = date('Y-m-d', strtotime($item[2]));
                 $codStaff = (int)$item[0];
-                $report = new DailyReport();
-                $report->cod_staff = $codStaff;
-                $report->nume = $item[1];
-                $report->data = $date;
-                $report->saptamana = $item[3];
-                $report->nume_schimb = $item[4];
-                $report->on_work1 = $item[5];
-                $report->off_work1 = $item[6];
-                $report->on_work2 = $item[7];
-                $report->off_work2 = $item[8];
-                $report->on_work3 = $item[9];
-                $report->off_work3 = $item[10];
-                $report->absenta_zile = $item[11];
-                $report->munca_ore = $item[12];
-                $report->ot_ore = $item[13];
-                $report->tarziu_minute = $item[14];
-                $report->devreme_minute = $item[15];
-                $report->lipsa_ceas_timpi = $item[16];
-                $report->sarbatoare_publica_ore = $item[17];
-                $report->concediu_ore = $item[18];
-                $report->remarca = $item[19];
-                $report->save();
+                $data = [
+                    'cod_staff' => $codStaff,
+                    'nume' => $item[1],
+                    'data' => $date,
+                    'saptamana' => $item[3],
+                    'nume_schimb' => $item[4],
+                    'on_work1' => $item[5],
+                    'off_work1' => $item[6],
+                    'on_work2' => $item[7],
+                    'off_work2' => $item[8],
+                    'on_work3' => $item[9],
+                    'off_work3' => $item[10],
+                    'absenta_zile' => $item[11],
+                    'munca_ore' => $item[12],
+                    'ot_ore' => $item[13],
+                    'tarziu_minute' => $item[14],
+                    'devreme_minute' => $item[15],
+                    'lipsa_ceas_timpi' => $item[16],
+                    'sarbatoare_publica_ore' => $item[17],
+                    'concediu_ore' => $item[18],
+                    'remarca' => $item[19],
+                ];
+                $condition = [
+                    'cod_staff' => $codStaff,
+                    'data' => $date,
+                ];
+                DB::table('daily_reports')->updateOrInsert($condition, $data);
             }
+
             DB::commit();
             return response()->json(['success' => true]);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['error' => $e->getMessage()]);
         }
-
     }
 }
