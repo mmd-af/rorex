@@ -559,3 +559,8 @@
         </div>
     </div>
 @endsection
+
+@section('script')
+    <script src="{{asset('admin-panel/assets/demo/chart-area-demo.js')}}"></script>
+    <script src="{{asset('admin-panel/assets/demo/chart-bar-demo.js')}}"></script>
+@endsection
