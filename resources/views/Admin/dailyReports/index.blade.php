@@ -32,7 +32,8 @@
                 <ol>
                     <li>The first row of the file is not added because it is the name of the column.</li>
                     <li>Only Sheet1 will be uploaded.</li>
-                    <li>Duplicate data is updated</li>
+                    <li>Duplicate data <strong>is updated</strong></li>
+                    <li>Be patient while uploading until the operation is finished and the page is refreshed.</li>
                 </ol>
             </div>
         </div>

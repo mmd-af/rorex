@@ -36,10 +36,11 @@ class DailyReportController extends Controller
 
     public function import(UpdateRequest $request)
     {
-        $import = $this->dailyReportRepository->import($request);
-        dd($import);
-        return redirect()->route('admin.dailyReports.index')->with(['message' => 'Your request has been successfully registered']);
-
+        $this->dailyReportRepository->import($request);
+        return redirect()->route('admin.dailyReports.index')->with([
+            'error' => session('error'),
+            'message' => session('message'),
+        ]);
     }
 
 }

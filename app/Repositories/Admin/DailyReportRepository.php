@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -103,13 +104,11 @@ class DailyReportRepository extends BaseRepository
             "Data",
             "Remarca"
         ];
-
         $actualHeaders = $files[0][0];
-
         $missingHeaders = array_diff($expectedHeaders, $actualHeaders);
-
         if (!empty($missingHeaders)) {
-            return response()->json(['error' => 'Invalid file format. Missing headers: ' . implode(', ', $missingHeaders)]);
+            Session::flash('error', 'Invalid file format. Missing headers: ' . implode(', ', $missingHeaders));
+            return false;
         }
         DB::beginTransaction();
         try {
@@ -147,12 +146,11 @@ class DailyReportRepository extends BaseRepository
                 ];
                 DB::table('daily_reports')->updateOrInsert($condition, $data);
             }
-
             DB::commit();
-            return response()->json(['success' => true]);
+            Session::flash('message', 'The update operation was completed Successfully');
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => $e->getMessage()]);
+            Session::flash('error', $e->getMessage());
         }
     }
 }
