@@ -20,7 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/import-excel', [ExcelImportController::class, 'import'])->name('import.excel');
 Route::post('/import-user', [ExcelImportController::class, 'importUser'])->name('import.user');
 
 Route::middleware('auth')->group(function () {
