@@ -6,7 +6,7 @@ use App\Models\DailyReport\DailyReport;
 use App\Models\Support\Support;
 use App\Repositories\User\BaseRepository;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class DailyReportRepository extends BaseRepository
 {
@@ -15,9 +15,9 @@ class DailyReportRepository extends BaseRepository
         $this->setModel($model);
     }
 
-    public function getOwnReport()
+    public function getDataTable($request)
     {
-        return $this->query()
+        $data = $this->query()
             ->select([
                 'id',
                 'cod_staff',
@@ -29,8 +29,12 @@ class DailyReportRepository extends BaseRepository
                 'off_work2',
                 'remarca'
             ])
-            ->orderBy('data', 'DESC')
-            ->paginate(10);
+            ->get();
+        if ($request->ajax()) {
+            return Datatables::of($data)
+                ->make(true);
+        }
+        return false;
     }
 
     public function getOwnReportFiltered($request)

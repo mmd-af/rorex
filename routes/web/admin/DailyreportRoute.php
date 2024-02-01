@@ -23,6 +23,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'getData',
                 'uses' => 'DailyReportAjaxController@getData'
             ]);
+            Route::get('/getDataTable', [
+                'as' => 'getDataTable',
+                'uses' => 'DailyReportAjaxController@getDataTable'
+            ]);
         });
     });
 });
