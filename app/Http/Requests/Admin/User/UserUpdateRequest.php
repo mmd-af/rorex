@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\DailyReport;
+namespace App\Http\Requests\Admin\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SupportRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,7 @@ class SupportRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required'],
-            'subject' => ['required'],
-            'description' => ['required'],
-            'organization' => ['required']
+            'file' => 'required|mimes:xlsx,xls'
         ];
     }
 }

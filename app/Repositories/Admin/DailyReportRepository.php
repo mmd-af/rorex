@@ -4,7 +4,6 @@ namespace App\Repositories\Admin;
 
 use App\Imports\DailyReportExcel;
 use App\Models\DailyReport\DailyReport;
-use App\Repositories\User\BaseRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;

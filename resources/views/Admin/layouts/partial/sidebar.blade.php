@@ -19,7 +19,10 @@
                     <a class="nav-link" href="{{route('admin.dailyReports.index')}}">Daily</a>
                 </nav>
             </div>
-
+            <a class="nav-link" href="{{route('admin.users.index')}}">
+                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                Users
+            </a>
             <div class="sb-sidenav-menu-heading">Requests</div>
             <a class="nav-link" href="#">
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
