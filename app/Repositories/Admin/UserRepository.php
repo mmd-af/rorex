@@ -97,7 +97,6 @@ class UserRepository extends BaseRepository
 
                 $condition = [
                     'id_utilizator' => $codStaff
-//                    'Email' => $item[12],
                 ];
                 DB::table('users')->updateOrInsert($condition, $data);
             }
