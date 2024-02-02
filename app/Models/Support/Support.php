@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Support extends Model
 {
     use HasFactory,
-        SoftDeletes,
         SupportRelationships,
         SupportModifiers;
 

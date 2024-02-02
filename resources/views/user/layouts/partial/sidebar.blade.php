@@ -25,7 +25,7 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                 Leave request
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{route('user.supports.index')}}">
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                 Support
             </a>
