@@ -41,7 +41,7 @@
             <table id="userTable" class="table table-bordered table-striped text-center">
                 <thead>
                 <tr>
-                    <th>Id Utilizator</th>
+                    <th>Cod Staff</th>
                     <th>Name</th>
                     <th>Departament</th>
                     <th>Card Number</th>
@@ -51,7 +51,7 @@
                 </thead>
                 <tfoot>
                 <tr>
-                    <th>Id Utilizator</th>
+                    <th>Cod Staff</th>
                     <th>Name</th>
                     <th>Departament</th>
                     <th>Card Number</th>
@@ -75,7 +75,7 @@
                 pageLength: 25,
                 ajax: "{{ route('admin.users.ajax.getDataTable') }}",
                 columns: [
-                    {data: 'id_utilizator', name: 'id_utilizator'},
+                    {data: 'cod_staff', name: 'cod_staff'},
                     {data: 'name', name: 'name'},
                     {data: 'departament', name: 'departament'},
                     {data: 'numar_card', name: 'numar_card'},

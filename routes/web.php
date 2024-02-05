@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ExcelImportController;
 use App\Http\Controllers\ProfileController;
+use App\Models\DailyReport\DailyReport;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Route;
 
@@ -20,8 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/import-user', [ExcelImportController::class, 'importUser'])->name('import.user');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -36,4 +34,17 @@ Route::get('/change', function () {
         $user->password = "$2y$12$0f8h4fC7jWa98jGZvCJbl.87/i6IkzTnuHY7hwMWJIxBbG5FgZLnW";
         $user->save();
     }
+});
+
+Route::get('/query1', function () {
+    $dailyReports = DailyReport::query()
+        ->where('nume_schimb', "Night")
+        ->where('cod_staff', 2109)
+        ->get();
+    $plusNight = 0;
+    foreach ($dailyReports as $dailyReport) {
+        $plusNight += $dailyReport->munca_ore;
+    }
+
+    dd($plusNight);
 });

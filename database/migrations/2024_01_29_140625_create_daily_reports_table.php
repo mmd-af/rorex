@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('daily_reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cod_staff');
-            $table->foreign('cod_staff')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('cod_staff')->constrained('users')->onDelete('cascade');
             $table->string('nume');
             $table->date('data');
             $table->string('saptamana');

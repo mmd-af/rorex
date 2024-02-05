@@ -16,6 +16,7 @@
                             </div>
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">
+                                    @include('auth.layouts.partial.errors')
                                     <form method="POST" action="{{ route('register') }}">
                                         @csrf
                                         <div class="d-flex align-items-center mb-3 pb-1">
@@ -37,12 +38,12 @@
                                             @endif
                                         </div>
                                         <div class="form-outline mb-4">
-                                            <label class="form-label" for="name">Id Utilizator:</label>
-                                            <input type="number" name="id_utilizator" id="id_utilizator"
+                                            <label class="form-label" for="name">Cod Staff:</label>
+                                            <input type="number" name="cod_staff" id="cod_staff"
                                                    class="form-control form-control-lg"
-                                                   value="{{old('id_utilizator')}}"/>
-                                            @if ($errors->has('id_utilizator'))
-                                                <p style="color: red;">{{ $errors->first('id_utilizator') }}</p>
+                                                   value="{{old('cod_staff')}}"/>
+                                            @if ($errors->has('cod_staff'))
+                                                <p style="color: red;">{{ $errors->first('cod_staff') }}</p>
                                             @endif
                                         </div>
                                         <div class="form-outline mb-4">

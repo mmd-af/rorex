@@ -22,7 +22,7 @@ class UserRepository extends BaseRepository
         $data = $this->query()
             ->select([
                 'id',
-                'id_utilizator',
+                'cod_staff',
                 'name',
                 'departament',
                 'numar_card',
@@ -42,7 +42,7 @@ class UserRepository extends BaseRepository
         $files = $request->file('file');
         $files = Excel::toArray(new DailyReportExcel, $files);
         $expectedHeaders = [
-            "ID utilizator",
+            "Cod staff",
             "Nume",
             "Departament",
             "Email"
@@ -64,10 +64,10 @@ class UserRepository extends BaseRepository
                 $dataAbsolvirii = date('Y-m-d', strtotime($item[21]));
                 $dataPlecarii = date('Y-m-d', strtotime($item[24]));
                 $codStaff = (int)$item[0];
-                $idUtilizator = (int)$item[1];
+                $cod_staff = (int)$item[1];
                 $data = [
                     'id' => $codStaff,
-                    'id_utilizator' => $idUtilizator,
+                    'cod_staff' => $cod_staff,
                     'name' => $item[2],
                     'departament' => $item[3],
                     'pozitie' => $item[4],
@@ -96,7 +96,7 @@ class UserRepository extends BaseRepository
                 ];
 
                 $condition = [
-                    'id_utilizator' => $codStaff
+                    'cod_staff' => $codStaff
                 ];
                 DB::table('users')->updateOrInsert($condition, $data);
             }

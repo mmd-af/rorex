@@ -30,7 +30,7 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
         $credentials = $this->only('email', 'password');
         if (filter_var($credentials['email'], FILTER_VALIDATE_INT)) {
-            $credentials['id_utilizator'] = $credentials['email'];
+            $credentials['cod_staff'] = $credentials['email'];
             unset($credentials['email']);
         }
 
