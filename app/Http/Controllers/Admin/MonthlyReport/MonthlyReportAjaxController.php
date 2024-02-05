@@ -19,4 +19,9 @@ class MonthlyReportAjaxController extends Controller
     {
         return $this->monthlyReportRepository->getUserTable($request);
     }
+
+    public function monthlyReportWithDate(Request $request)
+    {
+        return $this->monthlyReportRepository->monthlyReportWithDate($request);
+    }
 }

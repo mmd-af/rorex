@@ -15,6 +15,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'getUserTable',
                 'uses' => 'MonthlyReportAjaxController@getUserTable'
             ]);
+            Route::post('/monthlyReportWithDate', [
+                'as' => 'monthlyReportWithDate',
+                'uses' => 'MonthlyReportAjaxController@monthlyReportWithDate'
+            ]);
         });
     });
 });
