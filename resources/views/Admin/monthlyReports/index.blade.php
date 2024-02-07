@@ -20,7 +20,8 @@
                 <tr>
                     <th>ID</th>
                     <th>cod_staff</th>
-                    <th>Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -28,7 +29,8 @@
                 <tr>
                     <th>ID</th>
                     <th>cod_staff</th>
-                    <th>Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Action</th>
                 </tr>
                 </tfoot>
@@ -39,7 +41,7 @@
     </div>
     <!-- Modal -->
     <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
@@ -68,6 +70,26 @@
                         </button>
                     </form>
                     <div id="showResult"></div>
+
+
+                    <table class="table table-striped border mt-5">
+                        <thead>
+                        <tr>
+                            <th scope="col">Shift</th>
+                            <th scope="col">Hour</th>
+                            <th scope="col">unit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Morning</td>
+                            <td>60</td>
+                            <td>@mdo</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
@@ -88,6 +110,7 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'cod_staff', name: 'cod_staff'},
+                    {data: 'prenumele_tatalui', name: 'prenumele_tatalui'},
                     {data: 'name', name: 'name'},
                     {"data": "button", "name": "button", "orderable": false, "searchable": false}
                 ],
@@ -151,12 +174,56 @@
             }
             axios.post('{{route('admin.monthlyReports.ajax.monthlyReportWithDate')}}', formData)
                 .then(function (response) {
-                    // console.log(response.data);
-                    showResult.innerHTML=`
+                    console.log(response.data);
+                    showResult.innerHTML = `
                     <div class="row justify-content-center mt-5">
                         <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Total night hours:</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data}</h6></div>
+                            <div class="col-sm-6 border"><strong>Total Night Hours:</strong></div>
+                            <div class="col-sm-6 border"><h6>${response.data.hourNight}</h6></div>
+                        </div>
+                        <div class="row border border-3">
+                            <div class="col-sm-6 border"><strong>Total Morning Hours:</strong></div>
+                            <div class="col-sm-6 border"><h6>${response.data.hourMorning}</h6></div>
+                        </div>
+                        <div class="row border border-3">
+                            <div class="col-sm-6 border"><strong>Total hourAfternoon Hours:</strong></div>
+                            <div class="col-sm-6 border"><h6>${response.data.hourAfternoon}</h6></div>
+                        </div>
+                        <div class="row border border-3">
+                            <div class="col-sm-6 border"><strong>Total Daily Hours:</strong></div>
+                            <div class="col-sm-6 border"><h6>${response.data.hourDaily}</h6></div>
+                        </div>
+                        <div class="row border border-3">
+                            <div class="col-sm-6 border"><strong>Total Plus Day (Holiday):</strong></div>
+                            <div class="col-sm-6 border"><h6>${response.data.hourPlusDay}</h6></div>
+                        </div>
+                        <div class="row border border-3">
+                            <div class="col-sm-6 border"><strong>Total Plus Night (Holiday):</strong></div>
+                            <div class="col-sm-6 border"><h6>${response.data.hourPlusNight}</h6></div>
+                        </div>
+                        <div class="row border border-3">
+                            <div class="col-sm-6 border"><strong>Total Plus Work (weeks):</strong></div>
+                            <div class="col-sm-6 border"><h6>${response.data.plusWork}</h6></div>
+                        </div>
+                        <div class="row border border-3">
+                            <div class="col-sm-6 border"><strong>Total Daily Absence:</strong></div>
+                            <div class="col-sm-6 border"><h6>${response.data.dailyAbsence}</h6></div>
+                        </div>
+                        <div class="row border border-3">
+                            <div class="col-sm-6 border"><strong>Total Delay Work:</strong></div>
+                            <div class="col-sm-6 border"><h6>${response.data.delayWork}</h6></div>
+                        </div>
+                        <div class="row border border-3">
+                            <div class="col-sm-6 border"><strong>Total Early Exit:</strong></div>
+                            <div class="col-sm-6 border"><h6>${response.data.earlyExit}</h6></div>
+                        </div>
+                        <div class="row border border-3">
+                            <div class="col-sm-6 border"><strong>Total Hours:</strong></div>
+                            <div class="col-sm-6 border"><h6>${response.data.totalHours}</h6></div>
+                        </div>
+                        <div class="row border border-3">
+                            <div class="col-sm-6 border"><strong>Unknown:</strong></div>
+                            <div class="col-sm-6 border"><h6>${response.data.hourUnknown}</h6></div>
                         </div>
                     </div>`;
                 })
@@ -164,9 +231,9 @@
                     console.error(error);
                 });
         }
+
         $(document).on('hidden.bs.modal', function () {
             location.reload(true);
         });
     </script>
 @endsection
-

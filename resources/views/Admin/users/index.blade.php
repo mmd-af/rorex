@@ -42,7 +42,8 @@
                 <thead>
                 <tr>
                     <th>Cod Staff</th>
-                    <th>Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Departament</th>
                     <th>Card Number</th>
                     <th>Email</th>
@@ -52,7 +53,8 @@
                 <tfoot>
                 <tr>
                     <th>Cod Staff</th>
-                    <th>Name</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Departament</th>
                     <th>Card Number</th>
                     <th>Email</th>
@@ -76,6 +78,7 @@
                 ajax: "{{ route('admin.users.ajax.getDataTable') }}",
                 columns: [
                     {data: 'cod_staff', name: 'cod_staff'},
+                    {data: 'prenumele_tatalui', name: 'prenumele_tatalui'},
                     {data: 'name', name: 'name'},
                     {data: 'departament', name: 'departament'},
                     {data: 'numar_card', name: 'numar_card'},

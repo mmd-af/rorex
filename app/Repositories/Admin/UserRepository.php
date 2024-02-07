@@ -23,6 +23,7 @@ class UserRepository extends BaseRepository
             ->select([
                 'id',
                 'cod_staff',
+                'prenumele_tatalui',
                 'name',
                 'departament',
                 'numar_card',
