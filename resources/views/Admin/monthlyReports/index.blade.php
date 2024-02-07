@@ -48,7 +48,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalReportBody">
-                    <form>
+                    <form class="form-control px-5">
                         @csrf
                         <label for="date">Select Date:</label>
                         <select id="date" name="date" class="form-control">
@@ -70,26 +70,6 @@
                         </button>
                     </form>
                     <div id="showResult"></div>
-
-
-                    <table class="table table-striped border mt-5">
-                        <thead>
-                        <tr>
-                            <th scope="col">Shift</th>
-                            <th scope="col">Hour</th>
-                            <th scope="col">unit</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Morning</td>
-                            <td>60</td>
-                            <td>@mdo</td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
@@ -106,6 +86,7 @@
                 processing: true,
                 serverSide: true,
                 pageLength: 25,
+                responsive: true,
                 ajax: "{{ route('admin.monthlyReports.ajax.getUserTable') }}",
                 columns: [
                     {data: 'id', name: 'id'},
@@ -177,54 +158,77 @@
                     console.log(response.data);
                     showResult.innerHTML = `
                     <div class="row justify-content-center mt-5">
-                        <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Total Night Hours:</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data.hourNight}</h6></div>
-                        </div>
-                        <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Total Morning Hours:</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data.hourMorning}</h6></div>
-                        </div>
-                        <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Total hourAfternoon Hours:</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data.hourAfternoon}</h6></div>
-                        </div>
-                        <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Total Daily Hours:</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data.hourDaily}</h6></div>
-                        </div>
-                        <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Total Plus Day (Holiday):</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data.hourPlusDay}</h6></div>
-                        </div>
-                        <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Total Plus Night (Holiday):</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data.hourPlusNight}</h6></div>
-                        </div>
-                        <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Total Plus Work (weeks):</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data.plusWork}</h6></div>
-                        </div>
-                        <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Total Daily Absence:</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data.dailyAbsence}</h6></div>
-                        </div>
-                        <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Total Delay Work:</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data.delayWork}</h6></div>
-                        </div>
-                        <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Total Early Exit:</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data.earlyExit}</h6></div>
-                        </div>
-                        <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Total Hours:</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data.totalHours}</h6></div>
-                        </div>
-                        <div class="row border border-3">
-                            <div class="col-sm-6 border"><strong>Unknown:</strong></div>
-                            <div class="col-sm-6 border"><h6>${response.data.hourUnknown}</h6></div>
-                        </div>
+                    <table class="table table-striped border text-center table-responsive p-5">
+                        <thead>
+                        <tr>
+                            <th scope="col">Total</th>
+                            <th scope="col">value</th>
+                            <th scope="col">unit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Night</td>
+                            <td>${response.data.hourNight}</td>
+                            <td>per hour</td>
+                        </tr>
+                        <tr>
+                            <td>Morning</td>
+                            <td>${response.data.hourMorning}</td>
+                            <td>per hour</td>
+                        </tr>
+                        <tr>
+                            <td>Afternoon</td>
+                            <td>${response.data.hourAfternoon}</td>
+                            <td>per hour</td>
+                        </tr>
+                        <tr>
+                            <td>Daily</td>
+                            <td>${response.data.hourDaily}</td>
+                            <td>per hour</td>
+                        </tr>
+                        <tr>
+                            <td>Plus Day (at Holiday)</td>
+                            <td>${response.data.hourPlusDay}</td>
+                            <td>per hour</td>
+                        </tr>
+                        <tr>
+                            <td>Plus Night (at Holiday)</td>
+                            <td>${response.data.hourPlusNight}</td>
+                            <td>per hour</td>
+                        </tr>
+                        <tr>
+                            <td>Plus Work (at weeks)</td>
+                            <td>${response.data.plusWork}</td>
+                            <td>per hour</td>
+                        </tr>
+                        <tr>
+                            <td>Delay Work</td>
+                            <td>${response.data.delayWork}</td>
+                            <td>per hour</td>
+                        </tr>
+                        <tr>
+                            <td>Early Exit</td>
+                            <td>${response.data.earlyExit}</td>
+                            <td>per hour</td>
+                        </tr>
+                        <tr>
+                            <th>Daily Absence</th>
+                            <th>${response.data.dailyAbsence}</th>
+                            <th>per day</th>
+                        </tr>
+                        <tr>
+                            <th>Total working hours</th>
+                            <th>${response.data.totalHours}</th>
+                            <th>per hour</th>
+                        </tr>
+                        <tr>
+                            <th>Unknown</th>
+                            <th>${response.data.hourUnknown}</th>
+                            <th>per hour</th>
+                        </tr>
+                        </tbody>
+                    </table>
                     </div>`;
                 })
                 .catch(function (error) {
