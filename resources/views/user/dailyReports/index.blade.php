@@ -134,7 +134,7 @@
                     {data: 'on_work1', name: 'on_work1'},
                     {data: 'off_work2', name: 'off_work2'},
                     {data: 'remarca', name: 'remarca'},
-                    {"data": "button", "name": "button", "orderable": false, "searchable": false}
+                    {data: 'button', name: 'button', orderable: false, searchable: false}
                 ],
                 initComplete: function () {
                     var table = this;
