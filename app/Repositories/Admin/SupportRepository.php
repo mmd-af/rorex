@@ -3,6 +3,8 @@
 namespace App\Repositories\Admin;
 
 use App\Models\Support\Support;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class SupportRepository extends BaseRepository
@@ -18,24 +20,23 @@ class SupportRepository extends BaseRepository
             ->select([
                 'id',
                 'name',
-                'email',
                 'subject',
-                'description',
                 'organization',
-                'cod_staff',
                 'read_by',
-                'read_at',
-                'created_at',
                 'is_archive'
             ])
+            ->where('is_archive', 0)
+            ->with('reader')
             ->get();
-
         if ($request->ajax()) {
             return Datatables::of($data)
-//                ->addColumn('created_at', function($row){
-//                    $originalDate = Carbon::parse($row->created_at);
-//                    return $originalDate->format('Y-m-d');
-//                })
+                ->addColumn('read_by', function ($row) {
+                    if ($row->reader) {
+                        return $row->reader->name;
+                    } else {
+                        return '-';
+                    }
+                })
                 ->addColumn('button', function ($row) {
                     return '<button onclick="showMessageModal(' . $row->id . ')" type="button"
                                     class="btn btn-info btn-sm" data-bs-toggle="modal"
@@ -43,12 +44,7 @@ class SupportRepository extends BaseRepository
                                 <i class="fa-solid fa-square-arrow-up-right"></i>
                             </button>';
                 })
-                ->rawColumns(['button'])
-//                ->rawColumns(['button'])
-//                ->addColumn('p_name', function ($plane) {
-//                    return implode(', ', $plane->presidents->pluck('P_name')->toArray());
-//                })
-//                ->rawColumns(['p_name'])
+                ->rawColumns(['read_by', 'button'])
                 ->make(true);
         }
         return false;
@@ -56,7 +52,8 @@ class SupportRepository extends BaseRepository
 
     public function storeReaded($request)
     {
-        return $this->query()
+        $userId = Auth::id();
+        $message = $this->query()
             ->select([
                 'id',
                 'name',
@@ -74,6 +71,11 @@ class SupportRepository extends BaseRepository
             ])
             ->where('id', $request->id)
             ->first();
+
+        $message->read_at = Carbon::now();
+        $message->read_by = $userId;
+        $message->save();
+        return $message;
 
     }
 }
