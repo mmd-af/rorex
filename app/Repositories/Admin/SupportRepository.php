@@ -78,4 +78,14 @@ class SupportRepository extends BaseRepository
         return $message;
 
     }
+
+    public function archiveMessage($request)
+    {
+        $message = $this->query()
+            ->select('id')
+            ->where('id', $request->support_id)
+            ->first();
+        $message->is_archive = 1;
+        $message->save();
+    }
 }

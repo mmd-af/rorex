@@ -70,7 +70,14 @@
 
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
-                        <button type="submit" class="btn btn-danger">Archive</button>
+                        <form action="{{ route('admin.supports.archiveMessage') }}" method="post">
+                            @csrf
+                            @method('put')
+                            <input type="hidden" name="support_id" id="support_id" value="">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">
+                                Archive
+                            </button>
+                        </form>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -123,6 +130,8 @@
 
         function showMessageModal(id) {
             $('#messgeRequest').modal('show');
+            let support_id = document.getElementById('support_id');
+            support_id.value = id;
             let config = {
                 id: id
             }
