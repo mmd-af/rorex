@@ -18,11 +18,13 @@ class SupportRepository extends BaseRepository
         $data = $this->query()
             ->select([
                 'id',
+                'name',
                 'email',
                 'subject',
                 'description',
                 'organization',
                 'cod_staff',
+                'read_by',
                 'read_at',
                 'created_at',
                 'is_archive'
@@ -31,11 +33,19 @@ class SupportRepository extends BaseRepository
 
         if ($request->ajax()) {
             return Datatables::of($data)
-                ->addColumn('created_at', function($row){
-                    $originalDate = Carbon::parse($row->created_at);
-                    return $originalDate->format('Y-m-d');
+//                ->addColumn('created_at', function($row){
+//                    $originalDate = Carbon::parse($row->created_at);
+//                    return $originalDate->format('Y-m-d');
+//                })
+                ->addColumn('button', function ($row) {
+                    return '<button class="btn btn-info btn-sm" onclick="showMessageModal(' . $row->id . ')"><i class="fa-solid fa-newspaper"></i></button>';
                 })
-                ->rawColumns(['description', 'action'])
+                ->rawColumns(['button'])
+//                ->rawColumns(['button'])
+//                ->addColumn('p_name', function ($plane) {
+//                    return implode(', ', $plane->presidents->pluck('P_name')->toArray());
+//                })
+//                ->rawColumns(['p_name'])
                 ->make(true);
         }
         return false;

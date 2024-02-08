@@ -1,7 +1,7 @@
 @extends('admin.layouts.index')
 
 @section('title')
-    Users
+    Support
 @endsection
 @section('style')
 
@@ -17,21 +17,21 @@
                 <thead>
                 <tr>
                     <th>Tracking Number</th>
+                    <th>Name</th>
                     <th>Subject</th>
-                    <th>Description</th>
-                    <th>Card organization</th>
-                    <th>Date of Request</th>
-                    <th>Read At</th>
+                    <th>organization</th>
+                    <th>Read By</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
                     <th>Tracking Number</th>
+                    <th>Name</th>
                     <th>Subject</th>
-                    <th>Description</th>
                     <th>organization</th>
-                    <th>Date of Request</th>
-                    <th>Read At</th>
+                    <th>Read By</th>
+                    <th>Action</th>
                 </tr>
                 </tfoot>
                 <body>
@@ -51,11 +51,11 @@
                 ajax: "{{ route('admin.supports.ajax.getDataTable') }}",
                 columns: [
                     {data: 'id', name: 'id', width: '10%'},
+                    {data: 'name', name: 'subject'},
                     {data: 'subject', name: 'subject'},
-                    {data: 'description', name: 'description'},
                     {data: 'organization', name: 'organization', width: '10%'},
-                    {data: 'created_at', name: 'created_at', width: '10%'},
-                    {data: 'read_at', name: 'read_at', width: '10%'}
+                    {data: 'read_by', name: 'read_by', width: '10%'},
+                    {data: 'button', name: 'button', orderable: false, searchable: false, width: '10%'}
                 ],
                 initComplete: function () {
                     var table = this;
@@ -79,6 +79,10 @@
                 }
             });
         });
+
+        function showMessageModal(id) {
+            alert(id)
+        }
     </script>
 @endsection
 
