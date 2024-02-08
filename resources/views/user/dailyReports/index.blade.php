@@ -3,39 +3,22 @@
 @section('title')
     Daily Reports
 @endsection
+@section('style')
+    <style>
 
+    </style>
+@endsection
 @section('content')
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">Daily Reports</li>
     </ol>
+    @include('user.layouts.partial.errors')
     <div class="card mb-4">
-        @include('user.layouts.partial.errors')
-        <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            <form action="{{ route('user.dailyReports.filter') }}" method="post">
-                @csrf
-                <div class="row p-3 m-3">
-                    <div class="col-sm-12 col-lg-6">
-                        <label for="start_date" class="px-4">Start Date:</label>
-                        <input type="date" name="start_date" id="start_date" class="form-control form-control-sm"
-                               value="{{old('start-date')}}">
-                    </div>
-                    <div class="col-sm-12 col-lg-6">
-
-                        <label for="end_date" class="px-4">End Date:</label>
-                        <input type="date" name="end_date" id="end_date" class="form-control form-control-sm"
-                               value="{{old('end_date')}}">
-                    </div>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-info btn-sm">Apply filter</button>
-                </div>
-            </form>
-        </div>
         <div class="card-body">
-            <table id="datatablesSimple1" class="table table-bordered table-striped text-center">
+            <table id="dailyReportTable" class="table table-bordered table-striped text-center">
                 <thead>
                 <tr>
+                    <th>cod_staff</th>
                     <th>Name</th>
                     <th>Date</th>
                     <th>Weeks</th>
@@ -43,11 +26,12 @@
                     <th>on_work1</th>
                     <th>off_work2</th>
                     <th>remarca</th>
-                    <th>action</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
+                    <th>cod_staff</th>
                     <th>Name</th>
                     <th>Date</th>
                     <th>Weeks</th>
@@ -55,34 +39,12 @@
                     <th>on_work1</th>
                     <th>off_work2</th>
                     <th>remarca</th>
-                    <th>action</th>
+                    <th>Action</th>
                 </tr>
                 </tfoot>
-                <tbody>
-                @foreach($dailyReports as $dailyReport)
-                    <tr>
-                        <td>{{$dailyReport->nume}}</td>
-                        <td>{{$dailyReport->data}}</td>
-                        <td>{{$dailyReport->saptamana}}</td>
-                        <td>{{$dailyReport->nume_schimb}}</td>
-                        <td @if(empty($dailyReport->on_work1)) class="bg-danger" @endif>{{$dailyReport->on_work1}}</td>
-                        <td @if(empty($dailyReport->off_work2)) class="bg-danger" @endif>{{$dailyReport->off_work2}}</td>
-                        <td @if(isset($dailyReport->remarca)) class="bg-warning" @endif>{{$dailyReport->remarca}}</td>
-                        <td>
-                            {{--                            <i class="fas fa-angle-down"></i>--}}
-                            <button onclick="requestForm({{$dailyReport->id}})" type="button"
-                                    class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#forgetRequest">
-                                <i class="fa-solid fa-square-arrow-up-right"></i>
-                            </button>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-                {{ $dailyReports->links() }}
+                <body>
+                </body>
             </table>
-            {{ $dailyReports->links() }}
-
         </div>
     </div>
     <div class="modal fade" id="forgetRequest" tabindex="-1" aria-labelledby="forgetRequestLabel"
@@ -152,10 +114,55 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @section('script')
     <script>
+        $(document).ready(function () {
+            $('#dailyReportTable').DataTable({
+                processing: true,
+                serverSide: true,
+                pageLength: 25,
+                ajax: "{{ route('user.dailyReports.ajax.getDataTable') }}",
+                columns: [
+                    {data: 'cod_staff', name: 'cod_staff'},
+                    {data: 'nume', name: 'nume'},
+                    {data: 'data', name: 'data'},
+                    {data: 'saptamana', name: 'saptamana'},
+                    {data: 'nume_schimb', name: 'nume_schimb'},
+                    {data: 'on_work1', name: 'on_work1'},
+                    {data: 'off_work2', name: 'off_work2'},
+                    {data: 'remarca', name: 'remarca'},
+                    {"data": "button", "name": "button", "orderable": false, "searchable": false}
+                ],
+                initComplete: function () {
+                    var table = this;
+
+                    this.api().columns().every(function () {
+                        var column = this;
+                        var header = $(column.header());
+
+                        var filterRow = header.closest('thead').find('.filter-row');
+
+                        if (!filterRow.length) {
+                            filterRow = $('<tr class="filter-row"></tr>').appendTo(header.closest('thead'));
+                        }
+
+                        var input = $('<input type="text" class="form-control form-control-sm" placeholder="Search...">')
+                            .appendTo($('<th></th>').appendTo(filterRow))
+                            .on('keyup change', function () {
+                                if (column.search() !== this.value) {
+                                    column
+                                        .search(this.value)
+                                        .draw();
+                                }
+                            });
+                    });
+                }
+            });
+        });
+
         function requestForm(id) {
             let alert = document.getElementById('alert');
             let name = document.getElementById('name');
@@ -183,3 +190,4 @@
         }
     </script>
 @endsection
+

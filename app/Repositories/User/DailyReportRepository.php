@@ -6,6 +6,7 @@ use App\Models\DailyReport\DailyReport;
 use App\Models\Support\Support;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class DailyReportRepository extends BaseRepository
 {
@@ -14,10 +15,30 @@ class DailyReportRepository extends BaseRepository
         $this->setModel($model);
     }
 
-    public function getOwnReport()
+//    public function getOwnReport()
+//    {
+//        $userId = Auth::id();
+//        return $this->query()
+//            ->select([
+//                'id',
+//                'cod_staff',
+//                'nume',
+//                'data',
+//                'saptamana',
+//                'nume_schimb',
+//                'on_work1',
+//                'off_work2',
+//                'remarca'
+//            ])
+//            ->where('cod_staff', $userId)
+//            ->orderBy('data', 'DESC')
+//            ->paginate(10);
+//    }
+
+    public function getDataTable($request)
     {
         $userId = Auth::id();
-        return $this->query()
+        $data = $this->query()
             ->select([
                 'id',
                 'cod_staff',
@@ -30,36 +51,22 @@ class DailyReportRepository extends BaseRepository
                 'remarca'
             ])
             ->where('cod_staff', $userId)
-            ->orderBy('data', 'DESC')
-            ->paginate(10);
+            ->get();
+        if ($request->ajax()) {
+            return Datatables::of($data)
+                ->addColumn('button', function ($row) {
+                    return '<button onclick="requestForm(' . $row->id . ')" type="button"
+                                    class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#forgetRequest">
+                                <i class="fa-solid fa-square-arrow-up-right"></i>
+                            </button>';
+                })
+                ->rawColumns(['button'])
+                ->make(true);
+        }
+        return false;
     }
 
-    public function getOwnReportFiltered($request)
-    {
-        $startDate = Carbon::parse($request->start_date);
-        $endDate = Carbon::parse($request->end_date);
-        $userId = Auth::id();
-        return $this->query()
-            ->select([
-                'id',
-                'cod_staff',
-                'nume',
-                'data',
-                'saptamana',
-                'nume_schimb',
-                'on_work1',
-                'off_work1',
-                'on_work2',
-                'off_work2',
-                'on_work3',
-                'off_work3',
-                'remarca'
-            ])
-            ->where('cod_staff', $userId)
-            ->whereBetween('data', [$startDate, $endDate])
-            ->orderBy('data', 'DESC')
-            ->paginate(10);
-    }
 
     public function getData($request)
     {
