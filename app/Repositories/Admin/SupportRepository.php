@@ -3,7 +3,6 @@
 namespace App\Repositories\Admin;
 
 use App\Models\Support\Support;
-use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 
 class SupportRepository extends BaseRepository
@@ -38,7 +37,11 @@ class SupportRepository extends BaseRepository
 //                    return $originalDate->format('Y-m-d');
 //                })
                 ->addColumn('button', function ($row) {
-                    return '<button class="btn btn-info btn-sm" onclick="showMessageModal(' . $row->id . ')"><i class="fa-solid fa-newspaper"></i></button>';
+                    return '<button onclick="showMessageModal(' . $row->id . ')" type="button"
+                                    class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#forgetRequest">
+                                <i class="fa-solid fa-square-arrow-up-right"></i>
+                            </button>';
                 })
                 ->rawColumns(['button'])
 //                ->rawColumns(['button'])
@@ -49,5 +52,28 @@ class SupportRepository extends BaseRepository
                 ->make(true);
         }
         return false;
+    }
+
+    public function storeReaded($request)
+    {
+        return $this->query()
+            ->select([
+                'id',
+                'name',
+                'cod_staff',
+                'email',
+                'mobile_phone',
+                'subject',
+                'description',
+                'organization',
+                'cod_staff',
+                'read_by',
+                'read_at',
+                'created_at',
+                'is_archive'
+            ])
+            ->where('id', $request->id)
+            ->first();
+
     }
 }

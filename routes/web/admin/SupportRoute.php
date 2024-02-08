@@ -15,6 +15,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'getDataTable',
                 'uses' => 'SupportAjaxController@getDataTable'
             ]);
+            Route::post('/storeReaded', [
+                'as' => 'storeReaded',
+                'uses' => 'SupportAjaxController@storeReaded'
+            ]);
         });
     });
 });
