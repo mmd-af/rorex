@@ -11,12 +11,6 @@
         <li class="breadcrumb-item active">Support</li>
     </ol>
     @include('admin.layouts.partial.errors')
-    <div class="d-flex justify-content-between">
-        <div></div>
-        <div>
-            <a class="btn btn-outline-warning btn-sm text-warning" href="{{route('admin.supports.archived')}}">Archive Message</a>
-        </div>
-    </div>
     <div class="card mb-4">
         <div class="card-body">
             <table id="supportTable" class="table table-bordered table-striped text-center">
@@ -76,12 +70,12 @@
 
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
-                        <form action="{{ route('admin.supports.archiveMessage') }}" method="post">
+                        <form action="{{ route('admin.supports.reArchiveMessage') }}" method="post">
                             @csrf
                             @method('put')
                             <input type="hidden" name="support_id" id="support_id" value="">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">
-                                Archive
+                            <button type="submit" class="btn btn-info" onclick="return confirm('Are you sure?')">
+                               ReStore
                             </button>
                         </form>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -99,7 +93,7 @@
                 processing: true,
                 serverSide: true,
                 pageLength: 25,
-                ajax: "{{ route('admin.supports.ajax.getDataTable') }}",
+                ajax: "{{ route('admin.supports.ajax.getArchiveDataTable') }}",
                 columns: [
                     {data: 'id', name: 'id', width: '10%'},
                     {data: 'name', name: 'subject'},
@@ -141,7 +135,7 @@
             let config = {
                 id: id
             }
-            axios.post('{{ route('admin.supports.ajax.show') }}', config)
+            axios.post('{{ route('admin.supports.ajax.archivedShow') }}', config)
                 .then(function (response) {
                     alert.innerHTML = ``;
                     const dateString = response.data.created_at;

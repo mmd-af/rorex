@@ -20,9 +20,20 @@ class SupportController extends Controller
         return view('admin.supports.index');
     }
 
+    public function archived()
+    {
+        return view('admin.supports.archived');
+    }
+
     public function archiveMessage(Request $request)
     {
         $this->supportRepository->archiveMessage($request);
-        return view('admin.supports.index');
+        return redirect()->route('admin.supports.index');
+    }
+
+    public function reArchiveMessage(Request $request)
+    {
+        $this->supportRepository->reArchiveMessage($request);
+        return redirect()->route('admin.supports.archived');
     }
 }

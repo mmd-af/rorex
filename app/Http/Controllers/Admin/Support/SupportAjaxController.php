@@ -19,9 +19,18 @@ class SupportAjaxController extends Controller
     {
         return $this->supportRepository->getDataTable($request);
     }
-
-    public function storeReaded(Request $request)
+    public function getArchiveDataTable(Request $request)
     {
-        return $this->supportRepository->storeReaded($request);
+        return $this->supportRepository->getArchiveDataTable($request);
+    }
+
+    public function show(Request $request)
+    {
+        return $this->supportRepository->show($request);
+    }
+
+    public function archivedShow(Request $request)
+    {
+        return $this->supportRepository->archivedShow($request);
     }
 }

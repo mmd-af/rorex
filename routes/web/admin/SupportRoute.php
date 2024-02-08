@@ -9,9 +9,17 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'index',
                 'uses' => 'SupportController@index'
             ]);
+            Route::get('/archived', [
+                'as' => 'archived',
+                'uses' => 'SupportController@archived'
+            ]);
             Route::put('/archiveMessage', [
                 'as' => 'archiveMessage',
                 'uses' => 'SupportController@archiveMessage'
+            ]);
+            Route::put('/reArchiveMessage', [
+                'as' => 'reArchiveMessage',
+                'uses' => 'SupportController@reArchiveMessage'
             ]);
         });
         Route::group(['prefix' => 'supports-ajax', 'as' => 'supports.ajax.'], function () {
@@ -19,9 +27,17 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'getDataTable',
                 'uses' => 'SupportAjaxController@getDataTable'
             ]);
-            Route::post('/storeReaded', [
-                'as' => 'storeReaded',
-                'uses' => 'SupportAjaxController@storeReaded'
+            Route::get('/getArchiveDataTable', [
+                'as' => 'getArchiveDataTable',
+                'uses' => 'SupportAjaxController@getArchiveDataTable'
+            ]);
+            Route::post('/show', [
+                'as' => 'show',
+                'uses' => 'SupportAjaxController@show'
+            ]);
+            Route::post('/archivedShow', [
+                'as' => 'archivedShow',
+                'uses' => 'SupportAjaxController@archivedShow'
             ]);
         });
     });
