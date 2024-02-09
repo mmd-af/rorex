@@ -19,6 +19,9 @@
                aria-expanded="false">{{ Auth::user()->name }} ({{Auth::user()->cod_staff}})<i class="fas fa-user fa-fw"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{{route('profile.edit')}}">Profile</a></li>
+                @if (Auth::check() && Auth::user()->rolles == 'admin')
+                  <li><a class="dropdown-item" href="{{route('admin.dashboard.index')}}">Admin Panel</a></li>
+                @endif
                 <li>
                     <hr class="dropdown-divider"/>
                 </li>
