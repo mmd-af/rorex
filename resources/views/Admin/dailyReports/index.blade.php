@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="card mb-4">
-        <div class="card-body">
+        <div class="card-body table-responsive">
             <table id="dailyReportTable" class="table table-bordered table-striped text-center">
                 <thead>
                 <tr>

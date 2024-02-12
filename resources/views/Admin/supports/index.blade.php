@@ -148,8 +148,8 @@
                     const date = new Date(dateString);
                     const formattedDate = date.toISOString().split('T')[0];
                     showMessage.innerHTML = `
-                        <table class="table table-striped table-responsive-sm table-responsive">
-
+<div class="table-responsive">
+                        <table class="table table-striped">
                             <th>Tracking</th>
                             <th>Name</th>
                             <th>Code Staff</th>
@@ -157,7 +157,6 @@
                             <th>Mobile Phone</th>
                             <th>Organization</th>
                             <th>Date Of Request</th>
-
                             <tr>
                                 <td>${response.data.id}</td>
                                 <td>${response.data.name}</td>
@@ -167,16 +166,14 @@
                                 <td>${response.data.organization}</td>
                                 <td>${formattedDate}</td>
                             </tr>
-
                         </table>
                         <div class="p-5 m-3">
                             <h3>${response.data.subject}</h3>
                             <p>
                                ${response.data.description}
-
                             </p>
                         </div>
-                    `;
+</div>`;
                 })
                 .catch(function (error) {
                     console.error(error);
