@@ -9,6 +9,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'index',
                 'uses' => 'SupportController@index'
             ]);
+            Route::post('/store', [
+                'as' => 'store',
+                'uses' => 'SupportController@store'
+            ]);
         });
         Route::group(['prefix' => 'supports-ajax', 'as' => 'supports.ajax.'], function () {
             Route::get('/getDataTable', [

@@ -15,26 +15,6 @@ class DailyReportRepository extends BaseRepository
         $this->setModel($model);
     }
 
-//    public function getOwnReport()
-//    {
-//        $userId = Auth::id();
-//        return $this->query()
-//            ->select([
-//                'id',
-//                'cod_staff',
-//                'nume',
-//                'data',
-//                'saptamana',
-//                'nume_schimb',
-//                'on_work1',
-//                'off_work2',
-//                'remarca'
-//            ])
-//            ->where('cod_staff', $userId)
-//            ->orderBy('data', 'DESC')
-//            ->paginate(10);
-//    }
-
     public function getDataTable($request)
     {
         $userId = Auth::id();
