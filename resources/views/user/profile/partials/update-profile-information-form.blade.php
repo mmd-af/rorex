@@ -13,17 +13,33 @@
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 col-md-6">
         @csrf
         @method('patch')
-        <div>
-            <label for="name">{{__('Name')}}</div>
-        <input id="name" name="name" type="text" class="form-control" value="{{old('name', $user->name)}}" required
-               autofocus autocomplete="name"/>
+        <div class="mt-3">
+            <label for="prenumele_tatalui">First Name</label>
+            <input id="prenumele_tatalui" name="prenumele_tatalui" type="text" class="form-control"
+                   value="{{old('prenumele_tatalui', $user->prenumele_tatalui)}}"
+                   required
+                   autofocus autocomplete="prenumele_tatalui" disabled/>
+        </div>
+        <div class="mt-3">
+            <label for="name">Last Name</label>
+            <input id="name" type="text" class="form-control" value="{{old('name', $user->name)}}"
+                   required
+                   autofocus autocomplete="name" disabled/>
+            <input type="hidden" name="name" value="{{old('name', $user->name)}}">
+        </div>
         @if($errors->has('name'))
             <p class="mt-2 text-danger"> {{$errors->first('name')}}</p>
         @endif
-        <div>
+        <div class="mt-3">
             <label for="email">{{__('Email')}}</label>
-            <input id="email" name="email" type="email" class="form-control"
-                   value="{{old('email', $user->email)}}" required autocomplete="username"/>
+            @if(empty($user->email))
+                <input id="email" name="email" type="email" class="form-control"
+                       value="{{old('email', $user->email)}}" required autocomplete="email"/>
+            @else
+                <input id="email" type="email" class="form-control"
+                       value="{{old('email', $user->email)}}" required autocomplete="email" disabled/>
+                <input type="hidden" name="email" value="{{old('email', $user->email)}}"/>
+            @endif
             @if($errors->has('email'))
                 <p class="mt-2 text-danger"> {{$errors->first('email')}}</p>
             @endif
