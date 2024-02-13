@@ -92,7 +92,7 @@ class DailyReportRepository extends BaseRepository
                 DB::table('daily_reports')->updateOrInsert($condition, $data);
             }
             DB::commit();
-            Session::flash('message', 'The update operation was completed Successfully');
+            Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {
             DB::rollBack();
             Session::flash('error', $e->getMessage());

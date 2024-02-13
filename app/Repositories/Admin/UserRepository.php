@@ -92,8 +92,8 @@ class UserRepository extends BaseRepository
                     'profesie' => $item[23],
                     'data_plecarii' => $dataPlecarii,
                     'prenumele_tatalui' => $item[25],
-                    'adresa' => $item[26],
-                    'email' => $item[12]
+                    'adresa' => $item[26]
+//                    'email' => $item[12]
                 ];
 
                 $condition = [
@@ -102,7 +102,7 @@ class UserRepository extends BaseRepository
                 DB::table('users')->updateOrInsert($condition, $data);
             }
             DB::commit();
-            Session::flash('message', 'The update operation was completed Successfully');
+            Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {
             DB::rollBack();
             Session::flash('error', $e->getMessage());
