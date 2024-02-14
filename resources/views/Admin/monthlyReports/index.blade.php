@@ -205,12 +205,12 @@
                         <tr>
                             <td>Delay Work</td>
                             <td>${response.data.delayWork}</td>
-                            <td>per hour</td>
+                            <td>per Minute</td>
                         </tr>
                         <tr>
                             <td>Early Exit</td>
                             <td>${response.data.earlyExit}</td>
-                            <td>per hour</td>
+                            <td>per Minute</td>
                         </tr>
                         <tr>
                             <th>Daily Absence</th>
