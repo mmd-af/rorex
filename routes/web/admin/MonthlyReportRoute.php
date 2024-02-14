@@ -9,6 +9,11 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'index',
                 'uses' => 'MonthlyReportController@index'
             ]);
+            Route::post('/fullExport', [
+                'as' => 'fullExport',
+                'uses' => 'MonthlyReportController@fullExport'
+            ]);
+
         });
         Route::group(['prefix' => 'monthlyReports-ajax', 'as' => 'monthlyReports.ajax.'], function () {
             Route::get('/getUserTable', [

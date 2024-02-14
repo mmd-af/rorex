@@ -13,6 +13,15 @@
         <li class="breadcrumb-item active">Monthly Reports</li>
     </ol>
     @include('admin.layouts.partial.errors')
+    <div class="d-flex justify-content-between">
+        <div></div>
+        <div>
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
+                    data-bs-target="#fullExport">
+                <i class="fa-solid fa-file-csv fa-xl"></i>
+            </button>
+        </div>
+    </div>
     <div class="card mb-4">
         <div class="card-body table-responsive">
             <table id="monthlyReportTable" class="table table-bordered table-striped text-center">
@@ -77,6 +86,43 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="fullExport" tabindex="-1" aria-labelledby="fullExport"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="fullExport">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{route('admin.monthlyReports.fullExport')}}" class="form-control px-5" method="post">
+                        @csrf
+                        <label for="dateOfExport">Select Date:</label>
+                        <select id="dateOfExport" name="dateOfExport" class="form-control">
+                            <?php
+                            $currentMonth = date('n');
+                            $currentYear = date('Y');
+                            for ($i = 0; $i <= 12; $i++) {
+                                $monthValue = ($currentMonth - $i + 12) % 12 + 1;
+                                $yearValue = $currentYear + floor(($currentMonth - $i) / 12);
+                                $formattedMonth = sprintf('%02d', $monthValue);
+                                $dateOutput = "$yearValue-$formattedMonth";
+                                $monthName = date("F", mktime(0, 0, 0, $monthValue, 1, $yearValue));
+                                echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
+                            }
+                            ?>
+                        </select>
+                        <button type="submit" class="btn btn-primary mt-3">Export
+                        </button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('script')
