@@ -5,8 +5,9 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
 
-class MonthlyReportExport implements FromArray, WithHeadings
+class MonthlyReportExport implements FromArray, WithHeadings, WithStyles
 {
     protected $data;
 
@@ -22,7 +23,6 @@ class MonthlyReportExport implements FromArray, WithHeadings
 
     public function headings(): array
     {
-        // Define the column headings
         return [
             'Code Staff',
             'Name',
@@ -33,13 +33,18 @@ class MonthlyReportExport implements FromArray, WithHeadings
             'Plus Day (Hour)',
             'Plus Night (Hour)',
             'Plus Work (Hour)',
-            'Daily Absence (Day)',
             'Delay Work (Minute)',
             'Early Exit (Minute)',
+            'Daily Absence (Day)',
+            'Total (Hours)',
             'Unknown',
-            'Total Hours'
+            'Default Shift (Hour)',
+            'forgotPunch'
         ];
+    }
 
-
+    public function styles(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet)
+    {
+        $sheet->getStyle('A1:Z1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB('D7D7D7');
     }
 }
