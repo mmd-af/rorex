@@ -273,6 +273,16 @@
                             <th>${response.data.hourUnknown}</th>
                             <th>per hour</th>
                         </tr>
+                        <tr>
+                            <th>Default Shift</th>
+                            <th>${response.data.turaImplicita}</th>
+                            <th>per hour</th>
+                        </tr>
+                        <tr>
+                            <th>Forgot Punch</th>
+                            <th>${response.data.forgotPunch}</th>
+                            <th>pcs</th>
+                        </tr>
                         </tbody>
                     </table>
                     </div>`;

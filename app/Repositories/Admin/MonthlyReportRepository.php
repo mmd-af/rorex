@@ -43,7 +43,8 @@ class MonthlyReportRepository extends BaseRepository
                 'munca_ore',
                 'ot_ore',
                 'tarziu_minute',
-                'devreme_minute'
+                'devreme_minute',
+                'lipsa_ceas_timpi'
             ])
             ->where('data', 'LIKE', "$request->date%")
             ->where('cod_staff', $request->cod_staff)
@@ -60,6 +61,8 @@ class MonthlyReportRepository extends BaseRepository
         $dailyAbsence = 0;
         $delayWork = 0;
         $earlyExit = 0;
+        $turaImplicita = 0;
+        $lipsaCeasTimpi = 0;
         foreach ($dailyReports as $dailyReport) {
             if ($dailyReport->nume_schimb == 'Night') {
                 $hourNight += $dailyReport->munca_ore;
@@ -73,8 +76,13 @@ class MonthlyReportRepository extends BaseRepository
                 $hourPlusDay += $dailyReport->munca_ore;
             } elseif ($dailyReport->nume_schimb == 'Plus-Night') {
                 $hourPlusNight += $dailyReport->munca_ore;
+            } elseif ($dailyReport->nume_schimb == 'Tura implicita') {
+                $turaImplicita += $dailyReport->munca_ore;
             } else {
                 $hourUnknown += $dailyReport->munca_ore;
+            }
+            if (!is_null($dailyReport->lipsa_ceas_timpi)) {
+                $lipsaCeasTimpi += $dailyReport->lipsa_ceas_timpi;
             }
             $plusWork += $dailyReport->ot_ore;
             $dailyAbsence += $dailyReport->absenta_zile;
@@ -86,15 +94,17 @@ class MonthlyReportRepository extends BaseRepository
             'hourNight' => $hourNight,
             'hourMorning' => $hourMorning,
             'hourAfternoon' => $hourAfternoon,
-            'hourDaily' => $hourDaily,
+            'hourDaily' => floor($hourDaily),
             'hourPlusDay' => $hourPlusDay,
             'hourPlusNight' => $hourPlusNight,
             'plusWork' => $plusWork,
-            'dailyAbsence' => $dailyAbsence,
+            'dailyAbsence' => floor($dailyAbsence),
             'delayWork' => $delayWork,
             'earlyExit' => $earlyExit,
+            'turaImplicita' => $turaImplicita,
             'hourUnknown' => $hourUnknown,
-            'totalHours' => $totalHours,
+            'forgotPunch' => $lipsaCeasTimpi,
+            'totalHours' => floor($totalHours)
         ];
         return $result;
     }
@@ -154,7 +164,7 @@ class MonthlyReportRepository extends BaseRepository
                 $dailyAbsence += $dailyReport->absenta_zile;
                 $delayWork += $dailyReport->tarziu_minute;
                 $earlyExit += $dailyReport->devreme_minute;
-                $userName = $dailyReport->users->name." ".$dailyReport->users->prenumele_tatalui;
+                $userName = $dailyReport->users->name . " " . $dailyReport->users->prenumele_tatalui;
             }
             $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily + $hourPlusDay + $hourPlusNight;
             $data[] = [
