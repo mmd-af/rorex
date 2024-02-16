@@ -17,6 +17,7 @@
                  data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="{{route('user.dailyReports.index')}}">Daily</a>
+                    <a class="nav-link" href="{{route('user.monthlyReports.index')}}">Monthly</a>
                 </nav>
             </div>
 
