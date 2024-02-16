@@ -22,9 +22,9 @@
             </div>
 
             <div class="sb-sidenav-menu-heading">Requests</div>
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{route('user.staffRequests.index')}}">
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                Leave request
+                Requests
             </a>
             <a class="nav-link" href="{{route('user.supports.index')}}">
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>

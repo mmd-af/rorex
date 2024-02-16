@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User\DailyReport;
+namespace App\Http\Requests\User\StaffRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SupportRequest extends FormRequest
+class StaffRequestRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
