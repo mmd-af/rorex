@@ -122,7 +122,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('script')
@@ -201,21 +200,36 @@
             }
             axios.post('{{route('admin.monthlyReports.ajax.monthlyReportWithDate')}}', formData)
                 .then(function (response) {
-                    console.log(response.data);
+                    let codeStaff = response.data.codeStaff;
+                    let monthDate = response.data.monthDate;
+                    let url = "{{route('admin.monthlyReports.userMonthlyReportExport')}}"
                     showResult.innerHTML = `
-                    <div class="row justify-content-center mt-5">
-                    <table class="table table-striped border text-center table-responsive p-5">
-                        <thead>
-                        <tr>
-                            <th scope="col">Total</th>
-                            <th scope="col">value</th>
-                            <th scope="col">unit</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Night</td>
-                            <td>${response.data.hourNight}</td>
+            <div class="row justify-content-between">
+               <div class="col"></div>
+                   <div class="col">
+                        <form method="POST" action="${url}">
+                             @csrf
+                            <input type="hidden" name="cod_staff" value="${codeStaff}">
+                            <input type="hidden" name="date" value="${monthDate}">
+                             <button type="submit" class="btn btn-outline-success float-end">
+                                <i class="fa-solid fa-file-csv fa-xl"></i>
+                            </button>
+                        </form>
+                </div>
+                </div>
+                 <div class="row justify-content-center mt-5">
+                                    <table class="table table-striped border text-center table-responsive p-5">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Total</th>
+                                            <th scope="col">value</th>
+                                            <th scope="col">unit</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>Night</td>
+                                            <td>${response.data.hourNight}</td>
                             <td>per hour</td>
                         </tr>
                         <tr>

@@ -23,6 +23,10 @@ class MonthlyReportController extends Controller
     public function fullExport(Request $request)
     {
         return $this->monthlyReportRepository->fullExport($request);
-//        return redirect()->route('admin.monthlyReports.index');
+    }
+
+    public function userMonthlyReportExport(Request $request)
+    {
+        return $this->monthlyReportRepository->userMonthlyReportExport($request);
     }
 }
