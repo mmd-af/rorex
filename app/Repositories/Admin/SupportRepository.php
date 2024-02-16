@@ -108,11 +108,12 @@ class SupportRepository extends BaseRepository
             ->where('id', $request->id)
             ->first();
 
-        $message->read_at = Carbon::now();
+        if (is_null($message->read_at)) {
+            $message->read_at = Carbon::now();
+        }
         $message->read_by = $userId;
         $message->save();
         return $message;
-
     }
 
     public function archivedShow($request)

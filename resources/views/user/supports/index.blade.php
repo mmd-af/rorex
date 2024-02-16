@@ -29,7 +29,7 @@
                     <th>Tracking Number</th>
                     <th>Subject</th>
                     <th>Description</th>
-                    <th>Card organization</th>
+                    <th>Organization</th>
                     <th>Date of Request</th>
                     <th>Read At</th>
                 </tr>
@@ -39,7 +39,7 @@
                     <th>Tracking Number</th>
                     <th>Subject</th>
                     <th>Description</th>
-                    <th>organization</th>
+                    <th>Organization</th>
                     <th>Date of Request</th>
                     <th>Read At</th>
                 </tr>
@@ -62,7 +62,12 @@
                         @csrf
                         <div class="mb-3">
                             <label for="cod_staff" class="col-form-label">Code Staff:</label>
-                            <input type="text" class="form-control" name="cod_staff" id="cod_staff" value="">
+                            @if(empty(Auth::user()->cod_staff))
+                                <input type="text" class="form-control" name="cod_staff" id="cod_staff" value="">
+                            @else
+                                <p class="text-primary">{{Auth::user()->cod_staff}}</p>
+                                <input type="hidden" name="cod_staff" value="{{Auth::user()->cod_staff}}">
+                            @endif
                         </div>
                         <div class="mb-3">
                             <label for="name" class="col-form-label">Name:</label>
