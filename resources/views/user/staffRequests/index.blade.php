@@ -121,7 +121,7 @@
                             @endif
                         </div>
                         <div class="mb-3">
-                            <label for="organization" class="col-form-label">Organization:</label>
+                            <label for="organization" class="col-form-label">will be sent:</label>
                             <select class="form-control" name="organization" id="organization">
                                 <option value="accounting">Mr. Sorell</option>
                             </select>
