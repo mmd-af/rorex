@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
-use function Laravel\Prompts\select;
 
 class RoleRepository extends BaseRepository
 {
@@ -84,6 +83,15 @@ class RoleRepository extends BaseRepository
         return response()->json($responseData);
 
 
+    }
+
+    public function update($request, $role)
+    {
+        $role->name = $request->name;
+        $role->save();
+        $permissions = $request->except('_token', 'guard_name', 'name', '_method');
+        $role->syncPermissions($permissions);
+        Session::flash('message', 'The Operation was Completed Successfully');
     }
 
     public function destroy($request)

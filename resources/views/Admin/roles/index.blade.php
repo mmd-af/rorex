@@ -86,10 +86,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="myForm" action="{{ route('admin.roles.update', ['role' => 'ROLE_ID']) }}" method="post">
+                    <form id="editForm" action="" method="post">
                         @csrf
                         @method('PUT')
-                        <input type="hidden" name="id" id="roleId">
                         <div class="form-input">
                             <label for="name">Name:</label>
                             <input type="text" class="form-control" name="name" id="name_edit" value="">
@@ -170,28 +169,26 @@
         function show(id) {
             let name_edit = document.getElementById('name_edit');
             let permissions_edit = document.getElementById('permissions_edit');
-            document.getElementById('roleId').value = id;
+            let editForm = document.getElementById("editForm");
+            let url = "{{ route('admin.roles.update',':id') }}";
+            url = url.replace(':id', id);
+            editForm.setAttribute("action", url);
             let data = {
                 id: id
             }
             axios.post("{{route('admin.roles.ajax.show')}}", data)
                 .then(response => {
-                    // console.log(response.data.role.permissions)
                     name_edit.value = response.data.role.name;
+                    permissions_edit.innerHTML = '';
                     response.data.permissions.forEach(function (item) {
+                        var isChecked = response.data.role.permissions.some(function (rolePermission) {
+                            return rolePermission.id === item.id;
+                        });
                         permissions_edit.innerHTML += `<div class="form-check form-switch col-md-12 mt-2">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="permission_${item.id}" name="${item.name}" value="${item.name}">
-                                                    <label class="form-check-label mr-3 h6" for="permission_${item.id}">${item.name}</label>
-                                                   </div>`;
-                    })
-                    response.data.role.permissions.forEach(function (item) {
-                        permissions_edit.innerHTML += `<div class="form-check form-switch col-md-12 mt-2">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="permission_${item.id}" name="${item.name}" value="${item.name}">
-                                                   <label class="form-check-label mr-3 h6" for="permission_${item.id}">${item.name}</label>
-                                                  </div>`;
-                    })
-
-
+            <input class="form-check-input" type="checkbox" role="switch" id="permission_${item.id}" name="${item.name}" value="${item.name}" ${isChecked ? 'checked' : ''}>
+            <label class="form-check-label mr-3 h6" for="permission_${item.id}">${item.name}</label>
+        </div>`;
+                    });
                 })
                 .catch(error => {
                     console.error('Error:', error);
