@@ -13,6 +13,10 @@ Route::group(['middleware' => ['web', 'super.admin'], 'namespace' => 'App\Http\C
                 'as' => 'store',
                 'uses' => 'RoleController@store'
             ]);
+            Route::put('{role}/update', [
+                'as' => 'update',
+                'uses' => 'RoleController@update'
+            ]);
         });
         Route::group(['prefix' => 'roles-ajax', 'as' => 'roles.ajax.'], function () {
             Route::get('/getDataTable', [
@@ -22,6 +26,10 @@ Route::group(['middleware' => ['web', 'super.admin'], 'namespace' => 'App\Http\C
             Route::get('/getPermissions', [
                 'as' => 'getPermissions',
                 'uses' => 'RoleAjaxController@getPermissions'
+            ]);
+            Route::post('/show', [
+                'as' => 'show',
+                'uses' => 'RoleAjaxController@show'
             ]);
             Route::post('/destroy', [
                 'as' => 'destroy',

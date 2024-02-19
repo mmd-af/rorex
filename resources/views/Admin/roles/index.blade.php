@@ -77,6 +77,39 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="showRoles" tabindex="-1" aria-labelledby="roleShowLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="roleShowLabel">Role</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="myForm" action="{{ route('admin.roles.update', ['role' => 'ROLE_ID']) }}" method="post">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="id" id="roleId">
+                        <div class="form-input">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" name="name" id="name_edit" value="">
+                            <input type="hidden" name="guard_name" value="web">
+                        </div>
+                        <div class="form-input mt-2">
+                            <label for="name">Permissions:</label>
+                            <hr>
+                            <div class="row p-3" id="permissions_edit">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3">Save</button>
+                    </form>
+                    <div class="modal-footer mt-3">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -122,10 +155,10 @@
             axios.get("{{route('admin.roles.ajax.getPermissions')}}")
                 .then(response => {
                     response.data.forEach(function (item) {
-                        permissions.innerHTML += `<div class="form-group form-check col-md-3">
-                                    <input type="checkbox" class="form-check-input" id="permission_${item.id}" name="${item.name}" value="${item.name}">
-                                    <label class="form-check-label mr-3 h6" for="permission_${item.id}">${item.name}</label>
-                                </div>`;
+                        permissions.innerHTML += `<div class="form-check form-switch col-md-12 mt-2">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="permission_${item.id}" name="${item.name}" value="${item.name}">
+                                                    <label class="form-check-label mr-3 h6" for="permission_${item.id}">${item.name}</label>
+                                                   </div>`;
                     })
 
                 })
@@ -133,6 +166,37 @@
                     console.error('Error deleting record:', error);
                 });
         });
+
+        function show(id) {
+            let name_edit = document.getElementById('name_edit');
+            let permissions_edit = document.getElementById('permissions_edit');
+            document.getElementById('roleId').value = id;
+            let data = {
+                id: id
+            }
+            axios.post("{{route('admin.roles.ajax.show')}}", data)
+                .then(response => {
+                    // console.log(response.data.role.permissions)
+                    name_edit.value = response.data.role.name;
+                    response.data.permissions.forEach(function (item) {
+                        permissions_edit.innerHTML += `<div class="form-check form-switch col-md-12 mt-2">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="permission_${item.id}" name="${item.name}" value="${item.name}">
+                                                    <label class="form-check-label mr-3 h6" for="permission_${item.id}">${item.name}</label>
+                                                   </div>`;
+                    })
+                    response.data.role.permissions.forEach(function (item) {
+                        permissions_edit.innerHTML += `<div class="form-check form-switch col-md-12 mt-2">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="permission_${item.id}" name="${item.name}" value="${item.name}">
+                                                   <label class="form-check-label mr-3 h6" for="permission_${item.id}">${item.name}</label>
+                                                  </div>`;
+                    })
+
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
 
         function destroy(id) {
             if (confirm('Are you sure you want to delete this record?')) {

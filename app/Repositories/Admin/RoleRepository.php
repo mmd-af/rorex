@@ -27,9 +27,13 @@ class RoleRepository extends BaseRepository
             return Datatables::of($data)
                 ->addColumn('button', function ($row) {
                     return '
-                          <button onclick="destroy(' . $row->id . ')" type="button"
-                                    class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#forgetRequest">
+                          <button onclick="show(' . $row->id . ')" type="button"
+                                    class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#showRoles">
+                               <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button onclick="destroy(' . $row->id . ')"
+                                    class="btn btn-danger btn-sm">
                                <i class="fa-solid fa-trash"></i>
                             </button>';
                 })
@@ -58,6 +62,28 @@ class RoleRepository extends BaseRepository
         $permission = $request->except('_token', 'name', 'guard_name');
         $role->givePermissionTo($permission);
         Session::flash('message', 'The Operation was Completed Successfully');
+    }
+
+    public function show($request)
+    {
+        $role = $this->query()
+            ->select([
+                'id',
+                'name'
+            ])
+            ->where('id', $request->id)
+            ->with('permissions')
+            ->first();
+
+        $permissions = $this->getPermissions();
+        $responseData = [
+            'role' => $role,
+            'permissions' => $permissions,
+        ];
+
+        return response()->json($responseData);
+
+
     }
 
     public function destroy($request)
