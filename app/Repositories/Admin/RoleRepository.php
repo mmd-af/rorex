@@ -73,16 +73,12 @@ class RoleRepository extends BaseRepository
             ->where('id', $request->id)
             ->with('permissions')
             ->first();
-
         $permissions = $this->getPermissions();
         $responseData = [
             'role' => $role,
             'permissions' => $permissions,
         ];
-
         return response()->json($responseData);
-
-
     }
 
     public function update($request, $role)
