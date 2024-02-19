@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin\Permission;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Permission\StoreRequest;
+use App\Http\Requests\Admin\Permission\UpdateRequest;
 use App\Repositories\Admin\PermissionRepository;
+use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
@@ -23,6 +25,12 @@ class PermissionController extends Controller
     public function store(StoreRequest $request)
     {
         $this->permissionRepository->store($request);
+        return redirect()->route('admin.permissions.index');
+    }
+
+    public function update(UpdateRequest $request, Permission $permission)
+    {
+        $this->permissionRepository->update($request, $permission);
         return redirect()->route('admin.permissions.index');
     }
 

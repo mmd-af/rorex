@@ -71,6 +71,32 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="showPermissions" tabindex="-1" aria-labelledby="permissionShowLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="permissionShowLabel">Permission</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" action="" method="post">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-input">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" name="name" id="name_edit" value="">
+                            <input type="hidden" name="guard_name" value="web">
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3">Save</button>
+                    </form>
+                    <div class="modal-footer mt-3">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -112,7 +138,23 @@
                 }
             });
         });
-
+        function show(id) {
+            let name_edit = document.getElementById('name_edit');
+            let editForm = document.getElementById("editForm");
+            let url = "{{ route('admin.permissions.update',':id') }}";
+            url = url.replace(':id', id);
+            editForm.setAttribute("action", url);
+            let data = {
+                id: id
+            }
+            axios.post("{{route('admin.permissions.ajax.show')}}", data)
+                .then(response => {
+                    name_edit.value = response.data.name;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
         function destroy(id) {
             if (confirm('Are you sure you want to delete this record?')) {
                 let data = {

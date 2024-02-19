@@ -13,11 +13,19 @@ Route::group(['middleware' => ['web', 'super.admin'], 'namespace' => 'App\Http\C
                 'as' => 'store',
                 'uses' => 'PermissionController@store'
             ]);
+            Route::put('{permission}/update', [
+                'as' => 'update',
+                'uses' => 'PermissionController@update'
+            ]);
         });
         Route::group(['prefix' => 'permissions-ajax', 'as' => 'permissions.ajax.'], function () {
             Route::get('/getDataTable', [
                 'as' => 'getDataTable',
                 'uses' => 'PermissionAjaxController@getDataTable'
+            ]);
+            Route::post('/show', [
+                'as' => 'show',
+                'uses' => 'PermissionAjaxController@show'
             ]);
             Route::post('/destroy', [
                 'as' => 'destroy',

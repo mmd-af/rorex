@@ -20,6 +20,11 @@ class PermissionAjaxController extends Controller
         return $this->permissionRepository->getDataTable($request);
     }
 
+    public function show(Request $request)
+    {
+        return $this->permissionRepository->show($request);
+    }
+
     public function destroy(Request $request)
     {
         return $this->permissionRepository->destroy($request);

@@ -25,9 +25,13 @@ class PermissionRepository extends BaseRepository
             return Datatables::of($data)
                 ->addColumn('button', function ($row) {
                     return '
-                          <button onclick="destroy(' . $row->id . ')" type="button"
-                                    class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#forgetRequest">
+                         <button onclick="show(' . $row->id . ')" type="button"
+                                    class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#showPermissions">
+                               <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button onclick="destroy(' . $row->id . ')"
+                                    class="btn btn-danger btn-sm">
                                <i class="fa-solid fa-trash"></i>
                             </button>';
                 })
@@ -42,6 +46,25 @@ class PermissionRepository extends BaseRepository
         $permission = new Permission();
         $permission->name = $request->name;
         $permission->guard_name = $request->guard_name;
+        $permission->save();
+        Session::flash('message', 'The Operation was Completed Successfully');
+    }
+
+    public function show($request)
+    {
+        $role = $this->query()
+            ->select([
+                'id',
+                'name'
+            ])
+            ->where('id', $request->id)
+            ->first();
+        return response()->json($role);
+    }
+
+    public function update($request, $permission)
+    {
+        $permission->name = $request->name;
         $permission->save();
         Session::flash('message', 'The Operation was Completed Successfully');
     }
