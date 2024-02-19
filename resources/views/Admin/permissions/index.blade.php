@@ -30,6 +30,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Action</th>
 
                 </tr>
                 </thead>
@@ -37,6 +38,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Action</th>
                 </tr>
                 </tfoot>
                 <body>
@@ -69,7 +71,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('script')
@@ -81,8 +82,9 @@
                 pageLength: 25,
                 ajax: "{{ route('admin.permissions.ajax.getDataTable') }}",
                 columns: [
-                    {data: 'id', name: 'id'},
-                    {data: 'name', name: 'name'}
+                    {data: 'id', name: 'id', width: '10%'},
+                    {data: 'name', name: 'name', width: '80%'},
+                    {data: 'button', name: 'button', width: '10%', orderable: false, searchable: false}
                 ],
                 initComplete: function () {
                     var table = this;
@@ -110,6 +112,21 @@
                 }
             });
         });
+
+        function destroy(id) {
+            if (confirm('Are you sure you want to delete this record?')) {
+                let data = {
+                    id: id
+                }
+                axios.post("{{route('admin.permissions.ajax.destroy')}}", data)
+                    .then(response => {
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error deleting record:', error);
+                    });
+            }
+        }
     </script>
 @endsection
 

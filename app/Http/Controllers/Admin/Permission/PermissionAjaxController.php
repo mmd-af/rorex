@@ -19,4 +19,9 @@ class PermissionAjaxController extends Controller
     {
         return $this->permissionRepository->getDataTable($request);
     }
+
+    public function destroy(Request $request)
+    {
+        return $this->permissionRepository->destroy($request);
+    }
 }

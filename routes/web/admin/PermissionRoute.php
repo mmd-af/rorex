@@ -19,6 +19,10 @@ Route::group(['middleware' => ['web', 'super.admin'], 'namespace' => 'App\Http\C
                 'as' => 'getDataTable',
                 'uses' => 'PermissionAjaxController@getDataTable'
             ]);
+            Route::post('/destroy', [
+                'as' => 'destroy',
+                'uses' => 'PermissionAjaxController@destroy'
+            ]);
         });
     });
 });

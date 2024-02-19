@@ -23,6 +23,15 @@ class PermissionRepository extends BaseRepository
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
+                ->addColumn('button', function ($row) {
+                    return '
+                          <button onclick="destroy(' . $row->id . ')" type="button"
+                                    class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#forgetRequest">
+                               <i class="fa-solid fa-trash"></i>
+                            </button>';
+                })
+                ->rawColumns(['button'])
                 ->make(true);
         }
         return false;
@@ -37,4 +46,13 @@ class PermissionRepository extends BaseRepository
         Session::flash('message', 'The Operation was Completed Successfully');
     }
 
+    public function destroy($request)
+    {
+        $permission = $this->query()
+            ->select('id')
+            ->where('id', $request->id)
+            ->first();
+        $permission->delete();
+        Session::flash('message', 'The Operation was Completed Successfully');
+    }
 }
