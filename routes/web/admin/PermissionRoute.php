@@ -9,6 +9,10 @@ Route::group(['middleware' => ['web', 'super.admin'], 'namespace' => 'App\Http\C
                 'as' => 'index',
                 'uses' => 'PermissionController@index'
             ]);
+            Route::post('/store', [
+                'as' => 'store',
+                'uses' => 'PermissionController@store'
+            ]);
         });
         Route::group(['prefix' => 'permissions-ajax', 'as' => 'permissions.ajax.'], function () {
             Route::get('/getDataTable', [

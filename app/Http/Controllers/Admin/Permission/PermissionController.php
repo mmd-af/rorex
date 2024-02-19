@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Permission;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Permission\StoreRequest;
 use App\Repositories\Admin\PermissionRepository;
 
 class PermissionController extends Controller
@@ -17,6 +18,12 @@ class PermissionController extends Controller
     public function index()
     {
         return view('admin.permissions.index');
+    }
+
+    public function store(StoreRequest $request)
+    {
+        $this->permissionRepository->store($request);
+        return redirect()->route('admin.permissions.index');
     }
 
 }
