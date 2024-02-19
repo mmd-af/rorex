@@ -64,7 +64,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $routeFiles = glob(base_path('routes/web/admin/*.php'));
         foreach ($routeFiles as $routeFile) {
-            Route::middleware(['web', 'auth', 'super.admin'])
+            Route::middleware(['web', 'auth'])
                 ->group($routeFile);
         }
     }

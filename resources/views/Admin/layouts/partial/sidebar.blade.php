@@ -20,19 +20,32 @@
                     <a class="nav-link" href="{{route('admin.monthlyReports.index')}}">Monthly</a>
                 </nav>
             </div>
-            <a class="nav-link" href="{{route('admin.users.index')}}">
-                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                Users
-            </a>
             <div class="sb-sidenav-menu-heading">Requests</div>
             <a class="nav-link" href="#">
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                Leave request
+                Leave
             </a>
             <a class="nav-link" href="{{route('admin.supports.index')}}">
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                 Support
             </a>
+
+
+            <div class="sb-sidenav-menu-heading">Department</div>
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#DepartmentCollapseLayouts"
+               aria-expanded="false" aria-controls="DepartmentCollapseLayouts">
+                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                Members
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="DepartmentCollapseLayouts" aria-labelledby="headingOne"
+                 data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link" href="{{route('admin.users.index')}}">Users</a>
+                    <a class="nav-link" href="{{route('admin.permissions.index')}}">Permission</a>
+                    <a class="nav-link" href="{{route('admin.monthlyReports.index')}}">Roles</a>
+                </nav>
+            </div>
         </div>
     </div>
     <div class="sb-sidenav-footer">
