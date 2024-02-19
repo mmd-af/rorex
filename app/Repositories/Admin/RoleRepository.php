@@ -3,8 +3,10 @@
 namespace App\Repositories\Admin;
 
 use Illuminate\Support\Facades\Session;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
+use function Laravel\Prompts\select;
 
 class RoleRepository extends BaseRepository
 {
@@ -37,12 +39,24 @@ class RoleRepository extends BaseRepository
         return false;
     }
 
+    public function getPermissions()
+    {
+        return Permission::query()
+            ->select([
+                'id',
+                'name'
+            ])
+            ->get();
+    }
+
     public function store($request)
     {
         $role = new Role();
         $role->name = $request->name;
         $role->guard_name = $request->guard_name;
         $role->save();
+        $permission = $request->except('_token', 'name', 'guard_name');
+        $role->givePermissionTo($permission);
         Session::flash('message', 'The Operation was Completed Successfully');
     }
 

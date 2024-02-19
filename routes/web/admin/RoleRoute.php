@@ -19,6 +19,10 @@ Route::group(['middleware' => ['web', 'super.admin'], 'namespace' => 'App\Http\C
                 'as' => 'getDataTable',
                 'uses' => 'RoleAjaxController@getDataTable'
             ]);
+            Route::get('/getPermissions', [
+                'as' => 'getPermissions',
+                'uses' => 'RoleAjaxController@getPermissions'
+            ]);
             Route::post('/destroy', [
                 'as' => 'destroy',
                 'uses' => 'RoleAjaxController@destroy'

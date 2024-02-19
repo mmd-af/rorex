@@ -20,6 +20,11 @@ class RoleAjaxController extends Controller
         return $this->roleRepository->getDataTable($request);
     }
 
+    public function getPermissions()
+    {
+        return $this->roleRepository->getPermissions();
+    }
+
     public function destroy(Request $request)
     {
         return $this->roleRepository->destroy($request);

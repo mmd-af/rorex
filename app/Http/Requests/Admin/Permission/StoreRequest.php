@@ -24,7 +24,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required|unique:permissions,name,NULL,id,guard_name,' . $this->guard_name,
             'guard_name' => 'required'
         ];
     }

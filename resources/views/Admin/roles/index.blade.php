@@ -62,6 +62,12 @@
                             <input type="text" class="form-control" name="name" id="name" value="">
                             <input type="hidden" name="guard_name" value="web">
                         </div>
+                        <div class="form-input mt-4">
+                            <label for="name">Permission:</label>
+                            <hr>
+                            <div class="row p-4" id="permissions">
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-success mt-3">Save</button>
                     </form>
                     <div class="modal-footer mt-3">
@@ -111,6 +117,21 @@
                     });
                 }
             });
+
+            let permissions = document.getElementById('permissions');
+            axios.get("{{route('admin.roles.ajax.getPermissions')}}")
+                .then(response => {
+                    response.data.forEach(function (item) {
+                        permissions.innerHTML += `<div class="form-group form-check col-md-3">
+                                    <input type="checkbox" class="form-check-input" id="permission_${item.id}" name="${item.name}" value="${item.name}">
+                                    <label class="form-check-label mr-3 h6" for="permission_${item.id}">${item.name}</label>
+                                </div>`;
+                    })
+
+                })
+                .catch(error => {
+                    console.error('Error deleting record:', error);
+                });
         });
 
         function destroy(id) {
