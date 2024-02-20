@@ -24,10 +24,17 @@ class StaffRequestRequest extends FormRequest
     public function rules()
     {
         return [
+            'prenumele_tatalui' => ['required'],
             'name' => ['required'],
+            'cod_staff' => ['required'],
+            'departament' => ['required'],
             'subject' => ['required'],
-            'description' => ['required'],
-            'organization' => ['required']
+            'start_date' => ['required'],
+            'end_date' => ['required'],
+            'vacation_day' => ['required'],
+            'email' => ['required'],
+            'departamentRole' => ['required'],
+
         ];
     }
 }

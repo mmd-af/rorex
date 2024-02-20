@@ -67,14 +67,23 @@
                 <div class="modal-body">
                     <form action="{{route('user.staffRequests.store')}}" method="post">
                         @csrf
+                        <input type="hidden" name="subject" value="Leave Request for Rest">
                         <div class="mb-3 lh-lg h5">
-                            Name:
+                            LastName:
                             @if(empty(Auth::user()->name))
                                 <input type="text" class="form-control" name="name" id="name" value="">
                             @else
-                                <text
-                                    class="text-primary"> {{Auth::user()->name}} {{Auth::user()->prenumele_tatalui}}  </text>
+                                <text class="text-primary"> {{Auth::user()->name}}</text>
                                 <input type="hidden" name="name" value="{{Auth::user()->name}}">
+                            @endif
+                            FirstName:
+                            @if(empty(Auth::user()->prenumele_tatalui))
+                                <input type="text" class="form-control" name="prenumele_tatalui" id="prenumele_tatalui"
+                                       value="">
+                            @else
+                                <text class="text-primary"> {{Auth::user()->prenumele_tatalui}} </text>
+                                <input type="hidden" name="prenumele_tatalui"
+                                       value="{{Auth::user()->prenumele_tatalui}}">
                             @endif
                             with Code Staff:
                             @if(empty(Auth::user()->cod_staff))
@@ -91,16 +100,15 @@
                                 <input type="hidden" name="departament" value="{{Auth::user()->departament}}">
                             @endif
                             please approve my request for vacation during the period:
-                            {{--                            <input type="text" class="form-control form-control-sm" name="vacation_day" id="vacation_day" value="" placeholder="write something...">--}}
                             <div class="row mt-4">
                                 <div class="col-md-6">
                                     <label for="startDate" class="form-label">Start Date:</label>
-                                    <input type="date" class="form-control" id="startDate"
+                                    <input type="date" name="start_date" class="form-control" id="startDate"
                                            onchange="calculateDateDifference()">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="endDate" class="form-label">End Date:</label>
-                                    <input type="date" class="form-control" id="endDate"
+                                    <input type="date" name="end_date" class="form-control" id="endDate"
                                            onchange="calculateDateDifference()">
                                 </div>
                             </div>
@@ -121,15 +129,9 @@
                             @endif
                         </div>
                         <div class="mb-3">
-                            <label for="departamentRole" class="col-form-label">Departament:</label>
-                            @if(empty(Auth::user()->departament))
-                                <select class="form-control" name="departamentRole" id="departamentRole">
-                                </select>
-                            @else
-                                <p class="text-primary">{{Auth::user()->departament}}</p>
-                                <input type="hidden" name="departamentRole" id="departamentRole"
-                                       value="{{Auth::user()->departament}}">
-                            @endif
+                            <label for="departamentRole" class="col-form-label">Referred to:</label>
+                            <select class="form-control" name="departamentRole" id="departamentRole">
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-success mt-3">Send</button>
                     </form>
@@ -190,23 +192,22 @@
             }
             var timeDifference = Math.abs(endDate - startDate + 1);
             var dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-            document.getElementById('dateDifference').innerHTML = `<p class="text-success">${dayDifference} days</p>`;
+            document.getElementById('dateDifference').innerHTML =
+                `<p class="text-success">${dayDifference} days</p>
+                 <input type="hidden" name="vacation_day" value="${dayDifference}">`;
         }
 
         $(document).ready(function () {
             let departamentRole = document.getElementById('departamentRole');
-            if (departamentRole.value === '') {
-                axios.get('{{route('user.staffRequests.ajax.getRoles')}}')
-                    .then(function (response) {
-                        response.data.forEach(function (item) {
-                            departamentRole.innerHTML += `<option value="${item.id}">${item.name}</option>`;
-                        });
-                    })
-                    .catch(function (error) {
-                        console.error(error);
+            axios.get('{{route('user.staffRequests.ajax.getRoles')}}')
+                .then(function (response) {
+                    response.data.forEach(function (item) {
+                        departamentRole.innerHTML += `<option value="${item.id}">${item.name}</option>`;
                     });
-            }
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
         });
     </script>
 @endsection
-

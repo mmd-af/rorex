@@ -55,11 +55,15 @@ class StaffRequestRepository extends BaseRepository
         $support->email = $request->email;
         $support->mobile_phone = $request->mobile_phone;
         $support->subject = $request->subject;
-        $support->description = "<strong>Check For Date: " . $request->date . "</strong><br>" . $request->description;
-        $support->organization = $request->organization;
+        $support->description =
+            "Name: " . $request->name . " " . $request->prenumele_tatalui . "<br>with Code Staff: " . $request->cod_staff .
+            "<br><br>as an employee of S.C. ROREX PIPE S.R.L.<br>in the Departament of: " . $request->departament .
+            "<br>please approve my request for vacation during the period: " . $request->start_date . " end days " . $request->end_date .
+            "<br>" . $request->vacation_day . " days <br> Referred to:" . $request->departamentRole;
+        $support->organization = $request->departament;
         $support->cod_staff = (int)$request->cod_staff;
         $support->save();
-        Session::flash('message', 'Your Message Send Successfully');
+        Session::flash('message', 'Your Request Send Successfully');
     }
 
     public function getRoles($request)
