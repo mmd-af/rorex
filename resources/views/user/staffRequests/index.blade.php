@@ -121,10 +121,15 @@
                             @endif
                         </div>
                         <div class="mb-3">
-                            <label for="organization" class="col-form-label">will be sent:</label>
-                            <select class="form-control" name="organization" id="organization">
-                                <option value="accounting">Mr. Sorell</option>
-                            </select>
+                            <label for="departamentRole" class="col-form-label">Departament:</label>
+                            @if(empty(Auth::user()->departament))
+                                <select class="form-control" name="departamentRole" id="departamentRole">
+                                </select>
+                            @else
+                                <p class="text-primary">{{Auth::user()->departament}}</p>
+                                <input type="hidden" name="departamentRole" id="departamentRole"
+                                       value="{{Auth::user()->departament}}">
+                            @endif
                         </div>
                         <button type="submit" class="btn btn-success mt-3">Send</button>
                     </form>
@@ -187,6 +192,21 @@
             var dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
             document.getElementById('dateDifference').innerHTML = `<p class="text-success">${dayDifference} days</p>`;
         }
+
+        $(document).ready(function () {
+            let departamentRole = document.getElementById('departamentRole');
+            if (departamentRole.value === '') {
+                axios.get('{{route('user.staffRequests.ajax.getRoles')}}')
+                    .then(function (response) {
+                        response.data.forEach(function (item) {
+                            departamentRole.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                        });
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
+            }
+        });
     </script>
 @endsection
 

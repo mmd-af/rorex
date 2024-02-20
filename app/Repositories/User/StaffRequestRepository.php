@@ -6,6 +6,7 @@ use App\Models\StaffRequest\StaffRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class StaffRequestRepository extends BaseRepository
@@ -59,5 +60,16 @@ class StaffRequestRepository extends BaseRepository
         $support->cod_staff = (int)$request->cod_staff;
         $support->save();
         Session::flash('message', 'Your Message Send Successfully');
+    }
+
+    public function getRoles($request)
+    {
+        return Role::query()
+            ->select([
+                'id',
+                'name'
+            ])
+            ->get();
+
     }
 }
