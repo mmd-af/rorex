@@ -2,6 +2,7 @@
 
 namespace App\Repositories\User;
 
+use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -63,6 +64,15 @@ class StaffRequestRepository extends BaseRepository
         $support->organization = $request->departament;
         $support->cod_staff = (int)$request->cod_staff;
         $support->save();
+
+        $assignment = new LetterAssignment();
+        $assignment->request_id = $support->id;
+        $assignment->role_id = $request->departamentRole;
+        $assignment->status = "waiting";
+        $assignment->save();
+
+
+        $assignment->save();
         Session::flash('message', 'Your Request Send Successfully');
     }
 
