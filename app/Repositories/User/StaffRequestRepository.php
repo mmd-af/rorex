@@ -4,6 +4,7 @@ namespace App\Repositories\User;
 
 use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
+use App\Models\User\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -64,10 +65,14 @@ class StaffRequestRepository extends BaseRepository
         $support->organization = $request->departament;
         $support->cod_staff = (int)$request->cod_staff;
         $support->save();
-
+        $role = Role::query()
+            ->select(['id', 'name'])
+            ->where('name', $request->departamentRole)
+            ->first();
         $assignment = new LetterAssignment();
         $assignment->request_id = $support->id;
-        $assignment->role_id = $request->departamentRole;
+        $assignment->role_id = $role->id;
+        $assignment->assigned_to = $request->assigned_to;
         $assignment->status = "waiting";
         $assignment->save();
 
@@ -85,5 +90,16 @@ class StaffRequestRepository extends BaseRepository
             ])
             ->get();
 
+    }
+
+    public function getUserWithRole($request)
+    {
+        return User::query()
+            ->select([
+                'id',
+                'name'
+            ])
+            ->role($request->role_name)
+            ->get();
     }
 }

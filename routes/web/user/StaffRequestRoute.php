@@ -24,6 +24,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'getRoles',
                 'uses' => 'StaffRequestAjaxController@getRoles'
             ]);
+            Route::post('/getUserWithRole', [
+                'as' => 'getUserWithRole',
+                'uses' => 'StaffRequestAjaxController@getUserWithRole'
+            ]);
         });
     });
 });

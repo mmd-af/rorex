@@ -129,9 +129,23 @@
                             @endif
                         </div>
                         <div class="mb-3">
-                            <label for="departamentRole" class="col-form-label">Referred to:</label>
-                            <select class="form-control" name="departamentRole" id="departamentRole">
-                            </select>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="departamentRole" class="col-form-label">Referred to:</label>
+                                    <select class="form-control" name="departamentRole" id="departamentRole"
+                                            onclick="getRelateUserWithRole()">
+                                        <option>SELECT DEPARTMENT</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    User:
+                                    <label for="assigned_to" class="col-form-label">Referred to:</label>
+                                    <select class="form-control" name="assigned_to" id="assigned_to">
+                                        <option>SELECT USER</option>
+                                    </select>
+                                </div>
+                            </div>
+
                         </div>
                         <button type="submit" class="btn btn-success mt-3">Send</button>
                     </form>
@@ -202,12 +216,29 @@
             axios.get('{{route('user.staffRequests.ajax.getRoles')}}')
                 .then(function (response) {
                     response.data.forEach(function (item) {
-                        departamentRole.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                        departamentRole.innerHTML += `<option value="${item.name}">${item.name}</option>`;
                     });
                 })
                 .catch(function (error) {
                     console.error(error);
                 });
         });
+
+        function getRelateUserWithRole() {
+            let assignedTo = document.getElementById('assigned_to');
+            assignedTo.innerHTML = ``;
+            let data = {
+                role_name: departamentRole.value
+            }
+            axios.post('{{route('user.staffRequests.ajax.getUserWithRole')}}', data)
+                .then(function (response) {
+                    response.data.forEach(function (item) {
+                        assignedTo.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                    });
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        }
     </script>
 @endsection

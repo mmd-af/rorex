@@ -19,8 +19,14 @@ class StaffRequestAjaxController extends Controller
     {
         return $this->staffRequestRepository->getDataTable($request);
     }
+
     public function getRoles(Request $request)
     {
         return $this->staffRequestRepository->getRoles($request);
+    }
+
+    public function getUserWithRole(Request $request)
+    {
+        return $this->staffRequestRepository->getUserWithRole($request);
     }
 }

@@ -50,16 +50,6 @@ Route::get('/query1', function () {
 });
 
 Route::get('/query2', function () {
-    $dailyReports = DailyReport::query()
-//        ->where('nume_schimb', "Tura implicita")
-//        ->where('cod_staff', 2109)
-        ->get();
-//    $plusNight = 0;
-    foreach ($dailyReports as $dailyReport) {
-//        $plusNight += $dailyReport->munca_ore;
-        echo "$dailyReport->nume_schimb" . "<br>";
-//        $dailyReport->delete();
-    }
-
-//    dd($plusNight);
+    $user = User::find(2101);
+    $user->assignRole('HR');
 });
