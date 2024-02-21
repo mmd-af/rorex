@@ -34,7 +34,7 @@ class StaffRequestRequest extends FormRequest
             'vacation_day' => ['required'],
             'email' => ['required'],
             'departamentRole' => ['required'],
-
+            'assigned_to' => ['required']
         ];
     }
 }

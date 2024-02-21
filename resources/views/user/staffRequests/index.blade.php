@@ -134,14 +134,14 @@
                                     <label for="departamentRole" class="col-form-label">Referred to:</label>
                                     <select class="form-control" name="departamentRole" id="departamentRole"
                                             onclick="getRelateUserWithRole()">
-                                        <option>SELECT DEPARTMENT</option>
+                                        <option value="">SELECT DEPARTMENT</option>
                                     </select>
                                 </div>
                                 <div class="col-6">
                                     User:
                                     <label for="assigned_to" class="col-form-label">Referred to:</label>
                                     <select class="form-control" name="assigned_to" id="assigned_to">
-                                        <option>SELECT USER</option>
+                                        <option value="">SELECT USER</option>
                                     </select>
                                 </div>
                             </div>
