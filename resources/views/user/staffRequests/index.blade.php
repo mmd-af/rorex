@@ -36,9 +36,8 @@
                     <th>Tracking Number</th>
                     <th>Subject</th>
                     <th>Description</th>
-                    <th>Organization</th>
                     <th>Date of Request</th>
-                    <th>Read At</th>
+                    <th>Status</th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -46,9 +45,8 @@
                     <th>Tracking Number</th>
                     <th>Subject</th>
                     <th>Description</th>
-                    <th>Organization</th>
                     <th>Date of Request</th>
-                    <th>Read At</th>
+                    <th>Status</th>
                 </tr>
                 </tfoot>
                 <body>
@@ -170,9 +168,9 @@
                     {data: 'id', name: 'id', width: '10%'},
                     {data: 'subject', name: 'subject'},
                     {data: 'description', name: 'description'},
-                    {data: 'organization', name: 'organization', width: '10%'},
+                    // {data: 'organization', name: 'organization', width: '10%'},
                     {data: 'created_at', name: 'created_at', width: '10%'},
-                    {data: 'read_at', name: 'read_at', width: '10%'}
+                    {data: 'status', name: 'status', width: '20%'}
                 ],
                 initComplete: function () {
                     var table = this;

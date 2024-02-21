@@ -38,6 +38,7 @@ class StaffRequestRepository extends BaseRepository
             ])
             ->where('cod_staff', $userId)
             ->orWhere('email', $userEmail)
+            ->with('assignments')
             ->get();
 
         if ($request->ajax()) {
@@ -46,7 +47,15 @@ class StaffRequestRepository extends BaseRepository
                     $originalDate = Carbon::parse($row->created_at);
                     return $originalDate->format('Y-m-d');
                 })
-                ->rawColumns(['description', 'action'])
+                ->addColumn('status', function ($row) {
+                    $status = '';
+                    foreach ($row->assignments as $assignment) {
+                        $signedStatus = $assignment->signed_by ? 'Signed' : 'Not signed';
+                        $status .= $assignment->assignedTo->name . " - " . $signedStatus . " -> " . $assignment->status . '<br>';
+                    }
+                    return $status;
+                })
+                ->rawColumns(['description', 'status'])
                 ->make(true);
         }
         return false;
@@ -85,8 +94,6 @@ class StaffRequestRepository extends BaseRepository
             DB::rollBack();
             Session::flash('error', $e->getMessage());
         }
-
-
     }
 
     public function getRoles($request)
