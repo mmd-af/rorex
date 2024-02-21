@@ -66,8 +66,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('user.staffRequests.store')}}" method="post">
-                        @csrf
+                    <form id="leaveForm">
                         <div class="mb-3 lh-lg h5">
                             LastName:
                             @if(empty(Auth::user()->name))
@@ -217,6 +216,7 @@
             modalSubject.innerHTML = `<input type="hidden" name="subject" value="Leave Request for Rest">
                         <input type="hidden" name="description" value="vacation">`;
         }
+
         $(document).ready(function () {
             $('#staffRequestTable').DataTable({
                 processing: true,
@@ -313,5 +313,48 @@
                     console.error(error);
                 });
         }
+
+        document.getElementById('leaveForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var form = event.target;
+            var formData = new FormData(form);
+            var name = formData.get('name');
+            var prenumele_tatalui = formData.get('prenumele_tatalui');
+            var cod_staff = formData.get('cod_staff');
+            var departament = formData.get('departament');
+            var startDay = formData.get('start_date');
+            var endDay = formData.get('end_date');
+            var vacation_day = formData.get('vacation_day');
+            var email = formData.get('email');
+            var departamentRole = formData.get('departamentRole');
+            var subject = formData.get('subject');
+            var assigned_to = formData.get('assigned_to');
+            var description = "Name: " + name + " " + prenumele_tatalui + "<br>" +
+                "with Code Staff: " + cod_staff + "<br>" +
+                "as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
+                "<br>please approve my request for" + subject + "during the period:<br>" + startDay + "end day:" + endDay + " <br> "
+                + vacation_day + " days<br>Email:" + email + "<br>Referred to:" + departamentRole;
+            let data = {
+                prenumele_tatalui: prenumele_tatalui,
+                name: name,
+                cod_staff: cod_staff,
+                departament: departament,
+                subject: subject,
+                description: description,
+                start_date: startDay,
+                end_date: endDay,
+                vacation_day: vacation_day,
+                email: email,
+                departamentRole: departamentRole,
+                assigned_to: assigned_to
+            }
+            axios.post('{{route('user.staffRequests.ajax.store')}}', data)
+                .then(function (response) {
+                    console.log(response)
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        });
     </script>
 @endsection

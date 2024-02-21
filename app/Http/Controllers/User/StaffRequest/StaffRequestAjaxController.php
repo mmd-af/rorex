@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User\StaffRequest;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\StaffRequest\StaffRequestRequest;
 use App\Repositories\User\StaffRequestRepository;
 use Illuminate\Http\Request;
 
@@ -28,5 +29,10 @@ class StaffRequestAjaxController extends Controller
     public function getUserWithRole(Request $request)
     {
         return $this->staffRequestRepository->getUserWithRole($request);
+    }
+
+    public function store(StaffRequestRequest $request)
+    {
+        $this->staffRequestRepository->store($request);
     }
 }

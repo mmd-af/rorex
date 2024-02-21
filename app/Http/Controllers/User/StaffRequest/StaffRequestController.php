@@ -19,10 +19,4 @@ class StaffRequestController extends Controller
     {
         return view('user.staffRequests.index');
     }
-
-    public function store(StaffRequestRequest $request)
-    {
-        $this->staffRequestRepository->store($request);
-        return redirect()->route('user.staffRequests.index');
-    }
 }

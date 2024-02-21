@@ -70,11 +70,7 @@ class StaffRequestRepository extends BaseRepository
             $support->email = $request->email;
             $support->mobile_phone = $request->mobile_phone;
             $support->subject = $request->subject;
-            $support->description =
-                "Name: " . $request->name . " " . $request->prenumele_tatalui . "<br>with Code Staff: " . $request->cod_staff .
-                "<br><br>as an employee of S.C. ROREX PIPE S.R.L.<br>in the Departament of: " . $request->departament .
-                "<br>please approve my request for " . $request->description . " during the period: " . $request->start_date . " end days " . $request->end_date .
-                "<br>" . $request->vacation_day . " days <br> Referred to:" . $request->departamentRole;
+            $support->description = $request->description;
             $support->organization = $request->departament;
             $support->cod_staff = (int)$request->cod_staff;
             $support->save();

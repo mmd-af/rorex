@@ -10,10 +10,6 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'index',
                 'uses' => 'StaffRequestController@index'
             ]);
-            Route::post('/store', [
-                'as' => 'store',
-                'uses' => 'StaffRequestController@store'
-            ]);
         });
         Route::group(['prefix' => 'staffRequests-ajax', 'as' => 'staffRequests.ajax.'], function () {
             Route::get('/getDataTable', [
@@ -27,6 +23,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
             Route::post('/getUserWithRole', [
                 'as' => 'getUserWithRole',
                 'uses' => 'StaffRequestAjaxController@getUserWithRole'
+            ]);
+            Route::post('/store', [
+                'as' => 'store',
+                'uses' => 'StaffRequestAjaxController@store'
             ]);
         });
     });
