@@ -293,8 +293,6 @@
                 document.getElementById('timeDifference').innerHTML =
                     `<p class="text-success">${hours} hours and ${minutes} minutes</p>
              <input type="hidden" name="vacation_day" value="${hours}:${minutes}">`;
-            } else {
-                console.log("لطفاً هر دو زمان را وارد کنید.");
             }
         }
 
