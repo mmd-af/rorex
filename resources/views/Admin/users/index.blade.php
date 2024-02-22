@@ -89,6 +89,9 @@
                                 <label for="email" class="form-label">Email address</label>
                                 <input type="email" class="form-control" id="email" name="email" disabled>
                             </div>
+                            <div class="form-input mt-4 p-1 bg-secondary-subtle" id="is_active">
+                                <label for="is_active">Is Active:</label>
+                            </div>
                             <div class="form-input mt-4">
                                 <label for="name">Role:</label>
                                 <hr>
@@ -130,7 +133,7 @@
                     {data: 'numar_card', name: 'numar_card'},
                     {data: 'email', name: 'email'},
                     {data: 'show', name: 'show'},
-                    {data: 'is_active', name: 'is_active'}
+                    {data: 'status', name: 'status'}
                 ],
                 initComplete: function () {
                     var table = this;
@@ -162,6 +165,7 @@
         function show(id) {
             let name = document.getElementById('name');
             let email = document.getElementById('email');
+            let is_active = document.getElementById('is_active');
             let roles = document.getElementById('roles');
             let permissions = document.getElementById('permissions');
             let editForm = document.getElementById("editForm");
@@ -176,6 +180,7 @@
                     console.log(response.data)
                     name.value = response.data.user.name;
                     email.value = response.data.user.email;
+                    is_active.innerHTML += `<input class="form-check-input mx-3" type="checkbox" role="switch" id="is_active" name="is_active" ${response.data.user.is_active ? 'checked' : ''}>`;
                     roles.innerHTML = '';
                     permissions.innerHTML = '';
                     response.data.roles.forEach(function (item) {

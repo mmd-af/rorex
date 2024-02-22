@@ -42,7 +42,10 @@ class UserRepository extends BaseRepository
                                <i class="fa-solid fa-eye"></i>
                             </button>';
                 })
-                ->rawColumns(['show'])
+                ->addColumn('status', function ($row) {
+                    return $row->is_active ? 'Active' : 'Deactive';
+                })
+                ->rawColumns(['show', 'status'])
                 ->make(true);
         }
         return false;
@@ -125,7 +128,8 @@ class UserRepository extends BaseRepository
             ->select([
                 'id',
                 'name',
-                'email'
+                'email',
+                'is_active'
             ])
             ->where('id', $request->id)
             ->with(['permissions', 'roles'])
@@ -144,6 +148,8 @@ class UserRepository extends BaseRepository
     {
         DB::beginTransaction();
         try {
+            $user->is_active = $request->has('is_active') ? 1 : 0;
+            $user->save();
             $user->syncRoles($request->roles);
             $user->syncPermissions($request->permissions);
             DB::commit();
