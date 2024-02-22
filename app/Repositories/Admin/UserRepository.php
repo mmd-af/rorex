@@ -8,6 +8,8 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserRepository extends BaseRepository
@@ -33,6 +35,14 @@ class UserRepository extends BaseRepository
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
+                ->addColumn('show', function ($row) {
+                    return '<button onclick="show(' . $row->id . ')" type="button"
+                                    class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#show">
+                               <i class="fa-solid fa-eye"></i>
+                            </button>';
+                })
+                ->rawColumns(['show'])
                 ->make(true);
         }
         return false;
@@ -108,4 +118,40 @@ class UserRepository extends BaseRepository
             Session::flash('error', $e->getMessage());
         }
     }
+
+    public function show($request)
+    {
+        $user = $this->query()
+            ->select([
+                'id',
+                'name',
+                'email'
+            ])
+            ->where('id', $request->id)
+            ->with(['permissions', 'roles'])
+            ->first();
+        $roles = Role::all();
+        $permissions = Permission::all();
+        $responseData = [
+            'user' => $user,
+            'roles' => $roles,
+            'permissions' => $permissions
+        ];
+        return response()->json($responseData);
+    }
+
+    public function update($request, $user)
+    {
+        DB::beginTransaction();
+        try {
+            $user->syncRoles($request->roles);
+            $user->syncPermissions($request->permissions);
+            DB::commit();
+            Session::flash('message', 'The Update Operation was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
+    }
+
 }

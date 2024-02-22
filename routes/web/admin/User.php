@@ -9,6 +9,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'index',
                 'uses' => 'UserController@index'
             ]);
+            Route::put('{user}/update', [
+                'as' => 'update',
+                'uses' => 'UserController@update'
+            ]);
             Route::put('/import', [
                 'as' => 'import',
                 'uses' => 'UserController@import'
@@ -22,6 +26,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
             Route::get('/getDataTable', [
                 'as' => 'getDataTable',
                 'uses' => 'UserAjaxController@getDataTable'
+            ]);
+            Route::post('/show', [
+                'as' => 'show',
+                'uses' => 'UserAjaxController@show'
             ]);
         });
     });
