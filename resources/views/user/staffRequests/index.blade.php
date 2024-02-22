@@ -185,13 +185,12 @@
             let modalSubject = document.getElementById('modalSubject');
             modalSubject.innerHTML = `<input type="hidden" name="subject" value="leave for special events">
                                 <label for="description">explain:</label>
-                                <input type="text" class="form-control" name="description" id="description" value="">
-                                and I will send the document.`;
+                                <input type="text" class="form-control" name="description" id="description" value="">`;
             const descriptionInput = document.getElementById('description');
             let isTextAdded = false;
             descriptionInput.addEventListener('change', function (event) {
                 if (!isTextAdded) {
-                    this.value = event.target.value + " and I will send the document.";
+                    this.value = "for " + event.target.value + " and I will send the document.";
                     isTextAdded = true;
                     this.readOnly = true;
                 }
@@ -329,18 +328,20 @@
             var departamentRole = formData.get('departamentRole');
             var subject = formData.get('subject');
             var assigned_to = formData.get('assigned_to');
-            var description = "Name: " + name + " " + prenumele_tatalui + "<br>" +
+            var description = formData.get('description');
+            var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
                 "with Code Staff: " + cod_staff + "<br>" +
-                "as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
-                "<br>please approve my request for" + subject + "during the period:<br>" + startDay + "end day:" + endDay + " <br> "
-                + vacation_day + " days<br>Email:" + email + "<br>Referred to:" + departamentRole;
+                "Subject: " + subject +
+                "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
+                "<br>please approve my request for vacation during the period:<br>" + startDay + " until: " + endDay + " <br> "
+                + vacation_day + " days " + description + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
             let data = {
                 prenumele_tatalui: prenumele_tatalui,
                 name: name,
                 cod_staff: cod_staff,
                 departament: departament,
                 subject: subject,
-                description: description,
+                description: newDescription,
                 start_date: startDay,
                 end_date: endDay,
                 vacation_day: vacation_day,
@@ -350,7 +351,7 @@
             }
             axios.post('{{route('user.staffRequests.ajax.store')}}', data)
                 .then(function (response) {
-                    console.log(response)
+                    location.reload();
                 })
                 .catch(function (error) {
                     console.error(error);
