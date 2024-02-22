@@ -144,7 +144,6 @@
 
 @section('script')
     <script>
-
         function LeaveRequestForRest() {
             let datesForLeave = document.getElementById('datesForLeave');
             datesForLeave.innerHTML = `
@@ -200,7 +199,13 @@
         function LeaveRequestForHour() {
             let datesForLeave = document.getElementById('datesForLeave');
             datesForLeave.innerHTML = `
-                            <div class="col-md-6">
+     <div class="row">
+           <div class="col-md-6">
+              <label for="startDate" class="form-label">Date:</label>
+              <input type="date" name="start_date" class="form-control" id="startDate">
+           </div>
+    </div>
+    <div class="col-md-6">
         <label for="startTime" class="form-label">Start Time:</label>
         <input type="time" name="start_time" class="form-control" id="startTime" onchange="calculateTimeDifference()">
     </div>
@@ -212,8 +217,8 @@
         <h6 id="timeDifference"></h6>
     </div>`;
             let modalSubject = document.getElementById('modalSubject');
-            modalSubject.innerHTML = `<input type="hidden" name="subject" value="Leave Request for Rest">
-                        <input type="hidden" name="description" value="vacation">`;
+            modalSubject.innerHTML = `<input type="hidden" name="subject" value="Leave Request for Hour">
+                        <input type="hidden" name="description" value="hour">`;
         }
 
         $(document).ready(function () {
@@ -253,35 +258,46 @@
         });
 
         function calculateDateDifference() {
-            var startDate = new Date(document.getElementById('startDate').value);
-            var endDate = new Date(document.getElementById('endDate').value);
-            if (endDate < startDate) {
-                document.getElementById('dateDifference').innerHTML = `<p class="text-danger">The second date cannot be before the first date</p>`;
-                return;
-            }
-            var timeDifference = Math.abs(endDate - startDate + 1);
-            var dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-            document.getElementById('dateDifference').innerHTML =
-                `<p class="text-success">${dayDifference} days</p>
+            var startDateValue = document.getElementById('startDate').value.trim();
+            var endDateValue = document.getElementById('endDate').value.trim();
+            if (startDateValue !== '' && endDateValue !== '') {
+                var startDate = new Date(startDateValue);
+                var endDate = new Date(endDateValue);
+                if (endDate < startDate) {
+                    document.getElementById('dateDifference').innerHTML = `<p class="text-danger">The second date cannot be before the first date</p>`;
+                    return;
+                }
+                var timeDifference = Math.abs(endDate - startDate + 1);
+                var dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+                document.getElementById('dateDifference').innerHTML =
+                    `<p class="text-success">${dayDifference} days</p>
                  <input type="hidden" name="vacation_day" value="${dayDifference}">`;
+            }
         }
 
         function calculateTimeDifference() {
-            var startTime = document.getElementById('startTime').value;
-            var endTime = document.getElementById('endTime').value;
-            var startTimeInMilliseconds = new Date('1970-01-01T' + startTime + ':00Z').getTime();
-            var endTimeInMilliseconds = new Date('1970-01-01T' + endTime + ':00Z').getTime();
-            if (endTimeInMilliseconds < startTimeInMilliseconds) {
-                document.getElementById('timeDifference').innerHTML = `<p class="text-danger">End time cannot be earlier than start time</p>`;
-                return;
+            var startTimeValue = document.getElementById('startTime').value.trim();
+            var endTimeValue = document.getElementById('endTime').value.trim();
+
+            if (startTimeValue !== '' && endTimeValue !== '') {
+                var startTime = new Date('1970-01-01T' + startTimeValue + ':00Z').getTime();
+                var endTime = new Date('1970-01-01T' + endTimeValue + ':00Z').getTime();
+                if (endTime < startTime) {
+                    document.getElementById('timeDifference').innerHTML = `<p class="text-danger">End time cannot be earlier than start time</p>`;
+                    return;
+                }
+                var timeDifferenceInMilliseconds = Math.abs(endTime - startTime);
+                var hours = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60));
+                var minutes = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+
+                document.getElementById('timeDifference').innerHTML =
+                    `<p class="text-success">${hours} hours and ${minutes} minutes</p>
+             <input type="hidden" name="vacation_day" value="${hours}:${minutes}">`;
+            } else {
+                console.log("لطفاً هر دو زمان را وارد کنید.");
             }
-            var timeDifferenceInMilliseconds = Math.abs(endTimeInMilliseconds - startTimeInMilliseconds);
-            var hours = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60));
-            var minutes = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById('timeDifference').innerHTML =
-                `<p class="text-success">${hours} hours and  ${minutes}  minutes</p>
-                 <input type="hidden" name="vacation_day" value="${hours}: ${minutes}">`;
         }
+
 
         $(document).ready(function () {
             let departamentRole = document.getElementById('departamentRole');
@@ -329,12 +345,24 @@
             var subject = formData.get('subject');
             var assigned_to = formData.get('assigned_to');
             var description = formData.get('description');
-            var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
-                "with Code Staff: " + cod_staff + "<br>" +
-                "Subject: " + subject +
-                "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
-                "<br>please approve my request for vacation during the period:<br>" + startDay + " until: " + endDay + " <br> "
-                + vacation_day + " days " + description + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
+            var start_time = formData.get('start_time');
+            var end_time = formData.get('end_time');
+
+            if (start_time === null && end_time === null) {
+                var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
+                    "with Code Staff: " + cod_staff + "<br>" +
+                    "Subject: " + subject +
+                    "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
+                    "<br>please approve my request for vacation during the period:<br>" + startDay + " until: " + endDay + " <br> "
+                    + vacation_day + " days " + description + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
+            } else {
+                var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
+                    "with Code Staff: " + cod_staff + "<br>" +
+                    "Subject: " + subject +
+                    "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
+                    "<br>please approve my request for hour vacation during the date:<br>" + startDay + "<br>between: " + start_time + " until: "
+                    + end_time + " <br> " + vacation_day + description + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
+            }
             let data = {
                 prenumele_tatalui: prenumele_tatalui,
                 name: name,
@@ -354,7 +382,7 @@
                     location.reload();
                 })
                 .catch(function (error) {
-                    console.error(error);
+                    alert(error.message)
                 });
         });
     </script>
