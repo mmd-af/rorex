@@ -10,6 +10,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'index',
                 'uses' => 'ManageRequestController@index'
             ]);
+            Route::post('/store', [
+                'as' => 'store',
+                'uses' => 'ManageRequestController@store'
+            ]);
         });
         Route::group(['prefix' => 'manageRequests-ajax', 'as' => 'manageRequests.ajax.'], function () {
             Route::get('/getDataTable', [

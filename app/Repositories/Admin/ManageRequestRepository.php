@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class ManageRequestRepository extends BaseRepository
@@ -32,7 +33,6 @@ class ManageRequestRepository extends BaseRepository
                 'created_at'
             ])
             ->where('assigned_to', $userId)
-            ->where('status', "waiting")
             ->where('is_archive', 0)
             ->with(['request'])
             ->get();
@@ -56,9 +56,9 @@ class ManageRequestRepository extends BaseRepository
                     return '<button class="btn btn-light btn-sm mx-2" onclick="showReportModal(' . $row->id . ')">
                             <i class="fa-solid fa-print"></i>
                             </button>
-                            <button onclick="requestForm(' . $row->id . ')" type="button"
+                            <button onclick="setReferred(' . $row->id . ')" type="button"
                                     class="btn btn-primary btn-sm mx-2" data-bs-toggle="modal"
-                                    data-bs-target="#forgetRequest">
+                                    data-bs-target="#setReferred">
                                 <i class="fa-solid fa-square-arrow-up-right"></i>
                             </button>
                             ' . ($row->signed_by ? '
@@ -103,6 +103,35 @@ class ManageRequestRepository extends BaseRepository
         return false;
     }
 
+    public function store($request)
+    {
+        DB::beginTransaction();
+        try {
+            $role = Role::query()
+                ->select(['id', 'name'])
+                ->where('name', $request->departamentRole)
+                ->first();
+            $old_letterAssignment = $this->findBy('id', $request->letter_assign_id);
+            $old_letterAssignment->status = "Referred to: " . $request->departamentRole;
+            $old_letterAssignment->is_archive = 1;
+            $old_letterAssignment->save();
+            $staffRequest = StaffRequest::find($old_letterAssignment->request_id);
+            $staffRequest->description = $staffRequest->description . "<br> status: Referred to: " . $request->departamentRole;
+            $staffRequest->save();
+            $letterAssignment = new LetterAssignment();
+            $letterAssignment->request_id = $old_letterAssignment->request_id;
+            $letterAssignment->role_id = $role->id;
+            $letterAssignment->assigned_to = $request->assigned_to;
+            $letterAssignment->status = "waiting";
+            $letterAssignment->save();
+            DB::commit();
+            Session::flash('message', 'The Update Operation was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
+    }
+
     public function setPass($request)
     {
         DB::beginTransaction();
@@ -110,6 +139,7 @@ class ManageRequestRepository extends BaseRepository
             $userLastname = Auth::user()->name;
             $letterAssignment = $this->find($request->id);
             $letterAssignment->status = "Accepted";
+            $letterAssignment->is_archive = 1;
             $letterAssignment->save();
             $staffRequest = StaffRequest::find($letterAssignment->request_id);
             $staffRequest->description = $staffRequest->description . "<br> status: Accepted by: " . $userLastname;
@@ -130,6 +160,7 @@ class ManageRequestRepository extends BaseRepository
             $userLastname = Auth::user()->name;
             $letterAssignment = $this->find($request->id);
             $letterAssignment->status = "Rejected";
+            $letterAssignment->is_archive = 1;
             $letterAssignment->save();
             $staffRequest = StaffRequest::find($letterAssignment->request_id);
             $staffRequest->description = $staffRequest->description . "<br> status: Rejected by: " . $userLastname;
