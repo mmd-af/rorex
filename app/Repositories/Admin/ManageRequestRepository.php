@@ -28,7 +28,9 @@ class ManageRequestRepository extends BaseRepository
                 'created_at'
             ])
             ->where('assigned_to', $userId)
-//            ->with(['assignments'])
+            ->where('status', "waiting")
+            ->where('is_archive', 0)
+            ->with(['request'])
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
@@ -40,10 +42,9 @@ class ManageRequestRepository extends BaseRepository
                     return $row->request->description;
                 })
                 ->addColumn('sign', function ($row) {
-//                    $signedStatus = $row->signed_by ? 'Signed' : 'Not signed';
                     return '
                     <div class="form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="signed_by" name="signed_by" value="' . $row->signed_by . '" ' . ($row->signed_by ? 'checked' : '') . '>
+                    <input onclick="handleSign(event, ' . $row->id . ')" class="form-check-input" type="checkbox" role="switch" id="signed_by" name="signed_by" value="' . $row->signed_by . '" ' . ($row->signed_by ? 'checked' : '') . '>
                     </div>';
 
                 })
