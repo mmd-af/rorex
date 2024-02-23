@@ -88,5 +88,16 @@
                     });
             }
         }
+        function setPass(id) {
+            if (confirm('Do you want to submit the signature for this item?')) {
+                axios.post("{{route('admin.manageRequests.ajax.setPass')}}", {id: id})
+                    .then(response => {
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        }
     </script>
 @endsection

@@ -99,5 +99,25 @@ class ManageRequestRepository extends BaseRepository
             DB::rollBack();
             Session::flash('error', $e->getMessage());
         }
+        return false;
+    }
+
+    public function setPass($request)
+    {
+        DB::beginTransaction();
+        try {
+            $letterAssignment = $this->find($request->id);
+            $letterAssignment->status = "Accepted";
+            $letterAssignment->save();
+            $staffRequest = StaffRequest::find($letterAssignment->request_id);
+            $staffRequest->description = $staffRequest->description . "<br> status: Accepted";
+            $staffRequest->save();
+            DB::commit();
+            Session::flash('message', 'The Update Operation was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
+        return false;
     }
 }

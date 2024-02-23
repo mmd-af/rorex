@@ -19,9 +19,15 @@ class ManageRequestAjaxController extends Controller
     {
         return $this->manageRequestRepository->getDataTable($request);
     }
+
     public function sign(Request $request)
     {
         return $this->manageRequestRepository->sign($request);
+    }
+
+    public function setPass(Request $request)
+    {
+        return $this->manageRequestRepository->setPass($request);
     }
 
 }

@@ -20,6 +20,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'sign',
                 'uses' => 'ManageRequestAjaxController@sign'
             ]);
+            Route::post('/setPass', [
+                'as' => 'setPass',
+                'uses' => 'ManageRequestAjaxController@setPass'
+            ]);
         });
     });
 });
