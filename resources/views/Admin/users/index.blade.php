@@ -90,7 +90,6 @@
                                 <input type="email" class="form-control" id="email" name="email" disabled>
                             </div>
                             <div class="form-input mt-4 p-1 bg-secondary-subtle" id="is_active">
-                                <label for="is_active">Is Active:</label>
                             </div>
                             <div class="form-input mt-4">
                                 <label for="name">Role:</label>
@@ -180,7 +179,9 @@
                     console.log(response.data)
                     name.value = response.data.user.name;
                     email.value = response.data.user.email;
-                    is_active.innerHTML += `<input class="form-check-input mx-3" type="checkbox" role="switch" id="is_active" name="is_active" ${response.data.user.is_active ? 'checked' : ''}>`;
+                    is_active.innerHTML = `
+                    <label for="is_active">Is Active:</label>
+                    <input class="form-check-input mx-3" type="checkbox" role="switch" id="is_active" name="is_active" ${response.data.user.is_active ? 'checked' : ''}>`;
                     roles.innerHTML = '';
                     permissions.innerHTML = '';
                     response.data.roles.forEach(function (item) {
