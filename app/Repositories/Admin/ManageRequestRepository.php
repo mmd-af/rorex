@@ -3,8 +3,11 @@
 namespace App\Repositories\Admin;
 
 use App\Models\LetterAssignment\LetterAssignment;
+use App\Models\StaffRequest\StaffRequest;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -53,17 +56,23 @@ class ManageRequestRepository extends BaseRepository
                     return '<button class="btn btn-light btn-sm mx-2" onclick="showReportModal(' . $row->id . ')">
                             <i class="fa-solid fa-print"></i>
                             </button>
-
-
                             <button onclick="requestForm(' . $row->id . ')" type="button"
                                     class="btn btn-primary btn-sm mx-2" data-bs-toggle="modal"
                                     data-bs-target="#forgetRequest">
                                 <i class="fa-solid fa-square-arrow-up-right"></i>
                             </button>
-                            <button onclick="requestForm(' . $row->id . ')" type="button"
-                                    class="btn btn-danger btn-sm mx-2" ' . ($row->signed_by ? 'disabled' : '') . '>
+                            ' . ($row->signed_by ? '
+                            <button onclick="setPass(' . $row->id . ')" type="button"
+                                    class="btn btn-success btn-sm mx-2">
+                                <i class = "fa-solid fa-file-zipper"></i>
+                            </button>
+                            ' : '
+                            <button onclick="setRejected(' . $row->id . ')" type="button"
+                                    class="btn btn-danger btn-sm mx-2">
                                 <i class="fa-solid fa-square-xmark"></i>
                             </button>
+                            ') . '
+
 
                             ';
                 })
@@ -75,11 +84,20 @@ class ManageRequestRepository extends BaseRepository
 
     public function sign($request)
     {
-        $userId = Auth::id();
-        $letterAssignment = $this->find($request->id);
-        $letterAssignment->signed_by = $userId;
-        $letterAssignment->save();
-        Session::flash('message', 'The Operation was Completed Successfully');
-
+        DB::beginTransaction();
+        try {
+            $userId = Auth::id();
+            $letterAssignment = $this->find($request->id);
+            $letterAssignment->signed_by = $userId;
+            $letterAssignment->save();
+            $staffRequest = StaffRequest::find($letterAssignment->request_id);
+            $staffRequest->description = $staffRequest->description . "<br> Signed_by: " . $letterAssignment->assignedTo->name;
+            $staffRequest->save();
+            DB::commit();
+            Session::flash('message', 'The Update Operation was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
     }
 }
