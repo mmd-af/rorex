@@ -44,7 +44,7 @@ class ManageRequestRepository extends BaseRepository
                 ->addColumn('sign', function ($row) {
                     return '
                     <div class="form-switch">
-                    <input onclick="handleSign(event, ' . $row->id . ')" class="form-check-input" type="checkbox" role="switch" id="signed_by" name="signed_by" value="' . $row->signed_by . '" ' . ($row->signed_by ? 'checked' : '') . '>
+                    <input onclick="handleSign(event, ' . $row->id . ')" class="form-check-input" type="checkbox" role="switch" id="signed_by" name="signed_by" value="' . $row->signed_by . '" ' . ($row->signed_by ? 'checked disabled' : '') . '>
                     </div>';
 
                 })
@@ -60,8 +60,7 @@ class ManageRequestRepository extends BaseRepository
                                 <i class="fa-solid fa-square-arrow-up-right"></i>
                             </button>
                             <button onclick="requestForm(' . $row->id . ')" type="button"
-                                    class="btn btn-danger btn-sm mx-2" data-bs-toggle="modal"
-                                    data-bs-target="#forgetRequest">
+                                    class="btn btn-danger btn-sm mx-2" ' . ($row->signed_by ? 'disabled' : '') . '>
                                 <i class="fa-solid fa-square-xmark"></i>
                             </button>
 
