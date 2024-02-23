@@ -50,7 +50,6 @@ class ManageRequestRepository extends BaseRepository
                     <div class="form-switch">
                     <input onclick="handleSign(event, ' . $row->id . ')" class="form-check-input" type="checkbox" role="switch" id="signed_by" name="signed_by" value="' . $row->signed_by . '" ' . ($row->signed_by ? 'checked disabled' : '') . '>
                     </div>';
-
                 })
                 ->addColumn('action', function ($row) {
                     return '<button class="btn btn-light btn-sm mx-2" onclick="showReportModal(' . $row->id . ')">
@@ -115,15 +114,15 @@ class ManageRequestRepository extends BaseRepository
             $old_letterAssignment->status = "Referred to: " . $request->departamentRole;
             $old_letterAssignment->is_archive = 1;
             $old_letterAssignment->save();
-            $staffRequest = StaffRequest::find($old_letterAssignment->request_id);
-            $staffRequest->description = $staffRequest->description . "<br> status: Referred to: " . $request->departamentRole;
-            $staffRequest->save();
             $letterAssignment = new LetterAssignment();
             $letterAssignment->request_id = $old_letterAssignment->request_id;
             $letterAssignment->role_id = $role->id;
             $letterAssignment->assigned_to = $request->assigned_to;
             $letterAssignment->status = "waiting";
             $letterAssignment->save();
+            $staffRequest = StaffRequest::find($old_letterAssignment->request_id);
+            $staffRequest->description = $staffRequest->description . "<br> status: Referred To: " . $request->departamentRole . " Assigned To: " . $letterAssignment->assignedTo->name;
+            $staffRequest->save();
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {

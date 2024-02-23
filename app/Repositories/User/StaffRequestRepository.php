@@ -63,26 +63,28 @@ class StaffRequestRepository extends BaseRepository
         $userId = Auth::id();
         DB::beginTransaction();
         try {
-            $support = new StaffRequest();
-            $support->name = $request->name;
-            $support->user_id = $userId;
-            $support->email = $request->email;
-            $support->mobile_phone = $request->mobile_phone;
-            $support->subject = $request->subject;
-            $support->description = $request->description;
-            $support->organization = $request->departament;
-            $support->cod_staff = (int)$request->cod_staff;
-            $support->save();
+            $staffRequest = new StaffRequest();
+            $staffRequest->name = $request->name;
+            $staffRequest->user_id = $userId;
+            $staffRequest->email = $request->email;
+            $staffRequest->mobile_phone = $request->mobile_phone;
+            $staffRequest->subject = $request->subject;
+            $staffRequest->description = $request->description;
+            $staffRequest->organization = $request->departament;
+            $staffRequest->cod_staff = (int)$request->cod_staff;
+            $staffRequest->save();
             $role = Role::query()
                 ->select(['id', 'name'])
                 ->where('name', $request->departamentRole)
                 ->first();
             $assignment = new LetterAssignment();
-            $assignment->request_id = $support->id;
+            $assignment->request_id = $staffRequest->id;
             $assignment->role_id = $role->id;
             $assignment->assigned_to = $request->assigned_to;
             $assignment->status = "waiting";
             $assignment->save();
+            $staffRequest->description = $staffRequest->description . "<br> Assigned to: " . $assignment->assignedTo->name;
+            $staffRequest->save();
             DB::commit();
             Session::flash('message', 'Your Request Send Successfully');
         } catch (Exception $e) {
