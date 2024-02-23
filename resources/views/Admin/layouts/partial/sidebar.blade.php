@@ -21,7 +21,7 @@
                 </nav>
             </div>
             <div class="sb-sidenav-menu-heading">Requests</div>
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{route('admin.staffRequests.index')}}">
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                 Leave
             </a>
@@ -29,8 +29,6 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                 Support
             </a>
-
-
             <div class="sb-sidenav-menu-heading">Department</div>
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#DepartmentCollapseLayouts"
                aria-expanded="false" aria-controls="DepartmentCollapseLayouts">

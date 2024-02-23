@@ -23,7 +23,6 @@ class StaffRequestRepository extends BaseRepository
     public function getDataTable($request)
     {
         $userId = Auth::id();
-        $userEmail = Auth::user()->email;
         $data = $this->query()
             ->select([
                 'id',
@@ -36,9 +35,7 @@ class StaffRequestRepository extends BaseRepository
                 'created_at',
                 'is_archive'
             ])
-            ->where('cod_staff', $userId)
-            ->orWhere('email', $userEmail)
-            ->with('assignments')
+            ->where('user_id', $userId)
             ->get();
 
         if ($request->ajax()) {
@@ -63,10 +60,12 @@ class StaffRequestRepository extends BaseRepository
 
     public function store($request)
     {
+        $userId = Auth::id();
         DB::beginTransaction();
         try {
             $support = new StaffRequest();
             $support->name = $request->name;
+            $support->user_id = $userId;
             $support->email = $request->email;
             $support->mobile_phone = $request->mobile_phone;
             $support->subject = $request->subject;

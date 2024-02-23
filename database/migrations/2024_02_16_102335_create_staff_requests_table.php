@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('staff_requests', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('mobile_phone')->nullable();
