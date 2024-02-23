@@ -19,6 +19,7 @@
                     <th>Date of Request</th>
                     <th>Requests</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -26,6 +27,7 @@
                     <th>Date of Request</th>
                     <th>Requests</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
                 </tfoot>
                 <body>
@@ -45,8 +47,9 @@
                 ajax: "{{ route('admin.manageRequests.ajax.getDataTable') }}",
                 columns: [
                     {data: 'created_at', name: 'created_at', width: '10%'},
-                    {data: 'request_id', name: 'request_id'},
-                    {data: 'status', name: 'status', width: '20%'}
+                    {data: 'requests', name: 'requests', width: '60%'},
+                    {data: 'sign', name: 'sign', width: '10%'},
+                    {data: 'action', name: 'action', width: '20%'}
                 ],
                 initComplete: function () {
                     var table = this;
