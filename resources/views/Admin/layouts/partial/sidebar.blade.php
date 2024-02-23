@@ -21,9 +21,9 @@
                 </nav>
             </div>
             <div class="sb-sidenav-menu-heading">Requests</div>
-            <a class="nav-link" href="{{route('admin.staffRequests.index')}}">
+            <a class="nav-link" href="{{route('admin.manageRequests.index')}}">
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                Leave
+                Manage Requests
             </a>
             <a class="nav-link" href="{{route('admin.supports.index')}}">
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
