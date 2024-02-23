@@ -30,4 +30,9 @@ class ManageRequestAjaxController extends Controller
         return $this->manageRequestRepository->setPass($request);
     }
 
+    public function setReject(Request $request)
+    {
+        return $this->manageRequestRepository->setReject($request);
+    }
+
 }

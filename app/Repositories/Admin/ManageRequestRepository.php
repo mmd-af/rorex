@@ -87,11 +87,12 @@ class ManageRequestRepository extends BaseRepository
         DB::beginTransaction();
         try {
             $userId = Auth::id();
+            $userLastname = Auth::user()->name;
             $letterAssignment = $this->find($request->id);
             $letterAssignment->signed_by = $userId;
             $letterAssignment->save();
             $staffRequest = StaffRequest::find($letterAssignment->request_id);
-            $staffRequest->description = $staffRequest->description . "<br> Signed_by: " . $letterAssignment->assignedTo->name;
+            $staffRequest->description = $staffRequest->description . "<br> Signed_by: " . $userLastname;
             $staffRequest->save();
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
@@ -106,11 +107,32 @@ class ManageRequestRepository extends BaseRepository
     {
         DB::beginTransaction();
         try {
+            $userLastname = Auth::user()->name;
             $letterAssignment = $this->find($request->id);
             $letterAssignment->status = "Accepted";
             $letterAssignment->save();
             $staffRequest = StaffRequest::find($letterAssignment->request_id);
-            $staffRequest->description = $staffRequest->description . "<br> status: Accepted";
+            $staffRequest->description = $staffRequest->description . "<br> status: Accepted by: " . $userLastname;
+            $staffRequest->save();
+            DB::commit();
+            Session::flash('message', 'The Update Operation was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
+        return false;
+    }
+
+    public function setReject($request)
+    {
+        DB::beginTransaction();
+        try {
+            $userLastname = Auth::user()->name;
+            $letterAssignment = $this->find($request->id);
+            $letterAssignment->status = "Rejected";
+            $letterAssignment->save();
+            $staffRequest = StaffRequest::find($letterAssignment->request_id);
+            $staffRequest->description = $staffRequest->description . "<br> status: Rejected by: " . $userLastname;
             $staffRequest->save();
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');

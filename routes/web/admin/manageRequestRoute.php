@@ -24,6 +24,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'setPass',
                 'uses' => 'ManageRequestAjaxController@setPass'
             ]);
+            Route::post('/setReject', [
+                'as' => 'setReject',
+                'uses' => 'ManageRequestAjaxController@setReject'
+            ]);
         });
     });
 });
