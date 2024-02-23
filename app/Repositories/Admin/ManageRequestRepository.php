@@ -5,6 +5,7 @@ namespace App\Repositories\Admin;
 use App\Models\LetterAssignment\LetterAssignment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class ManageRequestRepository extends BaseRepository
@@ -70,5 +71,15 @@ class ManageRequestRepository extends BaseRepository
                 ->make(true);
         }
         return false;
+    }
+
+    public function sign($request)
+    {
+        $userId = Auth::id();
+        $letterAssignment = $this->find($request->id);
+        $letterAssignment->signed_by = $userId;
+        $letterAssignment->save();
+        Session::flash('message', 'The Operation was Completed Successfully');
+
     }
 }

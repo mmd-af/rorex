@@ -76,19 +76,14 @@
 
         function handleSign(event, id) {
             if (!confirm('Do you want to submit the signature for this item?')) {
-                // If the user cancels, prevent the default behavior of the checkbox click event
                 event.preventDefault();
-                console.log('Operation canceled');
             } else {
                 event.preventDefault();
-                // If the user confirms, you can proceed with your AJAX request
-                axios.post('/your-endpoint', {id: id})
+                axios.post("{{route('admin.manageRequests.ajax.sign')}}", {id: id})
                     .then(response => {
-                        // If the operation is successful, you can take necessary actions
-                        console.log(response.data);
+                        location.reload();
                     })
                     .catch(error => {
-                        // If an error occurs, handle it appropriately
                         console.error(error);
                     });
             }

@@ -16,18 +16,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'getDataTable',
                 'uses' => 'ManageRequestAjaxController@getDataTable'
             ]);
-//            Route::get('/getRoles', [
-//                'as' => 'getRoles',
-//                'uses' => 'ManageRequestAjaxController@getRoles'
-//            ]);
-//            Route::post('/getUserWithRole', [
-//                'as' => 'getUserWithRole',
-//                'uses' => 'ManageRequestAjaxController@getUserWithRole'
-//            ]);
-//            Route::post('/store', [
-//                'as' => 'store',
-//                'uses' => 'ManageRequestAjaxController@store'
-//            ]);
+            Route::post('/sign', [
+                'as' => 'sign',
+                'uses' => 'ManageRequestAjaxController@sign'
+            ]);
         });
     });
 });
