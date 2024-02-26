@@ -42,6 +42,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('rolles')->nullable();
+            $table->float('leave_balance')->default(0);
             $table->boolean('is_active')->default(1);
             $table->rememberToken();
             $table->timestamps();

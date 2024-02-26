@@ -99,6 +99,9 @@
                                 <input type="hidden" name="departament" value="{{Auth::user()->departament}}">
                             @endif
                             please approve my request for vacation during the period:
+                            <div class="row">
+                                <p class="small text-success"> Allowed leave= {{Auth::user()->leave_balance}} days</p>
+                            </div>
                             <div class="row mt-4" id="datesForLeave">
                             </div>
                             <div class="row mt-4 p-5" id="modalSubject">
@@ -115,14 +118,14 @@
                         </div>
                         <div class="mb-3">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-sm-12 col-lg-6">
                                     <label for="departamentRole" class="col-form-label">Referred to:</label>
                                     <select class="form-control" name="departamentRole" id="departamentRole"
                                             onclick="getRelateUserWithRole()">
                                         <option value="">SELECT DEPARTMENT</option>
                                     </select>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-sm-12 col-lg-6">
                                     User:
                                     <label for="assigned_to" class="col-form-label">Referred to:</label>
                                     <select class="form-control" name="assigned_to" id="assigned_to">
@@ -295,7 +298,6 @@
              <input type="hidden" name="vacation_day" value="${hours}:${minutes}">`;
             }
         }
-
 
         $(document).ready(function () {
             let departamentRole = document.getElementById('departamentRole');

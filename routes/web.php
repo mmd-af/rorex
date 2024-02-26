@@ -50,6 +50,9 @@ Route::get('/query1', function () {
 });
 
 Route::get('/query2', function () {
-    $user = User::find(2101);
-    $user->assignRole('HR');
+    $users = User::all();
+    foreach ($users as $user) {
+        $user->leave_balance = 15;
+        $user->save();
+    }
 });
