@@ -35,4 +35,9 @@ class ManageRequestAjaxController extends Controller
         return $this->manageRequestRepository->setReject($request);
     }
 
+    public function getArchiveDataTable(Request $request)
+    {
+        return $this->manageRequestRepository->getArchiveDataTable($request);
+    }
+
 }

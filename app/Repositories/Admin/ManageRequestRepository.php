@@ -43,6 +43,9 @@ class ManageRequestRepository extends BaseRepository
                     $originalDate = Carbon::parse($row->created_at);
                     return $originalDate->format('Y-m-d');
                 })
+                ->addColumn('user', function ($row) {
+                    return $row->request->user->name;
+                })
                 ->addColumn('requests', function ($row) {
                     return $row->request->description;
                 })
@@ -76,7 +79,7 @@ class ManageRequestRepository extends BaseRepository
 
                             ';
                 })
-                ->rawColumns(['created_at', 'requests', 'sign', 'action'])
+                ->rawColumns(['created_at', 'user','requests', 'sign', 'action'])
                 ->make(true);
         }
         return false;
@@ -173,6 +176,41 @@ class ManageRequestRepository extends BaseRepository
         } catch (Exception $e) {
             DB::rollBack();
             Session::flash('error', $e->getMessage());
+        }
+        return false;
+    }
+
+    public function getArchiveDataTable($request)
+    {
+        $userId = Auth::id();
+        $data = $this->query()
+            ->select([
+                'id',
+                'request_id',
+                'role_id',
+                'assigned_to',
+                'signed_by',
+                'status',
+                'created_at'
+            ])
+            ->where('assigned_to', $userId)
+            ->where('is_archive', 1)
+            ->with(['request'])
+            ->get();
+        if ($request->ajax()) {
+            return Datatables::of($data)
+                ->addColumn('created_at', function ($row) {
+                    $originalDate = Carbon::parse($row->created_at);
+                    return $originalDate->format('Y-m-d');
+                })
+                ->addColumn('user', function ($row) {
+                    return $row->request->user->name;
+                })
+                ->addColumn('requests', function ($row) {
+                    return $row->request->description;
+                })
+                ->rawColumns(['created_at', 'user', 'requests'])
+                ->make(true);
         }
         return false;
     }

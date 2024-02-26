@@ -25,4 +25,9 @@ class ManageRequestController extends Controller
         $this->manageRequestRepository->store($request);
         return redirect()->route('admin.manageRequests.index');
     }
+
+    public function archived()
+    {
+        return view('admin.manageRequests.archived');
+    }
 }

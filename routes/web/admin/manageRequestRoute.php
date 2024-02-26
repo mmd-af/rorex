@@ -14,6 +14,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'store',
                 'uses' => 'ManageRequestController@store'
             ]);
+            Route::get('/archived', [
+                'as' => 'archived',
+                'uses' => 'ManageRequestController@archived'
+            ]);
         });
         Route::group(['prefix' => 'manageRequests-ajax', 'as' => 'manageRequests.ajax.'], function () {
             Route::get('/getDataTable', [
@@ -31,6 +35,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
             Route::post('/setReject', [
                 'as' => 'setReject',
                 'uses' => 'ManageRequestAjaxController@setReject'
+            ]);
+            Route::get('/getArchiveDataTable', [
+                'as' => 'getArchiveDataTable',
+                'uses' => 'ManageRequestAjaxController@getArchiveDataTable'
             ]);
         });
     });
