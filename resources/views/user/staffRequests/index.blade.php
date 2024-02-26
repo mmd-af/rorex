@@ -153,12 +153,12 @@
                                 <div class="col-md-6">
                                     <label for="startDate" class="form-label">Start Date:</label>
                                     <input type="date" name="start_date" class="form-control" id="startDate"
-                                           onchange="calculateDateDifference()">
+                                           onchange="calculateDateDifference(1)">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="endDate" class="form-label">End Date:</label>
                                     <input type="date" name="end_date" class="form-control" id="endDate"
-                                           onchange="calculateDateDifference()">
+                                           onchange="calculateDateDifference(1)">
                                 </div>
                                 <div class="col-md-6">
                                     <h6 id="dateDifference"></h6>
@@ -174,12 +174,12 @@
                                 <div class="col-md-6">
                                     <label for="startDate" class="form-label">Start Date:</label>
                                     <input type="date" name="start_date" class="form-control" id="startDate"
-                                           onchange="calculateDateDifference()">
+                                           onchange="calculateDateDifference(2)">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="endDate" class="form-label">End Date:</label>
                                     <input type="date" name="end_date" class="form-control" id="endDate"
-                                           onchange="calculateDateDifference()">
+                                           onchange="calculateDateDifference(2)">
                                 </div>
                                 <div class="col-md-6">
                                     <h6 id="dateDifference"></h6>
@@ -260,9 +260,10 @@
             });
         });
 
-        function calculateDateDifference() {
+        function calculateDateDifference(x) {
             var startDateValue = document.getElementById('startDate').value.trim();
             var endDateValue = document.getElementById('endDate').value.trim();
+            let leave_balance = "{{Auth::user()->leave_balance}}";
             if (startDateValue !== '' && endDateValue !== '') {
                 var startDate = new Date(startDateValue);
                 var endDate = new Date(endDateValue);
@@ -272,9 +273,35 @@
                 }
                 var timeDifference = Math.abs(endDate - startDate + 1);
                 var dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-                document.getElementById('dateDifference').innerHTML =
-                    `<p class="text-success">${dayDifference} days</p>
-                 <input type="hidden" name="vacation_day" value="${dayDifference}">`;
+                let numberOfholidays = prompt('Number of holidays between dates');
+                let showInformation = document.getElementById('dateDifference');
+                if (x === 1) {
+                    showInformation.innerHTML =
+                        `<div class="p-5">
+                        <p class="text-info">Allowed leave= ${leave_balance} days</p>
+                        <p class="text-primary">Your Request= ${dayDifference} days</p>
+                        <p class="text-info">Holidays= ${numberOfholidays} days</p>
+                        <input type="hidden" name="numberOfholidays" value="${numberOfholidays}">
+                        <input type="hidden" name="leave_balance" value="${leave_balance}">
+                        <input type="hidden" name="vacation_day" value="${dayDifference}">
+                    </div>`;
+                    if ((dayDifference - numberOfholidays) > leave_balance) {
+                        let notAllowedDays = (dayDifference - numberOfholidays) - leave_balance;
+                        showInformation.innerHTML += `<div class="px-5">
+                             <p class="text-danger">Number of unpaid leave= ${notAllowedDays}</p>
+                        <input type="hidden" name="notAllowedDays" value="${notAllowedDays}">
+
+                           </div>`;
+                    }
+                }
+                if (x === 2) {
+                    showInformation.innerHTML =
+                        `<div class="p-5">
+                        <p class="text-primary">Your Request= ${dayDifference} days</p>
+                        <p class="text-info">Holidays= ${numberOfholidays} days</p>
+                        <input type="hidden" name="vacation_day" value="${dayDifference}">
+                    </div>`;
+                }
             }
         }
 
@@ -347,6 +374,9 @@
             var description = formData.get('description');
             var start_time = formData.get('start_time');
             var end_time = formData.get('end_time');
+            var notAllowedDays = formData.get('notAllowedDays');
+            var leave_balance = formData.get('leave_balance');
+            var numberOfholidays = formData.get('numberOfholidays');
 
             if (start_time === null && end_time === null) {
                 var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
@@ -354,7 +384,8 @@
                     "Subject: " + subject +
                     "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
                     "<br>please approve my request for vacation during the period:<br>" + startDay + " until: " + endDay + " <br> "
-                    + vacation_day + " days " + description + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
+                    + vacation_day + " days <br>Allowed leave: " + leave_balance + "<br>Holidays: " + numberOfholidays + "<br>Not Allowed Days: "
+                    + notAllowedDays + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
             } else {
                 var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
                     "with Code Staff: " + cod_staff + "<br>" +
