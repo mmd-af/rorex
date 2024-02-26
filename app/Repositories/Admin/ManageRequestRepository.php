@@ -4,6 +4,7 @@ namespace App\Repositories\Admin;
 
 use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
+use App\Models\User\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -143,6 +144,9 @@ class ManageRequestRepository extends BaseRepository
             $staffRequest = StaffRequest::find($letterAssignment->request_id);
             $staffRequest->description = $staffRequest->description . "<br> status: Accepted by: " . $userLastname;
             $staffRequest->save();
+            $user = User::find($staffRequest->user->id);
+            $user->leave_balance = $user->leave_balance - $staffRequest->vacation_day;
+            $user->save();
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {

@@ -290,8 +290,10 @@
                         showInformation.innerHTML += `<div class="px-5">
                              <p class="text-danger">Number of unpaid leave= ${notAllowedDays}</p>
                         <input type="hidden" name="notAllowedDays" value="${notAllowedDays}">
-
+                        <input type="hidden" name="realAllowedLeaveDays" value="${leave_balance}">
                            </div>`;
+                    } else {
+                        showInformation.innerHTML += `<input type="hidden" name="realAllowedLeaveDays" value="${dayDifference - numberOfholidays}">`;
                     }
                 }
                 if (x === 2) {
@@ -367,6 +369,7 @@
             var startDay = formData.get('start_date');
             var endDay = formData.get('end_date');
             var vacation_day = formData.get('vacation_day');
+            var realAllowedLeaveDays = formData.get('realAllowedLeaveDays');
             var email = formData.get('email');
             var departamentRole = formData.get('departamentRole');
             var subject = formData.get('subject');
@@ -383,9 +386,9 @@
                     "with Code Staff: " + cod_staff + "<br>" +
                     "Subject: " + subject +
                     "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
-                    "<br>please approve my request for vacation during the period:<br>" + startDay + " until: " + endDay + " <br> "
+                    "<br>please approve my request for vacation during the period:<br>" + startDay + " until: " + endDay + " <br> Request for: "
                     + vacation_day + " days <br>Allowed leave: " + leave_balance + "<br>Holidays: " + numberOfholidays + "<br>Not Allowed Days: "
-                    + notAllowedDays + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
+                    + notAllowedDays + "<br>for: " + description + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
             } else {
                 var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
                     "with Code Staff: " + cod_staff + "<br>" +
@@ -404,6 +407,7 @@
                 start_date: startDay,
                 end_date: endDay,
                 vacation_day: vacation_day,
+                realAllowedLeaveDays: realAllowedLeaveDays,
                 email: email,
                 departamentRole: departamentRole,
                 assigned_to: assigned_to

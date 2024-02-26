@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('organization')->nullable();
             $table->integer('cod_staff')->nullable();
+            $table->float('vacation_day')->default(0);
             $table->foreignId('read_by')->nullable();
             $table->foreign('read_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('read_at')->nullable();
