@@ -36,5 +36,14 @@ class UserController extends Controller
         $this->userRepository->update($request, $user);
         return redirect()->route('admin.users.index');
     }
+    public function updateLeaveBalance(Request $request, User $user)
+    {
+        $this->userRepository->updateLeaveBalance($request, $user);
+        return redirect()->route('admin.users.leaveBalance');
+    }
 
+    public function leaveBalance()
+    {
+        return view('admin.users.leaveBalance');
+    }
 }
