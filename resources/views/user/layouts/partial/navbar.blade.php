@@ -16,11 +16,12 @@
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-               aria-expanded="false">{{ Auth::user()->name }} ({{Auth::user()->cod_staff}})<i class="fas fa-user fa-fw"></i></a>
+               aria-expanded="false">{{ Auth::user()->name }} ({{Auth::user()->cod_staff}})<i
+                    class="fas fa-user fa-fw"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{{route('profile.edit')}}">Profile</a></li>
-                @if (Auth::check() && Auth::user()->rolles == 'admin')
-                  <li><a class="dropdown-item" href="{{route('admin.dashboard.index')}}">Admin Panel</a></li>
+                @if (!empty(auth()->user()->getPermissionsViaRoles()->toArray())||  !empty(auth()->user()->getAllPermissions()->toArray()) || Auth::user()->rolles == 'admin')
+                    <li><a class="dropdown-item" href="{{route('admin.dashboard.index')}}">Admin Panel</a></li>
                 @endif
                 <li>
                     <hr class="dropdown-divider"/>
