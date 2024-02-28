@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers\Admin\User'], function () {
+Route::group(['middleware' => ['web', 'auth', 'super.admin'], 'namespace' => 'App\Http\Controllers\Admin\User'], function () {
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
             Route::get('/', [
@@ -17,15 +17,14 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'import',
                 'uses' => 'UserController@import'
             ]);
-            Route::put('{user}/updateLeaveBalance', [
-                'as' => 'updateLeaveBalance',
-                'uses' => 'UserController@updateLeaveBalance'
-            ]);
             Route::get('/leaveBalance', [
                 'as' => 'leaveBalance',
                 'uses' => 'UserController@leaveBalance'
             ]);
-
+            Route::put('{user}/updateLeaveBalance', [
+                'as' => 'updateLeaveBalance',
+                'uses' => 'UserController@updateLeaveBalance'
+            ]);
         });
         Route::group(['prefix' => 'users-ajax', 'as' => 'users.ajax.'], function () {
             Route::post('/getData', [

@@ -12,7 +12,7 @@ Route::group(['middleware' => ['web', 'auth','permission:daily_reports'], 'names
             Route::put('/import', [
                 'as' => 'import',
                 'uses' => 'DailyReportController@import'
-            ]);
+            ])->middleware('permission:update_daily_reports');
         });
         Route::group(['prefix' => 'dailyReports-ajax', 'as' => 'dailyReports.ajax.'], function () {
             Route::get('/getDataTable', [
