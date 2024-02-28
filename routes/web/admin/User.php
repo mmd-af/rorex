@@ -17,14 +17,6 @@ Route::group(['middleware' => ['web', 'auth', 'super.admin'], 'namespace' => 'Ap
                 'as' => 'import',
                 'uses' => 'UserController@import'
             ]);
-            Route::get('/leaveBalance', [
-                'as' => 'leaveBalance',
-                'uses' => 'UserController@leaveBalance'
-            ]);
-            Route::put('{user}/updateLeaveBalance', [
-                'as' => 'updateLeaveBalance',
-                'uses' => 'UserController@updateLeaveBalance'
-            ]);
         });
         Route::group(['prefix' => 'users-ajax', 'as' => 'users.ajax.'], function () {
             Route::post('/getData', [
@@ -34,10 +26,6 @@ Route::group(['middleware' => ['web', 'auth', 'super.admin'], 'namespace' => 'Ap
             Route::get('/getDataTable', [
                 'as' => 'getDataTable',
                 'uses' => 'UserAjaxController@getDataTable'
-            ]);
-            Route::get('/getLeaveBalanceData', [
-                'as' => 'getLeaveBalanceData',
-                'uses' => 'UserAjaxController@getLeaveBalanceData'
             ]);
             Route::post('/show', [
                 'as' => 'show',

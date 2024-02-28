@@ -45,7 +45,7 @@
                 processing: true,
                 serverSide: true,
                 pageLength: 25,
-                ajax: "{{ route('admin.users.ajax.getLeaveBalanceData') }}",
+                ajax: "{{ route('admin.manageStaffLeaves.ajax.getDataTable') }}",
                 columns: [
                     {data: 'cod_staff', name: 'cod_staff',width:'10%'},
                     {data: 'prenumele_tatalui', name: 'prenumele_tatalui',width:'20%'},

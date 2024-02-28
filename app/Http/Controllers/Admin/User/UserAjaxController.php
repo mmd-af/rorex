@@ -20,11 +20,6 @@ class UserAjaxController extends Controller
         return $this->userRepository->getDataTable($request);
     }
 
-    public function getLeaveBalanceData(Request $request)
-    {
-        return $this->userRepository->getLeaveBalanceData($request);
-    }
-
     public function show(Request $request)
     {
         return $this->userRepository->show($request);
