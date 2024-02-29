@@ -79,7 +79,7 @@ class ManageRequestRepository extends BaseRepository
 
                             ';
                 })
-                ->rawColumns(['created_at', 'user','requests', 'sign', 'action'])
+                ->rawColumns(['created_at', 'user', 'requests', 'sign', 'action'])
                 ->make(true);
         }
         return false;
@@ -148,7 +148,15 @@ class ManageRequestRepository extends BaseRepository
             $staffRequest->description = $staffRequest->description . "<br> status: Accepted by: " . $userLastname;
             $staffRequest->save();
             $user = User::find($staffRequest->user->id);
-            $user->leave_balance = $user->leave_balance - $staffRequest->vacation_day;
+            $leaveBalance = $user->leave_balance;
+            $vacationDays = $staffRequest->vacation_day;
+            $leaveBalanceFloor = $leaveBalance - floor($leaveBalance);
+            if ($vacationDays <= $leaveBalance) {
+                $newLeaveBalance = ($leaveBalance - $vacationDays) + $leaveBalanceFloor;
+            } else {
+                $newLeaveBalance = $leaveBalanceFloor;
+            }
+            $user->leave_balance = $newLeaveBalance;
             $user->save();
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');

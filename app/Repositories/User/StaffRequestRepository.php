@@ -72,7 +72,7 @@ class StaffRequestRepository extends BaseRepository
             $staffRequest->description = $request->description;
             $staffRequest->organization = $request->departament;
             $staffRequest->cod_staff = (int)$request->cod_staff;
-            $staffRequest->vacation_day = (int)$request->realAllowedLeaveDays;
+            $staffRequest->vacation_day = (int)$request->vacation_day;
             $staffRequest->save();
             $role = Role::query()
                 ->select(['id', 'name'])

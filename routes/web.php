@@ -52,7 +52,7 @@ Route::get('/query1', function () {
 Route::get('/query2', function () {
     $users = User::all();
     foreach ($users as $user) {
-        $user->leave_balance = 15;
+        $user->leave_balance = $user->leave_balance + 1.75;
         $user->save();
     }
 });

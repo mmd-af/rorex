@@ -287,6 +287,7 @@
                     </div>`;
                     if ((dayDifference - numberOfholidays) > leave_balance) {
                         let notAllowedDays = (dayDifference - numberOfholidays) - leave_balance;
+                        notAllowedDays = Math.ceil(notAllowedDays);
                         showInformation.innerHTML += `<div class="px-5">
                              <p class="text-danger">Number of unpaid leave= ${notAllowedDays}</p>
                         <input type="hidden" name="notAllowedDays" value="${notAllowedDays}">
