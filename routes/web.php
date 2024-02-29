@@ -56,3 +56,11 @@ Route::get('/query2', function () {
         $user->save();
     }
 });
+
+Route::get('/query3', function () {
+    $users = User::all();
+    foreach ($users as $user) {
+        $user->givePermissionTo('employees');
+        $user->save();
+    }
+});
