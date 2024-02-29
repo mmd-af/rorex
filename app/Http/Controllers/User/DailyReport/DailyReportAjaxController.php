@@ -26,4 +26,10 @@ class DailyReportAjaxController extends Controller
             'data' => $this->dailyReportRepository->getData($request)
         ]);
     }
+
+    public function getRoles(Request $request)
+    {
+        return $this->dailyReportRepository->getRoles($request);
+    }
+
 }

@@ -6,6 +6,7 @@ use App\Models\DailyReport\DailyReport;
 use App\Models\Support\Support;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class DailyReportRepository extends BaseRepository
@@ -59,6 +60,17 @@ class DailyReportRepository extends BaseRepository
             ])
             ->where('id', $request->dailyReport_id)
             ->first();
+    }
+
+    public function getRoles($request)
+    {
+        return Role::query()
+            ->select([
+                'id',
+                'name'
+            ])
+            ->get();
+
     }
 
     public function supportRequest($request)

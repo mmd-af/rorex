@@ -97,8 +97,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="organization" class="col-form-label">Organization:</label>
-                            <input type="text" class="form-control" value="accounting" disabled>
-                            <input type="hidden" id="organization" name="organization" value="accounting">
+                            <select name="organization" class="form-control" id="departamentRole">
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="col-form-label">Message:</label>
@@ -161,6 +161,19 @@
                     });
                 }
             });
+        });
+
+        $(document).ready(function () {
+            let departamentRole = document.getElementById('departamentRole');
+            axios.get('{{route('user.dailyReports.ajax.getRoles')}}')
+                .then(function (response) {
+                    response.data.forEach(function (item) {
+                        departamentRole.innerHTML += `<option value="${item.name}">${item.name}</option>`;
+                    });
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
         });
 
         function requestForm(id) {
