@@ -119,6 +119,7 @@ class ManageRequestRepository extends BaseRepository
             $old_letterAssignment->is_archive = 1;
             $old_letterAssignment->save();
             $letterAssignment = new LetterAssignment();
+            $letterAssignment->user_id = $old_letterAssignment->user_id;
             $letterAssignment->request_id = $old_letterAssignment->request_id;
             $letterAssignment->role_id = $role->id;
             $letterAssignment->assigned_to = $request->assigned_to;
