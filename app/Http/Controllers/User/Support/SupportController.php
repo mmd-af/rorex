@@ -23,6 +23,6 @@ class SupportController extends Controller
     public function store(SupportRequest $request)
     {
         $this->supportRepository->store($request);
-        return view('user.supports.index');
+        return redirect()->route('user.supports.index');
     }
 }

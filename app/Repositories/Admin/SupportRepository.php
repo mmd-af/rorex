@@ -16,6 +16,8 @@ class SupportRepository extends BaseRepository
 
     public function getDataTable($request)
     {
+        $user = Auth::user();
+        $roles = $user->getRoleNames();
         $data = $this->query()
             ->select([
                 'id',
@@ -26,6 +28,7 @@ class SupportRepository extends BaseRepository
                 'is_archive'
             ])
             ->where('is_archive', 0)
+            ->whereIn('organization', $roles)
             ->with('reader')
             ->get();
         if ($request->ajax()) {
@@ -52,6 +55,8 @@ class SupportRepository extends BaseRepository
 
     public function getArchiveDataTable($request)
     {
+        $user = Auth::user();
+        $roles = $user->getRoleNames();
         $data = $this->query()
             ->select([
                 'id',
@@ -62,6 +67,7 @@ class SupportRepository extends BaseRepository
                 'is_archive'
             ])
             ->where('is_archive', 1)
+            ->whereIn('organization', $roles)
             ->with('reader')
             ->get();
         if ($request->ajax()) {
