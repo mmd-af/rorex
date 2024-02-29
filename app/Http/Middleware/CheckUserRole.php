@@ -16,7 +16,7 @@ class CheckUserRole
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!empty(auth()->user()->getPermissionsViaRoles()->toArray()) || !empty(auth()->user()->getAllPermissions()->toArray()) || Auth::user()->rolles == 'admin') {
+        if (!empty(auth()->user()->getRoleNames()->toArray()) || !empty(auth()->user()->getAllPermissions()->toArray()) || Auth::user()->rolles == 'admin') {
             return $next($request);
         } else {
             return redirect()->route('user.dashboard.index');

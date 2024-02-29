@@ -20,7 +20,7 @@
                     class="fas fa-user fa-fw"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{{route('profile.edit')}}">Profile</a></li>
-                @if (!empty(auth()->user()->getPermissionsViaRoles()->toArray())||  !empty(auth()->user()->getAllPermissions()->toArray()) || Auth::user()->rolles == 'admin')
+                @if (!empty(auth()->user()->getRoleNames()->toArray())||  !empty(auth()->user()->getAllPermissions()->toArray()) || Auth::user()->rolles == 'admin')
                     <li><a class="dropdown-item" href="{{route('admin.dashboard.index')}}">Admin Panel</a></li>
                 @endif
                 <li>
