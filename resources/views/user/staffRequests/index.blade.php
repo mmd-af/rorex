@@ -418,7 +418,7 @@
                     location.reload();
                 })
                 .catch(function (error) {
-                    alert(error.message)
+                    alert(error.request.response)
                 });
         });
     </script>

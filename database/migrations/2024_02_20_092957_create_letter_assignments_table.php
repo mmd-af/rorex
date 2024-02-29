@@ -12,6 +12,8 @@ return new class extends Migration {
     {
         Schema::create('letter_assignments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('request_id');
             $table->foreign('request_id')->references('id')->on('staff_requests')->onDelete('cascade');
             $table->unsignedBigInteger('role_id');

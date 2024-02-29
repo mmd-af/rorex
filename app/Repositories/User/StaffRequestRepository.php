@@ -61,36 +61,46 @@ class StaffRequestRepository extends BaseRepository
     public function store($request)
     {
         $userId = Auth::id();
-        DB::beginTransaction();
-        try {
-            $staffRequest = new StaffRequest();
-            $staffRequest->name = $request->name;
-            $staffRequest->user_id = $userId;
-            $staffRequest->email = $request->email;
-            $staffRequest->mobile_phone = $request->mobile_phone;
-            $staffRequest->subject = $request->subject;
-            $staffRequest->description = $request->description;
-            $staffRequest->organization = $request->departament;
-            $staffRequest->cod_staff = (int)$request->cod_staff;
-            $staffRequest->vacation_day = (int)$request->vacation_day;
-            $staffRequest->save();
-            $role = Role::query()
-                ->select(['id', 'name'])
-                ->where('name', $request->departamentRole)
-                ->first();
-            $assignment = new LetterAssignment();
-            $assignment->request_id = $staffRequest->id;
-            $assignment->role_id = $role->id;
-            $assignment->assigned_to = $request->assigned_to;
-            $assignment->status = "waiting";
-            $assignment->save();
-            $staffRequest->description = $staffRequest->description . "<br> Assigned to: " . $assignment->assignedTo->name;
-            $staffRequest->save();
-            DB::commit();
-            Session::flash('message', 'Your Request Send Successfully');
-        } catch (Exception $e) {
-            DB::rollBack();
-            Session::flash('error', $e->getMessage());
+        $checkAssignment = LetterAssignment::query()
+            ->where('user_id', $userId)
+            ->where('status', 'waiting')
+            ->first();
+        if (!is_null($checkAssignment)) {
+            Session::flash('error', 'You have a pending request');
+            return false;
+        } else {
+            DB::beginTransaction();
+            try {
+                $staffRequest = new StaffRequest();
+                $staffRequest->name = $request->name;
+                $staffRequest->user_id = $userId;
+                $staffRequest->email = $request->email;
+                $staffRequest->mobile_phone = $request->mobile_phone;
+                $staffRequest->subject = $request->subject;
+                $staffRequest->description = $request->description;
+                $staffRequest->organization = $request->departament;
+                $staffRequest->cod_staff = (int)$request->cod_staff;
+                $staffRequest->vacation_day = (int)$request->vacation_day;
+                $staffRequest->save();
+                $role = Role::query()
+                    ->select(['id', 'name'])
+                    ->where('name', $request->departamentRole)
+                    ->first();
+                $assignment = new LetterAssignment();
+                $assignment->user_id = $userId;
+                $assignment->request_id = $staffRequest->id;
+                $assignment->role_id = $role->id;
+                $assignment->assigned_to = $request->assigned_to;
+                $assignment->status = "waiting";
+                $assignment->save();
+                $staffRequest->description = $staffRequest->description . "<br> Assigned to: " . $assignment->assignedTo->name;
+                $staffRequest->save();
+                DB::commit();
+                Session::flash('message', 'Your Request Send Successfully');
+            } catch (Exception $e) {
+                DB::rollBack();
+                Session::flash('error', $e->getMessage());
+            }
         }
     }
 

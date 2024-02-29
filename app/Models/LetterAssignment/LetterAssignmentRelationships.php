@@ -8,6 +8,11 @@ use Spatie\Permission\Models\Role;
 
 trait LetterAssignmentRelationships
 {
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function request()
     {
         return $this->belongsTo(StaffRequest::class);
