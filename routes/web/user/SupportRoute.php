@@ -19,6 +19,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'getDataTable',
                 'uses' => 'SupportAjaxController@getDataTable'
             ]);
+            Route::get('/getRoles', [
+                'as' => 'getRoles',
+                'uses' => 'SupportAjaxController@getRoles'
+            ]);
         });
     });
 });

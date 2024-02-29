@@ -93,9 +93,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="organization" class="col-form-label">Organization:</label>
-                            <select class="form-control" name="organization" id="organization">
-                                <option value="manager">Manager</option>
-                                <option value="accounting">Accounting</option>
+                            <select name="organization" class="form-control" id="departamentRole">
                             </select>
                         </div>
                         <div class="mb-3">
@@ -151,6 +149,18 @@
                     });
                 }
             });
+        });
+        $(document).ready(function () {
+            let departamentRole = document.getElementById('departamentRole');
+            axios.get('{{route('user.supports.ajax.getRoles')}}')
+                .then(function (response) {
+                    response.data.forEach(function (item) {
+                        departamentRole.innerHTML += `<option value="${item.name}">${item.name}</option>`;
+                    });
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
         });
     </script>
 @endsection

@@ -6,6 +6,7 @@ use App\Models\Support\Support;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class SupportRepository extends BaseRepository
@@ -45,6 +46,17 @@ class SupportRepository extends BaseRepository
                 ->make(true);
         }
         return false;
+    }
+
+    public function getRoles($request)
+    {
+        return Role::query()
+            ->select([
+                'id',
+                'name'
+            ])
+            ->get();
+
     }
 
     public function store($request)

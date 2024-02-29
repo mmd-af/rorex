@@ -19,4 +19,9 @@ class SupportAjaxController extends Controller
     {
         return $this->supportRepository->getDataTable($request);
     }
+
+    public function getRoles(Request $request)
+    {
+        return $this->supportRepository->getRoles($request);
+    }
 }
