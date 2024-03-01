@@ -29,6 +29,12 @@
                 onclick="LeaveRequestForHour()">
             Request for Hourly leave <i class="fa-solid fa-square-arrow-up-right"></i>
         </button>
+        <button type="button"
+                class="btn btn-primary mx-3" data-bs-toggle="modal"
+                data-bs-target="#LeaveRequest"
+                onclick="CustomRequest()">
+            Custom Request <i class="fa-solid fa-square-arrow-up-right"></i>
+        </button>
     </div>
     <div class="card mb-4">
         <div class="card-body table-responsive">
@@ -164,7 +170,9 @@
                                     <h6 id="dateDifference"></h6>
                                 </div>`;
             let modalSubject = document.getElementById('modalSubject');
-            modalSubject.innerHTML = `<input type="hidden" name="subject" value="Leave Request for Rest">
+            modalSubject.innerHTML = `
+<input type="hidden" name="kind" value="Rest">
+<input type="hidden" name="subject" value="Leave Request for Rest">
                         <input type="hidden" name="description" value="vacation">`;
         }
 
@@ -185,7 +193,9 @@
                                     <h6 id="dateDifference"></h6>
                                 </div>`;
             let modalSubject = document.getElementById('modalSubject');
-            modalSubject.innerHTML = `<input type="hidden" name="subject" value="leave for special events">
+            modalSubject.innerHTML = `
+                                <input type="hidden" name="kind" value="SpecialEvents">
+                                <input type="hidden" name="subject" value="leave for special events">
                                 <label for="description">explain:</label>
                                 <input type="text" class="form-control" name="description" id="description" value="">`;
             const descriptionInput = document.getElementById('description');
@@ -220,8 +230,25 @@
         <h6 id="timeDifference"></h6>
     </div>`;
             let modalSubject = document.getElementById('modalSubject');
-            modalSubject.innerHTML = `<input type="hidden" name="subject" value="Leave Request for Hour">
+            modalSubject.innerHTML = `
+                        <input type="hidden" name="kind" value="Hour">
+                        <input type="hidden" name="subject" value="Leave Request for Hour">
                         <input type="hidden" name="description" value="hour">`;
+        }
+
+        function CustomRequest() {
+            let datesForLeave = document.getElementById('datesForLeave');
+            datesForLeave.innerHTML = ``;
+            let modalSubject = document.getElementById('modalSubject');
+            let start_date = new Date();
+            modalSubject.innerHTML = `
+<input type="hidden" name="kind" value="CustomRequest">
+<input type="hidden" class="form-control" name="vacation_day" value="0">
+<input type="hidden" class="form-control" name="start_date" value="${start_date.toISOString().split('T')[0]}">
+<label for="subject">Subject:</label>
+<input type="text" class="form-control" name="subject" id="subject" value="">
+<label for="description">Description:</label>
+<textarea name="description" class="form-control" id="description"></textarea>`;
         }
 
         $(document).ready(function () {
@@ -381,8 +408,8 @@
             var notAllowedDays = formData.get('notAllowedDays');
             var leave_balance = formData.get('leave_balance');
             var numberOfholidays = formData.get('numberOfholidays');
-
-            if (start_time === null && end_time === null) {
+            var kind = formData.get('kind');
+            if (kind === "Rest" || kind === "SpecialEvents") {
                 var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
                     "with Code Staff: " + cod_staff + "<br>" +
                     "Subject: " + subject +
@@ -390,13 +417,21 @@
                     "<br>please approve my request for vacation during the period:<br>" + startDay + " until: " + endDay + " <br> Request for: "
                     + vacation_day + " days <br>Allowed leave: " + leave_balance + "<br>Holidays: " + numberOfholidays + "<br>Not Allowed Days: "
                     + notAllowedDays + "<br>for: " + description + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
-            } else {
+            }
+            if (kind === "Hour") {
                 var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
                     "with Code Staff: " + cod_staff + "<br>" +
                     "Subject: " + subject +
                     "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
                     "<br>please approve my request for hour vacation during the date:<br>" + startDay + "<br>between: " + start_time + " until: "
                     + end_time + " <br> " + vacation_day + description + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
+            }
+            if (kind === "CustomRequest") {
+                var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
+                    "with Code Staff: " + cod_staff + "<br>" +
+                    "Subject: " + subject +
+                    "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
+                    "<br>" + description + "<br>Date of Request= " + startDay + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
             }
             let data = {
                 prenumele_tatalui: prenumele_tatalui,
