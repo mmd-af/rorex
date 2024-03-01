@@ -96,8 +96,17 @@
                             <input type="text" class="form-control" id="subject" name="subject" value="">
                         </div>
                         <div class="mb-3">
-                            <label for="organization" class="col-form-label">Organization:</label>
-                            <select name="organization" class="form-control" id="departamentRole">
+                            <label for="departamentRole" class="col-form-label">Referred to:</label>
+                            <select class="form-control" name="departamentRole" id="departamentRole"
+                                    onclick="getRelateUserWithRole()">
+                                <option value="">SELECT DEPARTMENT</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            User:
+                            <label for="assigned_to" class="col-form-label">Referred to:</label>
+                            <select class="form-control" name="assigned_to" id="assigned_to">
+                                <option value="">SELECT USER</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -175,6 +184,23 @@
                     console.error(error);
                 });
         });
+
+        function getRelateUserWithRole() {
+            let assignedTo = document.getElementById('assigned_to');
+            assignedTo.innerHTML = ``;
+            let data = {
+                role_name: departamentRole.value
+            }
+            axios.post('{{route('user.dailyReports.ajax.getUserWithRole')}}', data)
+                .then(function (response) {
+                    response.data.forEach(function (item) {
+                        assignedTo.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                    });
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        }
 
         function requestForm(id) {
             let alert = document.getElementById('alert');

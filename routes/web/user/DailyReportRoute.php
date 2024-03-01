@@ -27,6 +27,10 @@ Route::group(['middleware' => ['web', 'auth', 'permission:employees'], 'namespac
                 'as' => 'getRoles',
                 'uses' => 'DailyReportAjaxController@getRoles'
             ]);
+            Route::post('/getUserWithRole', [
+                'as' => 'getUserWithRole',
+                'uses' => 'DailyReportAjaxController@getUserWithRole'
+            ]);
         });
     });
 });

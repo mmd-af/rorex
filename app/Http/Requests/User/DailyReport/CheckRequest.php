@@ -4,7 +4,7 @@ namespace App\Http\Requests\User\DailyReport;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SupportRequest extends FormRequest
+class CheckRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,8 @@ class SupportRequest extends FormRequest
             'name' => ['required'],
             'subject' => ['required'],
             'description' => ['required'],
-            'organization' => ['required']
+            'departamentRole' => ['required'],
+            'assigned_to' => ['required']
         ];
     }
 }

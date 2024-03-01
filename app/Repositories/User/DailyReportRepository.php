@@ -6,6 +6,7 @@ use App\Models\DailyReport\DailyReport;
 use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
 use App\Models\Support\Support;
+use App\Models\User\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -78,6 +79,17 @@ class DailyReportRepository extends BaseRepository
 
     }
 
+    public function getUserWithRole($request)
+    {
+        return User::query()
+            ->select([
+                'id',
+                'name'
+            ])
+            ->role($request->role_name)
+            ->get();
+    }
+
     public function checkRequest($request)
     {
         $userId = Auth::id();
@@ -92,14 +104,14 @@ class DailyReportRepository extends BaseRepository
             $staffRequest->description = "Subject: " . $request->subject . "
                             <strong> Check For Date: " . $request->date . "
                             </strong><br>" . $request->description . "
-                            <br> Refered to: " . $request->departament;
-            $staffRequest->organization = $request->departament;
+                            <br> Refered to: " . $request->departamentRole;
+            $staffRequest->organization = $request->departamentRole;
             $staffRequest->cod_staff = (int)$request->cod_staff;
             $staffRequest->vacation_day = (int)$request->vacation_day;
             $staffRequest->save();
             $role = Role::query()
                 ->select(['id', 'name'])
-                ->where('name', $request->departament)
+                ->where('name', $request->departamentRole)
                 ->first();
             $assignment = new LetterAssignment();
             $assignment->user_id = $userId;
