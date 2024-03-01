@@ -9,9 +9,9 @@ Route::group(['middleware' => ['web', 'auth', 'permission:employees'], 'namespac
                 'as' => 'index',
                 'uses' => 'DailyReportController@index'
             ]);
-            Route::post('/supportRequest', [
-                'as' => 'supportRequest',
-                'uses' => 'DailyReportController@supportRequest'
+            Route::post('/checkRequest', [
+                'as' => 'checkRequest',
+                'uses' => 'DailyReportController@checkRequest'
             ]);
         });
         Route::group(['prefix' => 'dailyReports-ajax', 'as' => 'dailyReports.ajax.'], function () {

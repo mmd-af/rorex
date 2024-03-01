@@ -3,9 +3,14 @@
 namespace App\Repositories\User;
 
 use App\Models\DailyReport\DailyReport;
+use App\Models\LetterAssignment\LetterAssignment;
+use App\Models\StaffRequest\StaffRequest;
 use App\Models\Support\Support;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -73,16 +78,43 @@ class DailyReportRepository extends BaseRepository
 
     }
 
-    public function supportRequest($request)
+    public function checkRequest($request)
     {
-        $support = new Support();
-        $support->name = $request->name;
-        $support->email = $request->email;
-        $support->mobile_phone = $request->mobile_phone;
-        $support->subject = $request->subject;
-        $support->description = "<strong>Check For Date: " . $request->date . "</strong><br>" . $request->description;
-        $support->organization = $request->organization;
-        $support->cod_staff = (int)$request->cod_staff;
-        $support->save();
+        $userId = Auth::id();
+        DB::beginTransaction();
+        try {
+            $staffRequest = new StaffRequest();
+            $staffRequest->name = $request->name;
+            $staffRequest->user_id = $userId;
+            $staffRequest->email = $request->email;
+            $staffRequest->mobile_phone = $request->mobile_phone;
+            $staffRequest->subject = $request->subject;
+            $staffRequest->description = "Subject: " . $request->subject . "
+                            <strong> Check For Date: " . $request->date . "
+                            </strong><br>" . $request->description . "
+                            <br> Refered to: " . $request->departament;
+            $staffRequest->organization = $request->departament;
+            $staffRequest->cod_staff = (int)$request->cod_staff;
+            $staffRequest->vacation_day = (int)$request->vacation_day;
+            $staffRequest->save();
+            $role = Role::query()
+                ->select(['id', 'name'])
+                ->where('name', $request->departament)
+                ->first();
+            $assignment = new LetterAssignment();
+            $assignment->user_id = $userId;
+            $assignment->request_id = $staffRequest->id;
+            $assignment->role_id = $role->id;
+            $assignment->assigned_to = $request->assigned_to;
+            $assignment->status = "waiting";
+            $assignment->save();
+            $staffRequest->description = $staffRequest->description . "<br> Assigned to: " . $assignment->assignedTo->name;
+            $staffRequest->save();
+            DB::commit();
+            Session::flash('message', 'Your Request Send Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
     }
 }

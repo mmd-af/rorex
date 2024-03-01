@@ -18,19 +18,12 @@ class DailyReportController extends Controller
 
     public function index()
     {
-//        $dailyReports = $this->dailyReportRepository->getOwnReport();
         return view('user.dailyReports.index');
     }
 
-//    public function filter(Request $request)
-//    {
-//        $dailyReports = $this->dailyReportRepository->getOwnReportFiltered($request);
-//        return view('user.dailyReports.index', compact('dailyReports'));
-//    }
-
-    public function supportRequest(SupportRequest $request)
+    public function checkRequest(SupportRequest $request)
     {
-        $this->dailyReportRepository->supportRequest($request);
+        $this->dailyReportRepository->checkRequest($request);
         return redirect()->route('user.dailyReports.index')->with(['message' => 'Your request has been successfully registered']);
     }
 }

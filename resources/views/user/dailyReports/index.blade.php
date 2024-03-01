@@ -75,7 +75,7 @@
                         </div>
                     </div>
 
-                    <form action="{{route('user.dailyReports.supportRequest')}}" method="post">
+                    <form action="{{route('user.dailyReports.checkRequest')}}" method="post">
                         @csrf
                         <div class="mb-3">
                             <label for="cod_staff" class="col-form-label">Staff:
