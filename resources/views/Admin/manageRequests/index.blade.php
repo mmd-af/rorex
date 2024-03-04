@@ -205,17 +205,25 @@
                     console.error(error);
                 });
         }
+
         function printContent(content) {
             var printWindow = window.open('', '_blank');
+            let imageUrl = "{{asset('build/img/logo.png')}}";
             printWindow.document.write('<html><head><title>Print Description</title>');
             printWindow.document.write('<style>');
-            printWindow.document.write('@media print {'); // استایل‌ها فقط برای چاپ اعمال شوند
-            printWindow.document.write('  body { background-color: white; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }'); // چیدمان با CSS Grid
-            printWindow.document.write('  .description-container { border: 2px solid green; padding: 20px; }'); // استایل محتوا
-            printWindow.document.write('  @page { size: A4 landscape; }'); // تنظیم اندازه و جهت چاپ برگ A4 به صورت landscape
+            printWindow.document.write('@media print {');
+            printWindow.document.write('  body { background-color: white; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }');
+            printWindow.document.write('  .description-container { border: 2px solid #009799; padding: 20px; }');
+            printWindow.document.write('  .logo-container { grid-column: span 2; text-align: center; }');
+            printWindow.document.write('  .logo-container img { max-width: 100%; height: auto; }');
+            printWindow.document.write('  img { max-width: 100%; height: auto; display: block; margin: 0 auto; }');
+            printWindow.document.write('  @page { size: A4 landscape; }');
             printWindow.document.write('}');
             printWindow.document.write('</style>');
             printWindow.document.write('</head><body>');
+            printWindow.document.write('<div class="logo-container">');
+            printWindow.document.write('<img src="' + imageUrl + '" alt="Rorex - Pipe">');
+            printWindow.document.write('</div>');
             printWindow.document.write('<div class="description-container">');
             printWindow.document.write(content);
             printWindow.document.write('</div>');
@@ -225,6 +233,11 @@
             printWindow.document.write('</body></html>');
             printWindow.document.close();
             printWindow.print();
+
+
+
+
         }
     </script>
+
 @endsection
