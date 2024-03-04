@@ -195,5 +195,36 @@
                     });
             }
         }
+
+        function printDescription(id) {
+            axios.post("{{route('admin.manageRequests.ajax.getDescriptionForPrint')}}", {id: id})
+                .then(response => {
+                    printContent(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+        function printContent(content) {
+            var printWindow = window.open('', '_blank');
+            printWindow.document.write('<html><head><title>Print Description</title>');
+            printWindow.document.write('<style>');
+            printWindow.document.write('@media print {'); // استایل‌ها فقط برای چاپ اعمال شوند
+            printWindow.document.write('  body { background-color: white; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }'); // چیدمان با CSS Grid
+            printWindow.document.write('  .description-container { border: 2px solid green; padding: 20px; }'); // استایل محتوا
+            printWindow.document.write('  @page { size: A4 landscape; }'); // تنظیم اندازه و جهت چاپ برگ A4 به صورت landscape
+            printWindow.document.write('}');
+            printWindow.document.write('</style>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write('<div class="description-container">');
+            printWindow.document.write(content);
+            printWindow.document.write('</div>');
+            printWindow.document.write('<div class="description-container">');
+            printWindow.document.write(content);
+            printWindow.document.write('</div>');
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
     </script>
 @endsection

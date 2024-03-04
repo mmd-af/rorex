@@ -56,7 +56,7 @@ class ManageRequestRepository extends BaseRepository
                     </div>';
                 })
                 ->addColumn('action', function ($row) {
-                    return '<button class="btn btn-light btn-sm mx-2" onclick="showReportModal(' . $row->id . ')">
+                    return '<button class="btn btn-light btn-sm mx-2" onclick="printDescription(' . $row->id . ')">
                             <i class="fa-solid fa-print"></i>
                             </button>
                             <button onclick="setReferred(' . $row->id . ')" type="button"
@@ -222,5 +222,18 @@ class ManageRequestRepository extends BaseRepository
                 ->make(true);
         }
         return false;
+    }
+
+    public function getDescriptionForPrint($request)
+    {
+        $data = $this->query()
+            ->select([
+                'id',
+                'request_id'
+            ])
+            ->where('id', $request->id)
+            ->with(['request'])
+            ->first();
+        return $data->request->description;
     }
 }

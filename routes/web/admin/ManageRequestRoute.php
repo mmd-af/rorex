@@ -40,6 +40,10 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'getArchiveDataTable',
                 'uses' => 'ManageRequestAjaxController@getArchiveDataTable'
             ]);
+            Route::post('/getDescriptionForPrint', [
+                'as' => 'getDescriptionForPrint',
+                'uses' => 'ManageRequestAjaxController@getDescriptionForPrint'
+            ]);
         });
     });
 });
