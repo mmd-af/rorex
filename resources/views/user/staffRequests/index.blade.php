@@ -82,13 +82,13 @@
                                 <input type="hidden" name="name" value="{{Auth::user()->name}}">
                             @endif
                             FirstName:
-                            @if(empty(Auth::user()->prenumele_tatalui))
-                                <input type="text" class="form-control" name="prenumele_tatalui" id="prenumele_tatalui"
+                            @if(empty(Auth::user()->first_name))
+                                <input type="text" class="form-control" name="first_name" id="first_name"
                                        value="">
                             @else
-                                <text class="text-primary"> {{Auth::user()->prenumele_tatalui}} </text>
-                                <input type="hidden" name="prenumele_tatalui"
-                                       value="{{Auth::user()->prenumele_tatalui}}">
+                                <text class="text-primary"> {{Auth::user()->first_name}} </text>
+                                <input type="hidden" name="first_name"
+                                       value="{{Auth::user()->first_name}}">
                             @endif
                             with Code Staff:
                             @if(empty(Auth::user()->cod_staff))
@@ -391,7 +391,7 @@
             var form = event.target;
             var formData = new FormData(form);
             var name = formData.get('name');
-            var prenumele_tatalui = formData.get('prenumele_tatalui');
+            var first_name = formData.get('first_name');
             var cod_staff = formData.get('cod_staff');
             var departament = formData.get('departament');
             var startDay = formData.get('start_date');
@@ -410,7 +410,7 @@
             var numberOfholidays = formData.get('numberOfholidays');
             var kind = formData.get('kind');
             if (kind === "Rest" || kind === "SpecialEvents") {
-                var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
+                var newDescription = "Name: " + name + " " + first_name + "<br>" +
                     "with Code Staff: " + cod_staff + "<br>" +
                     "Subject: " + subject +
                     "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
@@ -419,7 +419,7 @@
                     + notAllowedDays + "<br>for: " + description + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
             }
             if (kind === "Hour") {
-                var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
+                var newDescription = "Name: " + name + " " + first_name + "<br>" +
                     "with Code Staff: " + cod_staff + "<br>" +
                     "Subject: " + subject +
                     "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
@@ -427,14 +427,14 @@
                     + end_time + " <br> " + vacation_day + description + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
             }
             if (kind === "CustomRequest") {
-                var newDescription = "Name: " + name + " " + prenumele_tatalui + "<br>" +
+                var newDescription = "Name: " + name + " " + first_name + "<br>" +
                     "with Code Staff: " + cod_staff + "<br>" +
                     "Subject: " + subject +
                     "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
                     "<br>" + description + "<br>Date of Request= " + startDay + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
             }
             let data = {
-                prenumele_tatalui: prenumele_tatalui,
+                first_name: first_name,
                 name: name,
                 cod_staff: cod_staff,
                 departament: departament,
