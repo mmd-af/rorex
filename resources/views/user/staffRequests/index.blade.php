@@ -415,9 +415,7 @@
                     'Subject: ' + subject + '<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: ' + departament +
                     '<br>please approve my request for vacation during the period:<br>' + startDay + ' until: ' + endDay + ' <br> Request for: ' +
                     vacation_day + ' days <br>Allowed leave: ' + leave_balance + '<br>Holidays: ' + numberOfholidays + '<br>Not Allowed Days: ' +
-                    notAllowedDays + '<br>for: ' + description + '<br>Email: ' + email + '<hr>' +
-                    '<table style="border-collapse: collapse;font-size: smaller;max-width: 50%"><tr style="border: 1px solid #000;"><th>Applicant</th><th>to Department</th><th>Assigned_to</th><th>status</th></tr>' +
-                    '<tr style="border: 1px solid #000;"><td>' + name + '</td><td>'+departamentRole+'</td>';
+                    notAllowedDays + '<br>for: ' + description + '<br>Email: ' + email + '<hr>';
             }
             if (kind === "Hour") {
                 var newDescription = "Name: " + name + " " + first_name + "<br>" +
@@ -425,14 +423,14 @@
                     "Subject: " + subject +
                     "<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
                     "<br>please approve my request for hour vacation during the date:<br>" + startDay + "<br>between: " + start_time + " until: "
-                    + end_time + " <br> " + vacation_day + description + "<br>Email: " + email + "<hr>Referred to:" + departamentRole;
+                    + end_time + " <br> " + vacation_day + description + "<br>Email: " + email + "<hr>;
             }
             if (kind === "CustomRequest") {
                 var newDescription = "Name: " + name + " " + first_name + "<br>" +
                     "with Code Staff: " + cod_staff + "<br>" +
                     "Subject: " + subject +
                     "<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
-                    "<br>" + description + "<br>Date of Request= " + startDay + "<br>Email: " + email + "<hr>Referred to:" + departamentRole;
+                    "<br>" + description + "<br>Date of Request= " + startDay + "<br>Email: " + email + "<hr>;
             }
             let data = {
                 first_name: first_name,

@@ -56,7 +56,7 @@ class ManageRequestRepository extends BaseRepository
                     </div>';
                 })
                 ->addColumn('action', function ($row) {
-                    return '<button class="btn btn-light btn-sm mx-2" onclick="printDescription(' . $row->id . ')">
+                    return '<button class="btn btn-light btn-sm mx-2" onclick="printDescription(' . $row->request->id . ')">
                             <i class="fa-solid fa-print"></i>
                             </button>
                             <button onclick="setReferred(' . $row->id . ')" type="button"
@@ -125,9 +125,6 @@ class ManageRequestRepository extends BaseRepository
             $letterAssignment->assigned_to = $request->assigned_to;
             $letterAssignment->status = "waiting";
             $letterAssignment->save();
-            $staffRequest = StaffRequest::find($old_letterAssignment->request_id);
-            $staffRequest->description = $staffRequest->description . "<br> status: Referred To: " . $request->departamentRole . " Assigned To: " . $letterAssignment->assignedTo->name;
-            $staffRequest->save();
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {
@@ -146,8 +143,6 @@ class ManageRequestRepository extends BaseRepository
             $letterAssignment->is_archive = 1;
             $letterAssignment->save();
             $staffRequest = StaffRequest::find($letterAssignment->request_id);
-            $staffRequest->description = $staffRequest->description . "<br> status: Accepted by: " . $userLastname;
-            $staffRequest->save();
             $user = User::find($staffRequest->user->id);
             $leaveBalance = $user->leave_balance;
             $vacationDays = $staffRequest->vacation_day;
@@ -177,9 +172,6 @@ class ManageRequestRepository extends BaseRepository
             $letterAssignment->status = "Rejected";
             $letterAssignment->is_archive = 1;
             $letterAssignment->save();
-            $staffRequest = StaffRequest::find($letterAssignment->request_id);
-            $staffRequest->description = $staffRequest->description . "<br> status: Rejected by: " . $userLastname;
-            $staffRequest->save();
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {
@@ -229,11 +221,16 @@ class ManageRequestRepository extends BaseRepository
         $data = $this->query()
             ->select([
                 'id',
-                'request_id'
+                'user_id',
+                'request_id',
+                'role_id',
+                'assigned_to',
+                'signed_by',
+                'status'
             ])
-            ->where('id', $request->id)
-            ->with(['request'])
-            ->first();
-        return $data->request->description;
+            ->where('request_id', $request->id)
+            ->with(['user', 'request', 'role', 'assignedTo', 'signedBy'])
+            ->get();
+        return response()->json(['data' => $data]);
     }
 }

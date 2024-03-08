@@ -95,8 +95,6 @@ class StaffRequestRepository extends BaseRepository
             $assignment->assigned_to = $request->assigned_to;
             $assignment->status = "waiting";
             $assignment->save();
-            $staffRequest->description = $staffRequest->description . "<td>" . $assignment->assignedTo->name . "</td>";
-            $staffRequest->save();
             DB::commit();
             Session::flash('message', 'Your Request Send Successfully');
         } catch (Exception $e) {

@@ -37,6 +37,11 @@
             height: auto;
             width: 25%;
         }
+
+        #statusPrint, #statusPrint th, #statusPrint td {
+            border: 1px solid #c0c0c0;
+            border-collapse: collapse;
+        }
     </style>
 @endsection
 @section('content')
@@ -230,31 +235,33 @@
         }
 
         function printDescription(id) {
+            let content = ``;
             axios.post("{{route('admin.manageRequests.ajax.getDescriptionForPrint')}}", {id: id})
                 .then(response => {
-                    printContent(response.data);
+                    content = response.data.data[0].request.description;
+                    content += `<table id="statusPrint" style="font-size: xx-small">
+                       <tr>
+                            <th>Applicant</th>
+                            <th>to Department</th>
+                            <th>Assigned_to</th>
+                            <th>Approve</th>
+                            <th>status</th>
+                       </tr>`;
+                    response.data.data.forEach(function (item) {
+                        content += `<tr style="border: 1px solid #000;">
+                            <td>${item.user.name}</td>
+                            <td>${item.role.name}</td>
+                            <td>${item.assigned_to.name}</td>
+                            <td>${item.signed_by ? 'Sign' : ''}</td>
+                            <td>${item.status}</td>
+                                    </tr>`;
+                    });
+                    content += `</table>`;
+                    printContent(content);
                 })
                 .catch(error => {
                     console.error(error);
                 });
-        }
-
-        function printContenttttttt(content) {
-            const messages = document.querySelectorAll('.message');
-            messages.forEach(message => {
-                message.innerHTML = "<p style='font-size: 14px'>" + content + "</p>";
-            });
-
-
-            var element = document.getElementById('printPage');
-            var opt = {
-                margin: 0,
-                filename: 'myfile.pdf',
-                image: {type: 'jpeg', quality: 0.98},
-                html2canvas: {scale: 10},
-                jsPDF: {unit: 'in', format: 'letter', orientation: 'landscape'}
-            };
-            html2pdf(element, opt);
         }
 
         function printContent(content) {
