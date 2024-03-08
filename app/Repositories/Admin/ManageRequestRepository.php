@@ -204,7 +204,12 @@ class ManageRequestRepository extends BaseRepository
                 ->addColumn('requests', function ($row) {
                     return $row->request->description;
                 })
-                ->rawColumns(['created_at', 'user', 'requests'])
+                ->addColumn('action', function ($row) {
+                    return '<button class="btn btn-light btn-sm mx-2" onclick="printDescription(' . $row->request->id . ')">
+                            <i class="fa-solid fa-print"></i>
+                            </button>';
+                })
+                ->rawColumns(['created_at', 'user', 'requests','action'])
                 ->make(true);
         }
         return false;
