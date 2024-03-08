@@ -423,14 +423,14 @@
                     "Subject: " + subject +
                     "<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
                     "<br>please approve my request for hour vacation during the date:<br>" + startDay + "<br>between: " + start_time + " until: "
-                    + end_time + " <br> " + vacation_day + description + "<br>Email: " + email + "<hr>;
+                    + end_time + " <br> " + vacation_day + description + "<br>Email: " + email + "<hr>";
             }
             if (kind === "CustomRequest") {
                 var newDescription = "Name: " + name + " " + first_name + "<br>" +
                     "with Code Staff: " + cod_staff + "<br>" +
                     "Subject: " + subject +
                     "<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
-                    "<br>" + description + "<br>Date of Request= " + startDay + "<br>Email: " + email + "<hr>;
+                    "<br>" + description + "<br>Date of Request= " + startDay + "<br>Email: " + email + "<hr>";
             }
             let data = {
                 first_name: first_name,

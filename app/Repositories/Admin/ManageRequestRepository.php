@@ -90,13 +90,9 @@ class ManageRequestRepository extends BaseRepository
         DB::beginTransaction();
         try {
             $userId = Auth::id();
-            $userLastname = Auth::user()->name;
             $letterAssignment = $this->find($request->id);
             $letterAssignment->signed_by = $userId;
             $letterAssignment->save();
-            $staffRequest = StaffRequest::find($letterAssignment->request_id);
-            $staffRequest->description = $staffRequest->description . "<br> Signed_by: " . $userLastname;
-            $staffRequest->save();
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {
@@ -119,7 +115,7 @@ class ManageRequestRepository extends BaseRepository
             $old_letterAssignment->is_archive = 1;
             $old_letterAssignment->save();
             $letterAssignment = new LetterAssignment();
-            $letterAssignment->user_id = $old_letterAssignment->user_id;
+            $letterAssignment->user_id = Auth::id();
             $letterAssignment->request_id = $old_letterAssignment->request_id;
             $letterAssignment->role_id = $role->id;
             $letterAssignment->assigned_to = $request->assigned_to;
@@ -137,7 +133,6 @@ class ManageRequestRepository extends BaseRepository
     {
         DB::beginTransaction();
         try {
-            $userLastname = Auth::user()->name;
             $letterAssignment = $this->find($request->id);
             $letterAssignment->status = "Accepted";
             $letterAssignment->is_archive = 1;
@@ -167,7 +162,6 @@ class ManageRequestRepository extends BaseRepository
     {
         DB::beginTransaction();
         try {
-            $userLastname = Auth::user()->name;
             $letterAssignment = $this->find($request->id);
             $letterAssignment->status = "Rejected";
             $letterAssignment->is_archive = 1;
