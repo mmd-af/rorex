@@ -417,7 +417,7 @@
                     vacation_day + ' days <br>Allowed leave: ' + leave_balance + '<br>Holidays: ' + numberOfholidays + '<br>Not Allowed Days: ' +
                     notAllowedDays + '<br>for: ' + description + '<br>Email: ' + email + '<hr>' +
                     '<table><tr style="border: 1px solid #000;"><th>Applicant</th><th>to Department</th><th>Assigned_to</th><th>status</th></tr>' +
-                    '<tr style="border: 1px solid #000;"><td>' + name + '</td><td>'+departamentRole+'</td><td id="assigned_to"></td><td></td></tr></table>';
+                    '<tr style="border: 1px solid #000;"><td>' + name + '</td><td>'+departamentRole+'</td>';
             }
             if (kind === "Hour") {
                 var newDescription = "Name: " + name + " " + first_name + "<br>" +
