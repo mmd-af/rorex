@@ -410,13 +410,14 @@
             var numberOfholidays = formData.get('numberOfholidays');
             var kind = formData.get('kind');
             if (kind === "Rest" || kind === "SpecialEvents") {
-                var newDescription = "Name: " + name + " " + first_name + "<br>" +
-                    "with Code Staff: " + cod_staff + "<br>" +
-                    "Subject: " + subject +
-                    "<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
-                    "<br>please approve my request for vacation during the period:<br>" + startDay + " until: " + endDay + " <br> Request for: "
-                    + vacation_day + " days <br>Allowed leave: " + leave_balance + "<br>Holidays: " + numberOfholidays + "<br>Not Allowed Days: "
-                    + notAllowedDays + "<br>for: " + description + "<br>Email: " + email + "<hr>Referred to:" + departamentRole;
+                var newDescription = 'Name: ' + name + ' ' + first_name + '<br>' +
+                    'with Code Staff: ' + cod_staff + '<br>' +
+                    'Subject: ' + subject + '<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: ' + departament +
+                    '<br>please approve my request for vacation during the period:<br>' + startDay + ' until: ' + endDay + ' <br> Request for: ' +
+                    vacation_day + ' days <br>Allowed leave: ' + leave_balance + '<br>Holidays: ' + numberOfholidays + '<br>Not Allowed Days: ' +
+                    notAllowedDays + '<br>for: ' + description + '<br>Email: ' + email + '<hr>' +
+                    '<table><tr style="border: 1px solid #000;"><th>Applicant</th><th>to Department</th><th>Assigned_to</th><th>status</th></tr>' +
+                    '<tr style="border: 1px solid #000;"><td>' + name + '</td><td>'+departamentRole+'</td><td id="assigned_to"></td><td></td></tr></table>';
             }
             if (kind === "Hour") {
                 var newDescription = "Name: " + name + " " + first_name + "<br>" +
