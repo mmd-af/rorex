@@ -416,7 +416,7 @@
                     '<br>please approve my request for vacation during the period:<br>' + startDay + ' until: ' + endDay + ' <br> Request for: ' +
                     vacation_day + ' days <br>Allowed leave: ' + leave_balance + '<br>Holidays: ' + numberOfholidays + '<br>Not Allowed Days: ' +
                     notAllowedDays + '<br>for: ' + description + '<br>Email: ' + email + '<hr>' +
-                    '<table><tr style="border: 1px solid #000;"><th>Applicant</th><th>to Department</th><th>Assigned_to</th><th>status</th></tr>' +
+                    '<table style="border-collapse: collapse;font-size: smaller;max-width: 50%"><tr style="border: 1px solid #000;"><th>Applicant</th><th>to Department</th><th>Assigned_to</th><th>status</th></tr>' +
                     '<tr style="border: 1px solid #000;"><td>' + name + '</td><td>'+departamentRole+'</td>';
             }
             if (kind === "Hour") {
