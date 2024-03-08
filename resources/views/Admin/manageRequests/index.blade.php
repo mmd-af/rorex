@@ -4,16 +4,21 @@
     Manage Requests
 @endsection
 @section('style')
-    <style>
-        /*body {*/
-        /*    margin: 0;*/
-        /*    padding: 0;*/
-        /*}*/
+    <style id="printStyle">
+        @page {
+            size: landscape;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
 
         .page {
             width: 210mm;
             height: 148mm;
-            padding: 5mm;
+            padding: 0;
             margin: 0 auto;
             border: 1px solid #ccc;
             display: flex;
@@ -30,6 +35,7 @@
         .logo-container img {
             max-width: 100%;
             height: auto;
+            width: 25%;
         }
     </style>
 @endsection
@@ -108,32 +114,9 @@
             </div>
         </div>
     </div>
-    <div class="page" id="printPage">
-        <div class="content-container">
-            <div class="logo-container">
-                <img class="img-fluid w-25" src="{{asset('build/img/logo.png')}}" alt="Rorex - Pipe">
-            </div>
-            <div class="message">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus ea eaque est fuga, harum id
-                incidunt, laboriosam minus necessitatibus nesciunt nobis odit officiis quaerat quidem quod quos repellat
-                tempora, ut?
-            </div>
-        </div>
-        <div class="content-container">
-            <div class="logo-container">
-                <img class="img-fluid w-25" src="{{asset('build/img/logo.png')}}" alt="Rorex - Pipe">
-            </div>
-            <div class="message">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est pariatur, sunt! Ad architecto asperiores
-                assumenda autem consequuntur hic iste, iusto laboriosam libero necessitatibus non quae quibusdam
-                repellendus soluta vel velit?
-            </div>
-        </div>
-    </div>
 @endsection
 
 @section('script')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <script>
 
         $(document).ready(function () {
@@ -256,7 +239,7 @@
                 });
         }
 
-        function printContent(content) {
+        function printContenttttttt(content) {
             const messages = document.querySelectorAll('.message');
             messages.forEach(message => {
                 message.innerHTML = "<p style='font-size: 14px'>" + content + "</p>";
@@ -272,6 +255,25 @@
                 jsPDF: {unit: 'in', format: 'letter', orientation: 'landscape'}
             };
             html2pdf(element, opt);
+        }
+
+        function printContent(content) {
+            var printStyle = document.getElementById('printStyle');
+            let imageUrl = "{{asset('build/img/logo.png')}}";
+            var newWin = window.open('', 'Print-Window');
+            newWin.document.open();
+            newWin.document.write(
+                '<html><head><style>' + printStyle.innerHTML + '</style></head><body onload="window.print()">' +
+                '<div class="page" id="printPage"><div class="content-container"><div class="logo-container">' +
+                '<img class="img-fluid w-25" src="' + imageUrl + '" alt="Rorex - Pipe"></div><div class="message">' + content + '</div>' +
+                '</div><div class="content-container"><div class="logo-container">' +
+                '<img class="img-fluid w-25" src="' + imageUrl + '" alt="Rorex - Pipe"></div>' +
+                '<div class="message">' + content + '</div></div></div>' +
+                '</body></html>');
+            newWin.document.close();
+            setTimeout(function () {
+                newWin.close();
+            }, 10);
         }
     </script>
 

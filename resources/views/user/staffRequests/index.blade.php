@@ -413,25 +413,25 @@
                 var newDescription = "Name: " + name + " " + first_name + "<br>" +
                     "with Code Staff: " + cod_staff + "<br>" +
                     "Subject: " + subject +
-                    "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
+                    "<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
                     "<br>please approve my request for vacation during the period:<br>" + startDay + " until: " + endDay + " <br> Request for: "
                     + vacation_day + " days <br>Allowed leave: " + leave_balance + "<br>Holidays: " + numberOfholidays + "<br>Not Allowed Days: "
-                    + notAllowedDays + "<br>for: " + description + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
+                    + notAllowedDays + "<br>for: " + description + "<br>Email: " + email + "<hr>Referred to:" + departamentRole;
             }
             if (kind === "Hour") {
                 var newDescription = "Name: " + name + " " + first_name + "<br>" +
                     "with Code Staff: " + cod_staff + "<br>" +
                     "Subject: " + subject +
-                    "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
+                    "<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
                     "<br>please approve my request for hour vacation during the date:<br>" + startDay + "<br>between: " + start_time + " until: "
-                    + end_time + " <br> " + vacation_day + description + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
+                    + end_time + " <br> " + vacation_day + description + "<br>Email: " + email + "<hr>Referred to:" + departamentRole;
             }
             if (kind === "CustomRequest") {
                 var newDescription = "Name: " + name + " " + first_name + "<br>" +
                     "with Code Staff: " + cod_staff + "<br>" +
                     "Subject: " + subject +
-                    "<br>as an employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
-                    "<br>" + description + "<br>Date of Request= " + startDay + "<br>Email: " + email + "<br>Referred to:" + departamentRole;
+                    "<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
+                    "<br>" + description + "<br>Date of Request= " + startDay + "<br>Email: " + email + "<hr>Referred to:" + departamentRole;
             }
             let data = {
                 first_name: first_name,
