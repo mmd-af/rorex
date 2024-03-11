@@ -49,7 +49,7 @@ Route::get('/query1', function () {
     dd($plusNight);
 });
 
-Route::get('/query2', function () {
+Route::get('/addBalance', function () {
     $users = User::all();
     foreach ($users as $user) {
         $user->leave_balance = $user->leave_balance + 1.75;
@@ -57,10 +57,30 @@ Route::get('/query2', function () {
     }
 });
 
-Route::get('/query3', function () {
+Route::get('/giveEmployeePermission', function () {
     $users = User::all();
     foreach ($users as $user) {
         $user->givePermissionTo('employees');
         $user->save();
     }
 });
+
+
+Route::get('/migrate', function () {
+    Artisan::call('migrate');
+    return Artisan::output();
+})->middleware(['web', 'auth', 'super.admin']);
+
+Route::get('/optimize', function () {
+    Artisan::call('optimize');
+    return Artisan::output();
+})->middleware(['web', 'auth', 'super.admin']);
+
+Route::get('/storage', function () {
+    Artisan::call('storage:link');
+    return Artisan::output();
+})->middleware(['web', 'auth', 'super.admin']);
+
+Route::get('/public/{path}', function ($path) {
+    return redirect(url($path));
+})->where('path', '.*');

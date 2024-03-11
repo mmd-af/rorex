@@ -11,5 +11,5 @@ class LetterAssignment extends Model
         LetterAssignmentRelationships,
         LetterAssignmentModifiers;
 
-    protected $table = 'Letter_assignments';
+    protected $table = 'letter_assignments';
 }
