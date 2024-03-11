@@ -15,7 +15,7 @@
         <button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal"
                 data-bs-target="#LeaveRequest"
                 onclick="LeaveRequestForRest()">
-            Leave Request for Rest <i class="fa-solid fa-square-arrow-up-right"></i>
+            Leave Request <i class="fa-solid fa-square-arrow-up-right"></i>
         </button>
         <button type="button"
                 class="btn btn-primary mx-3" data-bs-toggle="modal"
@@ -27,7 +27,7 @@
                 class="btn btn-primary mx-3" data-bs-toggle="modal"
                 data-bs-target="#LeaveRequest"
                 onclick="LeaveRequestForHour()">
-            Request for Hourly leave <i class="fa-solid fa-square-arrow-up-right"></i>
+           Hourly leave Request <i class="fa-solid fa-square-arrow-up-right"></i>
         </button>
         <button type="button"
                 class="btn btn-primary mx-3" data-bs-toggle="modal"
@@ -232,7 +232,7 @@
             let modalSubject = document.getElementById('modalSubject');
             modalSubject.innerHTML = `
                         <input type="hidden" name="kind" value="Hour">
-                        <input type="hidden" name="subject" value="Leave Request for Hour">
+                        <input type="hidden" name="subject" value="Hourly Leave Request">
                         <input type="hidden" name="description" value="hour">`;
         }
 
@@ -418,19 +418,20 @@
                     daysWithoutPay + '<br><small>' + description + '</small><br>Email: ' + email + '<hr>';
             }
             if (kind === "Hour") {
-                var newDescription = "Name: " + name + " " + first_name + "<br>" +
-                    "with Code Staff: " + cod_staff + "<br>" +
-                    "Subject: " + subject +
-                    "<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
-                    "<br>please approve my request for hour vacation during the date:<br>" + startDay + "<br>between: " + start_time + " until: "
-                    + end_time + " <br> " + vacation_day + description + "<br>Email: " + email + "<hr>";
+                var newDescription = 'Date: ' + dateOfRequest +
+                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
+                    'Code Staff: ' + cod_staff + '</div><br>' +
+                    '<div id="alignCenter"><b>' + subject + '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
+                    '<br>requests for hour leave on:<br><b>' + startDay +
+                    '</b><br>between:<b> ' + start_time + ' </b>until: <b>' + end_time + ' </b><br>' + vacation_day + description +
+                    '<br>Email: ' + email + '<hr>';
             }
             if (kind === "CustomRequest") {
-                var newDescription = "Name: " + name + " " + first_name + "<br>" +
-                    "with Code Staff: " + cod_staff + "<br>" +
-                    "Subject: " + subject +
-                    "<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: " + departament +
-                    "<br>" + description + "<br>Date of Request= " + startDay + "<br>Email: " + email + "<hr>";
+                var newDescription = 'Date: ' + dateOfRequest +
+                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
+                    'Code Staff: ' + cod_staff + '</div><br>' +
+                    '<div id="alignCenter"><b>' + subject + '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
+                    '<br>' + description + '<br>Email: ' + email + '<hr>';
             }
             let data = {
                 first_name: first_name,
