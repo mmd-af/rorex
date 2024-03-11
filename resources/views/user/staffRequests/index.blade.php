@@ -300,28 +300,25 @@
                 }
                 var timeDifference = Math.abs(endDate - startDate + 1);
                 var dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-                let numberOfholidays = prompt('Number of holidays between dates');
+                let numberOfExcludingHolidays = prompt('How many days EXCLUDING Holidays?');
                 let showInformation = document.getElementById('dateDifference');
                 if (x === 1) {
                     showInformation.innerHTML =
-                        `<div class="p-5">
-                        <p class="text-info">Allowed leave= ${leave_balance} days</p>
-                        <p class="text-primary">Your Request= ${dayDifference} days</p>
-                        <p class="text-info">Holidays= ${numberOfholidays} days</p>
-                        <input type="hidden" name="numberOfholidays" value="${numberOfholidays}">
+                        `<div class="mt-2">
+                        <p class="text-primary">Totally= ${dayDifference} days</p>
+                        <p class="text-warning">Allowed leave= ${leave_balance} days</p>
+                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
+                        <input type="hidden" name="totally" value="${dayDifference}">
                         <input type="hidden" name="leave_balance" value="${leave_balance}">
-                        <input type="hidden" name="vacation_day" value="${dayDifference}">
+                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}">
                     </div>`;
-                    if ((dayDifference - numberOfholidays) > leave_balance) {
-                        let notAllowedDays = (dayDifference - numberOfholidays) - leave_balance;
-                        notAllowedDays = Math.ceil(notAllowedDays);
-                        showInformation.innerHTML += `<div class="px-5">
-                             <p class="text-danger">Number of unpaid leave= ${notAllowedDays}</p>
-                        <input type="hidden" name="notAllowedDays" value="${notAllowedDays}">
-                        <input type="hidden" name="realAllowedLeaveDays" value="${leave_balance}">
+                    if (leave_balance < numberOfExcludingHolidays) {
+                        let daysWithoutPay = numberOfExcludingHolidays - leave_balance;
+                        daysWithoutPay = Math.ceil(daysWithoutPay);
+                        showInformation.innerHTML += `<div>
+                             <p class="text-danger">Number of unpaid leave= ${daysWithoutPay}</p>
+                        <input type="hidden" name="daysWithoutPay" value="${daysWithoutPay}">
                            </div>`;
-                    } else {
-                        showInformation.innerHTML += `<input type="hidden" name="realAllowedLeaveDays" value="${dayDifference - numberOfholidays}">`;
                     }
                 }
                 if (x === 2) {
@@ -396,8 +393,8 @@
             var departament = formData.get('departament');
             var startDay = formData.get('start_date');
             var endDay = formData.get('end_date');
+            var totally = formData.get('totally');
             var vacation_day = formData.get('vacation_day');
-            var realAllowedLeaveDays = formData.get('realAllowedLeaveDays');
             var email = formData.get('email');
             var departamentRole = formData.get('departamentRole');
             var subject = formData.get('subject');
@@ -405,19 +402,19 @@
             var description = formData.get('description');
             var start_time = formData.get('start_time');
             var end_time = formData.get('end_time');
-            var notAllowedDays = formData.get('notAllowedDays');
+            var daysWithoutPay = formData.get('daysWithoutPay');
             var leave_balance = formData.get('leave_balance');
-            var numberOfholidays = formData.get('numberOfholidays');
             var kind = formData.get('kind');
             var dateOfRequest = moment().format('YYYY/MM/DD');
-            // var dateOfRequest = new Date('YYYY/MM/DD');
             if (kind === "Rest" || kind === "SpecialEvents") {
                 var newDescription = 'Date: ' + dateOfRequest +
                     '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
                     'Code Staff: ' + cod_staff + '</div><br>' +
                     '<div id="alignCenter"><b>' + subject + '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
-                    '<br>Requests <b>' + vacation_day + ' days</b> during the period:<br>' + startDay + ' until: ' + endDay + '<br>Allowed leave: ' + leave_balance + '<br>Holidays: ' + numberOfholidays + '<br>Not Allowed Days: ' +
-                    notAllowedDays + '<br><small>' + description + '</small><br>Email: ' + email + '<hr>';
+                    '<br>Requests <b>' + vacation_day + ' days</b> during the period:<br>' + startDay + ' until: ' + endDay +
+                    '<br>Totall days: ' + totally +
+                    '<br>Allowed leave: ' + leave_balance + '<br>EXCLUDING Holidays: ' + vacation_day + '<br>Days without Pay: ' +
+                    daysWithoutPay + '<br><small>' + description + '</small><br>Email: ' + email + '<hr>';
             }
             if (kind === "Hour") {
                 var newDescription = "Name: " + name + " " + first_name + "<br>" +
@@ -444,7 +441,6 @@
                 start_date: startDay,
                 end_date: endDay,
                 vacation_day: vacation_day,
-                realAllowedLeaveDays: realAllowedLeaveDays,
                 email: email,
                 departamentRole: departamentRole,
                 assigned_to: assigned_to
