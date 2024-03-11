@@ -172,8 +172,8 @@
             let modalSubject = document.getElementById('modalSubject');
             modalSubject.innerHTML = `
 <input type="hidden" name="kind" value="Rest">
-<input type="hidden" name="subject" value="Leave Request for Rest">
-                        <input type="hidden" name="description" value="vacation">`;
+<input type="hidden" name="subject" value="Leave Request">
+                        <input type="hidden" name="description" value="">`;
         }
 
         function LeaveRequestForSpecialEvents() {
@@ -202,7 +202,7 @@
             let isTextAdded = false;
             descriptionInput.addEventListener('change', function (event) {
                 if (!isTextAdded) {
-                    this.value = "for " + event.target.value + " and I will send the document.";
+                    this.value = event.target.value + " and I will send the document.";
                     isTextAdded = true;
                     this.readOnly = true;
                 }
@@ -409,13 +409,15 @@
             var leave_balance = formData.get('leave_balance');
             var numberOfholidays = formData.get('numberOfholidays');
             var kind = formData.get('kind');
+            var dateOfRequest = moment().format('YYYY/MM/DD');
+            // var dateOfRequest = new Date('YYYY/MM/DD');
             if (kind === "Rest" || kind === "SpecialEvents") {
-                var newDescription = 'Name: ' + name + ' ' + first_name + '<br>' +
-                    'with Code Staff: ' + cod_staff + '<br>' +
-                    'Subject: ' + subject + '<br>as an Employee of S.C. ROREX PIPE S.R.L. in the Departament of: ' + departament +
-                    '<br>please approve my request for vacation during the period:<br>' + startDay + ' until: ' + endDay + ' <br> Request for: ' +
-                    vacation_day + ' days <br>Allowed leave: ' + leave_balance + '<br>Holidays: ' + numberOfholidays + '<br>Not Allowed Days: ' +
-                    notAllowedDays + '<br>for: ' + description + '<br>Email: ' + email + '<hr>';
+                var newDescription = 'Date: ' + dateOfRequest +
+                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
+                    'Code Staff: ' + cod_staff + '</div><br>' +
+                    '<div id="alignCenter"><b>' + subject + '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
+                    '<br>Requests <b>' + vacation_day + ' days</b> during the period:<br>' + startDay + ' until: ' + endDay + '<br>Allowed leave: ' + leave_balance + '<br>Holidays: ' + numberOfholidays + '<br>Not Allowed Days: ' +
+                    notAllowedDays + '<br><small>' + description + '</small><br>Email: ' + email + '<hr>';
             }
             if (kind === "Hour") {
                 var newDescription = "Name: " + name + " " + first_name + "<br>" +

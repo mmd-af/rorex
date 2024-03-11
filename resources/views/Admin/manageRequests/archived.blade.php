@@ -42,6 +42,15 @@
             border: 1px solid #c0c0c0;
             border-collapse: collapse;
         }
+
+        #box {
+            border: 2px solid black;
+            padding: 2px;
+        }
+
+        #alignCenter {
+            text-align: center;
+        }
     </style>
 @endsection
 @section('content')
