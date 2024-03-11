@@ -323,10 +323,11 @@
                 }
                 if (x === 2) {
                     showInformation.innerHTML =
-                        `<div class="p-5">
-                        <p class="text-primary">Your Request= ${dayDifference} days</p>
-                        <p class="text-info">Holidays= ${numberOfholidays} days</p>
-                        <input type="hidden" name="vacation_day" value="${dayDifference}">
+                        `<div class="mt-3">
+                        <p class="text-primary">Totally= ${dayDifference} days</p>
+                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
+                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}">
+                        <input type="hidden" name="totally" value="${dayDifference}">
                     </div>`;
                 }
             }
@@ -411,8 +412,8 @@
                     '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
                     'Code Staff: ' + cod_staff + '</div><br>' +
                     '<div id="alignCenter"><b>' + subject + '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
-                    '<br>Requests <b>' + vacation_day + ' days</b> during the period:<br>' + startDay + ' until: ' + endDay +
-                    '<br>Totall days: ' + totally +
+                    '<br>Requests <b>' + vacation_day + ' days</b> during the period:<br><b>' + startDay + ' </b>until:<b> ' + endDay +
+                    '</b><br>Total days: ' + totally +
                     '<br>Allowed leave: ' + leave_balance + '<br>EXCLUDING Holidays: ' + vacation_day + '<br>Days without Pay: ' +
                     daysWithoutPay + '<br><small>' + description + '</small><br>Email: ' + email + '<hr>';
             }
