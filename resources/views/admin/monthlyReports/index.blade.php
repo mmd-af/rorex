@@ -29,8 +29,8 @@
                 <tr>
                     <th>ID</th>
                     <th>cod_staff</th>
-                    <th>First Name</th>
                     <th>Last Name</th>
+                    <th>First Name</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -38,8 +38,8 @@
                 <tr>
                     <th>ID</th>
                     <th>cod_staff</th>
-                    <th>First Name</th>
                     <th>Last Name</th>
+                    <th>First Name</th>
                     <th>Action</th>
                 </tr>
                 </tfoot>
@@ -136,8 +136,8 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'cod_staff', name: 'cod_staff'},
-                    {data: 'prenumele_tatalui', name: 'prenumele_tatalui'},
                     {data: 'name', name: 'name'},
+                    {data: 'first_name', name: 'first_name'},
                     {"data": "button", "name": "button", "orderable": false, "searchable": false}
                 ],
                 initComplete: function () {
