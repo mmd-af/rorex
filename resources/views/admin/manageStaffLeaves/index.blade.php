@@ -17,16 +17,16 @@
                 <thead>
                 <tr>
                     <th>Cod Staff</th>
-                    <th>First Name</th>
                     <th>Last Name</th>
+                    <th>First Name</th>
                     <th>Leave Balance</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
                     <th>Cod Staff</th>
-                    <th>First Name</th>
                     <th>Last Name</th>
+                    <th>First Name</th>
                     <th>Leave Balance</th>
                 </tr>
                 </tfoot>
@@ -48,8 +48,8 @@
                 ajax: "{{ route('admin.manageStaffLeaves.ajax.getDataTable') }}",
                 columns: [
                     {data: 'cod_staff', name: 'cod_staff',width:'10%'},
-                    {data: 'prenumele_tatalui', name: 'prenumele_tatalui',width:'20%'},
                     {data: 'name', name: 'name',width:'20%'},
+                    {data: 'first_name', name: 'first_name',width:'20%'},
                     {data: 'leave_balance', name: 'leave_balance',width:'20%'}
                 ],
                 initComplete: function () {

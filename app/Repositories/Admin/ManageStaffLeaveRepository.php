@@ -25,8 +25,8 @@ class ManageStaffLeaveRepository extends BaseRepository
             ->select([
                 'id',
                 'cod_staff',
-                'prenumele_tatalui',
                 'name',
+                'first_name',
                 'leave_balance'
             ])
             ->get();
