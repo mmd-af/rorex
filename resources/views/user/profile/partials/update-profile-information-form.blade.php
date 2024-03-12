@@ -14,11 +14,11 @@
         @csrf
         @method('patch')
         <div class="mt-3">
-            <label for="prenumele_tatalui">First Name</label>
-            <input id="prenumele_tatalui" name="prenumele_tatalui" type="text" class="form-control"
-                   value="{{old('prenumele_tatalui', $user->prenumele_tatalui)}}"
+            <label for="first_name">First Name</label>
+            <input id="first_name" name="first_name" type="text" class="form-control"
+                   value="{{old('first_name', $user->first_name)}}"
                    required
-                   autofocus autocomplete="prenumele_tatalui" disabled/>
+                   autofocus autocomplete="first_name" disabled/>
         </div>
         <div class="mt-3">
             <label for="name">Last Name</label>

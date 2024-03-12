@@ -34,6 +34,10 @@ class DailyReportRepository extends BaseRepository
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
+                ->addColumn('first_name', function ($row) {
+                    return $row->users->first_name;
+                })
+                ->rawColumns(['first_name'])
                 ->make(true);
         }
         return false;

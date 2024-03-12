@@ -45,6 +45,7 @@
                 <tr>
                     <th>cod_staff</th>
                     <th>Name</th>
+                    <th>First Name</th>
                     <th>Date</th>
                     <th>Weeks</th>
                     <th>Shift</th>
@@ -57,6 +58,7 @@
                 <tr>
                     <th>cod_staff</th>
                     <th>Name</th>
+                    <th>First Name</th>
                     <th>Date</th>
                     <th>Weeks</th>
                     <th>Shift</th>
@@ -83,6 +85,7 @@
                 columns: [
                     {data: 'cod_staff', name: 'cod_staff'},
                     {data: 'nume', name: 'nume'},
+                    {data: 'first_name', name: 'first_name'},
                     {data: 'data', name: 'data'},
                     {data: 'saptamana', name: 'saptamana'},
                     {data: 'nume_schimb', name: 'nume_schimb'},
