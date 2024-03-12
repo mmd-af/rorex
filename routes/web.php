@@ -84,4 +84,3 @@ Route::get('/storage', function () {
 Route::get('/public/{path}', function ($path) {
     return redirect(url($path));
 })->where('path', '.*');
-salam
