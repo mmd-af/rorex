@@ -51,6 +51,10 @@
         #alignCenter {
             text-align: center;
         }
+
+        #printSection {
+            zoom: 150%;
+        }
     </style>
 @endsection
 @section('content')
@@ -160,7 +164,7 @@
             var newWin = window.open('', 'Print-Window');
             newWin.document.open();
             newWin.document.write(
-                '<html><head><style>' + printStyle.innerHTML + '</style></head><body onload="window.print()">' +
+                '<html><head><style>' + printStyle.innerHTML + '</style></head><body id="printSection" onload="window.print()">' +
                 '<div class="page" id="printPage"><div class="content-container"><div class="logo-container">' +
                 '<img class="img-fluid w-25" src="' + imageUrl + '" alt="Rorex - Pipe"></div><div class="message">' + content + '</div>' +
                 '</div><div class="content-container"><div class="logo-container">' +
