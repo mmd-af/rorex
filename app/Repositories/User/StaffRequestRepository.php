@@ -119,6 +119,7 @@ class StaffRequestRepository extends BaseRepository
         return User::query()
             ->select([
                 'id',
+                'first_name',
                 'name'
             ])
             ->role($request->role_name)

@@ -376,7 +376,7 @@
             axios.post('{{route('user.staffRequests.ajax.getUserWithRole')}}', data)
                 .then(function (response) {
                     response.data.forEach(function (item) {
-                        assignedTo.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                        assignedTo.innerHTML += `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
                     });
                 })
                 .catch(function (error) {
