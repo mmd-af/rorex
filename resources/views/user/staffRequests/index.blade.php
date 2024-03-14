@@ -27,7 +27,7 @@
                 class="btn btn-primary mx-3" data-bs-toggle="modal"
                 data-bs-target="#LeaveRequest"
                 onclick="LeaveRequestForHour()">
-           Hourly leave Request <i class="fa-solid fa-square-arrow-up-right"></i>
+            Hourly leave Request <i class="fa-solid fa-square-arrow-up-right"></i>
         </button>
         <button type="button"
                 class="btn btn-primary mx-3" data-bs-toggle="modal"
@@ -132,11 +132,9 @@
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-lg-6">
-                                    User:
                                     <label for="assigned_to" class="col-form-label">Referred to:</label>
-                                    <select class="form-control" name="assigned_to" id="assigned_to">
-                                        <option value="">SELECT USER</option>
-                                    </select>
+                                    <div id="assigned_user">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -368,13 +366,20 @@
         });
 
         function getRelateUserWithRole() {
-            let assignedTo = document.getElementById('assigned_to');
-            assignedTo.innerHTML = ``;
+            let assigned_user = document.getElementById('assigned_user');
+            assigned_user.innerHTML = `<div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+            </div>`;
             let data = {
                 role_name: departamentRole.value
             }
             axios.post('{{route('user.staffRequests.ajax.getUserWithRole')}}', data)
                 .then(function (response) {
+                    assigned_user.innerHTML = `
+                    <select class="form-control" name="assigned_to" id="assigned_to">
+                    </select>`;
+                    let assignedTo = document.getElementById('assigned_to');
+                    assignedTo.innerHTML = ``;
                     response.data.forEach(function (item) {
                         assignedTo.innerHTML += `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
                     });

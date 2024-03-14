@@ -196,7 +196,6 @@
                 .then(function (response) {
                     assigned_user.innerHTML = `
                     <select class="form-control" name="assigned_to" id="assigned_to">
-                        <option value="">SELECT USER</option>
                     </select>`;
                     let assignedTo = document.getElementById('assigned_to');
                     assignedTo.innerHTML = ``;

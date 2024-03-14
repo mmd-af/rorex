@@ -104,8 +104,7 @@ class DailyReportRepository extends BaseRepository
             $staffRequest->subject = $request->subject;
             $staffRequest->description = "Subject: " . $request->subject . "
                             <strong> Check For Date: " . $request->date . "
-                            </strong><br>" . $request->description . "
-                            <br> Refered to: " . $request->departamentRole;
+                            </strong><br>" . $request->description;
             $staffRequest->organization = $request->departamentRole;
             $staffRequest->cod_staff = (int)$request->cod_staff;
             $staffRequest->vacation_day = (int)$request->vacation_day;
@@ -121,8 +120,6 @@ class DailyReportRepository extends BaseRepository
             $assignment->assigned_to = $request->assigned_to;
             $assignment->status = "waiting";
             $assignment->save();
-            $staffRequest->description = $staffRequest->description . "<br> Assigned to: " . $assignment->assignedTo->name;
-            $staffRequest->save();
             DB::commit();
             Session::flash('message', 'Your Request Send Successfully');
         } catch (Exception $e) {
