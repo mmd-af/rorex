@@ -190,28 +190,30 @@ class ManageRequestRepository extends BaseRepository
                 'status',
                 'created_at'
             ])
-            ->where('assigned_to', $userId)
             ->where('is_archive', 1)
+            ->where('assigned_to', $userId)
             ->with(['request'])
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
-                ->addColumn('created_at', function ($row) {
-                    $originalDate = Carbon::parse($row->created_at);
-                    return $originalDate->format('Y-m-d');
-                })
-                ->addColumn('user', function ($row) {
-                    return $row->request->user->name;
-                })
                 ->addColumn('requests', function ($row) {
                     return $row->request->description;
+                })
+                ->addColumn('progress', function ($row) {
+                    $status = '';
+                    $allRelatedRequest = $this->query()->where('request_id', $row->request_id)->get();
+                    foreach ($allRelatedRequest as $assignment) {
+                        $signedStatus = $assignment->signed_by ? 'Signed' : 'Not signed';
+                        $status .= $assignment->assignedTo->name . " " . $assignment->assignedTo->first_name . " -><br>" . $signedStatus . " -<br> " . $assignment->status . '<hr>';
+                    }
+                    return $status;
                 })
                 ->addColumn('action', function ($row) {
                     return '<button class="btn btn-light btn-sm mx-2" onclick="printDescription(' . $row->request->id . ')">
                             <i class="fa-solid fa-print"></i>
                             </button>';
                 })
-                ->rawColumns(['created_at', 'user', 'requests', 'action'])
+                ->rawColumns(['requests', 'progress', 'action'])
                 ->make(true);
         }
         return false;

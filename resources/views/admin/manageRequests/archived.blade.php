@@ -67,19 +67,17 @@
             <table id="supportTable" class="table table-bordered table-striped text-center">
                 <thead>
                 <tr>
-                    <th>Date of Request</th>
-                    <th>User Name</th>
                     <th>Requests</th>
-                    <th>Sign</th>
+                    <th>Progress</th>
+                    <th>Last Status</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                    <th>Date of Request</th>
-                    <th>User Name</th>
                     <th>Requests</th>
-                    <th>Sign</th>
+                    <th>Progress</th>
+                    <th>Last Status</th>
                     <th>Action</th>
                 </tr>
                 </tfoot>
@@ -99,11 +97,10 @@
                 pageLength: 25,
                 ajax: "{{ route('admin.manageRequests.ajax.getArchiveDataTable') }}",
                 columns: [
-                    {data: 'created_at', name: 'created_at', width: '10%'},
-                    {data: 'user', name: 'user', width: '10%'},
-                    {data: 'requests', name: 'requests', width: '60%'},
+                    {data: 'requests', name: 'requests', width: '50%'},
+                    {data: 'progress', name: 'progress', width: '20%'},
                     {data: 'status', name: 'status', width: '10%'},
-                    {data: 'action', name: 'action', width: '10%'}
+                    {data: 'action', name: 'action', width: '20%'}
                 ],
                 initComplete: function () {
                     var table = this;
