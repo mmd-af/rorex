@@ -73,18 +73,16 @@
             <table id="manageRequestTable" class="table table-bordered table-striped text-center">
                 <thead>
                 <tr>
-                    <th>Date of Request</th>
-                    <th>User Name</th>
                     <th>Requests</th>
+                    <th>Status</th>
                     <th>Sign</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                    <th>Date of Request</th>
-                    <th>User Name</th>
                     <th>Requests</th>
+                    <th>Status</th>
                     <th>Sign</th>
                     <th>Action</th>
                 </tr>
@@ -142,9 +140,8 @@
                 pageLength: 25,
                 ajax: "{{ route('admin.manageRequests.ajax.getDataTable') }}",
                 columns: [
-                    {data: 'created_at', name: 'created_at', width: '10%'},
-                    {data: 'user', name: 'user', width: '10%'},
-                    {data: 'requests', name: 'requests', width: '60%'},
+                    {data: 'requests', name: 'requests', width: '50%'},
+                    {data: 'progress', name: 'progress', width: '20%'},
                     {data: 'sign', name: 'sign', width: '10%'},
                     {data: 'action', name: 'action', width: '20%'}
                 ],

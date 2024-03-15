@@ -48,7 +48,7 @@ class StaffRequestRepository extends BaseRepository
                     $status = '';
                     foreach ($row->assignments as $assignment) {
                         $signedStatus = $assignment->signed_by ? 'Signed' : 'Not signed';
-                        $status .= $assignment->assignedTo->name . " - " . $signedStatus . " -> " . $assignment->status . '<br>';
+                        $status .= $assignment->assignedTo->name . " " . $assignment->assignedTo->first_name . " -><br>" . $signedStatus . " -<br> " . $assignment->status . '<hr>';
                     }
                     return $status;
                 })

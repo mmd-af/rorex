@@ -33,21 +33,24 @@ class ManageRequestRepository extends BaseRepository
                 'status',
                 'created_at'
             ])
-            ->where('assigned_to', $userId)
+            ->with(['request']);
+        $dataFilter = $data
             ->where('is_archive', 0)
-            ->with(['request'])
+            ->where('assigned_to', $userId)
             ->get();
         if ($request->ajax()) {
-            return Datatables::of($data)
-                ->addColumn('created_at', function ($row) {
-                    $originalDate = Carbon::parse($row->created_at);
-                    return $originalDate->format('Y-m-d');
-                })
-                ->addColumn('user', function ($row) {
-                    return $row->request->user->name;
-                })
+            return Datatables::of($dataFilter)
                 ->addColumn('requests', function ($row) {
                     return $row->request->description;
+                })
+                ->addColumn('progress', function ($row) use ($data) {
+                    $status = '';
+                    $allRelatedRequest = $data->where('request_id', $row->request_id)->get();
+                    foreach ($data->get() as $assignment) {
+                        $signedStatus = $assignment->signed_by ? 'Signed' : 'Not signed';
+                        $status .= $assignment->assignedTo->name . " " . $assignment->assignedTo->first_name . " -><br>" . $signedStatus . " -<br> " . $assignment->status . '<hr>';
+                    }
+                    return $status;
                 })
                 ->addColumn('sign', function ($row) {
                     return '
@@ -79,7 +82,7 @@ class ManageRequestRepository extends BaseRepository
 
                             ';
                 })
-                ->rawColumns(['created_at', 'user', 'requests', 'sign', 'action'])
+                ->rawColumns(['requests', 'progress', 'sign', 'action'])
                 ->make(true);
         }
         return false;
@@ -209,7 +212,7 @@ class ManageRequestRepository extends BaseRepository
                             <i class="fa-solid fa-print"></i>
                             </button>';
                 })
-                ->rawColumns(['created_at', 'user', 'requests','action'])
+                ->rawColumns(['created_at', 'user', 'requests', 'action'])
                 ->make(true);
         }
         return false;
