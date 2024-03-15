@@ -7,9 +7,9 @@
             {{ __("Update your account's profile information and email address.") }}
         </p>
     </header>
-    <form id="send-verification" method="post" action="{{ route('verification.send') }}">
-        @csrf
-    </form>
+{{--    <form id="send-verification" method="post" action="{{ route('verification.send') }}">--}}
+{{--        @csrf--}}
+{{--    </form>--}}
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 col-md-6">
         @csrf
         @method('patch')
