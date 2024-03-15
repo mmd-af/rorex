@@ -138,7 +138,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success mt-3">Send</button>
+                        <button type="submit" class="btn btn-success mt-3" id="performAction">Send</button>
                     </form>
                     <div class="modal-footer mt-3">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -459,6 +459,11 @@
                 .catch(function (error) {
                     alert(error.request.response)
                 });
+            let performAction=document.getElementById('performAction');
+            performAction.disabled = true;
+            performAction.innerHTML = `
+             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      Loading...`;
         });
     </script>
 @endsection

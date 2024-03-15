@@ -2,6 +2,7 @@
 
 namespace App\Repositories\User;
 
+use App\Mail\RequestMail;
 use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
 use App\Models\User\User;
@@ -9,6 +10,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
@@ -95,6 +97,17 @@ class StaffRequestRepository extends BaseRepository
             $assignment->assigned_to = $request->assigned_to;
             $assignment->status = "waiting";
             $assignment->save();
+            $assignedTo = User::query()
+                ->select([
+                    'id',
+                    'email',
+                    'email_verified_at'
+                ])
+                ->where('id', $request->assigned_to)
+                ->first();
+            if ($assignedTo->email_verified_at !== null) {
+                Mail::to($assignedTo->email)->send(new RequestMail($request->subject, $staffRequest->description));
+            }
             DB::commit();
             Session::flash('message', 'Your Request Send Successfully');
         } catch (Exception $e) {
