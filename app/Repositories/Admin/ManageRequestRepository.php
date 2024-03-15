@@ -33,20 +33,19 @@ class ManageRequestRepository extends BaseRepository
                 'status',
                 'created_at'
             ])
-            ->with(['request']);
-        $dataFilter = $data
             ->where('is_archive', 0)
             ->where('assigned_to', $userId)
+            ->with(['request'])
             ->get();
         if ($request->ajax()) {
-            return Datatables::of($dataFilter)
+            return Datatables::of($data)
                 ->addColumn('requests', function ($row) {
                     return $row->request->description;
                 })
-                ->addColumn('progress', function ($row) use ($data) {
+                ->addColumn('progress', function ($row) {
                     $status = '';
-                    $allRelatedRequest = $data->where('request_id', $row->request_id)->get();
-                    foreach ($data->get() as $assignment) {
+                    $allRelatedRequest = $this->query()->where('request_id', $row->request_id)->get();
+                    foreach ($allRelatedRequest as $assignment) {
                         $signedStatus = $assignment->signed_by ? 'Signed' : 'Not signed';
                         $status .= $assignment->assignedTo->name . " " . $assignment->assignedTo->first_name . " -><br>" . $signedStatus . " -<br> " . $assignment->status . '<hr>';
                     }
