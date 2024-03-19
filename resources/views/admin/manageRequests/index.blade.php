@@ -108,7 +108,7 @@
                             <div class="col-sm-12 col-lg-6">
                                 <label for="departamentRole" class="col-form-label">Referred to:</label>
                                 <select class="form-control" name="departamentRole" id="departamentRole"
-                                        onclick="getRelateUserWithRole()">
+                                        onchange="getRelateUserWithRole()">
                                     <option value="">SELECT DEPARTMENT</option>
                                 </select>
                             </div>
@@ -119,11 +119,11 @@
                             </div>
                         </div>
                         <input type="hidden" name="letter_assign_id" id="letter_assign_id" value="">
-                        <button type="submit" class="btn btn-success mt-3">Send</button>
+                        <div class="modal-footer mt-3">
+                            <button type="submit" class="btn btn-success">Send</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
                     </form>
-                    <div class="modal-footer mt-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
                 </div>
             </div>
         </div>

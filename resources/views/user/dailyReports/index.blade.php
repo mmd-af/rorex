@@ -98,7 +98,7 @@
                         <div class="mb-3">
                             <label for="departamentRole" class="col-form-label">Referred to:</label>
                             <select class="form-control" name="departamentRole" id="departamentRole"
-                                    onclick="getRelateUserWithRole()">
+                                    onchange="getRelateUserWithRole()">
                                 <option value="">SELECT DEPARTMENT</option>
                             </select>
                         </div>
