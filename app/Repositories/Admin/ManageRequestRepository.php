@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Admin;
 
+use App\Mail\RequestMail;
 use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
 use App\Models\User\User;
@@ -9,6 +10,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
@@ -123,6 +125,18 @@ class ManageRequestRepository extends BaseRepository
             $letterAssignment->assigned_to = $request->assigned_to;
             $letterAssignment->status = "waiting";
             $letterAssignment->save();
+            $assignedTo = User::query()
+                ->select([
+                    'id',
+                    'email',
+                    'email_verified_at'
+                ])
+                ->where('id', $letterAssignment->assigned_to)
+                ->first();
+            if ($assignedTo->email_verified_at !== null) {
+                Mail::to($assignedTo->email)->send(new RequestMail($letterAssignment->request->subject, $letterAssignment->request->description));
+            }
+
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {
