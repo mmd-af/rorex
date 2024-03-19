@@ -44,5 +44,9 @@ class ManageRequestAjaxController extends Controller
     {
         return $this->manageRequestRepository->getDescriptionForPrint($request);
     }
+    public function getNewRequest(Request $request)
+    {
+        return $this->manageRequestRepository->getNewRequest($request);
+    }
 
 }

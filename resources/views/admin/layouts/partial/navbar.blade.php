@@ -19,6 +19,24 @@
                         <span class="visually-hidden">unread messages</span>
                      </span>
     </button>
+    <li class="nav-item dropdown no-arrow mx-1">
+        <a onclick="getMessages()" class="nav-link dropdown-toggle" href="javascript:void(0)" id="alertsDropdown" role="button"
+           data-bs-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-envelope text-white"></i>
+            <div id="checkNewMessage">
+            </div>
+        </a>
+        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in text-right"
+             aria-labelledby="alertsDropdown">
+            <h6 class="dropdown-header">
+                پیام های دریافتی
+            </h6>
+            <div id="getMessages">
+            </div>
+        </div>
+    </li>
+
     <!-- Navbar-->
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">

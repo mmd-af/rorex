@@ -236,4 +236,23 @@ class ManageRequestRepository extends BaseRepository
             ->get();
         return response()->json(['data' => $data]);
     }
+
+    public function getNewRequest($request)
+    {
+        return "salam";
+//        $data = $this->query()
+//            ->select([
+//                'id',
+//                'user_id',
+//                'request_id',
+//                'role_id',
+//                'assigned_to',
+//                'signed_by',
+//                'status'
+//            ])
+//            ->where('request_id', $request->id)
+//            ->with(['user', 'request', 'role', 'assignedTo', 'signedBy'])
+//            ->get();
+//        return response()->json(['data' => $data]);
+    }
 }

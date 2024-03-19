@@ -33,5 +33,45 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 @yield('script')
+<script>
+    function getMessages() {
+        let setMessage = document.getElementById('getMessages');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'GET',
+            url: '{{ route('admin.manageRequests.ajax.getNewRequest') }}',
+            success: function (response) {
+                setMessage.innerHTML = '';
+                setMessage.innerHTML=response.data;
+
+        {{--        response.forEach((data) => {--}}
+        {{--            --}}{{--let catLink = '{{ route('site.categories.show', ':slug') }}';--}}
+        {{--            --}}{{--catLink = catLink.replace(':slug', data.slug);--}}
+        {{--            let messageData = `--}}
+        {{--<div class="dropdown-item d-flex justify-content-between" href="#">--}}
+        {{--            <div>--}}
+        {{--                <div class="small text-gray-500">${data.phone}</div>--}}
+        {{--                <span class="font-weight-bold">${data.description}</span>--}}
+        {{--            </div>--}}
+
+        {{--            <div class="mr-3">--}}
+        {{--                <div class="icon-circle bg-primary">--}}
+        {{--                   <a style="cursor: pointer" onclick="deleteMessage(${data.id})">--}}
+        {{--                    <i class="fas fa-trash-alt text-danger"></i>--}}
+        {{--                   </a>--}}
+        {{--                </div>--}}
+        {{--            </div>--}}
+
+        {{--        </div>`;--}}
+        {{--            setMessage.innerHTML += messageData;--}}
+        {{--        })--}}
+            }
+        });
+    }
+</script>
 </body>
 </html>
