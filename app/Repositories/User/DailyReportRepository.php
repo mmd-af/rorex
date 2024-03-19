@@ -42,7 +42,7 @@ class DailyReportRepository extends BaseRepository
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addColumn('button', function ($row) {
-                    return '<button onclick="requestForm(' . $row->id . ')" type="button"
+                    return '<button onclick="requestForm(' . $row->cod_staff . ', \'' . $row->data . '\')" type="button"
                                     class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#forgetRequest">
                                 <i class="fa-solid fa-square-arrow-up-right"></i>
@@ -57,14 +57,16 @@ class DailyReportRepository extends BaseRepository
 
     public function getData($request)
     {
-        return $this->query()
+        return User::query()
             ->select([
                 'id',
                 'cod_staff',
-                'nume',
-                'data'
+                'name',
+                'first_name',
+                'departament',
+                'email',
             ])
-            ->where('id', $request->dailyReport_id)
+            ->where('cod_staff', $request->id)
             ->first();
     }
 
@@ -94,6 +96,7 @@ class DailyReportRepository extends BaseRepository
     public function checkRequest($request)
     {
         $userId = Auth::id();
+        $dateOfRequest = Carbon::now()->format('Y/m/d');
         DB::beginTransaction();
         try {
             $staffRequest = new StaffRequest();
@@ -102,9 +105,14 @@ class DailyReportRepository extends BaseRepository
             $staffRequest->email = $request->email;
             $staffRequest->mobile_phone = $request->mobile_phone;
             $staffRequest->subject = $request->subject;
-            $staffRequest->description = "Subject: " . $request->subject . "
-                            <strong> Check For Date: " . $request->date . "
-                            </strong><br>" . $request->description;
+            $staffRequest->description =
+                'Date: ' . $dateOfRequest .
+                '<br><div id="box">Name: ' . $request->name . ' ' . $request->first_name . '<br>' .
+                'Code Staff: ' . $request->cod_staff . '</div><br>' .
+                'Check For Date: ' . $request->date . '</div><br>' .
+                '<div id="alignCenter"><b>' . $request->subject . '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' . $request->departament .
+                '<br>' . $request->description . '<br>Email: ' . $request->email . '<hr>';
+
             $staffRequest->organization = $request->departamentRole;
             $staffRequest->cod_staff = (int)$request->cod_staff;
             $staffRequest->vacation_day = (int)$request->vacation_day;

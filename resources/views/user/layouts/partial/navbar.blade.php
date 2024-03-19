@@ -1,15 +1,15 @@
-<nav class="sb-topnav navbar navbar-expand navbar-dark" style="background-color: #009799;">
-    <!-- Navbar Brand-->
+<nav class="sb-topnav navbar navbar-expand navbar-dark px-3" style="background-color: #009799;">
+    <button class="btn btn-link btn-sm bg-white text-dark" id="sidebarToggle" href="#!">
+        <i class="fas fa-bars"></i>
+    </button>
     <a class="navbar-brand ps-3" href="{{url('/')}}">rorex.ro</a>
-    <!-- Sidebar Toggle-->
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 mx-3" id="sidebarToggle" href="#!"><i
-            class="fas fa-bars"></i></button>
     <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
         <div class="input-group">
             <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
                    aria-describedby="btnNavbarSearch"/>
-            <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+            <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i>
+            </button>
         </div>
     </form>
     <!-- Navbar-->
@@ -29,7 +29,6 @@
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-
                         <button class="btn" onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                             {{ __('Log Out') }}

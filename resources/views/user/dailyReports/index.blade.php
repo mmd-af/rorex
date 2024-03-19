@@ -82,7 +82,10 @@
                                 <div class="text-info" id="name_show"></div>
                                 <div class="text-info" id="cod_staff_show"></div>
                             </label>
+                            <input type="hidden" id="first_name" name="first_name" value="">
                             <input type="hidden" id="name" name="name" value="">
+                            <input type="hidden" id="departament" name="departament" value="">
+                            <input type="hidden" id="email" name="email" value="">
                             <input type="hidden" id="cod_staff" name="cod_staff" value="">
                         </div>
                         <div class="mb-3">
@@ -208,26 +211,32 @@
                 });
         }
 
-        function requestForm(id) {
+        function requestForm(id, data) {
             let alert = document.getElementById('alert');
             let name = document.getElementById('name');
+            let first_name = document.getElementById('first_name');
+            let departament = document.getElementById('departament');
+            let email = document.getElementById('email');
             let name_show = document.getElementById('name_show');
             let cod_staff = document.getElementById('cod_staff');
             let cod_staff_show = document.getElementById('cod_staff_show');
             let date = document.getElementById('date');
             let date_show = document.getElementById('date_show');
+            date.value = data;
+            date_show.innerHTML = data;
             let configInformation = {
-                dailyReport_id: id
+                id: id
             }
             axios.post('{{ route('user.dailyReports.ajax.getData') }}', configInformation)
                 .then(function (response) {
                     alert.innerHTML = ``;
-                    name.value = response.data.data.nume;
-                    name_show.innerHTML = response.data.data.nume;
+                    name.value = response.data.data.name;
+                    first_name.value = response.data.data.first_name;
+                    departament.value = response.data.data.departament;
+                    email.value = response.data.data.email;
+                    name_show.innerHTML = response.data.data.name;
                     cod_staff.value = response.data.data.cod_staff;
                     cod_staff_show.innerHTML = response.data.data.cod_staff;
-                    date.value = response.data.data.data;
-                    date_show.innerHTML = response.data.data.data;
                 })
                 .catch(function (error) {
                     console.error(error);
