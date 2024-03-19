@@ -77,7 +77,6 @@ class SupportRepository extends BaseRepository
             $support->organization = $request->organization;
             $support->cod_staff = (int)$request->cod_staff;
             $support->save();
-
             $role = Role::query()
                 ->select(['id', 'name'])
                 ->where('name', $request->organization)
@@ -93,20 +92,6 @@ class SupportRepository extends BaseRepository
                     }
                 }
             }
-//            $assignedTo = User::query()
-//                ->select([
-//                    'id',
-//                    'email',
-//                    'departament',
-//                    'email_verified_at'
-//                ])
-//                ->where('departament', $request->organization)
-//                ->get();
-//            foreach ($assignedTo as $assigned) {
-//                if ($assigned->email_verified_at !== null) {
-//                    Mail::to($assigned->email)->send(new RequestMail($request->subject, $request->description));
-//                }
-//            }
             DB::commit();
             Session::flash('message', 'Your Request Send Successfully');
         } catch (Exception $e) {
