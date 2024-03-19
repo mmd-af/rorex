@@ -58,7 +58,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('user.supports.store')}}" method="post">
+                    <form action="{{route('user.supports.store')}}" method="post" id="supportForm">
                         @csrf
                         <div class="mb-3">
                             <label for="cod_staff" class="col-form-label">Code Staff:</label>
@@ -100,8 +100,9 @@
                             <label for="description" class="col-form-label">Message: *</label>
                             <textarea class="form-control" name="description" id="description"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-success">Send message</button>
-
+                        <button type="submit" class="btn btn-success" onclick="PerformAction()" id="performAction">Send
+                            message
+                        </button>
                     </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -162,6 +163,17 @@
                     console.error(error);
                 });
         });
+        function PerformAction() {
+            event.preventDefault();
+            let performActionBtn = document.getElementById('performAction');
+            performActionBtn.disabled = true; // Disable the button
+            performActionBtn.innerHTML = `
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...`;
+            document.getElementById('supportForm').submit();
+            var modal = document.getElementById('sendMessageSupport');
+            modal.classList.remove('show');
+        }
     </script>
 @endsection
 
