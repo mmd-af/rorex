@@ -21,6 +21,11 @@ class StaffRequestAjaxController extends Controller
         return $this->staffRequestRepository->getDataTable($request);
     }
 
+    public function getArchiveDataTable(Request $request)
+    {
+        return $this->staffRequestRepository->getArchiveDataTable($request);
+    }
+
     public function getRoles(Request $request)
     {
         return $this->staffRequestRepository->getRoles($request);

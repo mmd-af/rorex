@@ -6,7 +6,6 @@ use App\Mail\RequestMail;
 use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
 use App\Models\User\User;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -154,6 +153,8 @@ class ManageRequestRepository extends BaseRepository
             $letterAssignment->is_archive = 1;
             $letterAssignment->save();
             $staffRequest = StaffRequest::find($letterAssignment->request_id);
+            $staffRequest->is_archive = 1;
+            $staffRequest->save();
             $user = User::find($staffRequest->user->id);
             $leaveBalance = $user->leave_balance;
             $vacationDays = $staffRequest->vacation_day;
@@ -182,6 +183,17 @@ class ManageRequestRepository extends BaseRepository
             $letterAssignment->status = "Rejected";
             $letterAssignment->is_archive = 1;
             $letterAssignment->save();
+            $staffRequest = StaffRequest::query()
+                ->select([
+                    'id',
+                    'is_archive'
+                ])
+                ->where('id', $letterAssignment->request_id)
+                ->first();
+            if ($staffRequest) {
+                $staffRequest->is_archive = 1;
+                $staffRequest->save();
+            }
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {

@@ -11,6 +11,12 @@
         <li class="breadcrumb-item active">Staff Requests</li>
     </ol>
     @include('user.layouts.partial.errors')
+    <div class="d-flex justify-content-between">
+        <div></div>
+        <div>
+            <a class="btn btn-outline-warning btn-sm text-warning" href="{{route('user.staffRequests.archived')}}">Archive</a>
+        </div>
+    </div>
     <div class="d-flex justify-content-center my-3">
         <button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal"
                 data-bs-target="#LeaveRequest"

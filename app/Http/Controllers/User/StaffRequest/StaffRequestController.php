@@ -19,4 +19,9 @@ class StaffRequestController extends Controller
     {
         return view('user.staffRequests.index');
     }
+
+    public function archived()
+    {
+        return view('user.staffRequests.archived');
+    }
 }

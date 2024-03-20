@@ -10,11 +10,19 @@ Route::group(['middleware' => ['web', 'auth', 'permission:employees'], 'namespac
                 'as' => 'index',
                 'uses' => 'StaffRequestController@index'
             ]);
+            Route::get('/archived', [
+                'as' => 'archived',
+                'uses' => 'StaffRequestController@archived'
+            ]);
         });
         Route::group(['prefix' => 'staffRequests-ajax', 'as' => 'staffRequests.ajax.'], function () {
             Route::get('/getDataTable', [
                 'as' => 'getDataTable',
                 'uses' => 'StaffRequestAjaxController@getDataTable'
+            ]);
+            Route::get('/getArchiveDataTable', [
+                'as' => 'getArchiveDataTable',
+                'uses' => 'StaffRequestAjaxController@getArchiveDataTable'
             ]);
             Route::get('/getRoles', [
                 'as' => 'getRoles',

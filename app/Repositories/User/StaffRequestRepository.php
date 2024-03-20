@@ -38,6 +38,45 @@ class StaffRequestRepository extends BaseRepository
                 'is_archive'
             ])
             ->where('user_id', $userId)
+            ->where('is_archive', 0)
+            ->get();
+
+        if ($request->ajax()) {
+            return Datatables::of($data)
+                ->addColumn('created_at', function ($row) {
+                    $originalDate = Carbon::parse($row->created_at);
+                    return $originalDate->format('Y-m-d');
+                })
+                ->addColumn('status', function ($row) {
+                    $status = '';
+                    foreach ($row->assignments as $assignment) {
+                        $signedStatus = $assignment->signed_by ? 'Signed' : 'Not signed';
+                        $status .= $assignment->assignedTo->name . " " . $assignment->assignedTo->first_name . " -><br>" . $signedStatus . " -<br> " . $assignment->status . '<hr>';
+                    }
+                    return $status;
+                })
+                ->rawColumns(['description', 'status'])
+                ->make(true);
+        }
+        return false;
+    }
+    public function getArchiveDataTable($request)
+    {
+        $userId = Auth::id();
+        $data = $this->query()
+            ->select([
+                'id',
+                'email',
+                'subject',
+                'description',
+                'organization',
+                'cod_staff',
+                'read_at',
+                'created_at',
+                'is_archive'
+            ])
+            ->where('user_id', $userId)
+            ->where('is_archive', 1)
             ->get();
 
         if ($request->ajax()) {
