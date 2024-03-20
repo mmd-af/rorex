@@ -4,6 +4,7 @@ namespace App\Repositories\Admin;
 
 use App\Imports\DailyReportExcel;
 use App\Models\DailyReport\DailyReport;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -88,6 +89,7 @@ class DailyReportRepository extends BaseRepository
                     'sarbatoare_publica_ore' => $item[17],
                     'concediu_ore' => $item[18],
                     'remarca' => $item[19],
+                    'updated_at' => Carbon::now()
                 ];
                 $condition = [
                     'cod_staff' => $codStaff,

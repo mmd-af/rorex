@@ -36,4 +36,8 @@ class DailyReportAjaxController extends Controller
     {
         return $this->dailyReportRepository->getUserWithRole($request);
     }
+    public function getLastUpdate(Request $request)
+    {
+        return $this->dailyReportRepository->getLastUpdate($request);
+    }
 }

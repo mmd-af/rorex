@@ -12,6 +12,7 @@
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">Daily Reports</li>
     </ol>
+    <div class="alert alert-primary" id="last_update"></div>
     @include('user.layouts.partial.errors')
     <div class="card mb-4">
         <div class="card-body table-responsive">
@@ -242,6 +243,23 @@
                     console.error(error);
                 });
         }
+
+        $(document).ready(function () {
+            let last_update = document.getElementById('last_update');
+            last_update.innerHTML = `<div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+            </div>`;
+
+            axios.post('{{route('user.dailyReports.ajax.getLastUpdate')}}')
+                .then(function (response) {
+                    const formattedDateTime = moment(response.data.updated_at).format('YYYY-MM-DD HH:mm:ss');
+                    last_update.innerHTML = `Last Update: ${formattedDateTime}`;
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        });
+
     </script>
 @endsection
 

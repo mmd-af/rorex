@@ -31,6 +31,10 @@ Route::group(['middleware' => ['web', 'auth', 'permission:employees'], 'namespac
                 'as' => 'getUserWithRole',
                 'uses' => 'DailyReportAjaxController@getUserWithRole'
             ]);
+            Route::post('/getLastUpdate', [
+                'as' => 'getLastUpdate',
+                'uses' => 'DailyReportAjaxController@getLastUpdate'
+            ]);
         });
     });
 });

@@ -6,7 +6,6 @@ use App\Mail\RequestMail;
 use App\Models\DailyReport\DailyReport;
 use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
-use App\Models\Support\Support;
 use App\Models\User\User;
 use Carbon\Carbon;
 use Exception;
@@ -147,5 +146,13 @@ class DailyReportRepository extends BaseRepository
             DB::rollBack();
             Session::flash('error', $e->getMessage());
         }
+    }
+
+    public function getLastUpdate($request)
+    {
+        return $this->query()
+            ->select(['updated_at'])
+            ->orderBy('updated_at', 'desc')
+            ->first();
     }
 }
