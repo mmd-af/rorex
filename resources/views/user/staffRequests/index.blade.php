@@ -11,37 +11,83 @@
         <li class="breadcrumb-item active">Staff Requests</li>
     </ol>
     @include('user.layouts.partial.errors')
+    <div class="row">
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal"
+                     data-bs-target="#LeaveRequest" data-info="Modal 1 Content"
+                     onclick="LeaveRequestForRest()">
+                    Leave Request <i class="fa-solid fa-square-arrow-up-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal"
+                     data-bs-target="#LeaveRequest" data-info="Modal 1 Content"
+                     onclick="LeaveRequestForSpecialEvents()">
+                    Leave Request for Special Events <i class="fa-solid fa-square-arrow-up-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal"
+                     data-bs-target="#LeaveRequest" data-info="Modal 1 Content"
+                     onclick="LeaveRequestForHour()">
+                    Hourly leave Request <i class="fa-solid fa-square-arrow-up-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal"
+                     data-bs-target="#LeaveRequest" data-info="Modal 1 Content"
+                     onclick="CustomRequest()">
+                    Custom Request <i class="fa-solid fa-square-arrow-up-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-warning text-white mb-4">
+                <div class="card-body">
+                    <a class="text-white text-decoration-none"
+                       href="{{route('user.staffRequests.archived')}}">Archive <i class="fa-solid fa-square-arrow-up-right"></i></a>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="d-flex justify-content-between">
         <div></div>
         <div>
-            <a class="btn btn-outline-warning btn-sm text-warning" href="{{route('user.staffRequests.archived')}}">Archive</a>
         </div>
     </div>
-    <div class="d-flex justify-content-center my-3">
-        <button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal"
-                data-bs-target="#LeaveRequest"
-                onclick="LeaveRequestForRest()">
-            Leave Request <i class="fa-solid fa-square-arrow-up-right"></i>
-        </button>
-        <button type="button"
-                class="btn btn-primary mx-3" data-bs-toggle="modal"
-                data-bs-target="#LeaveRequest" data-info="Modal 1 Content"
-                onclick="LeaveRequestForSpecialEvents()">
-            Leave Request for Special Events <i class="fa-solid fa-square-arrow-up-right"></i>
-        </button>
-        <button type="button"
-                class="btn btn-primary mx-3" data-bs-toggle="modal"
-                data-bs-target="#LeaveRequest"
-                onclick="LeaveRequestForHour()">
-            Hourly leave Request <i class="fa-solid fa-square-arrow-up-right"></i>
-        </button>
-        <button type="button"
-                class="btn btn-primary mx-3" data-bs-toggle="modal"
-                data-bs-target="#LeaveRequest"
-                onclick="CustomRequest()">
-            Custom Request <i class="fa-solid fa-square-arrow-up-right"></i>
-        </button>
-    </div>
+    {{--    <div class="d-flex justify-content-center my-3">--}}
+    {{--        <button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal"--}}
+    {{--                data-bs-target="#LeaveRequest"--}}
+    {{--                onclick="LeaveRequestForRest()">--}}
+    {{--            Leave Request <i class="fa-solid fa-square-arrow-up-right"></i>--}}
+    {{--        </button>--}}
+    {{--        <button type="button"--}}
+    {{--                class="btn btn-primary mx-3" data-bs-toggle="modal"--}}
+    {{--                data-bs-target="#LeaveRequest" data-info="Modal 1 Content"--}}
+    {{--                onclick="LeaveRequestForSpecialEvents()">--}}
+    {{--            Leave Request for Special Events <i class="fa-solid fa-square-arrow-up-right"></i>--}}
+    {{--        </button>--}}
+    {{--        <button type="button"--}}
+    {{--                class="btn btn-primary mx-3" data-bs-toggle="modal"--}}
+    {{--                data-bs-target="#LeaveRequest"--}}
+    {{--                onclick="LeaveRequestForHour()">--}}
+    {{--            Hourly leave Request <i class="fa-solid fa-square-arrow-up-right"></i>--}}
+    {{--        </button>--}}
+    {{--        <button type="button"--}}
+    {{--                class="btn btn-primary mx-3" data-bs-toggle="modal"--}}
+    {{--                data-bs-target="#LeaveRequest"--}}
+    {{--                onclick="CustomRequest()">--}}
+    {{--            Custom Request <i class="fa-solid fa-square-arrow-up-right"></i>--}}
+    {{--        </button>--}}
+    {{--    </div>--}}
     <div class="card mb-4">
         <div class="card-body table-responsive">
             <table id="staffRequestTable" class="table table-bordered table-striped text-center">
@@ -465,7 +511,7 @@
                 .catch(function (error) {
                     alert(error.request.response)
                 });
-            let performAction=document.getElementById('performAction');
+            let performAction = document.getElementById('performAction');
             performAction.disabled = true;
             performAction.innerHTML = `
              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
