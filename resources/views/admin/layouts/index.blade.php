@@ -7,7 +7,7 @@
     <title>Rorex - @yield('title')</title>
     <link href="{{asset('admin-panel/css/styles.css')}}" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css"/>
     <script src="https://cdn.datatables.net/plug-ins/1.11.6/api/individual.columnFilter.js"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @yield('style')
@@ -36,42 +36,32 @@
 <script>
     function getMessages() {
         let setMessage = document.getElementById('getMessages');
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: 'GET',
-            url: '{{ route('admin.manageRequests.ajax.getNewRequest') }}',
-            success: function (response) {
-                setMessage.innerHTML = '';
-                setMessage.innerHTML=response.data;
-
-        {{--        response.forEach((data) => {--}}
-        {{--            --}}{{--let catLink = '{{ route('site.categories.show', ':slug') }}';--}}
-        {{--            --}}{{--catLink = catLink.replace(':slug', data.slug);--}}
-        {{--            let messageData = `--}}
-        {{--<div class="dropdown-item d-flex justify-content-between" href="#">--}}
-        {{--            <div>--}}
-        {{--                <div class="small text-gray-500">${data.phone}</div>--}}
-        {{--                <span class="font-weight-bold">${data.description}</span>--}}
-        {{--            </div>--}}
-
-        {{--            <div class="mr-3">--}}
-        {{--                <div class="icon-circle bg-primary">--}}
-        {{--                   <a style="cursor: pointer" onclick="deleteMessage(${data.id})">--}}
-        {{--                    <i class="fas fa-trash-alt text-danger"></i>--}}
-        {{--                   </a>--}}
-        {{--                </div>--}}
-        {{--            </div>--}}
-
-        {{--        </div>`;--}}
-        {{--            setMessage.innerHTML += messageData;--}}
-        {{--        })--}}
-            }
-        });
+        axios.get('{{route('admin.manageRequests.ajax.getNewRequest')}}')
+            .then(function (response) {
+                console.log(response.data)
+                // response.data.forEach(function (item) {
+                //     setMessage.innerHTML = '';
+                //     setMessage.innerHTML = response.data;
+                // });
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
     }
+
+    $(document).ready(function () {
+        // setInterval(pushNotification, 10000);
+        let alertNotification = document.getElementById('alertNotification');
+
+        function pushNotification() {
+            alertNotification.innerHTML = `
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            +5 <span class="visually-hidden">unread messages</span>
+        </span>`;
+        }
+
+        pushNotification();
+    });
 </script>
 </body>
 </html>
