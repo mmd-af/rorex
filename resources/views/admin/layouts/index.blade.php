@@ -36,6 +36,12 @@
 <script>
     function getMessages() {
         let setMessage = document.getElementById('getMessages');
+        setMessage.innerHTML = `
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>`;
         axios.get('{{route('admin.manageRequests.ajax.getNewRequest')}}')
             .then(function (response) {
                 console.log(response.data)
