@@ -44,10 +44,6 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'getDescriptionForPrint',
                 'uses' => 'ManageRequestAjaxController@getDescriptionForPrint'
             ]);
-            Route::get('/getNewRequest', [
-                'as' => 'getNewRequest',
-                'uses' => 'ManageRequestAjaxController@getNewRequest'
-            ]);
         });
     });
 });

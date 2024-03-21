@@ -34,30 +34,9 @@
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 @yield('script')
 <script>
-    function getMessages() {
-        let setMessage = document.getElementById('getMessages');
-        setMessage.innerHTML = `
-        <div class="d-flex justify-content-center">
-            <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>`;
-        axios.get('{{route('admin.manageRequests.ajax.getNewRequest')}}')
-            .then(function (response) {
-                console.log(response.data)
-                // response.data.forEach(function (item) {
-                //     setMessage.innerHTML = '';
-                //     setMessage.innerHTML = response.data;
-                // });
-            })
-            .catch(function (error) {
-                console.error(error);
-            });
-    }
-
     $(document).ready(function () {
         let alertNotification = document.getElementById('alertNotification');
-        axios.get('{{route('admin.dashboard.ajax.checkNewNotification')}}')
+        axios.post('{{route('admin.dashboard.ajax.checkNewNotification')}}')
             .then(function (response) {
                 alertNotification.innerHTML = `
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -68,6 +47,31 @@
                 console.error(error);
             });
     });
+
+    function getMessages() {
+        let setMessage = document.getElementById('getMessages');
+        setMessage.innerHTML = `
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>`;
+        axios.post('{{route('admin.dashboard.ajax.getNewNotifications')}}')
+            .then(function (response) {
+                console.log(response.data)
+                setMessage.innerHTML = ``;
+                let url = "{{route('admin.manageRequests.index')}}";
+                response.data.staffRequest.forEach(function (item) {
+                    setMessage.innerHTML += `<a href="${url}">
+                                                <div class="alert alert-primary" role="alert">
+                                                ${item.subject}
+                                            </div></a>`;
+                });
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+    }
 </script>
 </body>
 </html>

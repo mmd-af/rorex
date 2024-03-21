@@ -19,4 +19,8 @@ class DashboardAjaxController extends Controller
     {
         return $this->dashboardRepository->checkNewNotification($request);
     }
+    public function getNewNotifications(Request $request)
+    {
+        return $this->dashboardRepository->getNewNotifications($request);
+    }
 }

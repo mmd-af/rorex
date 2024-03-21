@@ -11,9 +11,13 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
             ]);
         });
         Route::group(['prefix' => 'dashboard-ajax', 'as' => 'dashboard.ajax.'], function () {
-            Route::get('/checkNewNotification', [
+            Route::post('/checkNewNotification', [
                 'as' => 'checkNewNotification',
                 'uses' => 'DashboardAjaxController@checkNewNotification'
+            ]);
+            Route::post('/getNewNotifications', [
+                'as' => 'getNewNotifications',
+                'uses' => 'DashboardAjaxController@getNewNotifications'
             ]);
         });
     });
