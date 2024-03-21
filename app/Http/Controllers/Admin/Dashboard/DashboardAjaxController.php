@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Admin\DashboardRepository;
+use Illuminate\Http\Request;
 
 class DashboardAjaxController extends Controller
 {
@@ -14,4 +15,8 @@ class DashboardAjaxController extends Controller
         $this->dashboardRepository = $dashboardRepository;
     }
 
+    public function checkNewNotification(Request $request)
+    {
+        return $this->dashboardRepository->checkNewNotification($request);
+    }
 }

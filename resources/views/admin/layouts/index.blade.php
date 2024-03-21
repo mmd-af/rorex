@@ -50,17 +50,17 @@
     }
 
     $(document).ready(function () {
-        // setInterval(pushNotification, 10000);
         let alertNotification = document.getElementById('alertNotification');
-
-        function pushNotification() {
-            alertNotification.innerHTML = `
+        axios.get('{{route('admin.dashboard.ajax.checkNewNotification')}}')
+            .then(function (response) {
+                alertNotification.innerHTML = `
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            +5 <span class="visually-hidden">unread messages</span>
+            +${response.data.qty} <span class="visually-hidden">unread messages</span>
         </span>`;
-        }
-
-        pushNotification();
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
     });
 </script>
 </body>
