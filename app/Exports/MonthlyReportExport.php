@@ -32,7 +32,7 @@ class MonthlyReportExport implements FromArray, WithHeadings, WithStyles
             'Daily Shift (Hour)',
             'Plus Day (Hour)',
             'Plus Night (Hour)',
-            'Plus Work (Hour)',
+            'Total Plus Work',
             'Delay Work (Minute)',
             'Early Exit (Minute)',
             'Daily Absence (Day)',

@@ -134,9 +134,9 @@ class MonthlyReportRepository extends BaseRepository
             } elseif ($dailyReport->nume_schimb == 'Daily') {
                 $hourDaily += $dailyReport->munca_ore;
             } elseif ($dailyReport->nume_schimb == 'Plus-Day') {
-                $hourPlusDay += $dailyReport->munca_ore;
+                $hourPlusDay += $dailyReport->ot_ore;
             } elseif ($dailyReport->nume_schimb == 'Plus-Night') {
-                $hourPlusNight += $dailyReport->munca_ore;
+                $hourPlusNight += $dailyReport->ot_ore;
             } elseif ($dailyReport->nume_schimb == 'Tura implicita') {
                 $turaImplicita += $dailyReport->munca_ore;
             } else {
@@ -151,21 +151,21 @@ class MonthlyReportRepository extends BaseRepository
             $earlyExit += $dailyReport->devreme_minute;
             $userName = $dailyReport->users->name . " " . $dailyReport->users->prenumele_tatalui;
         }
-        $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily + $hourPlusDay + $hourPlusNight;
+        $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily;
         $data[] = [
             'codeStaff' => $staffCode,
             'Name' => $userName,
-            'hourNight' => floor($hourNight),
-            'hourMorning' => floor($hourMorning),
-            'hourAfternoon' => floor($hourAfternoon),
-            'hourDaily' => floor($hourDaily),
-            'hourPlusDay' => floor($hourPlusDay),
-            'hourPlusNight' => floor($hourPlusNight),
-            'plusWork' => floor($plusWork),
+            'hourNight' => number_format($hourNight, 1),
+            'hourMorning' => number_format($hourMorning, 1),
+            'hourAfternoon' => number_format($hourAfternoon, 1),
+            'hourDaily' => number_format($hourDaily, 1),
+            'hourPlusDay' => number_format($hourPlusDay, 1),
+            'hourPlusNight' => number_format($hourPlusNight, 1),
+            'plusWork' => number_format($plusWork, 1),
             'delayWork' => $delayWork,
             'earlyExit' => $earlyExit,
-            'dailyAbsence' => floor($dailyAbsence),
-            'totalHours' => floor($totalHours),
+            'dailyAbsence' => number_format($dailyAbsence, 1),
+            'totalHours' => number_format($totalHours, 1),
             'hourUnknown' => $hourUnknown,
             'turaImplicita' => $turaImplicita,
             'forgotPunch' => $lipsaCeasTimpi
