@@ -258,7 +258,7 @@
                             <td>per hour</td>
                         </tr>
                         <tr>
-                            <td>Plus Work (at weeks)</td>
+                            <td>Total Plus Work</td>
                             <td>${response.data.plusWork}</td>
                             <td>per hour</td>
                         </tr>

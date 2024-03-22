@@ -77,9 +77,9 @@ class MonthlyReportRepository extends BaseRepository
             } elseif ($dailyReport->nume_schimb == 'Daily') {
                 $hourDaily += $dailyReport->munca_ore;
             } elseif ($dailyReport->nume_schimb == 'Plus-Day') {
-                $hourPlusDay += $dailyReport->munca_ore;
+                $hourPlusDay += $dailyReport->ot_ore;
             } elseif ($dailyReport->nume_schimb == 'Plus-Night') {
-                $hourPlusNight += $dailyReport->munca_ore;
+                $hourPlusNight += $dailyReport->ot_ore;
             } elseif ($dailyReport->nume_schimb == 'Tura implicita') {
                 $turaImplicita += $dailyReport->munca_ore;
             } else {
@@ -93,7 +93,7 @@ class MonthlyReportRepository extends BaseRepository
             $delayWork += $dailyReport->tarziu_minute;
             $earlyExit += $dailyReport->devreme_minute;
         }
-        $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily + $hourPlusDay + $hourPlusNight;
+        $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily;
         $result = [
             'codeStaff' => $staffCode,
             'monthDate' => $monthDate,
