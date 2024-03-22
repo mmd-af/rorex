@@ -2,33 +2,40 @@
 
 namespace App\Repositories\Admin;
 
+use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardRepository extends BaseRepository
 {
     public function checkNewNotification($request)
     {
-        $staffRequests = StaffRequest::query()
+        $letter_assignments = LetterAssignment::query()
             ->select([
                 'id',
-                'read_at'
+                'request_id',
+                'is_archive'
             ])
-            ->where('read_at', null)
+            ->where('is_archive', 0)
+            ->where('assigned_to', Auth::id())
+            ->with('request')
             ->get();
-        $staffRequests = count($staffRequests);
-        return response()->json(['qty' => $staffRequests]);
+        $qty = count($letter_assignments);
+        return response()->json(['qty' => $qty]);
     }
 
     public function getNewNotifications($request)
     {
-        $staffRequests = StaffRequest::query()
+        $letter_assignments = LetterAssignment::query()
             ->select([
                 'id',
-                'subject',
-                'read_at'
+                'request_id',
+                'is_archive'
             ])
-            ->where('read_at', null)
+            ->where('is_archive', 0)
+            ->where('assigned_to', Auth::id())
+            ->with('request')
             ->get();
-        return response()->json(['staffRequest' => $staffRequests]);
+        return response()->json(['letter_assignments' => $letter_assignments]);
     }
 }

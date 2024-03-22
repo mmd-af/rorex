@@ -58,13 +58,12 @@
         </div>`;
         axios.post('{{route('admin.dashboard.ajax.getNewNotifications')}}')
             .then(function (response) {
-                console.log(response.data)
                 setMessage.innerHTML = ``;
                 let url = "{{route('admin.manageRequests.index')}}";
-                response.data.staffRequest.forEach(function (item) {
+                response.data.letter_assignments.forEach(function (item) {
                     setMessage.innerHTML += `<a href="${url}">
                                                 <div class="alert alert-primary" role="alert">
-                                                ${item.subject}
+                                                ${item.request.subject}
                                             </div></a>`;
                 });
             })
