@@ -38,10 +38,13 @@
         let alertNotification = document.getElementById('alertNotification');
         axios.post('{{route('admin.dashboard.ajax.checkNewNotification')}}')
             .then(function (response) {
-                alertNotification.innerHTML = `
+                let qty = response.data.qty;
+                if (qty > 0) {
+                    alertNotification.innerHTML = `
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            +${response.data.qty} <span class="visually-hidden">unread messages</span>
+            +${qty} <span class="visually-hidden">unread messages</span>
         </span>`;
+                }
             })
             .catch(function (error) {
                 console.error(error);
