@@ -22,15 +22,18 @@
                     <?php
                     $currentMonth = date('n');
                     $currentYear = date('Y');
-                    for ($i = 0; $i <= 12; $i++) {
+                    for ($i = 1; $i <= 12; $i++) {
                         $monthValue = ($currentMonth - $i + 12) % 12 + 1;
                         $yearValue = $currentYear + floor(($currentMonth - $i) / 12);
+                        if ($monthValue > $currentMonth) {
+                            $yearValue--;
+                        }
                         $formattedMonth = sprintf('%02d', $monthValue);
                         $dateOutput = "$yearValue-$formattedMonth";
                         $monthName = date("F", mktime(0, 0, 0, $monthValue, 1, $yearValue));
                         echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
                     }
-                    ?>
+                    ?>                    
                 </select>
                 <button type="button" class="btn btn-primary mt-3" onclick="monthlyReportWithDate()">Show
                 </button>
