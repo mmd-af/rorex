@@ -126,6 +126,7 @@ class MonthlyReportRepository extends BaseRepository
         foreach ($staffCodes as $staffCode) {
             $dailyReports = DailyReport::query()
                 ->select([
+                    'id',
                     'cod_staff',
                     'data',
                     'nume_schimb',
@@ -178,7 +179,7 @@ class MonthlyReportRepository extends BaseRepository
                 $dailyAbsence += $dailyReport->absenta_zile;
                 $delayWork += $dailyReport->tarziu_minute;
                 $earlyExit += $dailyReport->devreme_minute;
-                $userName = $dailyReport->users->name . " " . $dailyReport->users->prenumele_tatalui;
+                $userName = $dailyReport->users->name . " " . $dailyReport->users->first_name;
             }
             $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily;
             $data[] = [
