@@ -162,87 +162,89 @@
     <script>
         function monthlyReportWithDate() {
             let date = document.getElementById('date').value;
-            let data = {
-                date: date
-            }
-            axios.post('{{ route('user.dailyReports.ajax.getDataTable') }}', data)
-                .then(function(response) {
-                    $('#dailyReportTable').DataTable({
-                        processing: true,
-                        serverSide: true,
-                        pageLength: 25,
-                        data: response.data.data,
-                        columns: [{
-                                data: 'cod_staff',
-                                name: 'cod_staff'
-                            },
-                            {
-                                data: 'nume',
-                                name: 'nume'
-                            },
-                            {
-                                data: 'data',
-                                name: 'data'
-                            },
-                            {
-                                data: 'saptamana',
-                                name: 'saptamana'
-                            },
-                            {
-                                data: 'nume_schimb',
-                                name: 'nume_schimb'
-                            },
-                            {
-                                data: 'on_work1',
-                                name: 'on_work1'
-                            },
-                            {
-                                data: 'off_work2',
-                                name: 'off_work2'
-                            },
-                            {
-                                data: 'remarca',
-                                name: 'remarca'
-                            },
-                            {
-                                data: 'button',
-                                name: 'button',
-                                orderable: false,
-                                searchable: false
-                            }
-                        ],
-                        initComplete: function() {
-                            var table = this;
+            let csrfToken = $('meta[name="csrf-token"]').attr('content');
+            $('#dailyReportTable').DataTable({
+                processing: true,
+                serverSide: true,
+                pageLength: 25,
+                destroy: true,
+                ajax: {
+                    url: "{{ route('user.dailyReports.ajax.getDataTable') }}",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    data: {
+                        date: date
+                    }
+                },
+                columns: [{
+                        data: 'cod_staff',
+                        name: 'cod_staff'
+                    },
+                    {
+                        data: 'nume',
+                        name: 'nume'
+                    },
+                    {
+                        data: 'data',
+                        name: 'data'
+                    },
+                    {
+                        data: 'saptamana',
+                        name: 'saptamana'
+                    },
+                    {
+                        data: 'nume_schimb',
+                        name: 'nume_schimb'
+                    },
+                    {
+                        data: 'on_work1',
+                        name: 'on_work1'
+                    },
+                    {
+                        data: 'off_work2',
+                        name: 'off_work2'
+                    },
+                    {
+                        data: 'remarca',
+                        name: 'remarca'
+                    },
+                    {
+                        data: 'button',
+                        name: 'button',
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                initComplete: function() {
+                    var table = this;
+                    $('.filter-row').empty();
+                    this.api().columns().every(function() {
+                        var column = this;
+                        var header = $(column.header());
 
-                            this.api().columns().every(function() {
-                                var column = this;
-                                var header = $(column.header());
+                        var filterRow = header.closest('thead').find('.filter-row');
 
-                                var filterRow = header.closest('thead').find('.filter-row');
-
-                                if (!filterRow.length) {
-                                    filterRow = $('<tr class="filter-row"></tr>').appendTo(header
-                                        .closest('thead'));
-                                }
-
-                                var input = $(
-                                        '<input type="text" class="form-control form-control-sm" placeholder="Search...">'
-                                        )
-                                    .appendTo($('<th></th>').appendTo(filterRow))
-                                    .on('keyup change', function() {
-                                        if (column.search() !== this.value) {
-                                            column
-                                                .search(this.value)
-                                                .draw();
-                                        }
-                                    });
-                            });
+                        if (!filterRow.length) {
+                            filterRow = $('<tr class="filter-row"></tr>').appendTo(header.closest(
+                                'thead'));
                         }
+
+                        var input = $(
+                                '<input type="text" class="form-control form-control-sm" placeholder="Search...">'
+                            )
+                            .appendTo($('<th></th>').appendTo(filterRow))
+                            .on('keyup change', function() {
+                                if (column.search() !== this.value) {
+                                    column
+                                        .search(this.value)
+                                        .draw();
+                                }
+                            });
                     });
-                })
-                .catch(function(error) {
-                    console.error(error);
-                });
+                }
+            });
         }
 
         $(document).ready(function() {
