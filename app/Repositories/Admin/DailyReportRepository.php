@@ -32,6 +32,8 @@ class DailyReportRepository extends BaseRepository
                 'off_work2',
                 'remarca'
             ])
+            ->where('data', 'LIKE', "$request->date%")
+            ->orderByDesc('data')
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
