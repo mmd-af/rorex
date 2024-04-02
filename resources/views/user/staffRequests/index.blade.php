@@ -247,7 +247,7 @@
                                 <input type="hidden" name="kind" value="SpecialEvents">
                                 <input type="hidden" name="subject" value="leave for special events">
                                 <label for="description">explain:</label>
-                                <input type="text" class="form-control" name="description" id="description" value="">`;
+                                <input type="text" class="form-control" name="description" id="description" value="" required>`;
             const descriptionInput = document.getElementById('description');
             let isTextAdded = false;
             descriptionInput.addEventListener('change', function (event) {
@@ -298,7 +298,7 @@
 <label for="subject">Subject:</label>
 <input type="text" class="form-control" name="subject" id="subject" value="">
 <label for="description">Description:</label>
-<textarea name="description" class="form-control" id="description"></textarea>`;
+<textarea name="description" class="form-control" id="description" required></textarea>`;
         }
 
         $(document).ready(function () {
