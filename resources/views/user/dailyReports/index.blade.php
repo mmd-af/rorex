@@ -14,42 +14,72 @@
     </ol>
     <div class="alert alert-primary" id="last_update"></div>
     @include('user.layouts.partial.errors')
+
+
+    <div class="card mb-4">
+        <div class="card-body table-responsive">
+            <form class="form-control px-5">
+                @csrf
+                <label for="date">Select Date:</label>
+                <select id="date" name="date" class="form-control">
+                    <?php
+                    $currentMonth = date('n');
+                    $currentYear = date('Y');
+                    for ($i = 1; $i <= 12; $i++) {
+                        $monthValue = (($currentMonth - $i + 12) % 12) + 1;
+                        $yearValue = $currentYear + floor(($currentMonth - $i) / 12);
+                        if ($monthValue > $currentMonth) {
+                            $yearValue--;
+                        }
+                        $formattedMonth = sprintf('%02d', $monthValue);
+                        $dateOutput = "$yearValue-$formattedMonth";
+                        $monthName = date('F', mktime(0, 0, 0, $monthValue, 1, $yearValue));
+                        echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
+                    }
+                    ?>
+                </select>
+                <button type="button" class="btn btn-primary mt-3" onclick="monthlyReportWithDate()">Show
+                </button>
+            </form>
+        </div>
+    </div>
+
     <div class="card mb-4">
         <div class="card-body table-responsive">
             <table id="dailyReportTable" class="table table-bordered table-striped text-center">
                 <thead>
-                <tr>
-                    <th>cod_staff</th>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>Weeks</th>
-                    <th>Shift</th>
-                    <th>on_work1</th>
-                    <th>off_work2</th>
-                    <th>remarca</th>
-                    <th>Action</th>
-                </tr>
+                    <tr>
+                        <th>cod_staff</th>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Weeks</th>
+                        <th>Shift</th>
+                        <th>on_work1</th>
+                        <th>off_work2</th>
+                        <th>remarca</th>
+                        <th>Action</th>
+                    </tr>
                 </thead>
                 <tfoot>
-                <tr>
-                    <th>cod_staff</th>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>Weeks</th>
-                    <th>Shift</th>
-                    <th>on_work1</th>
-                    <th>off_work2</th>
-                    <th>remarca</th>
-                    <th>Action</th>
-                </tr>
+                    <tr>
+                        <th>cod_staff</th>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Weeks</th>
+                        <th>Shift</th>
+                        <th>on_work1</th>
+                        <th>off_work2</th>
+                        <th>remarca</th>
+                        <th>Action</th>
+                    </tr>
                 </tfoot>
+
                 <body>
                 </body>
             </table>
         </div>
     </div>
-    <div class="modal fade" id="forgetRequest" tabindex="-1" aria-labelledby="forgetRequestLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="forgetRequest" tabindex="-1" aria-labelledby="forgetRequestLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -76,7 +106,7 @@
                         </div>
                     </div>
 
-                    <form action="{{route('user.dailyReports.checkRequest')}}" method="post">
+                    <form action="{{ route('user.dailyReports.checkRequest') }}" method="post">
                         @csrf
                         <div class="mb-3">
                             <label for="cod_staff" class="col-form-label">Staff:
@@ -102,7 +132,7 @@
                         <div class="mb-3">
                             <label for="departamentRole" class="col-form-label">Referred to:</label>
                             <select class="form-control" name="departamentRole" id="departamentRole"
-                                    onchange="getRelateUserWithRole()">
+                                onchange="getRelateUserWithRole()">
                                 <option value="">SELECT DEPARTMENT</option>
                             </select>
                         </div>
@@ -126,64 +156,105 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('script')
     <script>
-        $(document).ready(function () {
-            $('#dailyReportTable').DataTable({
-                processing: true,
-                serverSide: true,
-                pageLength: 25,
-                ajax: "{{ route('user.dailyReports.ajax.getDataTable') }}",
-                columns: [
-                    {data: 'cod_staff', name: 'cod_staff'},
-                    {data: 'nume', name: 'nume'},
-                    {data: 'data', name: 'data'},
-                    {data: 'saptamana', name: 'saptamana'},
-                    {data: 'nume_schimb', name: 'nume_schimb'},
-                    {data: 'on_work1', name: 'on_work1'},
-                    {data: 'off_work2', name: 'off_work2'},
-                    {data: 'remarca', name: 'remarca'},
-                    {data: 'button', name: 'button', orderable: false, searchable: false}
-                ],
-                initComplete: function () {
-                    var table = this;
+        function monthlyReportWithDate() {
+            let date = document.getElementById('date').value;
+            let data = {
+                date: date
+            }
+            axios.post('{{ route('user.dailyReports.ajax.getDataTable') }}', data)
+                .then(function(response) {
+                    $('#dailyReportTable').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        pageLength: 25,
+                        data: response.data.data,
+                        columns: [{
+                                data: 'cod_staff',
+                                name: 'cod_staff'
+                            },
+                            {
+                                data: 'nume',
+                                name: 'nume'
+                            },
+                            {
+                                data: 'data',
+                                name: 'data'
+                            },
+                            {
+                                data: 'saptamana',
+                                name: 'saptamana'
+                            },
+                            {
+                                data: 'nume_schimb',
+                                name: 'nume_schimb'
+                            },
+                            {
+                                data: 'on_work1',
+                                name: 'on_work1'
+                            },
+                            {
+                                data: 'off_work2',
+                                name: 'off_work2'
+                            },
+                            {
+                                data: 'remarca',
+                                name: 'remarca'
+                            },
+                            {
+                                data: 'button',
+                                name: 'button',
+                                orderable: false,
+                                searchable: false
+                            }
+                        ],
+                        initComplete: function() {
+                            var table = this;
 
-                    this.api().columns().every(function () {
-                        var column = this;
-                        var header = $(column.header());
+                            this.api().columns().every(function() {
+                                var column = this;
+                                var header = $(column.header());
 
-                        var filterRow = header.closest('thead').find('.filter-row');
+                                var filterRow = header.closest('thead').find('.filter-row');
 
-                        if (!filterRow.length) {
-                            filterRow = $('<tr class="filter-row"></tr>').appendTo(header.closest('thead'));
-                        }
-
-                        var input = $('<input type="text" class="form-control form-control-sm" placeholder="Search...">')
-                            .appendTo($('<th></th>').appendTo(filterRow))
-                            .on('keyup change', function () {
-                                if (column.search() !== this.value) {
-                                    column
-                                        .search(this.value)
-                                        .draw();
+                                if (!filterRow.length) {
+                                    filterRow = $('<tr class="filter-row"></tr>').appendTo(header
+                                        .closest('thead'));
                                 }
-                            });
-                    });
-                }
-            });
-        });
 
-        $(document).ready(function () {
-            let departamentRole = document.getElementById('departamentRole');
-            axios.get('{{route('user.dailyReports.ajax.getRoles')}}')
-                .then(function (response) {
-                    response.data.forEach(function (item) {
-                        departamentRole.innerHTML += `<option value="${item.name}">${item.name}</option>`;
+                                var input = $(
+                                        '<input type="text" class="form-control form-control-sm" placeholder="Search...">'
+                                        )
+                                    .appendTo($('<th></th>').appendTo(filterRow))
+                                    .on('keyup change', function() {
+                                        if (column.search() !== this.value) {
+                                            column
+                                                .search(this.value)
+                                                .draw();
+                                        }
+                                    });
+                            });
+                        }
                     });
                 })
-                .catch(function (error) {
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
+
+        $(document).ready(function() {
+            let departamentRole = document.getElementById('departamentRole');
+            axios.get('{{ route('user.dailyReports.ajax.getRoles') }}')
+                .then(function(response) {
+                    response.data.forEach(function(item) {
+                        departamentRole.innerHTML +=
+                            `<option value="${item.name}">${item.name}</option>`;
+                    });
+                })
+                .catch(function(error) {
                     console.error(error);
                 });
         });
@@ -196,18 +267,19 @@
             let data = {
                 role_name: departamentRole.value
             }
-            axios.post('{{route('user.dailyReports.ajax.getUserWithRole')}}', data)
-                .then(function (response) {
+            axios.post('{{ route('user.dailyReports.ajax.getUserWithRole') }}', data)
+                .then(function(response) {
                     assigned_user.innerHTML = `
                     <select class="form-control" name="assigned_to" id="assigned_to">
                     </select>`;
                     let assignedTo = document.getElementById('assigned_to');
                     assignedTo.innerHTML = ``;
-                    response.data.forEach(function (item) {
-                        assignedTo.innerHTML += `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
+                    response.data.forEach(function(item) {
+                        assignedTo.innerHTML +=
+                            `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
                     });
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     console.error(error);
                 });
         }
@@ -229,7 +301,7 @@
                 id: id
             }
             axios.post('{{ route('user.dailyReports.ajax.getData') }}', configInformation)
-                .then(function (response) {
+                .then(function(response) {
                     alert.innerHTML = ``;
                     name.value = response.data.data.name;
                     first_name.value = response.data.data.first_name;
@@ -239,27 +311,25 @@
                     cod_staff.value = response.data.data.cod_staff;
                     cod_staff_show.innerHTML = response.data.data.cod_staff;
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     console.error(error);
                 });
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             let last_update = document.getElementById('last_update');
             last_update.innerHTML = `<div class="spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
             </div>`;
 
-            axios.post('{{route('user.dailyReports.ajax.getLastUpdate')}}')
-                .then(function (response) {
+            axios.post('{{ route('user.dailyReports.ajax.getLastUpdate') }}')
+                .then(function(response) {
                     const formattedDateTime = moment(response.data.updated_at).format('YYYY-MM-DD HH:mm:ss');
                     last_update.innerHTML = `Last Update: ${formattedDateTime}`;
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     console.error(error);
                 });
         });
-
     </script>
 @endsection
-

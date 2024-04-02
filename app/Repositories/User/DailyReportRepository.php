@@ -39,6 +39,8 @@ class DailyReportRepository extends BaseRepository
                 'remarca'
             ])
             ->where('cod_staff', $userId)
+            ->where('data', 'LIKE', "$request->date%")
+            ->orderByDesc('data')
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
@@ -79,7 +81,6 @@ class DailyReportRepository extends BaseRepository
                 'name'
             ])
             ->get();
-
     }
 
     public function getUserWithRole($request)

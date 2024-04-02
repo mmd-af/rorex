@@ -15,7 +15,7 @@ Route::group(['middleware' => ['web', 'auth', 'permission:employees'], 'namespac
             ]);
         });
         Route::group(['prefix' => 'dailyReports-ajax', 'as' => 'dailyReports.ajax.'], function () {
-            Route::get('/getDataTable', [
+            Route::post('/getDataTable', [
                 'as' => 'getDataTable',
                 'uses' => 'DailyReportAjaxController@getDataTable'
             ]);
