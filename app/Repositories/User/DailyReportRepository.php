@@ -111,7 +111,7 @@ class DailyReportRepository extends BaseRepository
                 'Date: ' . $dateOfRequest .
                 '<br><div id="box">Name: ' . $request->name . ' ' . $request->first_name . '<br>' .
                 'Code Staff: ' . $request->cod_staff . '</div><br>' .
-                'Check For Date: ' . $request->date . '</div><br>' .
+                'Check For Date: ' . $request->check_date . '</div><br>' .
                 '<div id="alignCenter"><b>' . $request->subject . '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' . $request->departament .
                 '<br>' . $request->description . '<br>Email: ' . $request->email . '<hr>';
 

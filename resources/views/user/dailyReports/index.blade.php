@@ -117,10 +117,10 @@
                             <input type="hidden" id="cod_staff" name="cod_staff" value="">
                         </div>
                         <div class="mb-3">
-                            <label for="date" class="col-form-label">Date:
+                            <label for="date" class="col-form-label">Check for Date:
                                 <div class="text-info" id="date_show"></div>
                             </label>
-                            <input type="hidden" id="date" name="date" value="">
+                            <input type="hidden" id="check_date" name="check_date" value="">
                         </div>
                         <div class="mb-3">
                             <label for="subject" class="col-form-label">Subject:</label>
@@ -292,9 +292,9 @@
             let name_show = document.getElementById('name_show');
             let cod_staff = document.getElementById('cod_staff');
             let cod_staff_show = document.getElementById('cod_staff_show');
-            let date = document.getElementById('date');
+            let check_date = document.getElementById('check_date');
             let date_show = document.getElementById('date_show');
-            date.value = data;
+            check_date.value = data;
             date_show.innerHTML = data;
             let configInformation = {
                 id: id
