@@ -25,10 +25,10 @@ class DailyReportAjaxController extends Controller
             'data' => $this->dailyReportRepository->getData($request)
         ]);
     }
-    public function renderForm(Request $request)
+    public function renderTimeForm(Request $request)
     {
         return response()->json([
-            'data' => $this->dailyReportRepository->renderForm($request)
+            'data' => $this->dailyReportRepository->renderTimeForm($request)
         ]);
     }
 }

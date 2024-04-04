@@ -162,34 +162,11 @@ class DailyReportRepository extends BaseRepository
             return 0;
         }
     }
-    function renderForm($request)
+    function renderTimeForm($request)
     {
-        // array:20 [ // app/Repositories/Admin/DailyReportRepository.php:150
-        //     "id" => "5820"
-        //     "nume_schimb" => "Daily"
-        //     "on_work1" => "08:28"
-        //     "off_work1" => "12:00"
-        //     "on_work2" => "12:00"
-        //     "off_work2" => "16:00"
-        //     "on_work3" => null
-        //     "off_work3" => null
-        //     "absenta_zile" => "0.55"
-        //     "munca_ore" => "3.53"
-        //     "ot_ore" => null
-        //     "plus_week_day" => null
-        //     "plus_week_night" => null
-        //     "plus_holiday_day" => null
-        //     "plus_holiday_night" => null
-        //     "tarziu_minute" => "28"
-        //     "devreme_minute" => null
-        //     "lipsa_ceas_timpi" => "1"
-        //     "concediu_ore" => null
-        //     "remarca" => "Absente:4.46Ore"
-        //   ]
         $sumWork1 = $this->sumHourWork($request->on_work1, $request->off_work1);
         $sumWork2 = $this->sumHourWork($request->on_work2, $request->off_work2);
         $sumWork3 = $this->sumHourWork($request->on_work3, $request->off_work3);
-
         return response()->json(['sumWork1' => $sumWork1, 'sumWork2' => $sumWork2, 'sumWork3' => $sumWork3]);
     }
 }

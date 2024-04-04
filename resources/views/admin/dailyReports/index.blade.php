@@ -112,22 +112,6 @@
                 </div>
                 <div class="modal-body">
                     <div id="alert">
-                        <div class="row justify-content-center my-3">
-                            <div class="spinner-grow text-primary mx-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <div class="spinner-grow text-secondary mx-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center my-3">
-                            <div class="spinner-grow text-secondary mx-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <div class="spinner-grow text-primary mx-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
                     </div>
                     <form action="" method="post" id="editFrom">
                         @csrf
@@ -391,9 +375,7 @@
         }
         let editFrom = document.getElementById('editFrom');
         editFrom.style.visibility = 'hidden';
-
         let alert = document.getElementById('alert');
-
         let reportID = document.getElementById('reportID');
         let nume_schimb = document.getElementById('nume_schimb');
         let on_work1 = document.getElementById('on_work1');
@@ -414,13 +396,28 @@
         let lipsa_ceas_timpi = document.getElementById('lipsa_ceas_timpi');
         let concediu_ore = document.getElementById('concediu_ore');
         let remarca = document.getElementById('remarca');
-
         let sumWork1 = document.getElementById('sumWork1');
         let sumWork2 = document.getElementById('sumWork2');
         let sumWork3 = document.getElementById('sumWork3');
         let resultSumWork = document.getElementById('resultSumWork');
 
         function openEditFormModal(id) {
+            alert.innerHTML = ` <div class="row justify-content-center my-3">
+                            <div class="spinner-grow text-primary mx-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="spinner-grow text-secondary mx-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center my-3">
+                            <div class="spinner-grow text-secondary mx-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="spinner-grow text-primary mx-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>`;
             let configInformation = {
                 id: id
             }
@@ -436,7 +433,6 @@
                     resultSumWork.innerHTML = ``;
                     resultSumWork.classList.remove('bg-warning');
                     munca_ore.classList.remove('bg-warning');
-
                     reportID.value = response.data.data.id;
                     nume_schimb.value = response.data.data.nume_schimb;
                     on_work1.value = response.data.data.on_work1;
@@ -466,7 +462,13 @@
                 });
         }
 
-        function handleTextFieldChange(event) {
+        var timeFields = document.querySelectorAll("input[type='time']");
+        timeFields.forEach(function(timeField) {
+            timeField.addEventListener("input", handleTimeFieldChange);
+        });
+
+
+        function handleTimeFieldChange(event) {
             alert.innerHTML = ` <div class="row justify-content-center my-3">
                             <div class="spinner-grow text-primary mx-3" role="status">
                                 <span class="visually-hidden">Loading...</span>
@@ -484,48 +486,47 @@
                             </div>
                         </div>`;
 
+            // let configInformation = {
+            //     id: reportID.value,
+            //     nume_schimb: nume_schimb.value,
+            //     on_work1: on_work1.value,
+            //     off_work1: off_work1.value,
+            //     on_work2: on_work2.value,
+            //     off_work2: off_work2.value,
+            //     on_work3: on_work3.value,
+            //     off_work3: off_work3.value,
+            //     absenta_zile: absenta_zile.value,
+            //     munca_ore: munca_ore.value,
+            //     ot_ore: ot_ore.value,
+            //     plus_week_day: plus_week_day.value,
+            //     plus_week_night: plus_week_night.value,
+            //     plus_holiday_day: plus_holiday_day.value,
+            //     plus_holiday_night: plus_holiday_night.value,
+            //     tarziu_minute: tarziu_minute.value,
+            //     devreme_minute: devreme_minute.value,
+            //     lipsa_ceas_timpi: lipsa_ceas_timpi.value,
+            //     concediu_ore: concediu_ore.value,
+            //     remarca: remarca.value
+            // }
             let configInformation = {
-                id: reportID.value,
-                nume_schimb: nume_schimb.value,
                 on_work1: on_work1.value,
                 off_work1: off_work1.value,
                 on_work2: on_work2.value,
                 off_work2: off_work2.value,
                 on_work3: on_work3.value,
                 off_work3: off_work3.value,
-                absenta_zile: absenta_zile.value,
-                munca_ore: munca_ore.value,
-                ot_ore: ot_ore.value,
-                plus_week_day: plus_week_day.value,
-                plus_week_night: plus_week_night.value,
-                plus_holiday_day: plus_holiday_day.value,
-                plus_holiday_night: plus_holiday_night.value,
-                tarziu_minute: tarziu_minute.value,
-                devreme_minute: devreme_minute.value,
-                lipsa_ceas_timpi: lipsa_ceas_timpi.value,
-                concediu_ore: concediu_ore.value,
-                remarca: remarca.value
             }
-            axios.post('{{ route('admin.dailyReports.ajax.renderForm') }}', configInformation)
+            axios.post('{{ route('admin.dailyReports.ajax.renderTimeForm') }}', configInformation)
                 .then(function(response) {
                     alert.innerHTML = ``;
-                    renderForm(response);
+                    renderTimeForm(response);
                 })
                 .catch(function(error) {
                     console.error(error);
                 });
-
-            // console.log("ID:", reportID.value);
-            // console.log("Text field ID:", event.target.name);
-            // console.log("New value:", event.target.value);
         }
-        var textFields = document.querySelectorAll("input[type='number'], input[type='time']");
-        textFields.forEach(function(textField) {
-            textField.addEventListener("input", handleTextFieldChange);
-        });
 
-
-        function renderForm(response) {
+        function renderTimeForm(response) {
             let sum1 = parseFloat(response.data.data.original.sumWork1);
             let sum2 = parseFloat(response.data.data.original.sumWork2);
             let sum3 = parseFloat(response.data.data.original.sumWork3);
@@ -536,18 +537,30 @@
             sumWork3.innerHTML = sum3;
             sumWork3.classList.add('bg-warning');
             let totalSumWork = sum1 + sum2 + sum3;
-            resultSumWork.innerHTML = totalSumWork.toFixed(2);
+            totalSumWork = totalSumWork.toFixed(2);
+            resultSumWork.innerHTML = totalSumWork;
             resultSumWork.classList.add('bg-warning');
-
-            munca_ore.value = totalSumWork.toFixed(2);
+            munca_ore.value = totalSumWork;
             munca_ore.classList.add('bg-warning');
-
-
-
-
-
         }
 
+
+        var numberFields = document.querySelectorAll("input[type='number']");
+        numberFields.forEach(function(numberField) {
+            numberField.addEventListener("input", handleNumberFieldChange);
+        });
+
+        function handleNumberFieldChange(event) {
+            alert.innerHTML = ``;
+            if ((munca_ore.value + ot_ore.value) > resultSumWork.innerHTML) {
+                alert.innerHTML = `<div class="alert alert-danger">Error!!!</div>`;
+            }
+            console.log("total:", resultSumWork.innerHTML);
+            console.log("ot_ore:", ot_ore.value);
+            console.log("ID:", reportID.value);
+            console.log("Text field ID:", event.target.name);
+            console.log("New value:", event.target.value);
+        }
 
         // $('#editFormModal').on('hidden.bs.modal', function() {
         //     location.reload();
