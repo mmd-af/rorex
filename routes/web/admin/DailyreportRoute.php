@@ -23,6 +23,10 @@ Route::group(['middleware' => ['web', 'auth', 'permission:daily_reports'], 'name
                 'as' => 'getData',
                 'uses' => 'DailyReportAjaxController@getData'
             ]);
+            Route::post('/renderForm', [
+                'as' => 'renderForm',
+                'uses' => 'DailyReportAjaxController@renderForm'
+            ]);
         });
     });
 });
