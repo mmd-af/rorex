@@ -40,12 +40,50 @@ class DailyReportRepository extends BaseRepository
                 ->addColumn('first_name', function ($row) {
                     return $row->users->first_name;
                 })
-                ->rawColumns(['first_name'])
+                ->addColumn('edit', function ($row) {
+                    return '<button
+                                onclick="openEditFormModal(' . $row->id . ')"
+                                id="openEditFormModal"
+                                type="button"
+                                class="btn btn-info text-light btn-sm mx-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editFormModal">
+                                 <i class="fa-solid fa-pen-to-square"></i>
+                            </button>';
+                })
+                ->rawColumns(['first_name', 'edit'])
                 ->make(true);
         }
         return false;
     }
-
+    public function getData($request)
+    {
+        return $this->query()
+            ->select([
+                'id',
+                'nume_schimb',
+                'on_work1',
+                'off_work1',
+                'on_work2',
+                'off_work2',
+                'on_work3',
+                'off_work3',
+                'absenta_zile',
+                'munca_ore',
+                'ot_ore',
+                'plus_week_day',
+                'plus_week_night',
+                'plus_holiday_day',
+                'plus_holiday_night',
+                'tarziu_minute',
+                'devreme_minute',
+                'lipsa_ceas_timpi',
+                'concediu_ore',
+                'remarca'
+            ])
+            ->where('id', $request->id)
+            ->first();
+    }
     public function import($request)
     {
         $files = $request->file('file');
