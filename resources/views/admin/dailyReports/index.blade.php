@@ -204,7 +204,7 @@
                                         <td>
                                             <label for="munca_ore" class="form-label">Munca Ore</label>
                                             <input type="number" class="form-control" id="munca_ore" name="munca_ore"
-                                                value="">
+                                                value="" readonly>
                                         </td>
                                         <td>
                                             <label for="absenta_zile" class="form-label">Absenta Zile</label>
@@ -453,8 +453,8 @@
                     lipsa_ceas_timpi.value = response.data.data.lipsa_ceas_timpi;
                     concediu_ore.value = response.data.data.concediu_ore;
                     remarca.value = response.data.data.remarca;
-
                     editFrom.style.visibility = 'visible';
+                    handleTimeFieldChange();
 
                 })
                 .catch(function(error) {
@@ -542,6 +542,8 @@
             resultSumWork.classList.add('bg-warning');
             munca_ore.value = totalSumWork;
             munca_ore.classList.add('bg-warning');
+            ot_ore.value = 0;
+            ot_ore.classList.add('bg-warning');
         }
 
 
@@ -551,15 +553,36 @@
         });
 
         function handleNumberFieldChange(event) {
+
+            var resultSumWork_value = parseFloat(resultSumWork.innerHTML);
             alert.innerHTML = ``;
-            if ((munca_ore.value + ot_ore.value) > resultSumWork.innerHTML) {
-                alert.innerHTML = `<div class="alert alert-danger">Error!!!</div>`;
+
+            if (event.target.name === "ot_ore") {
+                munca_ore.value = resultSumWork_value;
+                calculateMuncaOre(munca_ore, event)
             }
-            console.log("total:", resultSumWork.innerHTML);
-            console.log("ot_ore:", ot_ore.value);
-            console.log("ID:", reportID.value);
-            console.log("Text field ID:", event.target.name);
-            console.log("New value:", event.target.value);
+
+
+
+            // alert.innerHTML = `<div class="alert alert-danger">Error!!!</div>`;
+
+            // console.log("total:", resultSumWork_value);
+            // console.log("ot_ore:", ot_ore_value);
+            // console.log("ID:", reportID.value);
+            // console.log("Text field ID:", event.target.name);
+            // console.log("New value:", event.target.value);
+        }
+
+        function calculateMuncaOre(munca_ore, event) {
+            var munca_ore_value = parseFloat(munca_ore.value);
+            var ot_ore_value = parseFloat(event.target.value);
+            console.log(munca_ore_value, ot_ore_value)
+            if (isNaN(ot_ore_value) || ot_ore_value === '') return;
+            if (munca_ore_value - ot_ore_value < 0) {
+                ot_ore.value = munca_ore_value;
+                ot_ore_value = munca_ore_value;
+            }
+            munca_ore.value = munca_ore_value - ot_ore_value;
         }
 
         // $('#editFormModal').on('hidden.bs.modal', function() {
