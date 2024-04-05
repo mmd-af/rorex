@@ -249,7 +249,7 @@
                                         <td>
                                             <label for="lipsa_ceas_timpi" class="form-label">Lipsa Ceas Timpi</label>
                                             <input type="number" class="form-control" id="lipsa_ceas_timpi"
-                                                name="lipsa_ceas_timpi" value="">
+                                                name="lipsa_ceas_timpi" value="" readonly>
                                         </td>
                                     </tr>
                                     <tr>
@@ -558,7 +558,7 @@
             let resultSumWork_value = parseFloat(resultSumWork.innerHTML);
             if (resultSumWork_value > 8) {
                 munca_ore.value = 8;
-                ot_ore.value = resultSumWork_value - 8;
+                ot_ore.value = (resultSumWork_value - 8).toFixed(2);
                 munca_ore.classList.remove('bg-danger');
                 munca_ore.classList.add('bg-warning');
                 ot_ore.classList.remove('bg-danger');
