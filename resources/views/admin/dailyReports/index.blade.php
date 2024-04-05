@@ -623,10 +623,11 @@
                 munca_ore.value = resultSumWork_value;
                 calculateMuncaOre(munca_ore, event)
             }
-
-
-
-
+            if (event.target.name === "ot_ore" || event.target.name === "plus_week_day" || event.target.name ===
+                "plus_week_night" || event.target.name ===
+                "plus_holiday_day" || event.target.name === "plus_holiday_night") {
+                checkOtOre(event)
+            }
         }
 
         function calculateMuncaOre(munca_ore, event) {
@@ -637,8 +638,41 @@
                 ot_ore.value = munca_ore_value;
                 ot_ore_value = munca_ore_value;
             }
-            munca_ore.value = munca_ore_value - ot_ore_value;
+            munca_ore.value = (munca_ore_value - ot_ore_value).toFixed(2);
         }
+
+        function checkOtOre(event) {
+            var new_plus_week_day = parseFloat(plus_week_day.value);
+            var new_plus_week_night = parseFloat(plus_week_night.value);
+            var new_plus_holiday_day = parseFloat(plus_holiday_day.value);
+            var new_plus_holiday_night = parseFloat(plus_holiday_night.value);
+            var new_ot_ore = parseFloat(ot_ore.value);
+            if (isNaN(new_ot_ore)) {
+                ot_ore.classList.remove('bg-warning');
+                ot_ore.classList.add('bg-danger');
+                return;
+            } else {
+                ot_ore.classList.remove('bg-danger');
+                ot_ore.classList.add('bg-warning');
+            }
+            var sum = new_plus_week_day + new_plus_week_night + new_plus_holiday_day + new_plus_holiday_night;
+            if (sum > new_ot_ore) {
+                plus_week_day.classList.add('bg-danger');
+                plus_week_night.classList.add('bg-danger');
+                plus_holiday_day.classList.add('bg-danger');
+                plus_holiday_night.classList.add('bg-danger');
+            } else {
+                plus_week_day.classList.remove('bg-danger');
+                plus_week_day.classList.add('bg-warning');
+                plus_week_night.classList.remove('bg-danger');
+                plus_week_night.classList.add('bg-warning');
+                plus_holiday_day.classList.remove('bg-danger');
+                plus_holiday_day.classList.add('bg-warning');
+                plus_holiday_night.classList.remove('bg-danger');
+                plus_holiday_night.classList.add('bg-warning');
+            }
+        }
+
 
         // $('#editFormModal').on('hidden.bs.modal', function() {
         //     location.reload();

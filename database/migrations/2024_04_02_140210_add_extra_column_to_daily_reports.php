@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::table('daily_reports', function (Blueprint $table) {
             $table->foreignId('edit_by')->nullable()->after('remarca');
             $table->foreign('edit_by')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('plus_holiday_night')->nullable()->after('ot_ore');
-            $table->integer('plus_holiday_day')->nullable()->after('ot_ore');
-            $table->integer('plus_week_night')->nullable()->after('ot_ore');
-            $table->integer('plus_week_day')->nullable()->after('ot_ore');
+            $table->float('plus_holiday_night')->default(0)->after('ot_ore');
+            $table->float('plus_holiday_day')->default(0)->after('ot_ore');
+            $table->float('plus_week_night')->default(0)->after('ot_ore');
+            $table->float('plus_week_day')->default(0)->after('ot_ore');
         });
     }
 
