@@ -205,17 +205,17 @@
                                     <tr>
                                         <td>
                                             <label for="munca_ore" class="form-label">Munca Ore</label>
-                                            <input type="number" class="form-control" id="munca_ore" name="munca_ore"
+                                            <input type="number" min="0" class="form-control" id="munca_ore" name="munca_ore"
                                                 value="" readonly>
                                         </td>
                                         <td class="bg-secondary text-light">
                                             <label for="ot_ore" class="form-label">OT Ore</label>
-                                            <input type="number" class="form-control" id="ot_ore" name="ot_ore"
+                                            <input type="number" min="0" class="form-control" id="ot_ore" name="ot_ore"
                                                 value="">
                                         </td>
                                         <td>
                                             <label for="absenta_zile" class="form-label">Absenta Zile</label>
-                                            <input type="number" class="form-control" id="absenta_zile"
+                                            <input type="number" min="0" class="form-control" id="absenta_zile"
                                                 name="absenta_zile" value="" readonly>
                                         </td>
                                     </tr>
@@ -223,12 +223,12 @@
                                         <td></td>
                                         <td class="bg-secondary text-light">
                                             <label for="plus_week_day" class="form-label">Plus Week Day</label>
-                                            <input type="number" class="form-control" id="plus_week_day"
+                                            <input type="number" min="0" class="form-control" id="plus_week_day"
                                                 name="plus_week_day" value="">
                                         </td>
                                         <td>
                                             <label for="tarziu_minute" class="form-label">Tarziu Minute</label>
-                                            <input type="number" class="form-control" id="tarziu_minute"
+                                            <input type="number" min="0" class="form-control" id="tarziu_minute"
                                                 name="tarziu_minute" value="">
                                         </td>
                                     </tr>
@@ -236,12 +236,12 @@
                                         <td></td>
                                         <td class="bg-secondary text-light">
                                             <label for="plus_week_night" class="form-label">Plus Week Night</label>
-                                            <input type="number" class="form-control" id="plus_week_night"
+                                            <input type="number" min="0" class="form-control" id="plus_week_night"
                                                 name="plus_week_night" value="">
                                         </td>
                                         <td>
                                             <label for="devreme_minute" class="form-label">Devreme Minute</label>
-                                            <input type="number" class="form-control" id="devreme_minute"
+                                            <input type="number" min="0" class="form-control" id="devreme_minute"
                                                 name="devreme_minute" value="">
                                         </td>
                                     </tr>
@@ -249,12 +249,12 @@
                                         <td></td>
                                         <td class="bg-secondary text-light">
                                             <label for="plus_holiday_day" class="form-label">Plus Holiday Day</label>
-                                            <input type="number" class="form-control" id="plus_holiday_day"
+                                            <input type="number" min="0" class="form-control" id="plus_holiday_day"
                                                 name="plus_holiday_day" value="">
                                         </td>
                                         <td>
                                             <label for="lipsa_ceas_timpi" class="form-label">Lipsa Ceas Timpi</label>
-                                            <input type="number" class="form-control" id="lipsa_ceas_timpi"
+                                            <input type="number" min="0" class="form-control" id="lipsa_ceas_timpi"
                                                 name="lipsa_ceas_timpi" value="" readonly>
                                         </td>
                                     </tr>
@@ -262,7 +262,7 @@
                                         <td></td>
                                         <td class="bg-secondary text-light">
                                             <label for="plus_holiday_night" class="form-label">Plus Holiday Night</label>
-                                            <input type="number" class="form-control" id="plus_holiday_night"
+                                            <input type="number" min="0" class="form-control" id="plus_holiday_night"
                                                 name="plus_holiday_night" value="">
                                         </td>
                                         <td></td>
@@ -272,7 +272,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="concediu_ore" class="form-label">Concediu Ore</label>
-                            <input type="number" class="form-control" id="concediu_ore" name="concediu_ore"
+                            <input type="number" min="0" class="form-control" id="concediu_ore" name="concediu_ore"
                                 value="">
                         </div>
                         <div class="mb-3">
@@ -366,7 +366,7 @@
                         }
 
                         var input = $(
-                                '<input type="number" class="form-control form-control-sm" placeholder="Search...">'
+                                '<input type="number" min="0" class="form-control form-control-sm" placeholder="Search...">'
                             )
                             .appendTo($('<th></th>').appendTo(filterRow))
                             .on('keyup change', function() {
@@ -609,6 +609,15 @@
                 lipsa_ceas_timpi.classList.add('bg-warning');
                 lipsa_ceas_timpi.value = 2;
             }
+
+            plus_week_day.classList.remove('bg-danger');
+            plus_week_night.classList.remove('bg-danger');
+            plus_holiday_day.classList.remove('bg-danger');
+            plus_holiday_night.classList.remove('bg-danger');
+            plus_week_day.value = 0;
+            plus_week_night.value = 0;
+            plus_holiday_day.value = 0;
+            plus_holiday_night.value = 0;
         }
 
         var numberFields = document.querySelectorAll("input[type='number']");
@@ -621,6 +630,14 @@
             alert.innerHTML = ``;
             if (event.target.name === "ot_ore") {
                 munca_ore.value = resultSumWork_value;
+                plus_week_day.classList.remove('bg-danger');
+            plus_week_night.classList.remove('bg-danger');
+            plus_holiday_day.classList.remove('bg-danger');
+            plus_holiday_night.classList.remove('bg-danger');
+            plus_week_day.value = 0;
+            plus_week_night.value = 0;
+            plus_holiday_day.value = 0;
+            plus_holiday_night.value = 0;
                 calculateMuncaOre(munca_ore, event)
             }
             if (event.target.name === "ot_ore" || event.target.name === "plus_week_day" || event.target.name ===
@@ -661,6 +678,7 @@
                 plus_week_night.classList.add('bg-danger');
                 plus_holiday_day.classList.add('bg-danger');
                 plus_holiday_night.classList.add('bg-danger');
+                event.target.value = 0;
             } else {
                 plus_week_day.classList.remove('bg-danger');
                 plus_week_day.classList.add('bg-warning');
