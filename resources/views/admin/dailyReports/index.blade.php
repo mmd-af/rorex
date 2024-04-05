@@ -580,12 +580,7 @@
                 absenta_zile.classList.add('bg-warning');
                 absenta_zile.value = 1;
             }
-            // else {
-            //     absenta_zile.classList.remove('bg-warning');
-            //     absenta_zile.classList.add('bg-danger');
-            // }
         }
-
 
         var numberFields = document.querySelectorAll("input[type='number']");
         numberFields.forEach(function(numberField) {
@@ -593,24 +588,12 @@
         });
 
         function handleNumberFieldChange(event) {
-
             var resultSumWork_value = parseFloat(resultSumWork.innerHTML);
             alert.innerHTML = ``;
-
             if (event.target.name === "ot_ore") {
                 munca_ore.value = resultSumWork_value;
                 calculateMuncaOre(munca_ore, event)
             }
-
-
-
-            // alert.innerHTML = `<div class="alert alert-danger">Error!!!</div>`;
-
-            // console.log("total:", resultSumWork_value);
-            // console.log("ot_ore:", ot_ore_value);
-            // console.log("ID:", reportID.value);
-            // console.log("Text field ID:", event.target.name);
-            // console.log("New value:", event.target.value);
         }
 
         function calculateMuncaOre(munca_ore, event) {
