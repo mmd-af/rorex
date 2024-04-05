@@ -184,7 +184,8 @@
                                 </tbody>
                             </table>
                         </div>
-
+                        <div class="d-flex justify-content-center p-3" id="fixValueWithHourButton">
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-borderless align-middle">
                                 <thead class="table-light">
@@ -400,6 +401,7 @@
         let sumWork2 = document.getElementById('sumWork2');
         let sumWork3 = document.getElementById('sumWork3');
         let resultSumWork = document.getElementById('resultSumWork');
+        let fixValueWithHourButton = document.getElementById('fixValueWithHourButton');
 
         function openEditFormModal(id) {
             alert.innerHTML = ` <div class="row justify-content-center my-3">
@@ -455,6 +457,8 @@
                     remarca.value = response.data.data.remarca;
                     editFrom.style.visibility = 'visible';
                     handleTimeFieldChange();
+                    fixValueWithHourButton.innerHTML = ` <button type="button" class="btn btn-info" onclick="fixValueWithHour()">Auto Fix <i class="fa fa-arrow-down"
+                                    aria-hidden="true"></i></button>`;
 
                 })
                 .catch(function(error) {
@@ -540,10 +544,46 @@
             totalSumWork = totalSumWork.toFixed(2);
             resultSumWork.innerHTML = totalSumWork;
             resultSumWork.classList.add('bg-warning');
-            munca_ore.value = totalSumWork;
+            munca_ore.classList.remove('bg-warning');
+            munca_ore.classList.add('bg-danger');
+            ot_ore.classList.remove('bg-warning');
+            ot_ore.classList.add('bg-danger');
+            absenta_zile.classList.remove('bg-warning');
+            absenta_zile.classList.add('bg-danger');
+        }
+
+        function fixValueWithHour() {
+            let resultSumWork_value = parseFloat(resultSumWork.innerHTML);
+            munca_ore.value = resultSumWork_value;
+            munca_ore.classList.remove('bg-danger');
             munca_ore.classList.add('bg-warning');
             ot_ore.value = 0;
+            ot_ore.classList.remove('bg-danger');
             ot_ore.classList.add('bg-warning');
+            if (on_work1.value !== '' && off_work2.value !== '') {
+                absenta_zile.classList.remove('bg-danger');
+                absenta_zile.classList.add('bg-warning');
+                absenta_zile.value = 0;
+            }
+            if (on_work1.value === '' && off_work2.value !== '') {
+                absenta_zile.classList.remove('bg-danger');
+                absenta_zile.classList.add('bg-warning');
+                absenta_zile.value = 0.5;
+            }
+            if (on_work1.value !== '' && off_work2.value === '') {
+                absenta_zile.classList.remove('bg-danger');
+                absenta_zile.classList.add('bg-warning');
+                absenta_zile.value = 0.5;
+            }
+            if (on_work1.value === '' && off_work2.value === '') {
+                absenta_zile.classList.remove('bg-danger');
+                absenta_zile.classList.add('bg-warning');
+                absenta_zile.value = 1;
+            }
+            // else {
+            //     absenta_zile.classList.remove('bg-warning');
+            //     absenta_zile.classList.add('bg-danger');
+            // }
         }
 
 
@@ -576,7 +616,6 @@
         function calculateMuncaOre(munca_ore, event) {
             var munca_ore_value = parseFloat(munca_ore.value);
             var ot_ore_value = parseFloat(event.target.value);
-            console.log(munca_ore_value, ot_ore_value)
             if (isNaN(ot_ore_value) || ot_ore_value === '') return;
             if (munca_ore_value - ot_ore_value < 0) {
                 ot_ore.value = munca_ore_value;
