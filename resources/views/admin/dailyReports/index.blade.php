@@ -550,11 +550,12 @@
             ot_ore.classList.add('bg-danger');
             absenta_zile.classList.remove('bg-warning');
             absenta_zile.classList.add('bg-danger');
+            lipsa_ceas_timpi.classList.remove('bg-warning');
+            lipsa_ceas_timpi.classList.add('bg-danger');
         }
 
         function fixValueWithHour() {
             let resultSumWork_value = parseFloat(resultSumWork.innerHTML);
-
             if (resultSumWork_value > 8) {
                 munca_ore.value = 8;
                 ot_ore.value = resultSumWork_value - 8;
@@ -574,21 +575,33 @@
                 absenta_zile.classList.remove('bg-danger');
                 absenta_zile.classList.add('bg-warning');
                 absenta_zile.value = 0;
+                lipsa_ceas_timpi.classList.remove('bg-danger');
+                lipsa_ceas_timpi.classList.add('bg-warning');
+                lipsa_ceas_timpi.value = 0;
             }
             if (on_work1.value === '' && off_work2.value !== '') {
                 absenta_zile.classList.remove('bg-danger');
                 absenta_zile.classList.add('bg-warning');
                 absenta_zile.value = 0.5;
+                lipsa_ceas_timpi.classList.remove('bg-danger');
+                lipsa_ceas_timpi.classList.add('bg-warning');
+                lipsa_ceas_timpi.value = 1;
             }
             if (on_work1.value !== '' && off_work2.value === '') {
                 absenta_zile.classList.remove('bg-danger');
                 absenta_zile.classList.add('bg-warning');
                 absenta_zile.value = 0.5;
+                lipsa_ceas_timpi.classList.remove('bg-danger');
+                lipsa_ceas_timpi.classList.add('bg-warning');
+                lipsa_ceas_timpi.value = 1;
             }
             if (on_work1.value === '' && off_work2.value === '') {
                 absenta_zile.classList.remove('bg-danger');
                 absenta_zile.classList.add('bg-warning');
                 absenta_zile.value = 1;
+                lipsa_ceas_timpi.classList.remove('bg-danger');
+                lipsa_ceas_timpi.classList.add('bg-warning');
+                lipsa_ceas_timpi.value = 2;
             }
         }
 
