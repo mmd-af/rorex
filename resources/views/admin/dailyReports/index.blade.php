@@ -211,7 +211,7 @@
                                         <td class="bg-secondary text-light">
                                             <label for="ot_ore" class="form-label">OT Ore</label>
                                             <input type="number" class="form-control" id="ot_ore" name="ot_ore"
-                                                value="" readonly>
+                                                value="">
                                         </td>
                                         <td>
                                             <label for="absenta_zile" class="form-label">Absenta Zile</label>
@@ -623,6 +623,10 @@
                 munca_ore.value = resultSumWork_value;
                 calculateMuncaOre(munca_ore, event)
             }
+
+
+
+
         }
 
         function calculateMuncaOre(munca_ore, event) {
