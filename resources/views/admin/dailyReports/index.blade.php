@@ -128,7 +128,8 @@
                                 <tbody class="table-group-divider">
                                     <tr>
                                         <td><label for="on_work1" class="form-label">On Work 1</label></td>
-                                        <td><label for="off_work1" class="form-label">Off Work 1</label></td>
+                                        <td class="bg-secondary text-light"><label for="off_work1" class="form-label">Off
+                                                Work 1</label></td>
                                         <td></td>
                                         <td></td>
                                         <td class="border text-center h5">Result</td>
@@ -136,23 +137,24 @@
                                     <tr>
                                         <td><input type="time" class="form-control" id="on_work1" name="on_work1"
                                                 value=""></td>
-                                        <td><input type="time" class="form-control" id="off_work1" name="off_work1"
-                                                value=""></td>
+                                        <td class="bg-secondary text-light"><input type="time" class="form-control"
+                                                id="off_work1" name="off_work1" value=""></td>
                                         <td></td>
                                         <td></td>
                                         <td class="border text-center h5" id="sumWork1"></td>
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td><label for="on_work2" class="form-label">On Work 2</label></td>
+                                        <td class="bg-secondary text-light"><label for="on_work2" class="form-label">On Work
+                                                2</label></td>
                                         <td><label for="off_work2" class="form-label">Off Work 2</label></td>
                                         <td></td>
                                         <td class="border text-center h5"></td>
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td><input type="time" class="form-control" id="on_work2" name="on_work2"
-                                                value=""></td>
+                                        <td class="bg-secondary text-light"><input type="time" class="form-control"
+                                                id="on_work2" name="on_work2" value=""></td>
                                         <td><input type="time" class="form-control" id="off_work2" name="off_work2"
                                                 value=""></td>
                                         <td></td>
@@ -184,27 +186,31 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="d-flex justify-content-center p-3" id="fixValueWithHourButton">
+                        <div class="row justify-content-end">
+                            <div class="col-auto">
+                                <div class="p-3" id="fixValueWithHourButton">
+                                </div>
+                            </div>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-borderless align-middle">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>OverTime(minute)</th>
                                         <th>Work Time(Hour)</th>
+                                        <th class="bg-secondary text-light">OverTime(minute)</th>
                                         <th>Absente(Hour)</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
                                     <tr>
                                         <td>
-                                            <label for="ot_ore" class="form-label">OT Ore</label>
-                                            <input type="number" class="form-control" id="ot_ore" name="ot_ore"
-                                                value="" readonly>
-                                        </td>
-                                        <td>
                                             <label for="munca_ore" class="form-label">Munca Ore</label>
                                             <input type="number" class="form-control" id="munca_ore" name="munca_ore"
+                                                value="" readonly>
+                                        </td>
+                                        <td class="bg-secondary text-light">
+                                            <label for="ot_ore" class="form-label">OT Ore</label>
+                                            <input type="number" class="form-control" id="ot_ore" name="ot_ore"
                                                 value="" readonly>
                                         </td>
                                         <td>
@@ -214,12 +220,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td></td>
+                                        <td class="bg-secondary text-light">
                                             <label for="plus_week_day" class="form-label">Plus Week Day</label>
                                             <input type="number" class="form-control" id="plus_week_day"
                                                 name="plus_week_day" value="">
                                         </td>
-                                        <td></td>
                                         <td>
                                             <label for="tarziu_minute" class="form-label">Tarziu Minute</label>
                                             <input type="number" class="form-control" id="tarziu_minute"
@@ -227,12 +233,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td></td>
+                                        <td class="bg-secondary text-light">
                                             <label for="plus_week_night" class="form-label">Plus Week Night</label>
                                             <input type="number" class="form-control" id="plus_week_night"
                                                 name="plus_week_night" value="">
                                         </td>
-                                        <td></td>
                                         <td>
                                             <label for="devreme_minute" class="form-label">Devreme Minute</label>
                                             <input type="number" class="form-control" id="devreme_minute"
@@ -240,12 +246,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td></td>
+                                        <td class="bg-secondary text-light">
                                             <label for="plus_holiday_day" class="form-label">Plus Holiday Day</label>
                                             <input type="number" class="form-control" id="plus_holiday_day"
                                                 name="plus_holiday_day" value="">
                                         </td>
-                                        <td></td>
                                         <td>
                                             <label for="lipsa_ceas_timpi" class="form-label">Lipsa Ceas Timpi</label>
                                             <input type="number" class="form-control" id="lipsa_ceas_timpi"
@@ -253,12 +259,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td></td>
+                                        <td class="bg-secondary text-light">
                                             <label for="plus_holiday_night" class="form-label">Plus Holiday Night</label>
                                             <input type="number" class="form-control" id="plus_holiday_night"
                                                 name="plus_holiday_night" value="">
                                         </td>
-                                        <td></td>
                                         <td></td>
                                     </tr>
                                 </tbody>
@@ -457,8 +463,8 @@
                     remarca.value = response.data.data.remarca;
                     editFrom.style.visibility = 'visible';
                     handleTimeFieldChange();
-                    fixValueWithHourButton.innerHTML = ` <button type="button" class="btn btn-info" onclick="fixValueWithHour()">Auto Fix <i class="fa fa-arrow-down"
-                                    aria-hidden="true"></i></button>`;
+                    fixValueWithHourButton.innerHTML = `<button type="button" class="btn btn-success p-3" onclick="fixValueWithHour()"><i class="fa fa-arrow-left"
+                                    aria-hidden="true"></i> Auto Fix</button>`;
 
                 })
                 .catch(function(error) {
