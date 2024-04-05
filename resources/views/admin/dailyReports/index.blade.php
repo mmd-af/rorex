@@ -200,7 +200,7 @@
                                         <td>
                                             <label for="ot_ore" class="form-label">OT Ore</label>
                                             <input type="number" class="form-control" id="ot_ore" name="ot_ore"
-                                                value="">
+                                                value="" readonly>
                                         </td>
                                         <td>
                                             <label for="munca_ore" class="form-label">Munca Ore</label>
@@ -210,7 +210,7 @@
                                         <td>
                                             <label for="absenta_zile" class="form-label">Absenta Zile</label>
                                             <input type="number" class="form-control" id="absenta_zile"
-                                                name="absenta_zile" value="">
+                                                name="absenta_zile" value="" readonly>
                                         </td>
                                     </tr>
                                     <tr>
@@ -554,12 +554,22 @@
 
         function fixValueWithHour() {
             let resultSumWork_value = parseFloat(resultSumWork.innerHTML);
-            munca_ore.value = resultSumWork_value;
-            munca_ore.classList.remove('bg-danger');
-            munca_ore.classList.add('bg-warning');
-            ot_ore.value = 0;
-            ot_ore.classList.remove('bg-danger');
-            ot_ore.classList.add('bg-warning');
+
+            if (resultSumWork_value > 8) {
+                munca_ore.value = 8;
+                ot_ore.value = resultSumWork_value - 8;
+                munca_ore.classList.remove('bg-danger');
+                munca_ore.classList.add('bg-warning');
+                ot_ore.classList.remove('bg-danger');
+                ot_ore.classList.add('bg-warning');
+            } else {
+                munca_ore.value = resultSumWork_value;
+                munca_ore.classList.remove('bg-danger');
+                munca_ore.classList.add('bg-warning');
+                ot_ore.value = 0;
+                ot_ore.classList.remove('bg-danger');
+                ot_ore.classList.add('bg-warning');
+            }
             if (on_work1.value !== '' && off_work2.value !== '') {
                 absenta_zile.classList.remove('bg-danger');
                 absenta_zile.classList.add('bg-warning');
