@@ -10,4 +10,8 @@ trait DailyReportRelationships
     {
         return $this->belongsTo(User::class, 'cod_staff');
     }
+    public function editBy()
+    {
+        return $this->belongsTo(User::class, 'edit_by');
+    }
 }

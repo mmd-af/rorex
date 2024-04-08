@@ -9,6 +9,10 @@ Route::group(['middleware' => ['web', 'auth', 'permission:daily_reports'], 'name
                 'as' => 'index',
                 'uses' => 'DailyReportController@index'
             ]);
+            Route::put('{dailyID}/update', [
+                'as' => 'update',
+                'uses' => 'DailyReportController@update'
+            ])->middleware('permission:update_daily_reports');
             Route::put('/import', [
                 'as' => 'import',
                 'uses' => 'DailyReportController@import'

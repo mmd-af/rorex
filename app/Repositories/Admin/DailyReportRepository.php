@@ -6,6 +6,7 @@ use App\Imports\DailyReportExcel;
 use App\Models\DailyReport\DailyReport;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
@@ -30,6 +31,7 @@ class DailyReportRepository extends BaseRepository
                 'nume_schimb',
                 'on_work1',
                 'off_work2',
+                'edit_by',
                 'remarca'
             ])
             ->where('data', 'LIKE', "$request->date%")
@@ -51,7 +53,15 @@ class DailyReportRepository extends BaseRepository
                                  <i class="fa-solid fa-pen-to-square"></i>
                             </button>';
                 })
-                ->rawColumns(['first_name', 'edit'])
+                ->addColumn('edit_by', function ($row) {
+                    if ($row->editBy !== null) {
+                        return $row->editBy->first_name . " " . $row->editBy->name;
+                    } else {
+                        return "";
+                    }
+                })
+
+                ->rawColumns(['first_name', 'edit', 'edit_by'])
                 ->make(true);
         }
         return false;
@@ -144,6 +154,40 @@ class DailyReportRepository extends BaseRepository
             Session::flash('error', $e->getMessage());
         }
     }
+
+    public function update($request, $dailyID)
+    {
+        $userId = Auth()->id();
+        DB::beginTransaction();
+        try {
+            $dailyID->on_work1 = $request->on_work1;
+            $dailyID->off_work1 = $request->off_work1;
+            $dailyID->on_work2 = $request->on_work2;
+            $dailyID->off_work2 = $request->off_work2;
+            $dailyID->on_work3 = $request->on_work3;
+            $dailyID->off_work3 = $request->off_work3;
+            $dailyID->munca_ore = $request->munca_ore;
+            $dailyID->ot_ore = $request->ot_ore;
+            $dailyID->plus_week_day = $request->plus_week_day;
+            $dailyID->plus_week_night = $request->plus_week_night;
+            $dailyID->plus_holiday_day = $request->plus_holiday_day;
+            $dailyID->plus_holiday_night = $request->plus_holiday_night;
+            $dailyID->absenta_zile = $request->absenta_zile;
+            $dailyID->tarziu_minute = $request->tarziu_minute;
+            $dailyID->devreme_minute = $request->devreme_minute;
+            $dailyID->lipsa_ceas_timpi = $request->lipsa_ceas_timpi;
+            $dailyID->concediu_ore = $request->concediu_ore;
+            $dailyID->remarca = $request->remarca;
+            $dailyID->edit_by = $userId;
+            $dailyID->save();
+            DB::commit();
+            Session::flash('message', 'The Update Operation was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
+    }
+
     static function sumHourWork($start, $end)
     {
         if (!empty($start) && !empty($end)) {

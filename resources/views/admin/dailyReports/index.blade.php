@@ -79,6 +79,7 @@
                         <th>on_work1</th>
                         <th>off_work2</th>
                         <th>remarca</th>
+                        <th>edit_by</th>
                         <th>action</th>
                     </tr>
                 </thead>
@@ -93,6 +94,7 @@
                         <th>on_work1</th>
                         <th>off_work2</th>
                         <th>remarca</th>
+                        <th>edit_by</th>
                         <th>action</th>
                     </tr>
                 </tfoot>
@@ -205,17 +207,17 @@
                                     <tr>
                                         <td>
                                             <label for="munca_ore" class="form-label">Munca Ore</label>
-                                            <input type="number" min="0" class="form-control" id="munca_ore" name="munca_ore"
-                                                value="" readonly>
+                                            <input type="number" min="0" step="any" class="form-control" id="munca_ore"
+                                                name="munca_ore" value="" readonly>
                                         </td>
                                         <td class="bg-secondary text-light">
                                             <label for="ot_ore" class="form-label">OT Ore</label>
-                                            <input type="number" min="0" class="form-control" id="ot_ore" name="ot_ore"
-                                                value="">
+                                            <input type="number" min="0" step="any" class="form-control" id="ot_ore"
+                                                name="ot_ore" value="">
                                         </td>
                                         <td>
                                             <label for="absenta_zile" class="form-label">Absenta Zile</label>
-                                            <input type="number" min="0" class="form-control" id="absenta_zile"
+                                            <input type="number" min="0" step="any" class="form-control" id="absenta_zile"
                                                 name="absenta_zile" value="" readonly>
                                         </td>
                                     </tr>
@@ -223,12 +225,12 @@
                                         <td></td>
                                         <td class="bg-secondary text-light">
                                             <label for="plus_week_day" class="form-label">Plus Week Day</label>
-                                            <input type="number" min="0" class="form-control" id="plus_week_day"
+                                            <input type="number" min="0" step="any" class="form-control" id="plus_week_day"
                                                 name="plus_week_day" value="">
                                         </td>
                                         <td>
                                             <label for="tarziu_minute" class="form-label">Tarziu Minute</label>
-                                            <input type="number" min="0" class="form-control" id="tarziu_minute"
+                                            <input type="number" min="0" step="any" class="form-control" id="tarziu_minute"
                                                 name="tarziu_minute" value="">
                                         </td>
                                     </tr>
@@ -236,34 +238,34 @@
                                         <td></td>
                                         <td class="bg-secondary text-light">
                                             <label for="plus_week_night" class="form-label">Plus Week Night</label>
-                                            <input type="number" min="0" class="form-control" id="plus_week_night"
-                                                name="plus_week_night" value="">
+                                            <input type="number" min="0" step="any" class="form-control"
+                                                id="plus_week_night" name="plus_week_night" value="">
                                         </td>
                                         <td>
                                             <label for="devreme_minute" class="form-label">Devreme Minute</label>
-                                            <input type="number" min="0" class="form-control" id="devreme_minute"
-                                                name="devreme_minute" value="">
+                                            <input type="number" min="0" step="any" class="form-control"
+                                                id="devreme_minute" name="devreme_minute" value="">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td class="bg-secondary text-light">
                                             <label for="plus_holiday_day" class="form-label">Plus Holiday Day</label>
-                                            <input type="number" min="0" class="form-control" id="plus_holiday_day"
-                                                name="plus_holiday_day" value="">
+                                            <input type="number" min="0" step="any" class="form-control"
+                                                id="plus_holiday_day" name="plus_holiday_day" value="">
                                         </td>
                                         <td>
                                             <label for="lipsa_ceas_timpi" class="form-label">Lipsa Ceas Timpi</label>
-                                            <input type="number" min="0" class="form-control" id="lipsa_ceas_timpi"
-                                                name="lipsa_ceas_timpi" value="" readonly>
+                                            <input type="number" min="0" step="any" class="form-control"
+                                                id="lipsa_ceas_timpi" name="lipsa_ceas_timpi" value="" readonly>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td class="bg-secondary text-light">
                                             <label for="plus_holiday_night" class="form-label">Plus Holiday Night</label>
-                                            <input type="number" min="0" class="form-control" id="plus_holiday_night"
-                                                name="plus_holiday_night" value="">
+                                            <input type="number" min="0" step="any" class="form-control"
+                                                id="plus_holiday_night" name="plus_holiday_night" value="">
                                         </td>
                                         <td></td>
                                     </tr>
@@ -272,8 +274,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="concediu_ore" class="form-label">Concediu Ore</label>
-                            <input type="number" min="0" class="form-control" id="concediu_ore" name="concediu_ore"
-                                value="">
+                            <input type="number" min="0" step="any" class="form-control" id="concediu_ore"
+                                name="concediu_ore" value="">
                         </div>
                         <div class="mb-3">
                             <label for="remarca" class="form-label">Report</label>
@@ -347,6 +349,10 @@
                         name: 'remarca'
                     },
                     {
+                        data: 'edit_by',
+                        name: 'edit_by'
+                    },
+                    {
                         data: 'edit',
                         name: 'action'
                     }
@@ -366,7 +372,7 @@
                         }
 
                         var input = $(
-                                '<input type="number" min="0" class="form-control form-control-sm" placeholder="Search...">'
+                                '<input type="number" min="0" step="any" class="form-control form-control-sm" placeholder="Search...">'
                             )
                             .appendTo($('<th></th>').appendTo(filterRow))
                             .on('keyup change', function() {
@@ -441,6 +447,12 @@
                     resultSumWork.innerHTML = ``;
                     resultSumWork.classList.remove('bg-warning');
                     munca_ore.classList.remove('bg-warning');
+
+
+                    let url = "{{ route('admin.dailyReports.update', 'dailyID') }}";
+                    url = url.replace('dailyID', response.data.data.id);
+                    editFrom.setAttribute('action', url);
+
                     reportID.value = response.data.data.id;
                     nume_schimb.value = response.data.data.nume_schimb;
                     on_work1.value = response.data.data.on_work1;
@@ -463,8 +475,8 @@
                     remarca.value = response.data.data.remarca;
                     editFrom.style.visibility = 'visible';
                     handleTimeFieldChange();
-                    fixValueWithHourButton.innerHTML = `<button type="button" class="btn btn-success p-3" onclick="fixValueWithHour()"><i class="fa fa-arrow-left"
-                                    aria-hidden="true"></i> Auto Fix</button>`;
+                    fixValueWithHourButton.innerHTML = `<button type="button" class="btn btn-success p-3"
+        onclick="fixValueWithHour()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Auto Fix</button>`;
 
                 })
                 .catch(function(error) {
@@ -480,44 +492,22 @@
 
         function handleTimeFieldChange(event) {
             alert.innerHTML = ` <div class="row justify-content-center my-3">
-                            <div class="spinner-grow text-primary mx-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <div class="spinner-grow text-secondary mx-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center my-3">
-                            <div class="spinner-grow text-secondary mx-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <div class="spinner-grow text-primary mx-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>`;
+        <div class="spinner-grow text-primary mx-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-secondary mx-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <div class="row justify-content-center my-3">
+        <div class="spinner-grow text-secondary mx-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary mx-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>`;
 
-            // let configInformation = {
-            //     id: reportID.value,
-            //     nume_schimb: nume_schimb.value,
-            //     on_work1: on_work1.value,
-            //     off_work1: off_work1.value,
-            //     on_work2: on_work2.value,
-            //     off_work2: off_work2.value,
-            //     on_work3: on_work3.value,
-            //     off_work3: off_work3.value,
-            //     absenta_zile: absenta_zile.value,
-            //     munca_ore: munca_ore.value,
-            //     ot_ore: ot_ore.value,
-            //     plus_week_day: plus_week_day.value,
-            //     plus_week_night: plus_week_night.value,
-            //     plus_holiday_day: plus_holiday_day.value,
-            //     plus_holiday_night: plus_holiday_night.value,
-            //     tarziu_minute: tarziu_minute.value,
-            //     devreme_minute: devreme_minute.value,
-            //     lipsa_ceas_timpi: lipsa_ceas_timpi.value,
-            //     concediu_ore: concediu_ore.value,
-            //     remarca: remarca.value
-            // }
             let configInformation = {
                 on_work1: on_work1.value,
                 off_work1: off_work1.value,
@@ -631,18 +621,19 @@
             if (event.target.name === "ot_ore") {
                 munca_ore.value = resultSumWork_value;
                 plus_week_day.classList.remove('bg-danger');
-            plus_week_night.classList.remove('bg-danger');
-            plus_holiday_day.classList.remove('bg-danger');
-            plus_holiday_night.classList.remove('bg-danger');
-            plus_week_day.value = 0;
-            plus_week_night.value = 0;
-            plus_holiday_day.value = 0;
-            plus_holiday_night.value = 0;
+                plus_week_night.classList.remove('bg-danger');
+                plus_holiday_day.classList.remove('bg-danger');
+                plus_holiday_night.classList.remove('bg-danger');
+                plus_week_day.value = 0;
+                plus_week_night.value = 0;
+                plus_holiday_day.value = 0;
+                plus_holiday_night.value = 0;
                 calculateMuncaOre(munca_ore, event)
             }
             if (event.target.name === "ot_ore" || event.target.name === "plus_week_day" || event.target.name ===
                 "plus_week_night" || event.target.name ===
-                "plus_holiday_day" || event.target.name === "plus_holiday_night") {
+                "plus_holiday_day" || event.target.name ===
+                "plus_holiday_night") {
                 checkOtOre(event)
             }
         }
@@ -659,10 +650,13 @@
         }
 
         function checkOtOre(event) {
-            var new_plus_week_day = parseFloat(plus_week_day.value);
+            var
+                new_plus_week_day = parseFloat(plus_week_day.value);
             var new_plus_week_night = parseFloat(plus_week_night.value);
-            var new_plus_holiday_day = parseFloat(plus_holiday_day.value);
-            var new_plus_holiday_night = parseFloat(plus_holiday_night.value);
+            var
+                new_plus_holiday_day = parseFloat(plus_holiday_day.value);
+            var
+                new_plus_holiday_night = parseFloat(plus_holiday_night.value);
             var new_ot_ore = parseFloat(ot_ore.value);
             if (isNaN(new_ot_ore)) {
                 ot_ore.classList.remove('bg-warning');
@@ -672,7 +666,8 @@
                 ot_ore.classList.remove('bg-danger');
                 ot_ore.classList.add('bg-warning');
             }
-            var sum = new_plus_week_day + new_plus_week_night + new_plus_holiday_day + new_plus_holiday_night;
+            var sum = new_plus_week_day +
+                new_plus_week_night + new_plus_holiday_day + new_plus_holiday_night;
             if (sum > new_ot_ore) {
                 plus_week_day.classList.add('bg-danger');
                 plus_week_night.classList.add('bg-danger');
@@ -691,9 +686,8 @@
             }
         }
 
-
         // $('#editFormModal').on('hidden.bs.modal', function() {
-        //     location.reload();
+        // location.reload();
         // });
     </script>
 @endsection

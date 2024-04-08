@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin\DailyReport;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DailyReport\UpdateRequest;
+use App\Models\DailyReport\DailyReport;
 use App\Repositories\Admin\DailyReportRepository;
+use Illuminate\Http\Request;
 
 class DailyReportController extends Controller
 {
@@ -28,5 +30,12 @@ class DailyReportController extends Controller
             'message' => session('message'),
         ]);
     }
-
+    function update(Request $request, DailyReport $dailyID)
+    {
+        $this->dailyReportRepository->update($request, $dailyID);
+        return redirect()->route('admin.dailyReports.index')->with([
+            'error' => session('error'),
+            'message' => session('message'),
+        ]);
+    }
 }
