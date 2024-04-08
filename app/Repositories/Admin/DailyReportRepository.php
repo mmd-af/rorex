@@ -112,11 +112,15 @@ class DailyReportRepository extends BaseRepository
         }
         DB::beginTransaction();
         try {
+            $yesterday = Carbon::yesterday()->toDateString();
             foreach ($files[0] as $key => $item) {
                 if ($key === 0) {
                     continue;
                 }
                 $date = date('Y-m-d', strtotime($item[2]));
+                if ($date > $yesterday) {
+                    continue;
+                }
                 $codStaff = (int)$item[0];
                 $data = [
                     'cod_staff' => $codStaff,
@@ -145,7 +149,10 @@ class DailyReportRepository extends BaseRepository
                     'cod_staff' => $codStaff,
                     'data' => $date,
                 ];
-                DB::table('daily_reports')->updateOrInsert($condition, $data);
+                $existingRecord = DB::table('daily_reports')->where($condition)->first();
+                if (!$existingRecord) {
+                    DB::table('daily_reports')->insert($data);
+                }
             }
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
@@ -154,6 +161,7 @@ class DailyReportRepository extends BaseRepository
             Session::flash('error', $e->getMessage());
         }
     }
+
 
     public function update($request, $dailyID)
     {
