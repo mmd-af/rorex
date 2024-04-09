@@ -9,6 +9,7 @@ use App\Models\StaffRequest\StaffRequest;
 use App\Models\User\User;
 use Carbon\Carbon;
 use Exception;
+use Hamcrest\Arrays\IsArray;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -97,6 +98,11 @@ class DailyReportRepository extends BaseRepository
 
     public function checkRequest($request)
     {
+        if (is_array($request->description)) {
+            $description = $request->description[0] . ' between ' . $request->description[1];
+        } else {
+            $description = $request->description ." hour";
+        }
         $userId = Auth::id();
         $dateOfRequest = Carbon::now()->format('Y/m/d');
         DB::beginTransaction();
@@ -113,7 +119,7 @@ class DailyReportRepository extends BaseRepository
                 'Code Staff: ' . $request->cod_staff . '</div><br>' .
                 'Check For Date: ' . $request->check_date . '</div><br>' .
                 '<div id="alignCenter"><b>' . $request->subject . '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' . $request->departament .
-                '<br>' . $request->description . '<br>Email: ' . $request->email . '<hr>';
+                '<br><h3>' . $description . '</h3><br>Email: ' . $request->email . '<hr>';
 
             $staffRequest->organization = $request->departamentRole;
             $staffRequest->cod_staff = (int)$request->cod_staff;

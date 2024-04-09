@@ -106,7 +106,7 @@
 
                     <form action="{{ route('user.dailyReports.checkRequest') }}" method="post">
                         @csrf
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="cod_staff" class="col-form-label">Staff:
                                 <div class="text-info" id="name_show"></div>
                                 <div class="text-info" id="cod_staff_show"></div>
@@ -117,39 +117,44 @@
                             <input type="hidden" id="email" name="email" value="">
                             <input type="hidden" id="cod_staff" name="cod_staff" value="">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="date" class="col-form-label">Check for Date:
                                 <div class="text-info" id="date_show"></div>
                             </label>
                             <input type="hidden" id="check_date" name="check_date" value="">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="subject" class="col-form-label">Subject:</label>
-                            <input type="text" class="form-control" id="subject" name="subject" value="">
+                            <select class="form-control" name="subject" id="subject" onchange="handelRequestWithSubject()"
+                                required>
+                                <option value="">-- select subject --</option>
+                                <option value="Forgot Punch">Forgot Punch</option>
+                                <option value="Forgot Bring My Cart">Forgot Bring My Cart</option>
+                                <option value="Consider as allow Leave">Consider as allowed Leave</option>
+                                <option value="Consider OverTime">Consider OverTime</option>
+                                <option value="other">other</option>
+                            </select>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4" id="descriptionData">
+                        </div>
+                        <div class="mb-4">
                             <label for="departamentRole" class="col-form-label">Referred to:</label>
                             <select class="form-control" name="departamentRole" id="departamentRole"
-                                onchange="getRelateUserWithRole()">
+                                onchange="getRelateUserWithRole()" required>
                                 <option value="">SELECT DEPARTMENT</option>
                             </select>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             User:
                             <label for="assigned_to" class="col-form-label">Referred to:</label>
                             <div id="assigned_user">
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="description" class="col-form-label">Message:</label>
-                            <textarea class="form-control" name="description" id="description"></textarea>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Send message</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
-                        <button type="submit" class="btn btn-success">Send message</button>
-
                     </form>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -259,6 +264,38 @@
                 });
         });
 
+        function handelRequestWithSubject() {
+            let subject = document.getElementById('subject');
+            let descriptionData = document.getElementById('descriptionData');
+            descriptionData.innerHTML = ``;
+            subject = subject.value;
+            console.log(subject);
+            if (subject === "Forgot Punch") {
+                descriptionData.innerHTML = `<label for="description" class="col-form-label">At what time?</label>
+                            <input type="time" class="form-control" name="description" id="description" required>`;
+            }
+            if (subject === "Forgot Bring My Cart") {
+                descriptionData.innerHTML = `<label for="description" class="col-form-label">Start Work:</label>
+                            <input type="time" class="form-control" name="description[]" id="description" required>
+                            <label for="description" class="col-form-label">End Work:</label>
+                            <input type="time" class="form-control" name="description[]" id="description" required>`;
+            }
+            if (subject === "Consider as allow Leave") {
+                descriptionData.innerHTML =
+                    `<label for="description" class="col-form-label">how many hour?</label>
+                            <input type="number" min="0" step="any" class="form-control" name="description" id="description" required>`;
+            }
+            if (subject === "Consider OverTime") {
+                descriptionData.innerHTML =
+                    `<label for="description" class="col-form-label">how many hour?</label>
+                            <input type="number" min="0" step="any" class="form-control" name="description" id="description" required>`;
+            }
+            if (subject === "other") {
+                descriptionData.innerHTML = `<label for="description" class="col-form-label">Message:</label>
+                            <textarea class="form-control" name="description" id="description" required></textarea>`;
+            }
+        }
+
         function getRelateUserWithRole() {
             let assigned_user = document.getElementById('assigned_user');
             assigned_user.innerHTML = `<div class="spinner-border" role="status">
@@ -270,7 +307,7 @@
             axios.post('{{ route('user.dailyReports.ajax.getUserWithRole') }}', data)
                 .then(function(response) {
                     assigned_user.innerHTML = `
-                    <select class="form-control" name="assigned_to" id="assigned_to">
+                    <select class="form-control" name="assigned_to" id="assigned_to" required>
                     </select>`;
                     let assignedTo = document.getElementById('assigned_to');
                     assignedTo.innerHTML = ``;
