@@ -162,12 +162,12 @@ class DailyReportRepository extends BaseRepository
         }
     }
 
-
     public function update($request, $dailyID)
     {
         $userId = Auth()->id();
         DB::beginTransaction();
         try {
+            $dailyID->nume_schimb = $request->nume_schimb;
             $dailyID->on_work1 = $request->on_work1;
             $dailyID->off_work1 = $request->off_work1;
             $dailyID->on_work2 = $request->on_work2;

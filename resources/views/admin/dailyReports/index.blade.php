@@ -121,9 +121,19 @@
                         <input type="hidden" name="reportID" id="reportID" value="">
                         <div class="mb-3">
                             <label for="nume_schimb" class="form-label">Nume Schimb</label>
-                            <input type="text" class="form-control" id="nume_schimb" name="nume_schimb" value=""
-                                disabled>
+                            <select class="form-control" name="nume_schimb" id="nume_schimb">
+                                <option value="Morning">Morning</option>
+                                <option value="Afternoon">Afternoon</option>
+                                <option value="Night">Night</option>
+                                <option value="Daily">Daily</option>
+                                <option value="Daily-Reduce">Daily-Reduce</option>
+                                <option value="OverTime">OverTime</option>
+                                <option value="Odihna">Odihna</option>
+                                <option value="Tura implicita">Tura implicita</option>
+                                <option value="No Join">No Join</option>
+                            </select>
                         </div>
+
 
                         <div class="table-responsive">
                             <table class="table table-striped table-hover table-borderless align-middle">
