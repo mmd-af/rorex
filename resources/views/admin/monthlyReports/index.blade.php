@@ -75,7 +75,7 @@
                                 $monthName = date("F", mktime(0, 0, 0, $monthValue, 1, $yearValue));
                                 echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
                             }
-                            ?>                            
+                            ?>
                         </select>
                         <input type="hidden" name="cod_staff" id="cod_staff" value="">
                         <button type="button" class="btn btn-primary mt-3" onclick="monthlyReportWithDate()">Show
@@ -116,7 +116,7 @@
                                 $monthName = date("F", mktime(0, 0, 0, $monthValue, 1, $yearValue));
                                 echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
                             }
-                            ?>                            
+                            ?>
                         </select>
                         <button type="submit" class="btn btn-primary mt-3">Export
                         </button>
@@ -254,33 +254,49 @@
                             <td>per hour</td>
                         </tr>
                         <tr>
-                            <td>Plus Day (at Holiday)</td>
-                            <td>${response.data.hourPlusDay}</td>
+                            <td>Total Overtime Work</td>
+                            <td class="bg-info text-light">${response.data.ot_ore}</td>
                             <td>per hour</td>
                         </tr>
                         <tr>
-                            <td>Plus Night (at Holiday)</td>
-                            <td>${response.data.hourPlusNight}</td>
+                            <td>plus_week_day</td>
+                            <td class="bg-success text-light">${response.data.plus_week_day}</td>
                             <td>per hour</td>
                         </tr>
                         <tr>
-                            <td>Total Plus Work</td>
-                            <td>${response.data.plusWork}</td>
+                            <td>plus_week_night</td>
+                            <td class="bg-success text-light">${response.data.plus_week_night}</td>
+                            <td>per hour</td>
+                        </tr>
+                        <tr>
+                            <td>plus_holiday_day</td>
+                            <td class="bg-success text-light">${response.data.plus_holiday_day}</td>
+                            <td>per hour</td>
+                        </tr>
+                        <tr>
+                            <td>plus_holiday_night</td>
+                            <td class="bg-success text-light">${response.data.plus_holiday_night}</td>
                             <td>per hour</td>
                         </tr>
                         <tr>
                             <td>Delay Work</td>
-                            <td>${response.data.delayWork}</td>
+                            <td class="bg-warning">${response.data.delayWork}</td>
                             <td>per Minute</td>
                         </tr>
                         <tr>
                             <td>Early Exit</td>
-                            <td>${response.data.earlyExit}</td>
+                            <td class="bg-warning">${response.data.earlyExit}</td>
                             <td>per Minute</td>
                         </tr>
                         <tr>
                             <th>Daily Absence</th>
-                            <th>${response.data.dailyAbsence}</th>
+                            <th class="bg-danger">${response.data.dailyAbsence}</th>
+                            <th>per day</th>
+                        </tr>
+
+                        <tr>
+                            <th>Concediu ore</th>
+                            <th class="bg-warning">${response.data.concediu_ore}</th>
                             <th>per day</th>
                         </tr>
                         <tr>

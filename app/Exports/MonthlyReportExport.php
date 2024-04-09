@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromArray;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
 
@@ -30,12 +29,15 @@ class MonthlyReportExport implements FromArray, WithHeadings, WithStyles
             'Morning Shift (Hour)',
             'Afternoon Shift (Hour)',
             'Daily Shift (Hour)',
-            'Plus Day (Hour)',
-            'Plus Night (Hour)',
-            'Total Plus Work',
+            'ot_ore (Hour)',
+            'plus_week_day (Hour)',
+            'plus_week_night (Hour)',
+            'plus_holiday_day (Hour)',
+            'plus_holiday_night (Hour)',
             'Delay Work (Minute)',
             'Early Exit (Minute)',
             'Daily Absence (Day)',
+            'concediu_ore',
             'Total (Hours)',
             'Unknown',
             'Default Shift (Hour)',

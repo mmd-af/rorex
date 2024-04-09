@@ -21,9 +21,14 @@ class MonthlyReportRepository extends BaseRepository
                 'absenta_zile',
                 'munca_ore',
                 'ot_ore',
+                'plus_week_day',
+                'plus_week_night',
+                'plus_holiday_day',
+                'plus_holiday_night',
                 'tarziu_minute',
                 'devreme_minute',
-                'lipsa_ceas_timpi'
+                'lipsa_ceas_timpi',
+                'concediu_ore'
             ])
             ->where('data', 'LIKE', "$monthDate%")
             ->where('cod_staff', $staffCode)
@@ -33,10 +38,13 @@ class MonthlyReportRepository extends BaseRepository
         $hourMorning = 0;
         $hourAfternoon = 0;
         $hourDaily = 0;
-        $hourPlusDay = 0;
-        $hourPlusNight = 0;
+        $ot_ore = 0;
+        $plus_week_day = 0;
+        $plus_week_night = 0;
+        $plus_holiday_day = 0;
+        $plus_holiday_night = 0;
+        $concediu_ore = 0;
         $hourUnknown = 0;
-        $plusWork = 0;
         $dailyAbsence = 0;
         $delayWork = 0;
         $earlyExit = 0;
@@ -51,10 +59,6 @@ class MonthlyReportRepository extends BaseRepository
                 $hourAfternoon += $dailyReport->munca_ore;
             } elseif ($dailyReport->nume_schimb == 'Daily') {
                 $hourDaily += $dailyReport->munca_ore;
-            } elseif ($dailyReport->nume_schimb == 'Plus-Day') {
-                $hourPlusDay += $dailyReport->ot_ore;
-            } elseif ($dailyReport->nume_schimb == 'Plus-Night') {
-                $hourPlusNight += $dailyReport->ot_ore;
             } elseif ($dailyReport->nume_schimb == 'Tura implicita') {
                 $turaImplicita += $dailyReport->munca_ore;
             } else {
@@ -63,7 +67,12 @@ class MonthlyReportRepository extends BaseRepository
             if (!is_null($dailyReport->lipsa_ceas_timpi)) {
                 $lipsaCeasTimpi += $dailyReport->lipsa_ceas_timpi;
             }
-            $plusWork += $dailyReport->ot_ore;
+            $ot_ore += $dailyReport->ot_ore;
+            $plus_week_day += $dailyReport->plus_week_day;
+            $plus_week_night += $dailyReport->plus_week_night;
+            $plus_holiday_day += $dailyReport->plus_holiday_day;
+            $plus_holiday_night += $dailyReport->plus_holiday_night;
+            $concediu_ore += $dailyReport->concediu_ore;
             $dailyAbsence += $dailyReport->absenta_zile;
             $delayWork += $dailyReport->tarziu_minute;
             $earlyExit += $dailyReport->devreme_minute;
@@ -76,12 +85,15 @@ class MonthlyReportRepository extends BaseRepository
             'hourMorning' => number_format($hourMorning, 1),
             'hourAfternoon' => number_format($hourAfternoon, 1),
             'hourDaily' => number_format($hourDaily, 1),
-            'hourPlusDay' => number_format($hourPlusDay, 1),
-            'hourPlusNight' => number_format($hourPlusNight, 1),
-            'plusWork' => number_format($plusWork, 1),
+            'ot_ore' => number_format($ot_ore, 1),
+            'plus_week_day' => number_format($plus_week_day, 1),
+            'plus_week_night' => number_format($plus_week_night, 1),
+            'plus_holiday_day' => number_format($plus_holiday_day, 1),
+            'plus_holiday_night' => number_format($plus_holiday_night, 1),
             'delayWork' => $delayWork,
             'earlyExit' => $earlyExit,
             'dailyAbsence' => number_format($dailyAbsence, 1),
+            'concediu_ore' => number_format($concediu_ore, 1),
             'totalHours' => number_format($totalHours, 1),
             'hourUnknown' => $hourUnknown,
             'turaImplicita' => $turaImplicita,
@@ -102,9 +114,14 @@ class MonthlyReportRepository extends BaseRepository
                 'absenta_zile',
                 'munca_ore',
                 'ot_ore',
+                'plus_week_day',
+                'plus_week_night',
+                'plus_holiday_day',
+                'plus_holiday_night',
                 'tarziu_minute',
                 'devreme_minute',
-                'lipsa_ceas_timpi'
+                'lipsa_ceas_timpi',
+                'concediu_ore'
             ])
             ->where('data', 'LIKE', "$monthDate%")
             ->where('cod_staff', $staffCode)
@@ -114,10 +131,13 @@ class MonthlyReportRepository extends BaseRepository
         $hourMorning = 0;
         $hourAfternoon = 0;
         $hourDaily = 0;
-        $hourPlusDay = 0;
-        $hourPlusNight = 0;
+        $ot_ore = 0;
+        $plus_week_day = 0;
+        $plus_week_night = 0;
+        $plus_holiday_day = 0;
+        $plus_holiday_night = 0;
+        $concediu_ore = 0;
         $hourUnknown = 0;
-        $plusWork = 0;
         $dailyAbsence = 0;
         $delayWork = 0;
         $earlyExit = 0;
@@ -133,10 +153,6 @@ class MonthlyReportRepository extends BaseRepository
                 $hourAfternoon += $dailyReport->munca_ore;
             } elseif ($dailyReport->nume_schimb == 'Daily') {
                 $hourDaily += $dailyReport->munca_ore;
-            } elseif ($dailyReport->nume_schimb == 'Plus-Day') {
-                $hourPlusDay += $dailyReport->ot_ore;
-            } elseif ($dailyReport->nume_schimb == 'Plus-Night') {
-                $hourPlusNight += $dailyReport->ot_ore;
             } elseif ($dailyReport->nume_schimb == 'Tura implicita') {
                 $turaImplicita += $dailyReport->munca_ore;
             } else {
@@ -145,7 +161,12 @@ class MonthlyReportRepository extends BaseRepository
             if (!is_null($dailyReport->lipsa_ceas_timpi)) {
                 $lipsaCeasTimpi += $dailyReport->lipsa_ceas_timpi;
             }
-            $plusWork += $dailyReport->ot_ore;
+            $ot_ore += $dailyReport->ot_ore;
+            $plus_week_day += $dailyReport->plus_week_day;
+            $plus_week_night += $dailyReport->plus_week_night;
+            $plus_holiday_day += $dailyReport->plus_holiday_day;
+            $plus_holiday_night += $dailyReport->plus_holiday_night;
+            $concediu_ore += $dailyReport->concediu_ore;
             $dailyAbsence += $dailyReport->absenta_zile;
             $delayWork += $dailyReport->tarziu_minute;
             $earlyExit += $dailyReport->devreme_minute;
@@ -159,12 +180,15 @@ class MonthlyReportRepository extends BaseRepository
             'hourMorning' => number_format($hourMorning, 1),
             'hourAfternoon' => number_format($hourAfternoon, 1),
             'hourDaily' => number_format($hourDaily, 1),
-            'hourPlusDay' => number_format($hourPlusDay, 1),
-            'hourPlusNight' => number_format($hourPlusNight, 1),
-            'plusWork' => number_format($plusWork, 1),
+            'ot_ore' => number_format($ot_ore, 1),
+            'plus_week_day' => number_format($plus_week_day, 1),
+            'plus_week_night' => number_format($plus_week_night, 1),
+            'plus_holiday_day' => number_format($plus_holiday_day, 1),
+            'plus_holiday_night' => number_format($plus_holiday_night, 1),
             'delayWork' => $delayWork,
             'earlyExit' => $earlyExit,
             'dailyAbsence' => number_format($dailyAbsence, 1),
+            'concediu_ore' => number_format($concediu_ore, 1),
             'totalHours' => number_format($totalHours, 1),
             'hourUnknown' => $hourUnknown,
             'turaImplicita' => $turaImplicita,
