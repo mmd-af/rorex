@@ -207,31 +207,31 @@
                                     <tr>
                                         <td>
                                             <label for="munca_ore" class="form-label">Munca Ore</label>
-                                            <input type="number" min="0" step="any" class="form-control" id="munca_ore"
-                                                name="munca_ore" value="" readonly>
+                                            <input type="number" min="0" step="any" class="form-control"
+                                                id="munca_ore" name="munca_ore" value="" readonly>
                                         </td>
                                         <td class="bg-secondary text-light">
                                             <label for="ot_ore" class="form-label">OT Ore</label>
-                                            <input type="number" min="0" step="any" class="form-control" id="ot_ore"
-                                                name="ot_ore" value="">
+                                            <input type="number" min="0" step="any" class="form-control"
+                                                id="ot_ore" name="ot_ore" value="">
                                         </td>
                                         <td>
                                             <label for="absenta_zile" class="form-label">Absenta Zile</label>
-                                            <input type="number" min="0" step="any" class="form-control" id="absenta_zile"
-                                                name="absenta_zile" value="" readonly>
+                                            <input type="number" min="0" step="any" class="form-control"
+                                                id="absenta_zile" name="absenta_zile" value="" readonly>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td class="bg-secondary text-light">
                                             <label for="plus_week_day" class="form-label">Plus Week Day</label>
-                                            <input type="number" min="0" step="any" class="form-control" id="plus_week_day"
-                                                name="plus_week_day" value="">
+                                            <input type="number" min="0" step="any" class="form-control"
+                                                id="plus_week_day" name="plus_week_day" value="">
                                         </td>
                                         <td>
                                             <label for="tarziu_minute" class="form-label">Tarziu Minute</label>
-                                            <input type="number" min="0" step="any" class="form-control" id="tarziu_minute"
-                                                name="tarziu_minute" value="">
+                                            <input type="number" min="0" step="any" class="form-control"
+                                                id="tarziu_minute" name="tarziu_minute" value="">
                                         </td>
                                     </tr>
                                     <tr>
@@ -372,7 +372,7 @@
                         }
 
                         var input = $(
-                                '<input type="number" min="0" step="any" class="form-control form-control-sm" placeholder="Search...">'
+                                '<input type="text" class="form-control form-control-sm" placeholder="Search...">'
                             )
                             .appendTo($('<th></th>').appendTo(filterRow))
                             .on('keyup change', function() {
@@ -641,7 +641,7 @@
         function calculateMuncaOre(munca_ore, event) {
             var munca_ore_value = parseFloat(munca_ore.value);
             var ot_ore_value = parseFloat(event.target.value);
-            if (isNaN(ot_ore_value) || ot_ore_value === '') return;
+            if (isNaN(ot_ore_value) || ot_ore_value === '' || ot_ore_value < 0) return;
             if (munca_ore_value - ot_ore_value < 0) {
                 ot_ore.value = munca_ore_value;
                 ot_ore_value = munca_ore_value;
