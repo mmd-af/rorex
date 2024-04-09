@@ -41,7 +41,7 @@ class ManageRequestRepository extends BaseRepository
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addColumn('requests', function ($row) {
-                    return $row->request->description;
+                    return "<p class=\"h5 bg-secondary text-light\">Tracking Number= " . $row->request->id . "</p><br>" . $row->request->description;
                 })
                 ->addColumn('progress', function ($row) {
                     $status = '';
@@ -219,11 +219,11 @@ class ManageRequestRepository extends BaseRepository
             ->where('is_archive', 1)
             ->where('assigned_to', $userId)
             ->with(['request'])
-            ->get();
+            ->latest();
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addColumn('requests', function ($row) {
-                    return $row->request->description;
+                    return "<p class=\"h5 bg-secondary text-light\">Tracking Number= " . $row->request->id . "</p><br>" . $row->request->description;
                 })
                 ->addColumn('progress', function ($row) {
                     $status = '';
