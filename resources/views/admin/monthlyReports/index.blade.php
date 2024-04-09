@@ -62,18 +62,19 @@
                         <label for="date">Select Date:</label>
                         <select id="date" name="date" class="form-control">
                             <?php
-                            $currentMonth = date('n');
+                            $currentMonth = 3;
                             $currentYear = date('Y');
-                            for ($i = 1; $i <= 12; $i++) {
-                                $monthValue = ($currentMonth - $i + 12) % 12 + 1;
-                                $yearValue = $currentYear + floor(($currentMonth - $i) / 12);
-                                if ($monthValue > $currentMonth) {
-                                    $yearValue--;
+                            for ($i = 0; $i < 12; $i++) {
+                                $monthValue = (($currentMonth - $i + 12) % 12) + 1;
+                                $yearValue = $currentYear + floor(($currentMonth - $i - 1) / 12);
+                                if ($monthValue >= 3 || $yearValue > $currentYear) {
+                                    $formattedMonth = sprintf('%02d', $monthValue);
+                                    $dateOutput = "$yearValue-$formattedMonth";
+                                    $monthName = date('F', mktime(0, 0, 0, $monthValue, 1, $yearValue));
+                                    echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
+                                } else {
+                                    break;
                                 }
-                                $formattedMonth = sprintf('%02d', $monthValue);
-                                $dateOutput = "$yearValue-$formattedMonth";
-                                $monthName = date("F", mktime(0, 0, 0, $monthValue, 1, $yearValue));
-                                echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
                             }
                             ?>
                         </select>
@@ -103,18 +104,19 @@
                         <label for="dateOfExport">Select Date:</label>
                         <select id="dateOfExport" name="dateOfExport" class="form-control">
                             <?php
-                            $currentMonth = date('n');
+                            $currentMonth = 3;
                             $currentYear = date('Y');
-                            for ($i = 1; $i <= 12; $i++) {
-                                $monthValue = ($currentMonth - $i + 12) % 12 + 1;
-                                $yearValue = $currentYear + floor(($currentMonth - $i) / 12);
-                                if ($monthValue > $currentMonth) {
-                                    $yearValue--;
+                            for ($i = 0; $i < 12; $i++) {
+                                $monthValue = (($currentMonth - $i + 12) % 12) + 1;
+                                $yearValue = $currentYear + floor(($currentMonth - $i - 1) / 12);
+                                if ($monthValue >= 3 || $yearValue > $currentYear) {
+                                    $formattedMonth = sprintf('%02d', $monthValue);
+                                    $dateOutput = "$yearValue-$formattedMonth";
+                                    $monthName = date('F', mktime(0, 0, 0, $monthValue, 1, $yearValue));
+                                    echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
+                                } else {
+                                    break;
                                 }
-                                $formattedMonth = sprintf('%02d', $monthValue);
-                                $dateOutput = "$yearValue-$formattedMonth";
-                                $monthName = date("F", mktime(0, 0, 0, $monthValue, 1, $yearValue));
-                                echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
                             }
                             ?>
                         </select>
