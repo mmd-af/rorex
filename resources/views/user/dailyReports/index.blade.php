@@ -132,6 +132,7 @@
                                 <option value="Forgot Bring My Cart">Forgot Bring My Cart</option>
                                 <option value="Consider as allow Leave">Consider as allowed Leave</option>
                                 <option value="Consider OverTime">Consider OverTime</option>
+                                <option value="Work at Home (Remote)">Work at Home (Remote)</option>
                                 <option value="other">other</option>
                             </select>
                         </div>
@@ -289,6 +290,12 @@
                 descriptionData.innerHTML =
                     `<label for="description" class="col-form-label">how many hour?</label>
                             <input type="number" min="0" step="any" class="form-control" name="description" id="description" required>`;
+            }
+            if (subject === "Work at Home (Remote)") {
+                descriptionData.innerHTML = `<label for="description" class="col-form-label">Start Work:</label>
+                            <input type="time" class="form-control" name="description[]" id="description" required>
+                            <label for="description" class="col-form-label">End Work:</label>
+                            <input type="time" class="form-control" name="description[]" id="description" required>`;
             }
             if (subject === "other") {
                 descriptionData.innerHTML = `<label for="description" class="col-form-label">Message:</label>
