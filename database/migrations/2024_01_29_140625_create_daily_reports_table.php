@@ -27,12 +27,18 @@ return new class extends Migration
             $table->string('absenta_zile')->nullable();
             $table->string('munca_ore')->nullable();
             $table->string('ot_ore')->nullable();
+            $table->float('plus_week_day')->default(0);
+            $table->float('plus_week_night')->default(0);
+            $table->float('plus_holiday_day')->default(0);
+            $table->float('plus_holiday_night')->default(0);
             $table->string('tarziu_minute')->nullable();
             $table->string('devreme_minute')->nullable();
             $table->string('lipsa_ceas_timpi')->nullable();
             $table->string('sarbatoare_publica_ore')->nullable();
             $table->string('concediu_ore')->nullable();
             $table->string('remarca')->nullable();
+            $table->foreignId('edit_by')->nullable();
+            $table->foreign('edit_by')->references('id')->on('users')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
