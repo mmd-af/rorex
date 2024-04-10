@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('signed_by')->nullable();
             $table->foreign('signed_by')->references('id')->on('users')->onDelete('cascade');
             $table->string('status');
+            $table->text('description')->nullable();
             $table->boolean('is_archive')->default(0);
             $table->timestamps();
 

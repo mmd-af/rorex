@@ -83,7 +83,11 @@ class StaffRequestRepository extends BaseRepository
                     $status = '';
                     foreach ($row->assignments as $assignment) {
                         $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
-                        $status .= $assignment->assignedTo->name . $assignment->assignedTo->first_name . $signedStatus . $assignment->status . '<hr>';
+                        $condition = $assignment->status;
+                        if ($assignment->status == 'Rejected') {
+                            $condition = '<div class="bg-danger rounded-3 text-light">' . $assignment->status . '</div>';
+                        }
+                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $condition  . '<hr>';
                     }
                     return $status;
                 })
