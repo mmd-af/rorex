@@ -38,7 +38,9 @@
             width: 25%;
         }
 
-        #statusPrint, #statusPrint th, #statusPrint td {
+        #statusPrint,
+        #statusPrint th,
+        #statusPrint td {
             border: 1px solid #c0c0c0;
             border-collapse: collapse;
         }
@@ -65,36 +67,36 @@
     <div class="d-flex justify-content-between">
         <div></div>
         <div>
-            <a class="btn btn-outline-warning btn-sm text-warning" href="{{route('admin.manageRequests.archived')}}">Archive</a>
+            <a class="btn btn-outline-warning btn-sm text-warning"
+                href="{{ route('admin.manageRequests.archived') }}">Archive</a>
         </div>
     </div>
     <div class="card mb-4">
         <div class="card-body table-responsive">
             <table id="manageRequestTable" class="table table-bordered table-striped text-center">
                 <thead>
-                <tr>
-                    <th>Requests</th>
-                    <th>Status</th>
-                    <th>Sign</th>
-                    <th>Action</th>
-                </tr>
+                    <tr>
+                        <th>Requests</th>
+                        <th>Status</th>
+                        <th>Sign</th>
+                        <th>Action</th>
+                    </tr>
                 </thead>
                 <tfoot>
-                <tr>
-                    <th>Requests</th>
-                    <th>Status</th>
-                    <th>Sign</th>
-                    <th>Action</th>
-                </tr>
+                    <tr>
+                        <th>Requests</th>
+                        <th>Status</th>
+                        <th>Sign</th>
+                        <th>Action</th>
+                    </tr>
                 </tfoot>
+
                 <body>
                 </body>
             </table>
         </div>
     </div>
-    <div class="modal fade" id="setReferred" tabindex="-1"
-         aria-labelledby="setReferredLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="setReferred" tabindex="-1" aria-labelledby="setReferredLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -102,13 +104,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="setReferredForm" action="{{route('admin.manageRequests.store')}}" method="post">
+                    <form id="setReferredForm" action="{{ route('admin.manageRequests.store') }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-sm-12 col-lg-6">
                                 <label for="departamentRole" class="col-form-label">Referred to:</label>
                                 <select class="form-control" name="departamentRole" id="departamentRole"
-                                        onchange="getRelateUserWithRole()">
+                                    onchange="getRelateUserWithRole()" required>
                                     <option value="">SELECT DEPARTMENT</option>
                                 </select>
                             </div>
@@ -116,6 +118,12 @@
                                 <label for="assigned_to" class="col-form-label">Referred to:</label>
                                 <div id="assigned_user">
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mt-3">
+                                <label for="description">description: (optional)</label>
+                                <textarea class="form-control" name="description" id="description" cols="20" rows="4"></textarea>
                             </div>
                         </div>
                         <input type="hidden" name="letter_assign_id" id="letter_assign_id" value="">
@@ -132,31 +140,48 @@
 
 @section('script')
     <script>
-
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#manageRequestTable').DataTable({
                 processing: true,
                 serverSide: true,
                 pageLength: 25,
                 ajax: "{{ route('admin.manageRequests.ajax.getDataTable') }}",
-                columns: [
-                    {data: 'requests', name: 'requests', width: '50%'},
-                    {data: 'progress', name: 'progress', width: '20%'},
-                    {data: 'sign', name: 'sign', width: '10%'},
-                    {data: 'action', name: 'action', width: '20%'}
+                columns: [{
+                        data: 'requests',
+                        name: 'requests',
+                        width: '50%'
+                    },
+                    {
+                        data: 'progress',
+                        name: 'progress',
+                        width: '20%'
+                    },
+                    {
+                        data: 'sign',
+                        name: 'sign',
+                        width: '10%'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        width: '20%'
+                    }
                 ],
-                initComplete: function () {
+                initComplete: function() {
                     var table = this;
-                    this.api().columns().every(function () {
+                    this.api().columns().every(function() {
                         var column = this;
                         var header = $(column.header());
                         var filterRow = header.closest('thead').find('.filter-row');
                         if (!filterRow.length) {
-                            filterRow = $('<tr class="filter-row"></tr>').appendTo(header.closest('thead'));
+                            filterRow = $('<tr class="filter-row"></tr>').appendTo(header
+                                .closest('thead'));
                         }
-                        var input = $('<input type="text" class="form-control form-control-sm" placeholder="Search...">')
+                        var input = $(
+                                '<input type="text" class="form-control form-control-sm" placeholder="Search...">'
+                            )
                             .appendTo($('<th></th>').appendTo(filterRow))
-                            .on('keyup change', function () {
+                            .on('keyup change', function() {
                                 if (column.search() !== this.value) {
                                     column
                                         .search(this.value)
@@ -173,7 +198,9 @@
                 event.preventDefault();
             } else {
                 event.preventDefault();
-                axios.post("{{route('admin.manageRequests.ajax.sign')}}", {id: id})
+                axios.post("{{ route('admin.manageRequests.ajax.sign') }}", {
+                        id: id
+                    })
                     .then(response => {
                         location.reload();
                     })
@@ -183,15 +210,16 @@
             }
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             let departamentRole = document.getElementById('departamentRole');
-            axios.get('{{route('user.staffRequests.ajax.getRoles')}}')
-                .then(function (response) {
-                    response.data.forEach(function (item) {
-                        departamentRole.innerHTML += `<option value="${item.name}">${item.name}</option>`;
+            axios.get('{{ route('user.staffRequests.ajax.getRoles') }}')
+                .then(function(response) {
+                    response.data.forEach(function(item) {
+                        departamentRole.innerHTML +=
+                            `<option value="${item.name}">${item.name}</option>`;
                     });
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     console.error(error);
                 });
         });
@@ -204,18 +232,19 @@
             let data = {
                 role_name: departamentRole.value
             }
-            axios.post('{{route('user.staffRequests.ajax.getUserWithRole')}}', data)
-                .then(function (response) {
+            axios.post('{{ route('user.staffRequests.ajax.getUserWithRole') }}', data)
+                .then(function(response) {
                     assigned_user.innerHTML = `
-                    <select class="form-control" name="assigned_to" id="assigned_to">
+                    <select class="form-control" name="assigned_to" id="assigned_to" required>
                     </select>`;
                     let assignedTo = document.getElementById('assigned_to');
                     assignedTo.innerHTML = ``;
-                    response.data.forEach(function (item) {
-                        assignedTo.innerHTML += `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
+                    response.data.forEach(function(item) {
+                        assignedTo.innerHTML +=
+                            `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
                     });
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     console.error(error);
                 });
         }
@@ -227,7 +256,9 @@
 
         function setPass(id) {
             if (confirm('Do you want to submit the signature for this item?')) {
-                axios.post("{{route('admin.manageRequests.ajax.setPass')}}", {id: id})
+                axios.post("{{ route('admin.manageRequests.ajax.setPass') }}", {
+                        id: id
+                    })
                     .then(response => {
                         location.reload();
                     })
@@ -239,7 +270,9 @@
 
         function setRejected(id) {
             if (confirm('Do you want to submit the signature for this item?')) {
-                axios.post("{{route('admin.manageRequests.ajax.setReject')}}", {id: id})
+                axios.post("{{ route('admin.manageRequests.ajax.setReject') }}", {
+                        id: id
+                    })
                     .then(response => {
                         location.reload();
                     })
@@ -251,7 +284,9 @@
 
         function printDescription(id) {
             let content = ``;
-            axios.post("{{route('admin.manageRequests.ajax.getDescriptionForPrint')}}", {id: id})
+            axios.post("{{ route('admin.manageRequests.ajax.getDescriptionForPrint') }}", {
+                    id: id
+                })
                 .then(response => {
                     content = response.data.data[0].request.description;
                     content += `<table id="statusPrint" style="font-size: xx-small">
@@ -262,7 +297,7 @@
                             <th>Approve</th>
                             <th>status</th>
                        </tr>`;
-                    response.data.data.forEach(function (item) {
+                    response.data.data.forEach(function(item) {
                         content += `<tr style="border: 1px solid #000;">
                             <td>${item.user.name}</td>
                             <td>${item.role.name}</td>
@@ -281,22 +316,23 @@
 
         function printContent(content) {
             var printStyle = document.getElementById('printStyle');
-            let imageUrl = "{{asset('build/img/logo.png')}}";
+            let imageUrl = "{{ asset('build/img/logo.png') }}";
             var newWin = window.open('', 'Print-Window');
             newWin.document.open();
             newWin.document.write(
-                '<html><head><style>' + printStyle.innerHTML + '</style></head><body id="printSection" onload="window.print()">' +
+                '<html><head><style>' + printStyle.innerHTML +
+                '</style></head><body id="printSection" onload="window.print()">' +
                 '<div class="page" id="printPage"><div class="content-container"><div class="logo-container">' +
-                '<img class="img-fluid w-25" src="' + imageUrl + '" alt="Rorex - Pipe"></div><div class="message">' + content + '</div>' +
+                '<img class="img-fluid w-25" src="' + imageUrl + '" alt="Rorex - Pipe"></div><div class="message">' +
+                content + '</div>' +
                 '</div><div class="content-container"><div class="logo-container">' +
                 '<img class="img-fluid w-25" src="' + imageUrl + '" alt="Rorex - Pipe"></div>' +
                 '<div class="message">' + content + '</div></div></div>' +
                 '</body></html>');
             newWin.document.close();
-            setTimeout(function () {
+            setTimeout(function() {
                 newWin.close();
             }, 10);
         }
     </script>
-
 @endsection

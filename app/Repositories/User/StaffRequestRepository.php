@@ -29,11 +29,8 @@ class StaffRequestRepository extends BaseRepository
             ->select([
                 'id',
                 'email',
-                'subject',
                 'description',
-                'organization',
                 'cod_staff',
-                'read_at',
                 'created_at',
                 'is_archive'
             ])
@@ -50,8 +47,8 @@ class StaffRequestRepository extends BaseRepository
                 ->addColumn('status', function ($row) {
                     $status = '';
                     foreach ($row->assignments as $assignment) {
-                        $signedStatus = $assignment->signed_by ? 'Signed' : 'Not signed';
-                        $status .= $assignment->assignedTo->name . " " . $assignment->assignedTo->first_name . " -><br>" . $signedStatus . " -<br> " . $assignment->status . '<hr>';
+                        $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
+                        $status .= $assignment->assignedTo->name . $assignment->assignedTo->first_name . $signedStatus . $assignment->status . '<hr>';
                     }
                     return $status;
                 })
@@ -67,11 +64,8 @@ class StaffRequestRepository extends BaseRepository
             ->select([
                 'id',
                 'email',
-                'subject',
                 'description',
-                'organization',
                 'cod_staff',
-                'read_at',
                 'created_at',
                 'is_archive'
             ])
@@ -88,8 +82,8 @@ class StaffRequestRepository extends BaseRepository
                 ->addColumn('status', function ($row) {
                     $status = '';
                     foreach ($row->assignments as $assignment) {
-                        $signedStatus = $assignment->signed_by ? 'Signed' : 'Not signed';
-                        $status .= $assignment->assignedTo->name . " " . $assignment->assignedTo->first_name . " -><br>" . $signedStatus . " -<br> " . $assignment->status . '<hr>';
+                        $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
+                        $status .= $assignment->assignedTo->name . $assignment->assignedTo->first_name . $signedStatus . $assignment->status . '<hr>';
                     }
                     return $status;
                 })
@@ -163,7 +157,6 @@ class StaffRequestRepository extends BaseRepository
                 'name'
             ])
             ->get();
-
     }
 
     public function getUserWithRole($request)

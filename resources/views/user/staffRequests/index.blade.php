@@ -4,7 +4,60 @@
     Staff Requests
 @endsection
 @section('style')
+    <style id="printStyle">
+        @page {
+            size: landscape;
+            margin: 0;
+        }
 
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .page {
+            width: 210mm;
+            height: 148mm;
+            padding: 0;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            display: flex;
+        }
+
+        .content-container {
+            flex: 1;
+            margin: 5mm;
+            border: 2px solid #009799;
+            padding: 5mm;
+            box-sizing: border-box;
+        }
+
+        .logo-container img {
+            max-width: 100%;
+            height: auto;
+            width: 25%;
+        }
+
+        #statusPrint,
+        #statusPrint th,
+        #statusPrint td {
+            border: 1px solid #c0c0c0;
+            border-collapse: collapse;
+        }
+
+        #box {
+            border: 2px solid black;
+            padding: 2px;
+        }
+
+        #alignCenter {
+            text-align: center;
+        }
+
+        #printSection {
+            zoom: 150%;
+        }
+    </style>
 @endsection
 @section('content')
     <ol class="breadcrumb mb-4">
@@ -14,36 +67,32 @@
     <div class="row">
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
-                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal"
-                     data-bs-target="#LeaveRequest" data-info="Modal 1 Content"
-                     onclick="LeaveRequestForRest()">
+                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#LeaveRequest"
+                    data-info="Modal 1 Content" onclick="LeaveRequestForRest()">
                     Leave Request <i class="fa-solid fa-square-arrow-up-right"></i>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
-                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal"
-                     data-bs-target="#LeaveRequest" data-info="Modal 1 Content"
-                     onclick="LeaveRequestForSpecialEvents()">
+                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#LeaveRequest"
+                    data-info="Modal 1 Content" onclick="LeaveRequestForSpecialEvents()">
                     Leave Request for Special Events <i class="fa-solid fa-square-arrow-up-right"></i>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
-                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal"
-                     data-bs-target="#LeaveRequest" data-info="Modal 1 Content"
-                     onclick="LeaveRequestForHour()">
+                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#LeaveRequest"
+                    data-info="Modal 1 Content" onclick="LeaveRequestForHour()">
                     Hourly leave Request <i class="fa-solid fa-square-arrow-up-right"></i>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
-                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal"
-                     data-bs-target="#LeaveRequest" data-info="Modal 1 Content"
-                     onclick="CustomRequest()">
+                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#LeaveRequest"
+                    data-info="Modal 1 Content" onclick="CustomRequest()">
                     Custom Request <i class="fa-solid fa-square-arrow-up-right"></i>
                 </div>
             </div>
@@ -51,8 +100,8 @@
         <div class="col-xl-3 col-md-6">
             <div class="card bg-warning text-white mb-4">
                 <div class="card-body">
-                    <a class="text-white text-decoration-none"
-                       href="{{route('user.staffRequests.archived')}}">Archive <i class="fa-solid fa-square-arrow-up-right"></i></a>
+                    <a class="text-white text-decoration-none" href="{{ route('user.staffRequests.archived') }}">Archive <i
+                            class="fa-solid fa-square-arrow-up-right"></i></a>
 
                 </div>
             </div>
@@ -63,60 +112,30 @@
         <div>
         </div>
     </div>
-    {{--    <div class="d-flex justify-content-center my-3">--}}
-    {{--        <button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal"--}}
-    {{--                data-bs-target="#LeaveRequest"--}}
-    {{--                onclick="LeaveRequestForRest()">--}}
-    {{--            Leave Request <i class="fa-solid fa-square-arrow-up-right"></i>--}}
-    {{--        </button>--}}
-    {{--        <button type="button"--}}
-    {{--                class="btn btn-primary mx-3" data-bs-toggle="modal"--}}
-    {{--                data-bs-target="#LeaveRequest" data-info="Modal 1 Content"--}}
-    {{--                onclick="LeaveRequestForSpecialEvents()">--}}
-    {{--            Leave Request for Special Events <i class="fa-solid fa-square-arrow-up-right"></i>--}}
-    {{--        </button>--}}
-    {{--        <button type="button"--}}
-    {{--                class="btn btn-primary mx-3" data-bs-toggle="modal"--}}
-    {{--                data-bs-target="#LeaveRequest"--}}
-    {{--                onclick="LeaveRequestForHour()">--}}
-    {{--            Hourly leave Request <i class="fa-solid fa-square-arrow-up-right"></i>--}}
-    {{--        </button>--}}
-    {{--        <button type="button"--}}
-    {{--                class="btn btn-primary mx-3" data-bs-toggle="modal"--}}
-    {{--                data-bs-target="#LeaveRequest"--}}
-    {{--                onclick="CustomRequest()">--}}
-    {{--            Custom Request <i class="fa-solid fa-square-arrow-up-right"></i>--}}
-    {{--        </button>--}}
-    {{--    </div>--}}
     <div class="card mb-4">
         <div class="card-body table-responsive">
             <table id="staffRequestTable" class="table table-bordered table-striped text-center">
                 <thead>
-                <tr>
-                    <th>Tracking Number</th>
-                    <th>Subject</th>
-                    <th>Description</th>
-                    <th>Date of Request</th>
-                    <th>Status</th>
-                </tr>
+                    <tr>
+                        <th>Tracking Number</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
                 </thead>
                 <tfoot>
-                <tr>
-                    <th>Tracking Number</th>
-                    <th>Subject</th>
-                    <th>Description</th>
-                    <th>Date of Request</th>
-                    <th>Status</th>
-                </tr>
+                    <tr>
+                        <th>Tracking Number</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
                 </tfoot>
+
                 <body>
                 </body>
             </table>
         </div>
     </div>
-    <div class="modal fade" id="LeaveRequest" tabindex="-1"
-         aria-labelledby="LeaveRequestLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="LeaveRequest" tabindex="-1" aria-labelledby="LeaveRequestLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -127,38 +146,37 @@
                     <form id="leaveForm">
                         <div class="mb-3 lh-lg h5">
                             LastName:
-                            @if(empty(Auth::user()->name))
+                            @if (empty(Auth::user()->name))
                                 <input type="text" class="form-control" name="name" id="name" value="">
                             @else
-                                <text class="text-primary"> {{Auth::user()->name}}</text>
-                                <input type="hidden" name="name" value="{{Auth::user()->name}}">
+                                <text class="text-primary"> {{ Auth::user()->name }}</text>
+                                <input type="hidden" name="name" value="{{ Auth::user()->name }}">
                             @endif
                             FirstName:
-                            @if(empty(Auth::user()->first_name))
-                                <input type="text" class="form-control" name="first_name" id="first_name"
-                                       value="">
+                            @if (empty(Auth::user()->first_name))
+                                <input type="text" class="form-control" name="first_name" id="first_name" value="">
                             @else
-                                <text class="text-primary"> {{Auth::user()->first_name}} </text>
-                                <input type="hidden" name="first_name"
-                                       value="{{Auth::user()->first_name}}">
+                                <text class="text-primary"> {{ Auth::user()->first_name }} </text>
+                                <input type="hidden" name="first_name" value="{{ Auth::user()->first_name }}">
                             @endif
                             with Code Staff:
-                            @if(empty(Auth::user()->cod_staff))
+                            @if (empty(Auth::user()->cod_staff))
                                 <input type="text" class="form-control" name="cod_staff" id="cod_staff" value="">
                             @else
-                                <text class="text-primary">{{Auth::user()->cod_staff}}</text>
-                                <input type="hidden" name="cod_staff" value="{{Auth::user()->cod_staff}}">
+                                <text class="text-primary">{{ Auth::user()->cod_staff }}</text>
+                                <input type="hidden" name="cod_staff" value="{{ Auth::user()->cod_staff }}">
                             @endif
                             as an employee of S.C. ROREX PIPE S.R.L. in the Departament of
-                            @if(empty(Auth::user()->departament))
-                                <input type="text" class="form-control" name="departament" id="departament" value="">
+                            @if (empty(Auth::user()->departament))
+                                <input type="text" class="form-control" name="departament" id="departament"
+                                    value="">
                             @else
-                                <text class="text-primary">{{Auth::user()->departament}}</text>
-                                <input type="hidden" name="departament" value="{{Auth::user()->departament}}">
+                                <text class="text-primary">{{ Auth::user()->departament }}</text>
+                                <input type="hidden" name="departament" value="{{ Auth::user()->departament }}">
                             @endif
                             please approve my request for vacation during the period:
                             <div class="row">
-                                <p class="small text-success"> Allowed leave= {{Auth::user()->leave_balance}} days</p>
+                                <p class="small text-success"> Allowed leave= {{ Auth::user()->leave_balance }} days</p>
                             </div>
                             <div class="row mt-4" id="datesForLeave">
                             </div>
@@ -167,11 +185,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="email" class="col-form-label">Your Email:</label>
-                            @if(empty(Auth::user()->email))
-                                <input type="text" class="form-control" name="email" id="email" value="">
+                            @if (empty(Auth::user()->email))
+                                <input type="text" class="form-control" name="email" id="email"
+                                    value="">
                             @else
-                                <p class="text-primary">{{Auth::user()->email}}</p>
-                                <input type="hidden" name="email" value="{{Auth::user()->email}}">
+                                <p class="text-primary">{{ Auth::user()->email }}</p>
+                                <input type="hidden" name="email" value="{{ Auth::user()->email }}">
                             @endif
                         </div>
                         <div class="mb-3">
@@ -179,7 +198,7 @@
                                 <div class="col-sm-12 col-lg-6">
                                     <label for="departamentRole" class="col-form-label">Referred to:</label>
                                     <select class="form-control" name="departamentRole" id="departamentRole"
-                                            onchange="getRelateUserWithRole()">
+                                        onchange="getRelateUserWithRole()">
                                         <option value="">SELECT DEPARTMENT</option>
                                     </select>
                                 </div>
@@ -243,14 +262,15 @@
                                     <h6 id="dateDifference"></h6>
                                 </div>`;
             let modalSubject = document.getElementById('modalSubject');
-            modalSubject.innerHTML = `
+            modalSubject.innerHTML =
+                `
                                 <input type="hidden" name="kind" value="SpecialEvents">
                                 <input type="hidden" name="subject" value="leave for special events">
                                 <label for="description">explain:</label>
                                 <input type="text" class="form-control" name="description" id="description" value="" required>`;
             const descriptionInput = document.getElementById('description');
             let isTextAdded = false;
-            descriptionInput.addEventListener('change', function (event) {
+            descriptionInput.addEventListener('change', function(event) {
                 if (!isTextAdded) {
                     this.value = event.target.value + " and I will send the document.";
                     isTextAdded = true;
@@ -301,31 +321,42 @@
 <textarea name="description" class="form-control" id="description" required></textarea>`;
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#staffRequestTable').DataTable({
                 processing: true,
                 serverSide: true,
                 pageLength: 25,
                 ajax: "{{ route('user.staffRequests.ajax.getDataTable') }}",
-                columns: [
-                    {data: 'id', name: 'id', width: '10%'},
-                    {data: 'subject', name: 'subject'},
-                    {data: 'description', name: 'description'},
-                    {data: 'created_at', name: 'created_at', width: '10%'},
-                    {data: 'status', name: 'status', width: '20%'}
+                columns: [{
+                        data: 'id',
+                        name: 'id',
+                        width: '10%'
+                    },
+                    {
+                        data: 'description',
+                        name: 'description'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        width: '20%'
+                    }
                 ],
-                initComplete: function () {
+                initComplete: function() {
                     var table = this;
-                    this.api().columns().every(function () {
+                    this.api().columns().every(function() {
                         var column = this;
                         var header = $(column.header());
                         var filterRow = header.closest('thead').find('.filter-row');
                         if (!filterRow.length) {
-                            filterRow = $('<tr class="filter-row"></tr>').appendTo(header.closest('thead'));
+                            filterRow = $('<tr class="filter-row"></tr>').appendTo(header
+                                .closest('thead'));
                         }
-                        var input = $('<input type="text" class="form-control form-control-sm" placeholder="Search...">')
+                        var input = $(
+                                '<input type="text" class="form-control form-control-sm" placeholder="Search...">'
+                                )
                             .appendTo($('<th></th>').appendTo(filterRow))
-                            .on('keyup change', function () {
+                            .on('keyup change', function() {
                                 if (column.search() !== this.value) {
                                     column
                                         .search(this.value)
@@ -340,12 +371,13 @@
         function calculateDateDifference(x) {
             var startDateValue = document.getElementById('startDate').value.trim();
             var endDateValue = document.getElementById('endDate').value.trim();
-            let leave_balance = "{{Auth::user()->leave_balance}}";
+            let leave_balance = "{{ Auth::user()->leave_balance }}";
             if (startDateValue !== '' && endDateValue !== '') {
                 var startDate = new Date(startDateValue);
                 var endDate = new Date(endDateValue);
                 if (endDate < startDate) {
-                    document.getElementById('dateDifference').innerHTML = `<p class="text-danger">The second date cannot be before the first date</p>`;
+                    document.getElementById('dateDifference').innerHTML =
+                        `<p class="text-danger">The second date cannot be before the first date</p>`;
                     return;
                 }
                 var timeDifference = Math.abs(endDate - startDate + 1);
@@ -391,7 +423,8 @@
                 var startTime = new Date('1970-01-01T' + startTimeValue + ':00Z').getTime();
                 var endTime = new Date('1970-01-01T' + endTimeValue + ':00Z').getTime();
                 if (endTime < startTime) {
-                    document.getElementById('timeDifference').innerHTML = `<p class="text-danger">End time cannot be earlier than start time</p>`;
+                    document.getElementById('timeDifference').innerHTML =
+                        `<p class="text-danger">End time cannot be earlier than start time</p>`;
                     return;
                 }
                 var timeDifferenceInMilliseconds = Math.abs(endTime - startTime);
@@ -404,15 +437,16 @@
             }
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             let departamentRole = document.getElementById('departamentRole');
-            axios.get('{{route('user.staffRequests.ajax.getRoles')}}')
-                .then(function (response) {
-                    response.data.forEach(function (item) {
-                        departamentRole.innerHTML += `<option value="${item.name}">${item.name}</option>`;
+            axios.get('{{ route('user.staffRequests.ajax.getRoles') }}')
+                .then(function(response) {
+                    response.data.forEach(function(item) {
+                        departamentRole.innerHTML +=
+                            `<option value="${item.name}">${item.name}</option>`;
                     });
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     console.error(error);
                 });
         });
@@ -425,23 +459,24 @@
             let data = {
                 role_name: departamentRole.value
             }
-            axios.post('{{route('user.staffRequests.ajax.getUserWithRole')}}', data)
-                .then(function (response) {
+            axios.post('{{ route('user.staffRequests.ajax.getUserWithRole') }}', data)
+                .then(function(response) {
                     assigned_user.innerHTML = `
                     <select class="form-control" name="assigned_to" id="assigned_to">
                     </select>`;
                     let assignedTo = document.getElementById('assigned_to');
                     assignedTo.innerHTML = ``;
-                    response.data.forEach(function (item) {
-                        assignedTo.innerHTML += `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
+                    response.data.forEach(function(item) {
+                        assignedTo.innerHTML +=
+                            `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
                     });
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     console.error(error);
                 });
         }
 
-        document.getElementById('leaveForm').addEventListener('submit', function (event) {
+        document.getElementById('leaveForm').addEventListener('submit', function(event) {
             event.preventDefault();
             var form = event.target;
             var formData = new FormData(form);
@@ -468,26 +503,32 @@
                 var newDescription = 'Date: ' + dateOfRequest +
                     '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
                     'Code Staff: ' + cod_staff + '</div><br>' +
-                    '<div id="alignCenter"><b>' + subject + '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
-                    '<br>Requests <b>' + vacation_day + ' days</b> during the period:<br><b>' + startDay + ' </b>until:<b> ' + endDay +
+                    '<div id="alignCenter"><b>' + subject +
+                    '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
+                    '<br>Requests <b>' + vacation_day + ' days</b> during the period:<br><b>' + startDay +
+                    ' </b>until:<b> ' + endDay +
                     '</b><br>Total days: ' + totally +
-                    '<br>Allowed leave: ' + leave_balance + '<br>EXCLUDING Holidays: ' + vacation_day + '<br>Days without Pay: ' +
+                    '<br>Allowed leave: ' + leave_balance + '<br>EXCLUDING Holidays: ' + vacation_day +
+                    '<br>Days without Pay: ' +
                     daysWithoutPay + '<br><small>' + description + '</small><br>Email: ' + email + '<hr>';
             }
             if (kind === "Hour") {
                 var newDescription = 'Date: ' + dateOfRequest +
                     '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
                     'Code Staff: ' + cod_staff + '</div><br>' +
-                    '<div id="alignCenter"><b>' + subject + '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
+                    '<div id="alignCenter"><b>' + subject +
+                    '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
                     '<br>requests for hour leave on:<br><b>' + startDay +
-                    '</b><br>between:<b> ' + start_time + ' </b>until: <b>' + end_time + ' </b><br>' + vacation_day + description +
+                    '</b><br>between:<b> ' + start_time + ' </b>until: <b>' + end_time + ' </b><br>' +
+                    vacation_day + description +
                     '<br>Email: ' + email + '<hr>';
             }
             if (kind === "CustomRequest") {
                 var newDescription = 'Date: ' + dateOfRequest +
                     '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
                     'Code Staff: ' + cod_staff + '</div><br>' +
-                    '<div id="alignCenter"><b>' + subject + '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
+                    '<div id="alignCenter"><b>' + subject +
+                    '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
                     '<br>' + description + '<br>Email: ' + email + '<hr>';
             }
             let data = {
@@ -504,11 +545,11 @@
                 departamentRole: departamentRole,
                 assigned_to: assigned_to
             }
-            axios.post('{{route('user.staffRequests.ajax.store')}}', data)
-                .then(function (response) {
+            axios.post('{{ route('user.staffRequests.ajax.store') }}', data)
+                .then(function(response) {
                     location.reload();
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     alert(error.request.response)
                 });
             let performAction = document.getElementById('performAction');

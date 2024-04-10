@@ -68,18 +68,14 @@
                 <thead>
                 <tr>
                     <th>Tracking Number</th>
-                    <th>Subject</th>
                     <th>Description</th>
-                    <th>Date of Request</th>
                     <th>Status</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
                     <th>Tracking Number</th>
-                    <th>Subject</th>
                     <th>Description</th>
-                    <th>Date of Request</th>
                     <th>Status</th>
                 </tr>
                 </tfoot>
@@ -100,9 +96,7 @@
                 ajax: "{{ route('user.staffRequests.ajax.getArchiveDataTable') }}",
                 columns: [
                     {data: 'id', name: 'id', width: '10%'},
-                    {data: 'subject', name: 'subject'},
                     {data: 'description', name: 'description'},
-                    {data: 'created_at', name: 'created_at', width: '10%'},
                     {data: 'status', name: 'status', width: '20%'}
                 ],
                 initComplete: function () {

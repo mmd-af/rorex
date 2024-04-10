@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class ManageRequestRepository extends BaseRepository
 {
@@ -47,8 +48,17 @@ class ManageRequestRepository extends BaseRepository
                     $status = '';
                     $allRelatedRequest = $this->query()->where('request_id', $row->request_id)->get();
                     foreach ($allRelatedRequest as $assignment) {
-                        $signedStatus = $assignment->signed_by ? 'Signed' : 'Not signed';
-                        $status .= $assignment->assignedTo->name . " " . $assignment->assignedTo->first_name . " -><br>" . $signedStatus . " -<br> " . $assignment->status . '<hr>';
+                        $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
+                        if ($assignment->description) {
+                            $description = Str::limit($assignment->description, 45);
+                            $description = $assignment->description != $description ? '<div class="bg-info rounded-3">' . $description . '<details>
+                                        <summary>Show Full Message</summary>' . $assignment->description . '</div>
+                                    </details>' : '<div class="bg-info rounded-3">' . $assignment->description . '</div>';
+                        } else {
+                            $description = '';
+                        }
+
+                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $assignment->status . $description . '<hr>';
                     }
                     return $status;
                 })
@@ -122,6 +132,7 @@ class ManageRequestRepository extends BaseRepository
             $letterAssignment->request_id = $old_letterAssignment->request_id;
             $letterAssignment->role_id = $role->id;
             $letterAssignment->assigned_to = $request->assigned_to;
+            $letterAssignment->description = $request->description;
             $letterAssignment->status = "waiting";
             $letterAssignment->save();
             $assignedTo = User::query()
@@ -229,8 +240,17 @@ class ManageRequestRepository extends BaseRepository
                     $status = '';
                     $allRelatedRequest = $this->query()->where('request_id', $row->request_id)->get();
                     foreach ($allRelatedRequest as $assignment) {
-                        $signedStatus = $assignment->signed_by ? 'Signed' : 'Not signed';
-                        $status .= $assignment->assignedTo->name . " " . $assignment->assignedTo->first_name . " -><br>" . $signedStatus . " -<br> " . $assignment->status . '<hr>';
+                        $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
+                        if ($assignment->description) {
+                            $description = Str::limit($assignment->description, 45);
+                            $description = $assignment->description != $description ? '<div class="bg-info rounded-3">' . $description . '<details>
+                                        <summary>Show Full Message</summary>' . $assignment->description . '</div>
+                                    </details>' : '<div class="bg-info rounded-3">' . $assignment->description . '</div>';
+                        } else {
+                            $description = '';
+                        }
+
+                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $assignment->status . $description . '<hr>';
                     }
                     return $status;
                 })
