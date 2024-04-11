@@ -17,6 +17,17 @@ Route::group(['middleware' => ['web', 'auth', 'permission:daily_reports'], 'name
                 'as' => 'import',
                 'uses' => 'DailyReportController@import'
             ])->middleware('permission:update_daily_reports');
+
+            Route::group(['prefix' => 'singleReports', 'as' => 'singleReports.'], function () {
+                Route::get('/', [
+                    'as' => 'index',
+                    'uses' => 'DailyReportController@indexSingleReport'
+                ]);
+                Route::post('/import', [
+                    'as' => 'import',
+                    'uses' => 'DailyReportController@importSingleReport'
+                ])->middleware('permission:update_daily_reports');
+            });
         });
         Route::group(['prefix' => 'dailyReports-ajax', 'as' => 'dailyReports.ajax.'], function () {
             Route::post('/getDataTable', [

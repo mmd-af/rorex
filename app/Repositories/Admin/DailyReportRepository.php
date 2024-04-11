@@ -6,7 +6,6 @@ use App\Imports\DailyReportExcel;
 use App\Models\DailyReport\DailyReport;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
@@ -220,5 +219,47 @@ class DailyReportRepository extends BaseRepository
         $sumWork2 = $this->sumHourWork($request->on_work2, $request->off_work2);
         $sumWork3 = $this->sumHourWork($request->on_work3, $request->off_work3);
         return response()->json(['sumWork1' => $sumWork1, 'sumWork2' => $sumWork2, 'sumWork3' => $sumWork3]);
+    }
+
+    function importSingleReport($request)
+    {
+        $files = $request->file('file');
+        $files = Excel::toArray(new DailyReportExcel, $files);
+        $expectedHeaders = [
+            "Numar",
+            "Cod staff",
+            "Nume",
+            "Departament",
+            "ID utilizator",
+            "Saptamana",
+            "Data",
+            "Timp",
+            "Numar masina",
+            "Remarca"
+        ];
+        $actualHeaders = $files[0][0];
+        $missingHeaders = array_diff($expectedHeaders, $actualHeaders);
+        if (!empty($missingHeaders)) {
+            Session::flash('error', 'Invalid file format. Missing headers: ' . implode(', ', $missingHeaders));
+            return false;
+        }
+        // dd($files);
+        // Sambata
+        // Duminica
+        // || $item[5] === "Duminica"
+        foreach ($files[0] as $key => $item) {
+            if ($key === 0) {
+                continue;
+            }
+            $yesterday = Carbon::yesterday()->toDateString();
+            $date = date('Y-m-d', strtotime($item[6]));
+            if ($date > $yesterday) {
+                continue;
+            }
+            if ($item[5] == "Sambata" or $item[5] == "Duminica") {
+                $codStaff = (int)$item[1];
+                echo $key . " = " . $codStaff . " = " . $item[5] . "<br>";
+            }
+        }
     }
 }

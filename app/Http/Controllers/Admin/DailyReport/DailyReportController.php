@@ -38,4 +38,16 @@ class DailyReportController extends Controller
             'message' => session('message'),
         ]);
     }
+    public function indexSingleReport()
+    {
+        return view('admin.dailyReports.singleReports.index');
+    }
+    public function importSingleReport(Request $request)
+    {
+        $this->dailyReportRepository->importSingleReport($request);
+        return redirect()->route('admin.dailyReports.singleReports.index')->with([
+            'error' => session('error'),
+            'message' => session('message'),
+        ]);
+    }
 }

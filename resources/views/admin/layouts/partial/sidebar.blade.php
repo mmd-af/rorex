@@ -19,6 +19,7 @@
                     <a class="nav-link" href="{{route('admin.dailyReports.index')}}">Daily</a>
                     <a class="nav-link" href="{{route('admin.monthlyReports.index')}}">Monthly</a>
                     <a class="nav-link" href="{{route('admin.manageStaffLeaves.index')}}">Leave Control</a>
+                    <a class="nav-link" href="{{route('admin.dailyReports.singleReports.index')}}">Single records</a>
                 </nav>
             </div>
             <div class="sb-sidenav-menu-heading">Requests</div>
