@@ -243,10 +243,10 @@ class DailyReportRepository extends BaseRepository
             Session::flash('error', 'Invalid file format. Missing headers: ' . implode(', ', $missingHeaders));
             return false;
         }
-        // dd($files);
-        // Sambata
-        // Duminica
-        // || $item[5] === "Duminica"
+
+        // Define an array to store first and last entry times for each employee for each day
+        $entryTimes = [];
+
         foreach ($files[0] as $key => $item) {
             if ($key === 0) {
                 continue;
@@ -256,10 +256,56 @@ class DailyReportRepository extends BaseRepository
             if ($date > $yesterday) {
                 continue;
             }
+            // Check if it's Saturday or Sunday
             if ($item[5] == "Sambata" or $item[5] == "Duminica") {
                 $codStaff = (int)$item[1];
-                echo $key . " = " . $codStaff . " = " . $item[5] . "<br>";
+                // If the employee is not in the entryTimes array, add them
+                if (!isset($entryTimes[$date][$codStaff])) {
+                    $entryTimes[$date][$codStaff] = [
+                        'first_entry' => $item[7], // Assuming 'Timp' is the entry time
+                        'last_entry' => $item[7] // Assuming 'Timp' is the entry time
+                    ];
+                } else {
+                    // Update the last entry time
+                    $entryTimes[$date][$codStaff]['last_entry'] = $item[7]; // Assuming 'Timp' is the entry time
+                }
             }
+        }
+
+        // Now $entryTimes array holds the first and last entry times for each employee for each day
+        // You can use this array as needed
+
+        // Example: output the first and last entry times for each employee for each day
+        foreach ($entryTimes as $date => $employees) {
+            echo "Date: $date<br>";
+            foreach ($employees as $codStaff => $entryTime) {
+                echo "Employee Code: $codStaff, First Entry: {$entryTime['first_entry']}, Last Entry: {$entryTime['last_entry']}<br>";
+
+           
+
+
+
+            }
+            echo "<br>";
+        }
+        dd("Finish");
+    }
+
+    function updateDailyReport($date, $staffCode, $onWorkTime, $offWorkTime)
+    {
+        $date = Carbon::parse($date)->toDateString();
+        $record = $this->query()
+            ->where('data', $date)
+            ->where('cod_staff', $staffCode)
+            ->first();
+        if ($record) {
+            if (empty($record->on_work1)) {
+                $record->on_work1 = $onWorkTime;
+            }
+            if (empty($record->off_work2)) {
+                $record->off_work2 = $offWorkTime;
+            }
+            $record->save();
         }
     }
 }
