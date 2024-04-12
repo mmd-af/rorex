@@ -34,6 +34,7 @@ class DailyReportRepository extends BaseRepository
                 'remarca'
             ])
             ->where('data', 'LIKE', "$request->date%")
+            ->with(['users','editBy'])
             ->orderByDesc('data')
             ->get();
         if ($request->ajax()) {
