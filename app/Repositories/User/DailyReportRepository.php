@@ -2,18 +2,13 @@
 
 namespace App\Repositories\User;
 
+use App\Jobs\User\DailyReportSendRequestJob;
 use App\Mail\RequestMail;
 use App\Models\DailyReport\DailyReport;
-use App\Models\LetterAssignment\LetterAssignment;
-use App\Models\StaffRequest\StaffRequest;
 use App\Models\User\User;
 use Carbon\Carbon;
 use Exception;
-use Hamcrest\Arrays\IsArray;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -101,58 +96,51 @@ class DailyReportRepository extends BaseRepository
         if (is_array($request->description)) {
             $description = $request->description[0] . ' between ' . $request->description[1];
         } else {
-            $description = $request->description ." hour";
+            $description = $request->description . " hour";
         }
         $userId = Auth::id();
         $dateOfRequest = Carbon::now()->format('Y/m/d');
-        DB::beginTransaction();
-        try {
-            $staffRequest = new StaffRequest();
-            $staffRequest->name = $request->name;
-            $staffRequest->user_id = $userId;
-            $staffRequest->email = $request->email;
-            $staffRequest->mobile_phone = $request->mobile_phone;
-            $staffRequest->subject = $request->subject;
-            $staffRequest->description =
-                'Date: ' . $dateOfRequest .
-                '<br><div id="box">Name: ' . $request->name . ' ' . $request->first_name . '<br>' .
-                'Code Staff: ' . $request->cod_staff . '</div><br>' .
-                'Check For Date: ' . $request->check_date . '</div><br>' .
-                '<div id="alignCenter"><b>' . $request->subject . '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' . $request->departament .
-                '<br><h3>' . $description . '</h3><br>Email: ' . $request->email . '<hr>';
+        $description =
+            'Date: ' . $dateOfRequest .
+            '<br><div id="box">Name: ' . $request->name . ' ' . $request->first_name . '<br>' .
+            'Code Staff: ' . $request->cod_staff . '</div><br>' .
+            'Check For Date: ' . $request->check_date . '</div><br>' .
+            '<div id="alignCenter"><b>' . $request->subject . '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' . $request->departament .
+            '<br><h3>' . $description . '</h3><br>Email: ' . $request->email . '<hr>';
 
-            $staffRequest->organization = $request->departamentRole;
-            $staffRequest->cod_staff = (int)$request->cod_staff;
-            $staffRequest->vacation_day = (int)$request->vacation_day;
-            $staffRequest->save();
-            $role = Role::query()
-                ->select(['id', 'name'])
-                ->where('name', $request->departamentRole)
-                ->first();
-            $assignment = new LetterAssignment();
-            $assignment->user_id = $userId;
-            $assignment->request_id = $staffRequest->id;
-            $assignment->role_id = $role->id;
-            $assignment->assigned_to = $request->assigned_to;
-            $assignment->status = "waiting";
-            $assignment->save();
-            $assignedTo = User::query()
-                ->select([
-                    'id',
-                    'email',
-                    'email_verified_at'
-                ])
-                ->where('id', $assignment->assigned_to)
-                ->first();
-            if ($assignedTo->email_verified_at !== null) {
-                Mail::to($assignedTo->email)->send(new RequestMail($request->subject, $staffRequest->description));
-            }
-            DB::commit();
-            Session::flash('message', 'Your Request Send Successfully');
-        } catch (Exception $e) {
-            DB::rollBack();
-            Session::flash('error', $e->getMessage());
-        }
+        $data = [
+            'userId' => $userId,
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'mobile_phone' => $request->input('mobile_phone'),
+            'subject' => $request->input('subject'),
+            'description' => $description,
+            'organization' => $request->input('departament'),
+            'departamentRole' => $request->input('departamentRole'),
+            'cod_staff' => (int)$request->input('cod_staff'),
+            'vacation_day' => (int)$request->input('vacation_day'),
+            'assigned_to' => (int)$request->input('assigned_to')
+        ];
+
+        DailyReportSendRequestJob::dispatch($data);
+
+        // $assignedTo = User::query()
+        //     ->select([
+        //         'id',
+        //         'email',
+        //         'email_verified_at'
+        //     ])
+        //     ->where('id', $assignment->assigned_to)
+        //     ->first();
+        // if ($assignedTo->email_verified_at !== null) {
+        //     Mail::to($assignedTo->email)->send(new RequestMail($request->subject, $staffRequest->description));
+        // }
+        //     DB::commit();
+        //     Session::flash('message', 'Your Request Send Successfully');
+        // } catch (Exception $e) {
+        //     DB::rollBack();
+        //     Session::flash('error', $e->getMessage());
+        // }
     }
 
     public function getLastUpdate($request)
