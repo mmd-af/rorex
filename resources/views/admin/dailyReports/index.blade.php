@@ -122,13 +122,15 @@
                         <input type="hidden" name="reportID" id="reportID" value="">
                         <div class="mb-3">
                             <label for="nume_schimb" class="form-label">Nume Schimb</label>
-                            <select class="form-control" name="nume_schimb" id="nume_schimb">
+                            <select class="form-control" name="nume_schimb" id="nume_schimb"
+                                onchange="changeNumeSchimb(event)">
                                 <option value="Morning">Morning</option>
                                 <option value="Afternoon">Afternoon</option>
                                 <option value="Night">Night</option>
                                 <option value="Daily">Daily</option>
                                 <option value="Daily-Reduce">Daily-Reduce</option>
                                 <option value="OverTime">OverTime</option>
+                                <option value="Leave">Leave</option>
                                 <option value="Odihna">Odihna</option>
                                 <option value="Tura implicita">Tura implicita</option>
                                 <option value="No Join">No Join</option>
@@ -697,6 +699,15 @@
             }
         }
 
+        function changeNumeSchimb(event) {
+            console.log(event.target.value);
+            if (event.target.value === "Leave") {
+                absenta_zile.value = 0;
+                lipsa_ceas_timpi.value = 0;
+                concediu_ore.value = 8;
+            }
+
+        }
         // $('#editFormModal').on('hidden.bs.modal', function() {
         // location.reload();
         // });
