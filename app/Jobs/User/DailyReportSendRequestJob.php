@@ -9,8 +9,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use App\Models\StaffRequest\StaffRequest;
+use App\Models\User\User;
 use Spatie\Permission\Models\Role;
 use App\Models\LetterAssignment\LetterAssignment;
+use App\Notifications\RequestRegisteredNotification;
 
 class DailyReportSendRequestJob implements ShouldQueue
 {
@@ -55,11 +57,15 @@ class DailyReportSendRequestJob implements ShouldQueue
             $assignment->assigned_to = $this->data['assigned_to'];
             $assignment->status = "waiting";
             $assignment->save();
-            // event(new RequestRegistered($staffRequest, $assignment));
-            // return response()->json(['message' => 'Succecsd'], 500);
+            $user = User::find($this->data['assigned_to']);
+            if ($user->email_verified_at !== null) {
+                $user->notify(new RequestRegisteredNotification("New Request",$this->data['description']));
+            }
         } catch (\Exception $e) {
-            // Log::error("Error: " . $e->getMessage());
-            // return response()->json(['error' => 'An error occurred. Please try again later.'], 500);
+            $users = User::role('support')->get();
+            foreach ($users as $user) {
+                $user->notify(new RequestRegisteredNotification("Error on user send request",$e->getMessage()));
+            }
         }
     }
 }

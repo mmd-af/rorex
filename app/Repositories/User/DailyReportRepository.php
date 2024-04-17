@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Session;
 
 class DailyReportRepository extends BaseRepository
 {
@@ -121,26 +122,8 @@ class DailyReportRepository extends BaseRepository
             'vacation_day' => (int)$request->input('vacation_day'),
             'assigned_to' => (int)$request->input('assigned_to')
         ];
-
         DailyReportSendRequestJob::dispatch($data);
-
-        // $assignedTo = User::query()
-        //     ->select([
-        //         'id',
-        //         'email',
-        //         'email_verified_at'
-        //     ])
-        //     ->where('id', $assignment->assigned_to)
-        //     ->first();
-        // if ($assignedTo->email_verified_at !== null) {
-        //     Mail::to($assignedTo->email)->send(new RequestMail($request->subject, $staffRequest->description));
-        // }
-        //     DB::commit();
-        //     Session::flash('message', 'Your Request Send Successfully');
-        // } catch (Exception $e) {
-        //     DB::rollBack();
-        //     Session::flash('error', $e->getMessage());
-        // }
+        Session::flash('message', 'Your request has been submitted');
     }
 
     public function getLastUpdate($request)
