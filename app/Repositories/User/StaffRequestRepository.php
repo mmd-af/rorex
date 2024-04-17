@@ -71,8 +71,7 @@ class StaffRequestRepository extends BaseRepository
             ])
             ->where('user_id', $userId)
             ->where('is_archive', 1)
-            ->get();
-
+            ->latest();
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addColumn('created_at', function ($row) {
