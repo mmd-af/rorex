@@ -7,7 +7,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 use App\Models\StaffRequest\StaffRequest;
 use App\Models\User\User;
 use Spatie\Permission\Models\Role;
@@ -26,11 +25,6 @@ class DailyReportSendRequestJob implements ShouldQueue
     {
         $this->data = $data;
     }
-
-    /**
-     * Execute the job.
-     */
-    // Log::info("Result" . $staffRequest->name . " " . $assignment);
 
     public function handle(): void
     {

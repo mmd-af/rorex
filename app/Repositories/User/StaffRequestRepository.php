@@ -2,18 +2,15 @@
 
 namespace App\Repositories\User;
 
-use App\Mail\RequestMail;
 use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
 use App\Models\User\User;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
+use App\Jobs\User\DailyReportSendRequestJob;
 
 class StaffRequestRepository extends BaseRepository
 {
@@ -99,7 +96,7 @@ class StaffRequestRepository extends BaseRepository
     public function store($request)
     {
         $userId = Auth::id();
-        if ($request->subject === 'Leave Request for Rest') {
+        if ($request->subject === 'Leave Request') {
             $checkAssignment = LetterAssignment::query()
                 ->where('user_id', $userId)
                 ->where('status', 'waiting')
@@ -109,47 +106,22 @@ class StaffRequestRepository extends BaseRepository
                 return false;
             }
         }
-        DB::beginTransaction();
-        try {
-            $staffRequest = new StaffRequest();
-            $staffRequest->name = $request->name;
-            $staffRequest->user_id = $userId;
-            $staffRequest->email = $request->email;
-            $staffRequest->mobile_phone = $request->mobile_phone;
-            $staffRequest->subject = $request->subject;
-            $staffRequest->description = $request->description;
-            $staffRequest->organization = $request->departament;
-            $staffRequest->cod_staff = (int)$request->cod_staff;
-            $staffRequest->vacation_day = (int)$request->vacation_day;
-            $staffRequest->save();
-            $role = Role::query()
-                ->select(['id', 'name'])
-                ->where('name', $request->departamentRole)
-                ->first();
-            $assignment = new LetterAssignment();
-            $assignment->user_id = $userId;
-            $assignment->request_id = $staffRequest->id;
-            $assignment->role_id = $role->id;
-            $assignment->assigned_to = $request->assigned_to;
-            $assignment->status = "waiting";
-            $assignment->save();
-            $assignedTo = User::query()
-                ->select([
-                    'id',
-                    'email',
-                    'email_verified_at'
-                ])
-                ->where('id', $request->assigned_to)
-                ->first();
-            if ($assignedTo->email_verified_at !== null) {
-                Mail::to($assignedTo->email)->send(new RequestMail($request->subject, $staffRequest->description));
-            }
-            DB::commit();
-            Session::flash('message', 'Your Request Send Successfully');
-        } catch (Exception $e) {
-            DB::rollBack();
-            Session::flash('error', $e->getMessage());
-        }
+
+        $data = [
+            'userId' => $userId,
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'mobile_phone' => $request->input('mobile_phone'),
+            'subject' => $request->input('subject'),
+            'description' => $request->description,
+            'organization' => $request->input('departament'),
+            'departamentRole' => $request->input('departamentRole'),
+            'cod_staff' => (int)$request->input('cod_staff'),
+            'vacation_day' => (int)$request->input('vacation_day'),
+            'assigned_to' => (int)$request->input('assigned_to')
+        ];
+        DailyReportSendRequestJob::dispatch($data);
+        Session::flash('message', 'Your request has been submitted');
     }
 
     public function getRoles($request)
