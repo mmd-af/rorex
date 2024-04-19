@@ -34,7 +34,7 @@ class DailyReportRepository extends BaseRepository
                 'remarca'
             ])
             ->where('data', 'LIKE', "$request->date%")
-            ->with(['users','editBy'])
+            ->with(['users', 'editBy'])
             ->orderByDesc('data')
             ->get();
         if ($request->ajax()) {
@@ -189,10 +189,10 @@ class DailyReportRepository extends BaseRepository
             $dailyID->edit_by = $userId;
             $dailyID->save();
             DB::commit();
-            Session::flash('message', 'The Update Operation was Completed Successfully');
+            return response()->json(['message' => 'The Update Operation was Completed Successfully']);
         } catch (Exception $e) {
             DB::rollBack();
-            Session::flash('error', $e->getMessage());
+            return response()->json(['error' => $e->getMessage()]);
         }
     }
 

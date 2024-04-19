@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\DailyReport;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Admin\DailyReportRepository;
+use App\Models\DailyReport\DailyReport;
 use Illuminate\Http\Request;
 
 class DailyReportAjaxController extends Controller
@@ -29,6 +30,12 @@ class DailyReportAjaxController extends Controller
     {
         return response()->json([
             'data' => $this->dailyReportRepository->renderTimeForm($request)
+        ]);
+    }
+    function update(Request $request, DailyReport $dailyID)
+    {
+        return response()->json([
+            'data' => $this->dailyReportRepository->update($request, $dailyID)
         ]);
     }
 }

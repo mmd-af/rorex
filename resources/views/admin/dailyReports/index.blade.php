@@ -66,6 +66,8 @@
             </form>
         </div>
     </div>
+    <div id="responseMessage"></div>
+    <div id="warningMessage"></div>
     <div class="card mb-4">
         <div class="card-body table-responsive">
             <table id="dailyReportTable" class="table table-bordered table-striped text-center">
@@ -118,7 +120,6 @@
                     </div>
                     <form action="" method="post" id="editFrom">
                         @csrf
-                        @method('PUT')
                         <input type="hidden" name="reportID" id="reportID" value="">
                         <div class="mb-3">
                             <label for="nume_schimb" class="form-label">Nume Schimb</label>
@@ -160,7 +161,8 @@
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td class="bg-secondary text-light"><label for="on_work2" class="form-label">On Work
+                                        <td class="bg-secondary text-light"><label for="on_work2" class="form-label">On
+                                                Work
                                                 2</label></td>
                                         <td><label for="off_work2" class="form-label">Off Work 2</label></td>
                                         <td></td>
@@ -429,6 +431,7 @@
         let fixValueWithHourButton = document.getElementById('fixValueWithHourButton');
 
         function openEditFormModal(id) {
+            editFrom.style.visibility = 'hidden';
             alert.innerHTML = ` <div class="row justify-content-center my-3">
                             <div class="spinner-grow text-primary mx-3" role="status">
                                 <span class="visually-hidden">Loading...</span>
@@ -448,7 +451,7 @@
             let configInformation = {
                 id: id
             }
-            axios.post('{{ route('admin.dailyReports.ajax.getData') }}', configInformation)
+            axios.post("{{ route('admin.dailyReports.ajax.getData') }}", configInformation)
                 .then(function(response) {
                     alert.innerHTML = ``;
                     sumWork1.innerHTML = ``;
@@ -460,12 +463,9 @@
                     resultSumWork.innerHTML = ``;
                     resultSumWork.classList.remove('bg-warning');
                     munca_ore.classList.remove('bg-warning');
-
-
-                    let url = "{{ route('admin.dailyReports.update', 'dailyID') }}";
+                    let url = "{{ route('admin.dailyReports.ajax.update', 'dailyID') }}";
                     url = url.replace('dailyID', response.data.data.id);
                     editFrom.setAttribute('action', url);
-
                     reportID.value = response.data.data.id;
                     nume_schimb.value = response.data.data.nume_schimb;
                     on_work1.value = response.data.data.on_work1;
@@ -529,7 +529,7 @@
                 on_work3: on_work3.value,
                 off_work3: off_work3.value,
             }
-            axios.post('{{ route('admin.dailyReports.ajax.renderTimeForm') }}', configInformation)
+            axios.post("{{ route('admin.dailyReports.ajax.renderTimeForm') }}", configInformation)
                 .then(function(response) {
                     alert.innerHTML = ``;
                     renderTimeForm(response);
@@ -663,13 +663,10 @@
         }
 
         function checkOtOre(event) {
-            var
-                new_plus_week_day = parseFloat(plus_week_day.value);
+            var new_plus_week_day = parseFloat(plus_week_day.value);
             var new_plus_week_night = parseFloat(plus_week_night.value);
-            var
-                new_plus_holiday_day = parseFloat(plus_holiday_day.value);
-            var
-                new_plus_holiday_night = parseFloat(plus_holiday_night.value);
+            var new_plus_holiday_day = parseFloat(plus_holiday_day.value);
+            var new_plus_holiday_night = parseFloat(plus_holiday_night.value);
             var new_ot_ore = parseFloat(ot_ore.value);
             if (isNaN(new_ot_ore)) {
                 ot_ore.classList.remove('bg-warning');
@@ -708,6 +705,43 @@
             }
 
         }
+
+        editFrom.addEventListener('submit', function(event) {
+            event.preventDefault();
+            let actionUrl = editFrom.getAttribute('action');
+            const formData = new FormData(this);
+            axios.post(actionUrl, formData)
+                .then(function(response) {
+                    const messageElement = document.getElementById('responseMessage');
+                    const warningElement = document.getElementById('warningMessage');
+                    warningElement.innerHTML =
+                        `<div class="alert alert-warning">Something has changed. Please <a href="" onclick="location.reload()">refresh</a> the page</div>`;
+                    if (response.data.data.original.message) {
+                        $('#editFormModal').modal('hide');
+                        messageElement.innerHTML =
+                            `<div class="alert alert-success"> ${response.data.data.original.message}</div>`;
+                        setTimeout(() => {
+                            messageElement.innerHTML = '';
+                        }, 3000);
+                    }
+                    if (response.data.data.original.error) {
+                        $('#editFormModal').modal('hide');
+                        messageElement.innerHTML =
+                            `<div class="alert alert-danger"> ${response.data.data.original.error}</div>`;
+                        setTimeout(() => {
+                            messageElement.innerHTML = '';
+                        }, 6000);
+                    }
+
+                })
+                .catch(function(error) {
+                    document.getElementById('responseMessage').innerHTML =
+                        `<div class="alert alert-danger">Operation Fail</div>`;
+                });
+        });
+
+
+
         // $('#editFormModal').on('hidden.bs.modal', function() {
         // location.reload();
         // });
