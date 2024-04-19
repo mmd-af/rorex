@@ -12,7 +12,7 @@
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">Daily Reports</li>
     </ol>
-    <div class="alert alert-primary" id="last_update"></div>
+    <!-- <div class="alert alert-primary" id="last_update"></div> -->
     @include('user.layouts.partial.errors')
     <div class="card mb-4">
         <div class="card-body table-responsive">
@@ -253,7 +253,7 @@
 
         $(document).ready(function() {
             let departamentRole = document.getElementById('departamentRole');
-            axios.get('{{ route('user.dailyReports.ajax.getRoles') }}')
+            axios.get("{{ route('user.dailyReports.ajax.getRoles') }}")
                 .then(function(response) {
                     response.data.forEach(function(item) {
                         departamentRole.innerHTML +=
@@ -311,7 +311,7 @@
             let data = {
                 role_name: departamentRole.value
             }
-            axios.post('{{ route('user.dailyReports.ajax.getUserWithRole') }}', data)
+            axios.post("{{ route('user.dailyReports.ajax.getUserWithRole') }}", data)
                 .then(function(response) {
                     assigned_user.innerHTML = `
                     <select class="form-control" name="assigned_to" id="assigned_to" required>
@@ -344,7 +344,7 @@
             let configInformation = {
                 id: id
             }
-            axios.post('{{ route('user.dailyReports.ajax.getData') }}', configInformation)
+            axios.post("{{ route('user.dailyReports.ajax.getData') }}", configInformation)
                 .then(function(response) {
                     alert.innerHTML = ``;
                     name.value = response.data.data.name;
@@ -360,20 +360,20 @@
                 });
         }
 
-        $(document).ready(function() {
-            let last_update = document.getElementById('last_update');
-            last_update.innerHTML = `<div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-            </div>`;
-
-            axios.post('{{ route('user.dailyReports.ajax.getLastUpdate') }}')
-                .then(function(response) {
-                    const formattedDateTime = moment(response.data.updated_at).format('YYYY-MM-DD HH:mm:ss');
-                    last_update.innerHTML = `Last Update: ${formattedDateTime}`;
-                })
-                .catch(function(error) {
-                    console.error(error);
-                });
-        });
+        // $(document).ready(function() {
+        //     let last_update = document.getElementById('last_update');
+        //     last_update.innerHTML = `<div class="spinner-border" role="status">
+        //     <span class="visually-hidden">Loading...</span>
+        //     </div>`;
+        // route('user.dailyReports.ajax.getLastUpdate')
+        //     axios.post()
+        //         .then(function(response) {
+        //             const formattedDateTime = moment(response.data.updated_at).format('YYYY-MM-DD HH:mm:ss');
+        //             last_update.innerHTML = `Last Update: ${formattedDateTime}`;
+        //         })
+        //         .catch(function(error) {
+        //             console.error(error);
+        //         });
+        // });
     </script>
 @endsection

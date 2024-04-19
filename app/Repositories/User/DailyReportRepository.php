@@ -126,11 +126,11 @@ class DailyReportRepository extends BaseRepository
         Session::flash('message', 'Your request has been submitted');
     }
 
-    public function getLastUpdate($request)
-    {
-        return $this->query()
-            ->select(['updated_at'])
-            ->orderBy('updated_at', 'desc')
-            ->first();
-    }
+    // public function getLastUpdate($request)
+    // {
+    //     return $this->query()
+    //         ->select(['updated_at'])
+    //         ->orderBy('updated_at', 'desc')
+    //         ->first();
+    // }
 }
