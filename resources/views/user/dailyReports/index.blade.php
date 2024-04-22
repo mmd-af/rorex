@@ -133,6 +133,7 @@
                                 <option value="Consider as allow Leave">Consider as allowed Leave</option>
                                 <option value="Consider OverTime">Consider OverTime</option>
                                 <option value="Work at Home (Remote)">Work at Home (Remote)</option>
+                                <option value="Mission">Mission</option>
                                 <option value="other">other</option>
                             </select>
                         </div>
@@ -297,6 +298,10 @@
                             <label for="description" class="col-form-label">End Work:</label>
                             <input type="time" class="form-control" name="description[]" id="description" required>`;
             }
+            if (subject === "Mission") {
+                descriptionData.innerHTML = `<label for="description" class="col-form-label">please describe it:</label>
+                            <textarea class="form-control" name="description" id="description" required></textarea>`;
+            }
             if (subject === "other") {
                 descriptionData.innerHTML = `<label for="description" class="col-form-label">Message:</label>
                             <textarea class="form-control" name="description" id="description" required></textarea>`;
@@ -363,8 +368,8 @@
         // $(document).ready(function() {
         //     let last_update = document.getElementById('last_update');
         //     last_update.innerHTML = `<div class="spinner-border" role="status">
-        //     <span class="visually-hidden">Loading...</span>
-        //     </div>`;
+    //     <span class="visually-hidden">Loading...</span>
+    //     </div>`;
         // route('user.dailyReports.ajax.getLastUpdate')
         //     axios.post()
         //         .then(function(response) {
