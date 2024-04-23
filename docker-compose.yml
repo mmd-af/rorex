@@ -1,0 +1,75 @@
+version: "3.8"
+services:
+  php:
+    build:
+      context: .
+      target: php
+    image: exercise/php
+    container_name: exercise-php
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      APP_DEBUG: "true"
+    volumes:
+      - '.:/var/www/exercise'
+      - ./php-dev.ini:/usr/local/etc/php/conf.d/dev-php.ini
+    networks:
+      - exercise
+
+  nginx:
+    build:
+      context: .
+      target: nginx
+    image: exercise/nginx
+    container_name: exercise-nginx
+    restart: unless-stopped
+    depends_on: [php]
+    ports:
+      - '127.0.0.1:8080:80'
+    environment:
+      FPM_HOST: "php:9000"
+    volumes:
+      - './public:/var/www/exercise/public'
+    networks:
+      - exercise
+
+  database:
+    image: mariadb:10.6
+    container_name: exercise-database
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 1m
+    ports:
+      - "127.0.0.1:3306:3306/tcp"
+    hostname: database
+    volumes:
+      - "database:/var/lib/mysql"
+    stop_signal: SIGINT
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: exercise
+      MYSQL_USER: exercise
+      MYSQL_DATABASE: exercise
+    networks:
+      - exercise
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: exercise-phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_HOST=database
+    networks:
+      - exercise
+networks:
+  exercise:
+
+volumes:
+  database:

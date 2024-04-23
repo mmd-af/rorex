@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ManageRequestRepository extends BaseRepository
 {
@@ -69,9 +70,14 @@ class ManageRequestRepository extends BaseRepository
                     </div>';
                 })
                 ->addColumn('action', function ($row) {
-                    return '<button class="btn btn-light btn-sm mx-2" onclick="printDescription(' . $row->request->id . ')">
+                    return '
+                    <form action="" method="post">
+                    @csrf
+                    <input type="hidden" id="printInformation" value="">
+                    <button class="btn btn-light btn-sm mx-2" onclick="printDescription(' . $row->request->id . ')">
                             <i class="fa-solid fa-print"></i>
                             </button>
+                            </form>
                             <button onclick="setReferred(' . $row->id . ')" type="button"
                                     class="btn btn-primary btn-sm mx-2" data-bs-toggle="modal"
                                     data-bs-target="#setReferred">
@@ -284,5 +290,18 @@ class ManageRequestRepository extends BaseRepository
             ->with(['user', 'request', 'role', 'assignedTo', 'signedBy'])
             ->get();
         return response()->json(['data' => $data]);
+    }
+
+    public function generatePDF()
+    {
+        $pdf = PDF::loadView('pdf.template')->setPaper('a4')->setOrientation('landscape');
+
+        // اضافه کردن فایل CSS به فایل PDF
+        $css = file_get_contents(public_path('path/to/your/style.css'));
+        $pdf->getDomPDF()->getOptions()->setIsHtml5ParserEnabled(true);
+        $pdf->getDomPDF()->load_html($css, 'UTF-8');
+        $pdf->getDomPDF()->render();
+
+        return $pdf->download('generated.pdf');
     }
 }

@@ -139,6 +139,9 @@
 @endsection
 
 @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function() {
             $('#manageRequestTable').DataTable({
@@ -315,24 +318,25 @@
         }
 
         function printContent(content) {
-            var printStyle = document.getElementById('printStyle');
-            let imageUrl = "{{ asset('build/img/logo.png') }}";
-            var newWin = window.open('', 'Print-Window');
-            newWin.document.open();
-            newWin.document.write(
-                '<html><head><style>' + printStyle.innerHTML +
-                '</style></head><body id="printSection" onload="window.print()">' +
-                '<div class="page" id="printPage"><div class="content-container"><div class="logo-container">' +
-                '<img class="img-fluid w-25" src="' + imageUrl + '" alt="Rorex - Pipe"></div><div class="message">' +
-                content + '</div>' +
-                '</div><div class="content-container"><div class="logo-container">' +
-                '<img class="img-fluid w-25" src="' + imageUrl + '" alt="Rorex - Pipe"></div>' +
-                '<div class="message">' + content + '</div></div></div>' +
-                '</body></html>');
-            newWin.document.close();
-            setTimeout(function() {
-                newWin.close();
-            }, 10);
+             console.log(content);
+            // var printStyle = document.getElementById('printStyle');
+            // let imageUrl = "{{ asset('build/img/logo.png') }}";
+            // var newWin = window.open('', 'Print-Window');
+            // newWin.document.open();
+            // newWin.document.write(
+            //     '<html><head><style>' + printStyle.innerHTML +
+            //     '</style></head><body id="printSection" onload="window.print()">' +
+            //     '<div class="page" id="printPage"><div class="content-container"><div class="logo-container">' +
+            //     '<img class="img-fluid w-25" src="' + imageUrl + '" alt="Rorex - Pipe"></div><div class="message">' +
+            //     content + '</div>' +
+            //     '</div><div class="content-container"><div class="logo-container">' +
+            //     '<img class="img-fluid w-25" src="' + imageUrl + '" alt="Rorex - Pipe"></div>' +
+            //     '<div class="message">' + content + '</div></div></div>' +
+            //     '</body></html>');
+            // newWin.document.close();
+            // setTimeout(function() {
+            //     newWin.close();
+            // }, 10);
         }
     </script>
 @endsection

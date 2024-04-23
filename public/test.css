@@ -1,0 +1,52 @@
+@page {
+    size: landscape;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.page {
+    width: 210mm;
+    height: 148mm;
+    padding: 0;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    display: flex;
+}
+
+.content-container {
+    flex: 1;
+    margin: 5mm;
+    border: 2px solid #009799;
+    padding: 5mm;
+    box-sizing: border-box;
+}
+
+.logo-container img {
+    max-width: 100%;
+    height: auto;
+    width: 25%;
+}
+
+#statusPrint,
+#statusPrint th,
+#statusPrint td {
+    border: 1px solid #c0c0c0;
+    border-collapse: collapse;
+}
+
+#box {
+    border: 2px solid black;
+    padding: 2px;
+}
+
+#alignCenter {
+    text-align: center;
+}
+
+#printSection {
+    zoom: 150%;
+}
