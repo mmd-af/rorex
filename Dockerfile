@@ -8,7 +8,7 @@ RUN docker-php-ext-install bcmath sockets pdo_mysql exif pcntl gd
 
 COPY --from=composer/composer:2-bin /composer /usr/bin/composer
 
-WORKDIR /var/www/exercise
+WORKDIR /var/www/rorex
 
 
 FROM nginx:latest as nginx

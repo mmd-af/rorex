@@ -4,8 +4,8 @@ services:
     build:
       context: .
       target: php
-    image: exercise/php
-    container_name: exercise-php
+    image: rorex/php
+    container_name: rorex-php
     restart: unless-stopped
     depends_on:
       database:
@@ -13,34 +13,41 @@ services:
     environment:
       APP_DEBUG: "true"
     volumes:
-      - '.:/var/www/exercise'
+      - '.:/var/www/rorex'
       - ./php-dev.ini:/usr/local/etc/php/conf.d/dev-php.ini
     networks:
-      - exercise
+      - rorex
 
   nginx:
     build:
       context: .
       target: nginx
-    image: exercise/nginx
-    container_name: exercise-nginx
+    image: rorex/nginx
+    container_name: rorex-nginx
     restart: unless-stopped
-    depends_on: [php]
+    depends_on: [ php ]
     ports:
-      - '127.0.0.1:8080:80'
+      - '127.0.0.1:8085:80'
     environment:
       FPM_HOST: "php:9000"
     volumes:
-      - './public:/var/www/exercise/public'
+      - './public:/var/www/rorex/public'
     networks:
-      - exercise
+      - rorex
 
   database:
     image: mariadb:10.6
-    container_name: exercise-database
+    container_name: rorex-database
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      test:
+        [
+          "CMD",
+          "healthcheck.sh",
+          "--su-mysql",
+          "--connect",
+          "--innodb_initialized"
+        ]
       interval: 5s
       timeout: 5s
       retries: 3
@@ -53,23 +60,24 @@ services:
     stop_signal: SIGINT
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_PASSWORD: exercise
-      MYSQL_USER: exercise
-      MYSQL_DATABASE: exercise
+      MYSQL_PASSWORD: rorex
+      MYSQL_USER: rorex
+      MYSQL_DATABASE: rorex
     networks:
-      - exercise
+      - rorex
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: exercise-phpmyadmin
+    container_name: rorex-phpmyadmin
     restart: always
     ports:
-      - "8081:80"
+      - "8082:80"
     environment:
       - PMA_HOST=database
     networks:
-      - exercise
+      - rorex
 networks:
-  exercise:
+  rorex:
+
 
 volumes:
   database:
