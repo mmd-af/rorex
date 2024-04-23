@@ -12,6 +12,7 @@
     <script src="https://cdn.datatables.net/plug-ins/1.11.6/api/individual.columnFilter.js"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @yield('style')
+    @laravelPWA
 </head>
 <body class="sb-nav-fixed">
 @include('user.layouts.partial.navbar')
