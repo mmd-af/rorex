@@ -18,24 +18,22 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
-//    return view('welcome');
+    //    return view('welcome');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    //    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';
 
-Route::get('/change', function () {
-    $users = User::get();
-    foreach ($users as $user) {
-        $user->password = "$2y$12$0f8h4fC7jWa98jGZvCJbl.87/i6IkzTnuHY7hwMWJIxBbG5FgZLnW";
-        $user->save();
-    }
-});
+Route::get('/change-password/{user}', function (User $user) {
+    $user->password = "$2y$12$0f8h4fC7jWa98jGZvCJbl.87/i6IkzTnuHY7hwMWJIxBbG5FgZLnW";
+    $user->save();
+    echo "Password reseted for user: <br>" . $user->cod_staff;
+})->middleware(['web', 'auth', 'super.admin']);
 
 Route::get('/query1', function () {
     $dailyReports = DailyReport::query()
