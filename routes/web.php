@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Models\DailyReport\DailyReport;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,19 +37,6 @@ Route::get('/change-password/{user}', function (User $user) {
     echo "Password reseted for user: <br>" . $user->cod_staff;
 })->middleware(['web', 'auth', 'super.admin']);
 
-Route::get('/query1', function () {
-    $dailyReports = DailyReport::query()
-        ->where('nume_schimb', "Night")
-        ->where('cod_staff', 2109)
-        ->get();
-    $plusNight = 0;
-    foreach ($dailyReports as $dailyReport) {
-        $plusNight += $dailyReport->munca_ore;
-    }
-
-    dd($plusNight);
-});
-
 Route::get('/addBalance', function () {
     $users = User::all();
     foreach ($users as $user) {
@@ -55,15 +44,6 @@ Route::get('/addBalance', function () {
         $user->save();
     }
 });
-
-Route::get('/giveEmployeePermission', function () {
-    $users = User::all();
-    foreach ($users as $user) {
-        $user->givePermissionTo('employees');
-        $user->save();
-    }
-});
-
 
 Route::get('/migrate', function () {
     Artisan::call('migrate');
