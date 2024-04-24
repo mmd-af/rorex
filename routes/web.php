@@ -1,11 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Models\DailyReport\DailyReport;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
