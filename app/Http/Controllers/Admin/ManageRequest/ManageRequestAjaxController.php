@@ -39,9 +39,4 @@ class ManageRequestAjaxController extends Controller
     {
         return $this->manageRequestRepository->getArchiveDataTable($request);
     }
-
-    public function getDescriptionForPrint(Request $request)
-    {
-        return $this->manageRequestRepository->getDescriptionForPrint($request);
-    }
 }

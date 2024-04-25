@@ -18,7 +18,11 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
                 'as' => 'archived',
                 'uses' => 'ManageRequestController@archived'
             ]);
-        });
+            Route::post('/exportPDF', [
+                'as' => 'exportPDF',
+                'uses' => 'ManageRequestController@exportPDF'
+            ]);
+        });     
         Route::group(['prefix' => 'manageRequests-ajax', 'as' => 'manageRequests.ajax.'], function () {
             Route::get('/getDataTable', [
                 'as' => 'getDataTable',
@@ -39,10 +43,6 @@ Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controll
             Route::get('/getArchiveDataTable', [
                 'as' => 'getArchiveDataTable',
                 'uses' => 'ManageRequestAjaxController@getArchiveDataTable'
-            ]);
-            Route::post('/getDescriptionForPrint', [
-                'as' => 'getDescriptionForPrint',
-                'uses' => 'ManageRequestAjaxController@getDescriptionForPrint'
             ]);
         });
     });

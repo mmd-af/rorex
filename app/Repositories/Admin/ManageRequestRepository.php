@@ -70,33 +70,31 @@ class ManageRequestRepository extends BaseRepository
                     </div>';
                 })
                 ->addColumn('action', function ($row) {
+                    $url = route('admin.manageRequests.exportPDF');
                     return '
-                    <form action="" method="post">
-                    @csrf
-                    <input type="hidden" id="printInformation" value="">
-                    <button class="btn btn-light btn-sm mx-2" onclick="printDescription(' . $row->request->id . ')">
-                            <i class="fa-solid fa-print"></i>
+                    <form action="' . $url . '" method="post">
+                    ' . csrf_field() . '
+                    <input type="hidden" name="printInformation" id="printInformation" value="' . $row->request->id . '">
+                             <button type="submit" class="btn btn-light btn-sm m-2" title="Export PDF">
+                            <i class="fa-solid fa-file-pdf fa-2x"></i>
                             </button>
-                            </form>
-                            <button onclick="setReferred(' . $row->id . ')" type="button"
-                                    class="btn btn-primary btn-sm mx-2" data-bs-toggle="modal"
+                    </form>
+                            <button title="Referred" onclick="setReferred(' . $row->id . ')" type="button"
+                                    class="btn btn-primary btn-sm m-2" data-bs-toggle="modal"
                                     data-bs-target="#setReferred">
                                 <i class="fa-solid fa-square-arrow-up-right"></i>
                             </button>
                             ' . ($row->signed_by ? '
-                            <button onclick="setPass(' . $row->id . ')" type="button"
-                                    class="btn btn-success btn-sm mx-2">
+                            <button title="Accept and close" onclick="setPass(' . $row->id . ')" type="button"
+                                    class="btn btn-success btn-sm m-2">
                                 <i class = "fa-solid fa-file-zipper"></i>
                             </button>
                             ' : '
-                            <button onclick="setRejected(' . $row->id . ')" type="button"
-                                    class="btn btn-danger btn-sm mx-2">
+                            <button title="Reject and close" onclick="setRejected(' . $row->id . ')" type="button"
+                                    class="btn btn-danger btn-sm m-2">
                                 <i class="fa-solid fa-square-xmark"></i>
                             </button>
-                            ') . '
-
-
-                            ';
+                            ');
                 })
                 ->rawColumns(['requests', 'progress', 'sign', 'action'])
                 ->make(true);
@@ -264,9 +262,15 @@ class ManageRequestRepository extends BaseRepository
                     return $status;
                 })
                 ->addColumn('action', function ($row) {
-                    return '<button class="btn btn-light btn-sm mx-2" onclick="printDescription(' . $row->request->id . ')">
-                            <i class="fa-solid fa-print"></i>
-                            </button>';
+                    $url = route('admin.manageRequests.exportPDF');
+                    return '
+                    <form action="' . $url . '" method="post">
+                    ' . csrf_field() . '
+                    <input type="hidden" name="printInformation" id="printInformation" value="' . $row->request->id . '">
+                             <button type="submit" class="btn btn-light btn-sm m-2" title="Export PDF">
+                            <i class="fa-solid fa-file-pdf fa-2x"></i>
+                            </button>
+                    </form>';
                 })
                 ->rawColumns(['requests', 'progress', 'action'])
                 ->make(true);
@@ -274,7 +278,7 @@ class ManageRequestRepository extends BaseRepository
         return false;
     }
 
-    public function getDescriptionForPrint($request)
+    public function exportPDF($request)
     {
         $data = $this->query()
             ->select([
@@ -286,22 +290,15 @@ class ManageRequestRepository extends BaseRepository
                 'signed_by',
                 'status'
             ])
-            ->where('request_id', $request->id)
+            ->where('request_id', $request->printInformation)
             ->with(['user', 'request', 'role', 'assignedTo', 'signedBy'])
             ->get();
-        return response()->json(['data' => $data]);
-    }
+        if (!$data) {
+            return response()->json(['message' => 'Data not found'], 404);
+        }
 
-    public function generatePDF()
-    {
-        $pdf = PDF::loadView('pdf.template')->setPaper('a4')->setOrientation('landscape');
-
-        // اضافه کردن فایل CSS به فایل PDF
-        $css = file_get_contents(public_path('path/to/your/style.css'));
-        $pdf->getDomPDF()->getOptions()->setIsHtml5ParserEnabled(true);
-        $pdf->getDomPDF()->load_html($css, 'UTF-8');
-        $pdf->getDomPDF()->render();
-
-        return $pdf->download('generated.pdf');
+        $description = $data[0]->request->description;
+        $pdf = Pdf::loadView('pdf.template', compact(['data', 'description']))->setPaper('a6')->setWarnings(false);
+        return $pdf->download($data[0]->id . '-' . $data[0]->user_id . '-' . $data[0]->request_id . '.pdf');
     }
 }

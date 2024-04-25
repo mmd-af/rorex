@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\ManageRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ManageRequest\ManageRequestStoreRequest;
 use App\Repositories\Admin\ManageRequestRepository;
+use Illuminate\Http\Request;
 
 class ManageRequestController extends Controller
 {
@@ -29,5 +30,10 @@ class ManageRequestController extends Controller
     public function archived()
     {
         return view('admin.manageRequests.archived');
+    }
+
+    public function exportPDF(Request $request)
+    {
+        return $this->manageRequestRepository->exportPDF($request);
     }
 }
