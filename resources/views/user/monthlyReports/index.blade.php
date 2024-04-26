@@ -146,12 +146,12 @@
                         <tr>
                             <td>Delay Work</td>
                             <td class="bg-warning">${response.data.delayWork}</td>
-                            <td>per Minute</td>
+                            <td>per hour</td>
                         </tr>
                         <tr>
                             <td>Early Exit</td>
                             <td class="bg-warning">${response.data.earlyExit}</td>
-                            <td>per Minute</td>
+                            <td>per hour</td>
                         </tr>
                         <tr>
                             <th>Daily Absence</th>
@@ -162,7 +162,7 @@
                         <tr>
                             <th>Concediu ore</th>
                             <th class="bg-warning">${response.data.concediu_ore}</th>
-                            <th>per day</th>
+                            <th>per hour</th>
                         </tr>
                         <tr>
                             <th>Total working hours</th>
