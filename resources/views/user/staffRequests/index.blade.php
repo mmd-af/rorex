@@ -93,7 +93,15 @@
             <div class="card bg-primary text-white mb-4">
                 <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#LeaveRequest"
                     data-info="Modal 1 Content" onclick="CustomRequest()">
-                    Custom Request <i class="fa-solid fa-square-arrow-up-right"></i>
+                    Other Request <i class="fa-solid fa-square-arrow-up-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#LeaveRequest"
+                    data-info="Modal 1 Content" onclick="MissionRequest()">
+                    Mission Request <i class="fa-solid fa-square-arrow-up-right"></i>
                 </div>
             </div>
         </div>
@@ -316,10 +324,30 @@
 <input type="hidden" class="form-control" name="vacation_day" value="0">
 <input type="hidden" class="form-control" name="start_date" value="${start_date.toISOString().split('T')[0]}">
 <label for="subject">Subject:</label>
-<input type="text" class="form-control" name="subject" id="subject" value="">
+<input type="text" class="form-control" name="subject" id="subject" value="" required>
 <label for="description">Description:</label>
 <textarea name="description" class="form-control" id="description" required></textarea>`;
         }
+
+        function MissionRequest() {
+            let datesForLeave = document.getElementById('datesForLeave');
+            datesForLeave.innerHTML = ``;
+            let modalSubject = document.getElementById('modalSubject');
+            let start_date = new Date();
+            modalSubject.innerHTML = `
+<input type="hidden" name="kind" value="CustomRequest">
+<input type="hidden" class="form-control" name="vacation_day" value="0">
+<input type="hidden" class="form-control" name="start_date" value="${start_date.toISOString().split('T')[0]}">
+<label for="subject">Subject:</label>
+<input type="text" class="form-control" name="subject" id="subject" value="Request for Mission" required readonly>
+<label for="description">Description:</label>
+<textarea name="description" class="form-control" id="description" required>
+    please consider mission on these days:
+    ${start_date.toISOString().split('T')[0]}
+    from --:-- to --:-- hour
+    
+    </textarea>`;
+    }
 
         $(document).ready(function() {
             $('#staffRequestTable').DataTable({
@@ -354,7 +382,7 @@
                         }
                         var input = $(
                                 '<input type="text" class="form-control form-control-sm" placeholder="Search...">'
-                                )
+                            )
                             .appendTo($('<th></th>').appendTo(filterRow))
                             .on('keyup change', function() {
                                 if (column.search() !== this.value) {
