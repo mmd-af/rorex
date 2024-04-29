@@ -3,6 +3,7 @@
 namespace App\Repositories\Admin;
 
 use App\Exports\MonthlyReportExport;
+use App\Exports\FullMonthlyReportExport;
 use App\Models\DailyReport\DailyReport;
 use App\Models\User\User;
 use Illuminate\Support\Facades\DB;
@@ -308,16 +309,12 @@ class MonthlyReportRepository extends BaseRepository
                 'plus_week_night' => number_format($plus_week_night, 1),
                 'plus_holiday_day' => number_format($plus_holiday_day, 1),
                 'plus_holiday_night' => number_format($plus_holiday_night, 1),
-                'delayWork' => number_format($delayWork / 60, 1),
-                'earlyExit' => number_format($earlyExit / 60, 1),
+                'total minus work(Hour)' => number_format(($delayWork + $earlyExit) / 60, 1),
                 'dailyAbsence' => number_format($dailyAbsence, 1),
                 'concediu_ore' => number_format($concediu_ore, 1),
-                'totalHours' => number_format($totalHours, 1),
-                'hourUnknown' => $hourUnknown,
-                'turaImplicita' => $turaImplicita,
-                'forgotPunch' => $lipsaCeasTimpi
+                'totalHours' => number_format($totalHours, 1)
             ];
         }
-        return Excel::download(new MonthlyReportExport($data), "full-monthly-reports-" . $request->dateOfExport . ".xlsx");
+        return Excel::download(new FullMonthlyReportExport($data), "full-monthly-reports-" . $request->dateOfExport . ".xlsx");
     }
 }
