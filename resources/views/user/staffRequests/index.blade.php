@@ -182,7 +182,6 @@
                                 <text class="text-primary">{{ Auth::user()->departament }}</text>
                                 <input type="hidden" name="departament" value="{{ Auth::user()->departament }}">
                             @endif
-                            please approve my request for vacation during the period:
                             <div class="row">
                                 <p class="small text-success"> Allowed leave= {{ Auth::user()->leave_balance }} days</p>
                             </div>

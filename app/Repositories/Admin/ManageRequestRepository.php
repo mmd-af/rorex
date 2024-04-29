@@ -9,7 +9,6 @@ use App\Models\User\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
@@ -149,7 +148,7 @@ class ManageRequestRepository extends BaseRepository
                 ->where('id', $letterAssignment->assigned_to)
                 ->first();
             if ($assignedTo->email_verified_at !== null) {
-                Mail::to($assignedTo->email)->send(new RequestMail($letterAssignment->request->subject, $letterAssignment->request->description));
+                $assignedTo->notify(new RequestRegisteredNotification($letterAssignment->request->subject, $letterAssignment->request->description));
             }
 
             DB::commit();
