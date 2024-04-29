@@ -9,7 +9,6 @@
             border: 2px solid black;
             padding: 2px;
         }
-
     </style>
 @endsection
 @section('content')
@@ -211,9 +210,12 @@
         }
 
         function setPass(id) {
-            if (confirm('Do you want to submit the signature for this item?')) {
+            var confirmationMessage = prompt(
+            'Are you sure for Accept this? You can write a message for sender (optional):');
+            if (confirmationMessage || confirmationMessage === '') {
                 axios.post("{{ route('admin.manageRequests.ajax.setPass') }}", {
-                        id: id
+                        id: id,
+                        confirmationMessage: confirmationMessage
                     })
                     .then(response => {
                         location.reload();
@@ -225,9 +227,12 @@
         }
 
         function setRejected(id) {
-            if (confirm('Do you want to submit the signature for this item?')) {
+            var confirmationMessage = prompt(
+            'Are you sure for Reject this? You can write a message for sender (optional):');
+            if (confirmationMessage || confirmationMessage === '') {
                 axios.post("{{ route('admin.manageRequests.ajax.setReject') }}", {
-                        id: id
+                        id: id,
+                        confirmationMessage: confirmationMessage
                     })
                     .then(response => {
                         location.reload();

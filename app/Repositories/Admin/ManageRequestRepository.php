@@ -15,6 +15,7 @@ use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Notifications\RequestRegisteredNotification;
 
 class ManageRequestRepository extends BaseRepository
 {
@@ -164,6 +165,7 @@ class ManageRequestRepository extends BaseRepository
         DB::beginTransaction();
         try {
             $letterAssignment = $this->find($request->id);
+            $letterAssignment->description = $request->confirmationMessage;
             $letterAssignment->status = "Accepted";
             $letterAssignment->is_archive = 1;
             $letterAssignment->save();
@@ -181,6 +183,10 @@ class ManageRequestRepository extends BaseRepository
             }
             $user->leave_balance = $newLeaveBalance;
             $user->save();
+            if ($user->email_verified_at !== null) {
+                $meesage = $request->confirmationMessage ? "Your Request Acceptet with a Message" : "Your Request Acceptet";
+                $user->notify(new RequestRegisteredNotification($meesage, $request->confirmationMessage));
+            }
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {
@@ -195,19 +201,27 @@ class ManageRequestRepository extends BaseRepository
         DB::beginTransaction();
         try {
             $letterAssignment = $this->find($request->id);
+            $letterAssignment->description = $request->confirmationMessage;
             $letterAssignment->status = "Rejected";
             $letterAssignment->is_archive = 1;
             $letterAssignment->save();
             $staffRequest = StaffRequest::query()
                 ->select([
                     'id',
+                    'user_id',
                     'is_archive'
                 ])
                 ->where('id', $letterAssignment->request_id)
+                ->with('user')
                 ->first();
             if ($staffRequest) {
                 $staffRequest->is_archive = 1;
                 $staffRequest->save();
+            }
+            $user = User::find($staffRequest->user->id);
+            if ($user->email_verified_at !== null) {
+                $meesage = $request->confirmationMessage ? "Your Request Was rejected with a Message" : "Your Request Was rejected";
+                $user->notify(new RequestRegisteredNotification($meesage, $request->confirmationMessage));
             }
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
