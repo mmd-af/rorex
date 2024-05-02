@@ -61,3 +61,7 @@ Route::get('/storage', function () {
 Route::get('/public/{path}', function ($path) {
     return redirect(url($path));
 })->where('path', '.*');
+
+Route::get('/inactive', function () {
+    return view('inactive');
+})->name('inactive');
