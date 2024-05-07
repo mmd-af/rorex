@@ -40,6 +40,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebUserRoutes();
         $this->mapWebAdminRoutes();
         $this->mapWebSiteRoutes();
+        $this->mapWebCompanyRoutes();
     }
 
     protected function mapWebAuthRoutes()
@@ -55,7 +56,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $routeFiles = glob(base_path('routes/web/user/*.php'));
         foreach ($routeFiles as $routeFile) {
-            Route::middleware(['web', 'auth'])
+            Route::middleware(['web', 'auth', 'CheckIsActive'])
                 ->group($routeFile);
         }
     }
@@ -64,7 +65,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $routeFiles = glob(base_path('routes/web/admin/*.php'));
         foreach ($routeFiles as $routeFile) {
-            Route::middleware(['web', 'auth','check_user_role'])
+            Route::middleware(['web', 'auth', 'check_user_role', 'CheckIsActive'])
                 ->group($routeFile);
         }
     }
@@ -74,6 +75,14 @@ class RouteServiceProvider extends ServiceProvider
         $routeFiles = glob(base_path('routes/web/site/*.php'));
         foreach ($routeFiles as $routeFile) {
             Route::middleware('web')
+                ->group($routeFile);
+        }
+    }
+    protected function mapWebCompanyRoutes()
+    {
+        $routeFiles = glob(base_path('routes/web/company/*.php'));
+        foreach ($routeFiles as $routeFile) {
+            Route::middleware(['web', 'auth', 'CheckIsActive'])
                 ->group($routeFile);
         }
     }

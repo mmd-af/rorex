@@ -3,7 +3,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['web', 'auth', 'permission:employees'], 'namespace' => 'App\Http\Controllers\User\StaffRequest'], function () {
+Route::group(['middleware' => ['permission:employees'], 'namespace' => 'App\Http\Controllers\User\StaffRequest'], function () {
     Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
         Route::group(['prefix' => 'staffRequests', 'as' => 'staffRequests.'], function () {
             Route::get('/', [

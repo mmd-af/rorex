@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Spatie\Permission\Models\Permission;
 
 class RegisteredUserController extends Controller
 {
@@ -71,7 +72,12 @@ class RegisteredUserController extends Controller
             'job_title' => $request->job_title,
             'phone_number' => $request->phone_number
         ]);
-
+        $permission = Permission::where('name', 'companies')->first();
+        if (!$permission) {
+            $permission = Permission::create(['name' => 'companies']);
+        }
+        $user->givePermissionTo($permission);
+        
         event(new Registered($user));
 
         Auth::login($user);
