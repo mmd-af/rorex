@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['web', 'auth', 'permission:monthly_reports'], 'namespace' => 'App\Http\Controllers\Admin\MonthlyReport'], function () {
+Route::group(['middleware' => ['permission:monthly_reports'], 'namespace' => 'App\Http\Controllers\Admin\MonthlyReport'], function () {
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::group(['prefix' => 'monthlyReports', 'as' => 'monthlyReports.'], function () {
             Route::get('/', [

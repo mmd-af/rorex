@@ -8,7 +8,7 @@ Route::group(['namespace' => 'App\Http\Controllers\User\Dashboard'], function ()
             Route::get('/', [
                 'as' => 'index',
                 'uses' => 'DashboardController@index'
-            ])->middleware('CheckUserDep');
+            ]);
         });
     });
 });

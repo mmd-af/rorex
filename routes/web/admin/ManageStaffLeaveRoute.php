@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['web', 'auth', 'permission:manage_leaves'], 'namespace' => 'App\Http\Controllers\Admin\ManageStaffLeave'], function () {
+Route::group(['middleware' => ['permission:manage_leaves'], 'namespace' => 'App\Http\Controllers\Admin\ManageStaffLeave'], function () {
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::group(['prefix' => 'manageStaffLeaves', 'as' => 'manageStaffLeaves.'], function () {
             Route::get('/', [

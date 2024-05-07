@@ -3,7 +3,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['web', 'auth'], 'namespace' => 'App\Http\Controllers\Admin\ManageRequest'], function () {
+Route::group(['namespace' => 'App\Http\Controllers\Admin\ManageRequest'], function () {
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::group(['prefix' => 'manageRequests', 'as' => 'manageRequests.'], function () {
             Route::get('/', [

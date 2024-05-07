@@ -56,7 +56,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $routeFiles = glob(base_path('routes/web/user/*.php'));
         foreach ($routeFiles as $routeFile) {
-            Route::middleware(['web', 'auth', 'CheckIsActive'])
+            Route::middleware(['web', 'auth', 'CheckIsActive', 'CheckUserDep'])
                 ->group($routeFile);
         }
     }
@@ -65,7 +65,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $routeFiles = glob(base_path('routes/web/admin/*.php'));
         foreach ($routeFiles as $routeFile) {
-            Route::middleware(['web', 'auth', 'check_user_role', 'CheckIsActive'])
+            Route::middleware(['web', 'auth', 'check_user_role', 'CheckIsActive', 'CheckUserDep'])
                 ->group($routeFile);
         }
     }
