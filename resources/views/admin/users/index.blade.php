@@ -4,7 +4,6 @@
     Users
 @endsection
 @section('style')
-
 @endsection
 @section('content')
     <ol class="breadcrumb mb-4">
@@ -15,7 +14,7 @@
         <div class="row">
             <div class="col-sm-12 col-md-6 bg-warning">
                 <form class="form-control bg-warning" action="{{ route('admin.users.import') }}" method="POST"
-                      enctype="multipart/form-data">
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
@@ -40,36 +39,36 @@
         <div class="card-body table-responsive">
             <table id="userTable" class="table table-bordered table-striped text-center">
                 <thead>
-                <tr>
-                    <th>Cod Staff</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Departament</th>
-                    <th>Card Number</th>
-                    <th>Email</th>
-                    <th>action</th>
-                    <th>is_active</th>
-                </tr>
+                    <tr>
+                        <th>Cod Staff</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Departament</th>
+                        <th>Card Number</th>
+                        <th>Email</th>
+                        <th>action</th>
+                        <th>is_active</th>
+                    </tr>
                 </thead>
                 <tfoot>
-                <tr>
-                    <th>Cod Staff</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Departament</th>
-                    <th>Card Number</th>
-                    <th>Email</th>
-                    <th>action</th>
-                    <th>is_active</th>
-                </tr>
+                    <tr>
+                        <th>Cod Staff</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Departament</th>
+                        <th>Card Number</th>
+                        <th>Email</th>
+                        <th>action</th>
+                        <th>is_active</th>
+                    </tr>
                 </tfoot>
+
                 <body>
                 </body>
             </table>
         </div>
     </div>
-    <div class="modal fade" id="show" tabindex="-1" aria-labelledby="ShowLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="show" tabindex="-1" aria-labelledby="ShowLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -113,43 +112,68 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('script')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#userTable').DataTable({
                 processing: true,
                 serverSide: true,
                 pageLength: 25,
                 ajax: "{{ route('admin.users.ajax.getDataTable') }}",
-                columns: [
-                    {data: 'cod_staff', name: 'cod_staff'},
-                    {data: 'first_name', name: 'first_name'},
-                    {data: 'name', name: 'name'},
-                    {data: 'departament', name: 'departament'},
-                    {data: 'numar_card', name: 'numar_card'},
-                    {data: 'email', name: 'email'},
-                    {data: 'show', name: 'show'},
-                    {data: 'status', name: 'status'}
+                columns: [{
+                        data: 'cod_staff',
+                        name: 'cod_staff'
+                    },
+                    {
+                        data: 'first_name',
+                        name: 'first_name'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'departament',
+                        name: 'departament'
+                    },
+                    {
+                        data: 'numar_card',
+                        name: 'numar_card'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'show',
+                        name: 'show'
+                    },
+                    {
+                        data: 'is_active',
+                        name: 'is_active'
+                    }
                 ],
-                initComplete: function () {
+                initComplete: function() {
                     var table = this;
 
-                    this.api().columns().every(function () {
+                    this.api().columns().every(function() {
                         var column = this;
                         var header = $(column.header());
 
                         var filterRow = header.closest('thead').find('.filter-row');
 
                         if (!filterRow.length) {
-                            filterRow = $('<tr class="filter-row"></tr>').appendTo(header.closest('thead'));
+                            filterRow = $('<tr class="filter-row"></tr>').appendTo(header
+                                .closest('thead'));
                         }
 
-                        var input = $('<input type="text" class="form-control form-control-sm" placeholder="Search...">')
+                        var input = $(
+                                '<input type="text" class="form-control form-control-sm" placeholder="Search...">'
+                                )
                             .appendTo($('<th></th>').appendTo(filterRow))
-                            .on('keyup change', function () {
+                            .on('keyup change', function() {
                                 if (column.search() !== this.value) {
                                     column
                                         .search(this.value)
@@ -168,24 +192,25 @@
             let roles = document.getElementById('roles');
             let permissions = document.getElementById('permissions');
             let editForm = document.getElementById("editForm");
-            let url = "{{ route('admin.users.update',':id') }}";
+            let url = "{{ route('admin.users.update', ':id') }}";
             url = url.replace(':id', id);
             editForm.setAttribute("action", url);
             let data = {
                 id: id
             }
-            axios.post("{{route('admin.users.ajax.show')}}", data)
+            axios.post("{{ route('admin.users.ajax.show') }}", data)
                 .then(response => {
                     console.log(response.data)
                     name.value = response.data.user.name;
                     email.value = response.data.user.email;
-                    is_active.innerHTML = `
+                    is_active.innerHTML =
+                        `
                     <label for="is_active">Is Active:</label>
                     <input class="form-check-input mx-3" type="checkbox" role="switch" id="is_active" name="is_active" ${response.data.user.is_active ? 'checked' : ''}>`;
                     roles.innerHTML = '';
                     permissions.innerHTML = '';
-                    response.data.roles.forEach(function (item) {
-                        var isChecked = response.data.user.roles.some(function (userRole) {
+                    response.data.roles.forEach(function(item) {
+                        var isChecked = response.data.user.roles.some(function(userRole) {
                             return userRole.id === item.id;
                         });
                         roles.innerHTML += `<div class="form-check form-switch col-md-12 mt-2">
@@ -193,8 +218,8 @@
             <label class="form-check-label mr-3 h6" for="role_${item.id}">${item.name}</label>
         </div>`;
                     });
-                    response.data.permissions.forEach(function (item) {
-                        var isChecked = response.data.user.permissions.some(function (userPermission) {
+                    response.data.permissions.forEach(function(item) {
+                        var isChecked = response.data.user.permissions.some(function(userPermission) {
                             return userPermission.id === item.id;
                         });
                         permissions.innerHTML += `<div class="form-check form-switch col-md-12 mt-2">
@@ -207,6 +232,19 @@
                     console.error('Error:', error);
                 });
         }
+
+        function handleActive(event, id) {
+            event.preventDefault();
+            axios.post("{{ route('admin.companies.ajax.active') }}", {
+                    id: id
+                })
+                .then(response => {
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+        }
     </script>
 @endsection
-

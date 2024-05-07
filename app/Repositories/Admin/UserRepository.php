@@ -33,7 +33,7 @@ class UserRepository extends BaseRepository
                 'email',
                 'is_active'
             ])
-            
+
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
@@ -47,42 +47,48 @@ class UserRepository extends BaseRepository
                 ->addColumn('status', function ($row) {
                     return $row->is_active ? 'Active' : 'Deactive';
                 })
-                ->rawColumns(['show', 'status'])
+                ->addColumn('is_active', function ($row) {
+                    return '
+                    <div class="form-switch">
+                    <input onclick="handleActive(event, ' . $row->id . ')" class="form-check-input" type="checkbox" role="switch" id="signed_by" name="signed_by" value="' . $row->is_active . '" ' . ($row->is_active ? 'checked' : '') . '>
+                    </div>';
+                })
+                ->rawColumns(['show', 'status', 'is_active'])
                 ->make(true);
         }
         return false;
     }
 
-//    public function getLeaveBalanceData($request)
-//    {
-//        $data = $this->query()
-//            ->select([
-//                'id',
-//                'cod_staff',
-//                'first_name',
-//                'name',
-//                'leave_balance'
-//            ])
-//            ->get();
-//        if ($request->ajax()) {
-//            return Datatables::of($data)
-//                ->addColumn('leave_balance', function ($row) {
-//                    $url = route('admin.users.updateLeaveBalance', $row->id);
-//                    $csrf = csrf_field();
-//                    $method = method_field('PUT');
-//                    return '<form class="d-flex justify-content-between" action="' . $url . '" method="POST">
-//                ' . $csrf . '
-//                ' . $method . '
-//                <input type="hidden" name="leave_balance" value="' . $row->leave_balance . '">
-//                <input type="text" class="form-control form-control-sm" name="leave_balance_new" id="leave_balance_new" value="' . $row->leave_balance . '">
-//                <button type="submit" class="btn btn-success"><i class="fa-solid fa-square-check"></i></button>
-//            </form>';
-//                })
-//                ->rawColumns(['leave_balance'])
-//                ->make(true);
-//        }
-//        return false;
-//    }
+    //    public function getLeaveBalanceData($request)
+    //    {
+    //        $data = $this->query()
+    //            ->select([
+    //                'id',
+    //                'cod_staff',
+    //                'first_name',
+    //                'name',
+    //                'leave_balance'
+    //            ])
+    //            ->get();
+    //        if ($request->ajax()) {
+    //            return Datatables::of($data)
+    //                ->addColumn('leave_balance', function ($row) {
+    //                    $url = route('admin.users.updateLeaveBalance', $row->id);
+    //                    $csrf = csrf_field();
+    //                    $method = method_field('PUT');
+    //                    return '<form class="d-flex justify-content-between" action="' . $url . '" method="POST">
+    //                ' . $csrf . '
+    //                ' . $method . '
+    //                <input type="hidden" name="leave_balance" value="' . $row->leave_balance . '">
+    //                <input type="text" class="form-control form-control-sm" name="leave_balance_new" id="leave_balance_new" value="' . $row->leave_balance . '">
+    //                <button type="submit" class="btn btn-success"><i class="fa-solid fa-square-check"></i></button>
+    //            </form>';
+    //                })
+    //                ->rawColumns(['leave_balance'])
+    //                ->make(true);
+    //        }
+    //        return false;
+    //    }
 
     public function import($request)
     {
@@ -211,5 +217,19 @@ class UserRepository extends BaseRepository
             Session::flash('error', $e->getMessage());
         }
     }
-
+    public function active($request)
+    {
+        DB::beginTransaction();
+        try {
+            $user = User::findOrFail($request->id);
+            $user->is_active = !$user->is_active;
+            $user->save();
+            DB::commit();
+            Session::flash('message', 'The Update Operation was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
+        return false;
+    }
 }

@@ -24,4 +24,8 @@ class UserAjaxController extends Controller
     {
         return $this->userRepository->show($request);
     }
+    public function active(Request $request)
+    {
+        return $this->userRepository->active($request);
+    }
 }
