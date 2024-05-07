@@ -3,6 +3,7 @@
 namespace App\Repositories\Admin;
 
 use App\Models\Company\Company;
+use App\Models\User\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -38,6 +39,12 @@ class CompanyRepository extends BaseRepository
                 ->addColumn('is_active', function ($row) {
                     return $row->users->is_active ? 'Active' : 'Deactive';
                 })
+                ->addColumn('is_active', function ($row) {
+                    return '
+                    <div class="form-switch">
+                    <input onclick="handleActive(event, ' . $row->users->id . ')" class="form-check-input" type="checkbox" role="switch" id="signed_by" name="signed_by" value="' . $row->users->is_active . '" ' . ($row->users->is_active ? 'checked' : '') . '>
+                    </div>';
+                })
                 ->addColumn('action', function ($row) {
                     return '<button onclick="show(' . $row->id . ')" type="button"
                                     class="btn btn-primary btn-sm" data-bs-toggle="modal"
@@ -72,6 +79,21 @@ class CompanyRepository extends BaseRepository
             'permissions' => $permissions
         ];
         return response()->json($responseData);
+    }
+    public function active($request)
+    {
+        DB::beginTransaction();
+        try {
+            $user = User::findOrFail($request->id);
+            $user->is_active = !$user->is_active;
+            $user->save();
+            DB::commit();
+            Session::flash('message', 'The Update Operation was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
+        return false;
     }
 
     public function update($request, $company)

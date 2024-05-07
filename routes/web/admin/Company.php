@@ -27,6 +27,10 @@ Route::group(['middleware' => ['web', 'auth', 'super.admin'], 'namespace' => 'Ap
                 'as' => 'show',
                 'uses' => 'CompanyAjaxController@show'
             ]);
+            Route::post('/active', [
+                'as' => 'active',
+                'uses' => 'CompanyAjaxController@active'
+            ]);
         });
     });
 });

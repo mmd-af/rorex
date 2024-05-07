@@ -195,5 +195,19 @@
                     console.error('Error:', error);
                 });
         }
+
+        function handleActive(event, id) {
+            event.preventDefault();
+            axios.post("{{ route('admin.companies.ajax.active') }}", {
+                    id: id
+                })
+                .then(response => {
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+        }
     </script>
 @endsection

@@ -24,4 +24,8 @@ class CompanyAjaxController extends Controller
     {
         return $this->companyRepository->show($request);
     }
+    public function active(Request $request)
+    {
+        return $this->companyRepository->active($request);
+    }
 }

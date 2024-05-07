@@ -33,6 +33,7 @@ class UserRepository extends BaseRepository
                 'email',
                 'is_active'
             ])
+            
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
