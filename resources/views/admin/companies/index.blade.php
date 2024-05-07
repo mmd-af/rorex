@@ -40,45 +40,29 @@
         </div>
     </div>
     <div class="modal fade" id="show" tabindex="-1" aria-labelledby="ShowLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="showLabel">Companies</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editForm" action="" method="post">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" disabled>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="email" name="email" disabled>
-                            </div>
-                            <div class="form-input mt-4 p-1 bg-secondary-subtle" id="is_active">
-                            </div>
-                            <div class="form-input mt-4">
-                                <label for="name">Role:</label>
-                                <hr>
-                                <div class="row p-2" id="roles">
-                                </div>
-                            </div>
-                            <div class="form-input mt-4">
-                                <label for="name">Permission:</label>
-                                <hr>
-                                <div class="row p-2" id="permissions">
-                                </div>
-                            </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody  id="company_information">
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -149,47 +133,70 @@
         });
 
         function show(id) {
-            let name = document.getElementById('name');
-            let email = document.getElementById('email');
-            let is_active = document.getElementById('is_active');
-            let roles = document.getElementById('roles');
-            let permissions = document.getElementById('permissions');
-            let editForm = document.getElementById("editForm");
-            let url = "{{ route('admin.companies.update', ':id') }}";
-            url = url.replace(':id', id);
-            editForm.setAttribute("action", url);
+            let companyInformation = document.getElementById('company_information');
+            companyInformation.innerHTML = ``;
             let data = {
                 id: id
             }
             axios.post("{{ route('admin.companies.ajax.show') }}", data)
                 .then(response => {
-                    console.log(response.data)
-                    name.value = response.data.company.name;
-                    email.value = response.data.company.email;
-                    is_active.innerHTML =
-                        `
-                    <label for="is_active">Is Active:</label>
-                    <input class="form-check-input mx-3" type="checkbox" role="switch" id="is_active" name="is_active" ${response.data.Companies.is_active ? 'checked' : ''}>`;
-                    roles.innerHTML = '';
-                    permissions.innerHTML = '';
-                    response.data.roles.forEach(function(item) {
-                        var isChecked = response.data.company.roles.some(function(companyRole) {
-                            return companyRole.id === item.id;
-                        });
-                        roles.innerHTML += `<div class="form-check form-switch col-md-12 mt-2">
-            <input class="form-check-input" type="checkbox" role="switch" id="role_${item.id}" name="roles[]" value="${item.name}" ${isChecked ? 'checked' : ''}>
-            <label class="form-check-label mr-3 h6" for="role_${item.id}">${item.name}</label>
-        </div>`;
-                    });
-                    response.data.permissions.forEach(function(item) {
-                        var isChecked = response.data.company.permissions.some(function(companyPermission) {
-                            return companyPermission.id === item.id;
-                        });
-                        permissions.innerHTML += `<div class="form-check form-switch col-md-12 mt-2">
-            <input class="form-check-input" type="checkbox" role="switch" id="permission_${item.id}" name="permissions[]" value="${item.name}" ${isChecked ? 'checked' : ''}>
-            <label class="form-check-label mr-3 h6" for="permission_${item.id}">${item.name}</label>
-        </div>`;
-                    });
+                    companyInformation.innerHTML = `<tr>
+                                        <th scope="row">Company Name</th>
+                                        <td>${response.data.company_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Activity Domain</th>
+                                        <td>${response.data.activity_domain}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Vat id</th>
+                                        <td>${response.data.vat_id}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Registration Number</th>
+                                        <td>${response.data.registration_number}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Country</th>
+                                        <td>${response.data.country}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">County</th>
+                                        <td>${response.data.county}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">City</th>
+                                        <td>${response.data.city}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Zip Code</th>
+                                        <td>${response.data.zip_code}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Address</th>
+                                        <td>${response.data.address}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Building</th>
+                                        <td>${response.data.building}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Person Name</th>
+                                        <td>${response.data.person_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Job Title</th>
+                                        <td>${response.data.job_title}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Phone Number</th>
+                                        <td>${response.data.phone_number}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Email</th>
+                                        <td>${response.data.users.email}</td>
+                                    </tr>`;
+
                 })
                 .catch(error => {
                     console.error('Error:', error);

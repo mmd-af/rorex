@@ -9,16 +9,8 @@ Route::group(['middleware' => ['web', 'auth', 'super.admin'], 'namespace' => 'Ap
                 'as' => 'index',
                 'uses' => 'CompanyController@index'
             ]);
-            Route::put('{Company}/update', [
-                'as' => 'update',
-                'uses' => 'CompanyController@update'
-            ]);
         });
         Route::group(['prefix' => 'companies-ajax', 'as' => 'companies.ajax.'], function () {
-            Route::post('/getData', [
-                'as' => 'getData',
-                'uses' => 'CompanyAjaxController@getData'
-            ]);
             Route::get('/getDataTable', [
                 'as' => 'getDataTable',
                 'uses' => 'CompanyAjaxController@getDataTable'

@@ -62,23 +62,26 @@ class CompanyRepository extends BaseRepository
         $company = $this->query()
             ->select([
                 'id',
+                'user_id',
                 'company_name',
                 'activity_domain',
+                'vat_id',
+                'registration_number',
+                'country',
+                'county',
                 'city',
-                'email',
-                'is_active'
+                'zip_code',
+                'address',
+                'building',
+                'person_name',
+                'job_title',
+                'phone_number'
             ])
             ->where('id', $request->id)
-            ->with(['permissions', 'roles'])
+            ->with(['users'])
             ->first();
-        $roles = Role::all();
-        $permissions = Permission::all();
-        $responseData = [
-            'company' => $company,
-            'roles' => $roles,
-            'permissions' => $permissions
-        ];
-        return response()->json($responseData);
+
+        return response()->json($company);
     }
     public function active($request)
     {
