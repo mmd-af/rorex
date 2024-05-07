@@ -16,7 +16,6 @@ class DashboardController extends Controller
 
     public function index()
     {
-        dd("salam");
         return view('company.dashboard.index');
     }
 }
