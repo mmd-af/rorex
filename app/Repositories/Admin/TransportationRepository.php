@@ -2,16 +2,16 @@
 
 namespace App\Repositories\Admin;
 
-use App\Models\Company\Company;
+use App\Models\Transportation\Transportation;
 use App\Models\User\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
-class CompanyRepository extends BaseRepository
+class TransportationRepository extends BaseRepository
 {
-    public function __construct(Company $model)
+    public function __construct(Transportation $model)
     {
         $this->setModel($model);
     }
@@ -22,22 +22,27 @@ class CompanyRepository extends BaseRepository
             ->select([
                 'id',
                 'user_id',
-                'company_name',
-                'activity_domain',
-                'city'
+                'product_name',
+                'from_date',
+                'until_date',
+                'country_of_origin',
+                'city_of_origin',
+                'estination_country',
+                'estination_city',
+                'truck_type',
+                'weight_of_each_car',
+                'description',
+                'is_active'
             ])
             ->with('users')
             ->get();
 
         if ($request->ajax()) {
             return Datatables::of($data)
-                ->addColumn('email', function ($row) {
-                    return $row->users->email;
-                })
                 ->addColumn('is_active', function ($row) {
                     return '
                     <div class="form-switch">
-                    <input onclick="handleActive(event, ' . $row->users->id . ')" class="form-check-input" type="checkbox" role="switch" id="signed_by" name="signed_by" value="' . $row->users->is_active . '" ' . ($row->users->is_active ? 'checked' : '') . '>
+                    <input onclick="handleActive(event, ' . $row->id . ')" class="form-check-input" type="checkbox" role="switch" id="signed_by" name="signed_by" value="' . $row->is_active . '" ' . ($row->is_active ? 'checked' : '') . '>
                     </div>';
                 })
                 ->addColumn('action', function ($row) {
@@ -47,7 +52,7 @@ class CompanyRepository extends BaseRepository
                                <i class="fa-solid fa-eye"></i>
                             </button>';
                 })
-                ->rawColumns(['email', 'is_active', 'action'])
+                ->rawColumns(['is_active', 'action'])
                 ->make(true);
         }
         return false;
@@ -58,19 +63,17 @@ class CompanyRepository extends BaseRepository
             ->select([
                 'id',
                 'user_id',
-                'company_name',
-                'activity_domain',
-                'vat_id',
-                'registration_number',
-                'country',
-                'county',
-                'city',
-                'zip_code',
-                'address',
-                'building',
-                'person_name',
-                'job_title',
-                'phone_number'
+                'product_name',
+                'from_date',
+                'until_date',
+                'country_of_origin',
+                'city_of_origin',
+                'estination_country',
+                'estination_city',
+                'truck_type',
+                'weight_of_each_car',
+                'description',
+                'is_active'
             ])
             ->where('id', $request->id)
             ->with(['users'])
@@ -82,9 +85,9 @@ class CompanyRepository extends BaseRepository
     {
         DB::beginTransaction();
         try {
-            $user = User::findOrFail($request->id);
-            $user->is_active = !$user->is_active;
-            $user->save();
+            $transportation = $this->findOrFail($request->id);
+            $transportation->is_active = !$transportation->is_active;
+            $transportation->save();
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {
