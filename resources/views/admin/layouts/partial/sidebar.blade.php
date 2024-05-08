@@ -30,10 +30,6 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                 Support
             </a>
-            <a class="nav-link" href="{{ route('admin.transportations.index') }}">
-                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                Transportation
-            </a>
             <div class="sb-sidenav-menu-heading">Department</div>
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                 data-bs-target="#DepartmentCollapseLayouts" aria-expanded="false"
@@ -46,9 +42,24 @@
                 data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link" href="{{ route('admin.users.index') }}">Users</a>
-                    <a class="nav-link" href="{{ route('admin.companies.index') }}">Companies</a>
                     <a class="nav-link" href="{{ route('admin.permissions.index') }}">Permission</a>
                     <a class="nav-link" href="{{ route('admin.roles.index') }}">Roles</a>
+                </nav>
+            </div>
+            <div class="sb-sidenav-menu-heading">Transportations</div>
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                data-bs-target="#TransportationsCollapseLayouts" aria-expanded="false"
+                aria-controls="TransportationsCollapseLayouts">
+                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                Transportation
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="TransportationsCollapseLayouts" aria-labelledby="headingOne"
+                data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link" href="{{ route('admin.transportations.index') }}">Transportation</a>
+                    <a class="nav-link" href="{{ route('admin.companies.index') }}">Companies</a>
+                    <a class="nav-link" href="{{ route('admin.trucks.index') }}">Truck Definition</a>
                 </nav>
             </div>
         </div>
