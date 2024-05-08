@@ -9,6 +9,16 @@
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">Transportations</li>
     </ol>
+    <div class="row">
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#createNewTrasportation"
+                    data-info="Modal 1 Content">
+                    Create Transportation <i class="fa fa-plus" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </div>
     @include('admin.layouts.partial.errors')
     <div class="card mb-4">
         <div class="card-body table-responsive">
@@ -18,8 +28,8 @@
                         <th>Product Name</th>
                         <th>From Date</th>
                         <th>Until Date</th>
-                        <th>Estination Country</th>
-                        <th>Estination City</th>
+                        <th>Destination Country</th>
+                        <th>Destination City</th>
                         <th>Active</th>
                         <th>Action</th>
                     </tr>
@@ -29,8 +39,8 @@
                         <th>Product Name</th>
                         <th>From Date</th>
                         <th>Until Date</th>
-                        <th>Estination Country</th>
-                        <th>Estination City</th>
+                        <th>Destination Country</th>
+                        <th>Destination City</th>
                         <th>Active</th>
                         <th>Action</th>
                     </tr>
@@ -57,12 +67,85 @@
                                         <th colspan="2">Information</th>
                                     </tr>
                                 </thead>
-                                <tbody  id="transportation_information">
+                                <tbody id="transportation_information">
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="createNewTrasportation" tabindex="-1" aria-labelledby="createNewTrasportationLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="createNewTrasportationLabel">Create New Trasportation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.transportations.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="product_name" class="form-label">Product Name</label>
+                            <input type="text" class="form-control" id="product_name" name="product_name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="from_date" class="form-label">From Date</label>
+                            <input type="date" class="form-control" id="from_date" name="from_date">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="until_date" class="form-label">Until Date</label>
+                            <input type="date" class="form-control" id="until_date" name="until_date">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="country_of_origin" class="form-label">Country of Origin</label>
+                            <input type="text" class="form-control" id="country_of_origin" name="country_of_origin">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="city_of_origin" class="form-label">City of Origin</label>
+                            <input type="text" class="form-control" id="city_of_origin" name="city_of_origin">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="destination_country" class="form-label">Destination Country</label>
+                            <input type="text" class="form-control" id="destination_country" name="destination_country">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="destination_city" class="form-label">Destination City</label>
+                            <input type="text" class="form-control" id="destination_city" name="destination_city">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="truck_type" class="form-label">Truck Type</label>
+                            <input type="text" class="form-control" id="truck_type" name="truck_type">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="weight_of_each_car" class="form-label">Weight of Each Truck</label>
+                            <input type="text" class="form-control" id="weight_of_each_car"
+                                name="weight_of_each_car">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
+                    <div class="modal-footer mt-3">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -92,12 +175,12 @@
                         name: 'until_date'
                     },
                     {
-                        data: 'estination_country',
-                        name: 'estination_country'
+                        data: 'destination_country',
+                        name: 'destination_country'
                     },
                     {
-                        data: 'estination_city',
-                        name: 'estination_city'
+                        data: 'destination_city',
+                        name: 'destination_city'
                     },
                     {
                         data: 'is_active',

@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('transportations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('product_name');
             $table->date('from_date');
             $table->date('until_date');
             $table->string('country_of_origin');
             $table->string('city_of_origin');
-            $table->string('estination_country');
-            $table->string('estination_city');
+            $table->string('destination_country');
+            $table->string('destination_city');
             $table->string('truck_type');
             $table->string('weight_of_each_car');
             $table->text('description');

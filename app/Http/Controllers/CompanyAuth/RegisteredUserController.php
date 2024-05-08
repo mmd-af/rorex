@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Exception;
 
 class RegisteredUserController extends Controller
 {
@@ -50,34 +53,43 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
-        $user = User::create([
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'is_active' => 0
-        ]);
-        Company::create([
-            'user_id' => $user->id,
-            'company_name' => $request->company_name,
-            'activity_domain' => $request->activity_domain,
-            'vat_id' => $request->vat_id,
-            'registration_number' => $request->registration_number,
-            'country' => $request->country,
-            'county' => $request->county,
-            'city' => $request->city,
-            'zip_code' => $request->zip_code,
-            'address' => $request->address,
-            'building' => $request->building,
-            'person_name' => $request->person_name,
-            'job_title' => $request->job_title,
-            'phone_number' => $request->phone_number
-        ]);
-        $permission = Permission::where('name', 'companies')->first();
-        if (!$permission) {
-            $permission = Permission::create(['name' => 'companies']);
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'is_active' => 0
+            ]);
+            Company::create([
+                'user_id' => $user->id,
+                'company_name' => $request->company_name,
+                'activity_domain' => $request->activity_domain,
+                'vat_id' => $request->vat_id,
+                'registration_number' => $request->registration_number,
+                'country' => $request->country,
+                'county' => $request->county,
+                'city' => $request->city,
+                'zip_code' => $request->zip_code,
+                'address' => $request->address,
+                'building' => $request->building,
+                'person_name' => $request->person_name,
+                'job_title' => $request->job_title,
+                'phone_number' => $request->phone_number
+            ]);
+            $permission = Permission::where('name', 'companies')->first();
+            if (!$permission) {
+                $permission = new Permission();
+                $permission->name = "companies";
+                $permission->guard_name = "web";
+                $permission->save();
+            }
+            $user->givePermissionTo($permission);
+            DB::commit();
+            Session::flash('message', 'The Update Operation was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
         }
-        $user->givePermissionTo($permission);
-        
         event(new Registered($user));
 
         Auth::login($user);

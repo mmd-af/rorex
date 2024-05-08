@@ -3,11 +3,11 @@
 namespace App\Repositories\Admin;
 
 use App\Models\Transportation\Transportation;
-use App\Models\User\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class TransportationRepository extends BaseRepository
 {
@@ -27,8 +27,8 @@ class TransportationRepository extends BaseRepository
                 'until_date',
                 'country_of_origin',
                 'city_of_origin',
-                'estination_country',
-                'estination_city',
+                'destination_country',
+                'destination_city',
                 'truck_type',
                 'weight_of_each_car',
                 'description',
@@ -111,5 +111,22 @@ class TransportationRepository extends BaseRepository
             DB::rollBack();
             Session::flash('error', $e->getMessage());
         }
+    }
+
+    function store($request)
+    {
+        $transportation = new Transportation();
+        $transportation->user_id = Auth::id();
+        $transportation->product_name = $request->product_name;
+        $transportation->from_date = $request->from_date;
+        $transportation->until_date = $request->until_date;
+        $transportation->country_of_origin = $request->country_of_origin;
+        $transportation->city_of_origin = $request->city_of_origin;
+        $transportation->destination_country = $request->destination_country;
+        $transportation->destination_city = $request->destination_city;
+        $transportation->truck_type = $request->truck_type;
+        $transportation->weight_of_each_car = $request->weight_of_each_car;
+        $transportation->description = $request->description;
+        $transportation->save();
     }
 }

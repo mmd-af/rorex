@@ -55,7 +55,7 @@
                                         <th colspan="2">Information</th>
                                     </tr>
                                 </thead>
-                                <tbody  id="company_information">
+                                <tbody id="company_information">
                                 </tbody>
                             </table>
                         </div>
