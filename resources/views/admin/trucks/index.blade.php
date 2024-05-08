@@ -119,6 +119,7 @@
                         <div class="form-group mt-2">
                             <label for="covered">Covered:</label>
                             <div class="form-switch">
+                                <input type="hidden" name="covered" value="0">
                                 <input class="form-check-input" type="checkbox" role="switch" id="covered"
                                     name="covered" value="1">
                             </div>

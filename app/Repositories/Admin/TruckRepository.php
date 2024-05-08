@@ -103,7 +103,7 @@ class TruckRepository extends BaseRepository
     {
         $truck = new Truck();
         $truck->name = $request->name;
-        $truck->lwh = $request->l;
+        $truck->lwh = $request->l . " L * " . $request->w . " W * " . $request->h . " H";
         $truck->total_height = $request->total_height;
         $truck->load_capacity = $request->load_capacity;
         $truck->covered = $request->covered;
