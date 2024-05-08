@@ -45,18 +45,17 @@
                 <label for="date">Select Date:</label>
                 <select id="date" name="date" class="form-control">
                     <?php
-                    $currentMonth = 3;
+                    $selectMonths = 4;
+                    $currentMonth = date('n');
                     $currentYear = date('Y');
                     for ($i = 0; $i < 12; $i++) {
                         $monthValue = (($currentMonth - $i + 12) % 12) + 1;
                         $yearValue = $currentYear + floor(($currentMonth - $i - 1) / 12);
-                        if ($monthValue >= 3 || $yearValue > $currentYear) {
+                        if ($monthValue <= $currentMonth && $i < $selectMonths) {
                             $formattedMonth = sprintf('%02d', $monthValue);
                             $dateOutput = "$yearValue-$formattedMonth";
                             $monthName = date('F', mktime(0, 0, 0, $monthValue, 1, $yearValue));
                             echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
-                        } else {
-                            break;
                         }
                     }
                     ?>

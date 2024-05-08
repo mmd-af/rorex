@@ -16,8 +16,7 @@
     <div class="d-flex justify-content-between">
         <div></div>
         <div>
-            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
-                    data-bs-target="#fullExport">
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#fullExport">
                 <i class="fa-solid fa-file-csv fa-xl"></i>
             </button>
         </div>
@@ -26,23 +25,24 @@
         <div class="card-body table-responsive">
             <table id="monthlyReportTable" class="table table-bordered table-striped text-center">
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>cod_staff</th>
-                    <th>Last Name</th>
-                    <th>First Name</th>
-                    <th>Action</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>cod_staff</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Action</th>
+                    </tr>
                 </thead>
                 <tfoot>
-                <tr>
-                    <th>ID</th>
-                    <th>cod_staff</th>
-                    <th>Last Name</th>
-                    <th>First Name</th>
-                    <th>Action</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>cod_staff</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Action</th>
+                    </tr>
                 </tfoot>
+
                 <body>
                 </body>
             </table>
@@ -62,18 +62,17 @@
                         <label for="date">Select Date:</label>
                         <select id="date" name="date" class="form-control">
                             <?php
-                            $currentMonth = 3;
+                            $selectMonths = 4;
+                            $currentMonth = date('n');
                             $currentYear = date('Y');
                             for ($i = 0; $i < 12; $i++) {
                                 $monthValue = (($currentMonth - $i + 12) % 12) + 1;
                                 $yearValue = $currentYear + floor(($currentMonth - $i - 1) / 12);
-                                if ($monthValue >= 3 || $yearValue > $currentYear) {
+                                if ($monthValue <= $currentMonth && $i < $selectMonths) {
                                     $formattedMonth = sprintf('%02d', $monthValue);
                                     $dateOutput = "$yearValue-$formattedMonth";
                                     $monthName = date('F', mktime(0, 0, 0, $monthValue, 1, $yearValue));
                                     echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
-                                } else {
-                                    break;
                                 }
                             }
                             ?>
@@ -90,8 +89,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="fullExport" tabindex="-1" aria-labelledby="fullExport"
-         aria-hidden="true">
+    <div class="modal fade" id="fullExport" tabindex="-1" aria-labelledby="fullExport" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -99,23 +97,22 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{route('admin.monthlyReports.fullExport')}}" class="form-control px-5" method="post">
+                    <form action="{{ route('admin.monthlyReports.fullExport') }}" class="form-control px-5" method="post">
                         @csrf
                         <label for="dateOfExport">Select Date:</label>
                         <select id="dateOfExport" name="dateOfExport" class="form-control">
                             <?php
-                            $currentMonth = 3;
+                            $selectMonths = 4;
+                            $currentMonth = date('n');
                             $currentYear = date('Y');
                             for ($i = 0; $i < 12; $i++) {
                                 $monthValue = (($currentMonth - $i + 12) % 12) + 1;
                                 $yearValue = $currentYear + floor(($currentMonth - $i - 1) / 12);
-                                if ($monthValue >= 3 || $yearValue > $currentYear) {
+                                if ($monthValue <= $currentMonth && $i < $selectMonths) {
                                     $formattedMonth = sprintf('%02d', $monthValue);
                                     $dateOutput = "$yearValue-$formattedMonth";
                                     $monthName = date('F', mktime(0, 0, 0, $monthValue, 1, $yearValue));
                                     echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
-                                } else {
-                                    break;
                                 }
                             }
                             ?>
@@ -134,36 +131,55 @@
 
 @section('script')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#monthlyReportTable').DataTable({
                 processing: true,
                 serverSide: true,
                 pageLength: 25,
                 responsive: true,
                 ajax: "{{ route('admin.monthlyReports.ajax.getUserTable') }}",
-                columns: [
-                    {data: 'id', name: 'id'},
-                    {data: 'cod_staff', name: 'cod_staff'},
-                    {data: 'name', name: 'name'},
-                    {data: 'first_name', name: 'first_name'},
-                    {"data": "button", "name": "button", "orderable": false, "searchable": false}
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'cod_staff',
+                        name: 'cod_staff'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'first_name',
+                        name: 'first_name'
+                    },
+                    {
+                        "data": "button",
+                        "name": "button",
+                        "orderable": false,
+                        "searchable": false
+                    }
                 ],
-                initComplete: function () {
+                initComplete: function() {
                     var table = this;
 
-                    this.api().columns().every(function () {
+                    this.api().columns().every(function() {
                         var column = this;
                         var header = $(column.header());
 
                         var filterRow = header.closest('thead').find('.filter-row');
 
                         if (!filterRow.length) {
-                            filterRow = $('<tr class="filter-row"></tr>').appendTo(header.closest('thead'));
+                            filterRow = $('<tr class="filter-row"></tr>').appendTo(header
+                                .closest('thead'));
                         }
 
-                        var input = $('<input type="text" class="form-control form-control-sm" placeholder="Search...">')
+                        var input = $(
+                                '<input type="text" class="form-control form-control-sm" placeholder="Search...">'
+                            )
                             .appendTo($('<th></th>').appendTo(filterRow))
-                            .on('keyup change', function () {
+                            .on('keyup change', function() {
                                 if (column.search() !== this.value) {
                                     column
                                         .search(this.value)
@@ -206,11 +222,11 @@
                 cod_staff: codStaff,
                 date: date
             }
-            axios.post('{{route('admin.monthlyReports.ajax.monthlyReportWithDate')}}', formData)
-                .then(function (response) {
+            axios.post('{{ route('admin.monthlyReports.ajax.monthlyReportWithDate') }}', formData)
+                .then(function(response) {
                     let codeStaff = response.data.codeStaff;
                     let monthDate = response.data.monthDate;
-                    let url = "{{route('admin.monthlyReports.userMonthlyReportExport')}}"
+                    let url = "{{ route('admin.monthlyReports.userMonthlyReportExport') }}"
                     showResult.innerHTML = `
             <div class="row justify-content-between">
                <div class="col"></div>
@@ -325,12 +341,12 @@
                     </table>
                     </div>`;
                 })
-                .catch(function (error) {
+                .catch(function(error) {
                     console.error(error);
                 });
         }
 
-        $(document).on('hidden.bs.modal', function () {
+        $(document).on('hidden.bs.modal', function() {
             location.reload(true);
         });
     </script>
