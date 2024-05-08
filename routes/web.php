@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Artisan;
 */
 
 Route::get('/', function () {
-    return redirect()->route('login');
-    //    return view('welcome');
+    // return redirect()->route('login');
+       return view('welcome');
 });
 
 Route::middleware('auth')->group(function () {
