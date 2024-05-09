@@ -124,15 +124,13 @@
                             <div class="p-3">
                                 <div class="row rounded-3 shadow mt-2" id="addTruck">
                                     <div class="col-9">
-                                        <select class="form-control" id="truck1"
-                                            onchange="setQty1(event)">
+                                        <select class="form-control" id="truck1" onchange="setQty1(event)">
                                         </select>
                                     </div>
                                     <div class="col-3" id="qty1">
                                     </div>
                                     <div class="col-9 mt-3">
-                                        <select class="form-control" id="truck2"
-                                            onchange="setQty2(event)">
+                                        <select class="form-control" id="truck2" onchange="setQty2(event)">
 
                                         </select>
                                     </div>
@@ -238,62 +236,54 @@
             }
             axios.post("{{ route('admin.transportations.ajax.show') }}", data)
                 .then(response => {
-                    transportationInformation.innerHTML = `<tr>
-                                        <th scope="row">transportation Name</th>
-                                        <td>${response.data.transportation_name}</td>
+                    console.log(response.data);
+                    transportationInformation.innerHTML = `
+                                    <tr>
+                                        <th scope="row">Product Name</th>
+                                        <td>${response.data.product_name}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Activity Domain</th>
-                                        <td>${response.data.activity_domain}</td>
+                                        <th scope="row">From Date</th>
+                                        <td>${response.data.from_date}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Vat id</th>
-                                        <td>${response.data.vat_id}</td>
+                                        <th scope="row">Until Date</th>
+                                        <td>${response.data.until_date}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Registration Number</th>
-                                        <td>${response.data.registration_number}</td>
+                                        <th scope="row">Country of Origin</th>
+                                        <td>${response.data.country_of_origin}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Country</th>
-                                        <td>${response.data.country}</td>
+                                        <th scope="row">City of Origin</th>
+                                        <td>${response.data.city_of_origin}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">County</th>
-                                        <td>${response.data.county}</td>
+                                        <th scope="row">Destination Country</th>
+                                        <td>${response.data.destination_country}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">City</th>
-                                        <td>${response.data.city}</td>
+                                        <th scope="row">Destination City</th>
+                                        <td>${response.data.destination_city}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Zip Code</th>
-                                        <td>${response.data.zip_code}</td>
+                                        <th scope="row">Weight of each Truck</th>
+                                        <td>${response.data.weight_of_each_car}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Address</th>
-                                        <td>${response.data.address}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Building</th>
-                                        <td>${response.data.building}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Person Name</th>
-                                        <td>${response.data.person_name}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Job Title</th>
-                                        <td>${response.data.job_title}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Phone Number</th>
-                                        <td>${response.data.phone_number}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Email</th>
-                                        <td>${response.data.users.email}</td>
+                                        <th scope="row">Description	</th>
+                                        <td>${response.data.description	}</td>
                                     </tr>`;
+
+                    response.data.trucks.forEach(element => {
+                        transportationInformation.innerHTML += `
+                                        <tr>
+                                            <th class="bg-info" scope="row">${element.name} | ${element.lwh} | ${element.load_capacity} Kg</th>
+                                            <td class="bg-info">${element.pivot.qty}</td>
+                                        </tr>
+                                        
+                                        `;
+                    });
 
                 })
                 .catch(error => {
@@ -345,19 +335,6 @@
                                             min="0">`;
         }
 
-        // function addNewTruck() {
-        //     let addTruck = document.getElementById('addTruck');
-        //     addTruck.innerHTML += `<div class="col-9">
-    //                                 <select name="truck" class="form-control" id="truck2"
-    //                                     onchange="setQty2(event)">
-
-    //                                 </select>
-    //                             </div>
-    //                             <div class="col-3" id="qty2">
-    //                             </div>`;
-
-        // }
-
         function setQty2(event) {
             let qty2 = document.getElementById('qty2');
             qty2.innerHTML = `<input type="number" name="${event.target.value}" class="form-control" value=""
@@ -365,12 +342,3 @@
         }
     </script>
 @endsection
-{{-- <div class="row bg-light rounded-3 shadow mt-2">
-    <div class="col-9">
-        <h5 class="mx-5 mt-2 px-3">${element.name} - ${element.lwh}</h5>
-    </div>
-    <div class="col-3">
-        <input type="number" name="${element.id}" class="form-control"
-            value="" min="0">
-    </div>        
-</div> --}}

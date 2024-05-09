@@ -69,15 +69,15 @@ class TransportationRepository extends BaseRepository
                 'until_date',
                 'country_of_origin',
                 'city_of_origin',
-                'estination_country',
-                'estination_city',
+                'destination_country',
+                'destination_city',
                 'truck_type',
                 'weight_of_each_car',
                 'description',
                 'is_active'
             ])
             ->where('id', $request->id)
-            ->with(['users'])
+            ->with(['users', 'trucks'])
             ->first();
 
         return response()->json($company);
