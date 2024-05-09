@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('city_of_origin');
             $table->string('destination_country');
             $table->string('destination_city');
-            $table->string('truck_type');
+            $table->string('truck_type')->nullable();
             $table->string('weight_of_each_car');
             $table->text('description');
             $table->boolean('is_active')->default(1);

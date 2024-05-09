@@ -31,7 +31,7 @@ class StoreRequest extends FormRequest
             'city_of_origin' => 'required|string',
             'destination_country' => 'required|string',
             'destination_city' => 'required|string',
-            'truck_type' => 'required|string',
+            'truck_type' => 'nullable|string',
             'weight_of_each_car' => 'required|string',
             'description' => 'required|string',
         ];

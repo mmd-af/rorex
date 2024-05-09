@@ -3,6 +3,7 @@
 namespace App\Repositories\Admin;
 
 use App\Models\Transportation\Transportation;
+use App\Models\Truck\Truck;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -115,18 +116,44 @@ class TransportationRepository extends BaseRepository
 
     function store($request)
     {
-        $transportation = new Transportation();
-        $transportation->user_id = Auth::id();
-        $transportation->product_name = $request->product_name;
-        $transportation->from_date = $request->from_date;
-        $transportation->until_date = $request->until_date;
-        $transportation->country_of_origin = $request->country_of_origin;
-        $transportation->city_of_origin = $request->city_of_origin;
-        $transportation->destination_country = $request->destination_country;
-        $transportation->destination_city = $request->destination_city;
-        $transportation->truck_type = $request->truck_type;
-        $transportation->weight_of_each_car = $request->weight_of_each_car;
-        $transportation->description = $request->description;
-        $transportation->save();
+        DB::beginTransaction();
+        try {
+            $transportation = new Transportation();
+            $transportation->user_id = Auth::id();
+            $transportation->product_name = $request->product_name;
+            $transportation->from_date = $request->from_date;
+            $transportation->until_date = $request->until_date;
+            $transportation->country_of_origin = $request->country_of_origin;
+            $transportation->city_of_origin = $request->city_of_origin;
+            $transportation->destination_country = $request->destination_country;
+            $transportation->destination_city = $request->destination_city;
+            $transportation->truck_type = $request->truck_type;
+            $transportation->weight_of_each_car = $request->weight_of_each_car;
+            $transportation->description = $request->description;
+            $transportation->save();
+            foreach ($request->all() as $key => $value) {
+                if (is_int($key)) {
+                    $truck = Truck::find($key);
+                    $transportation->trucks()->attach($truck, ['qty' => $value]);
+                }
+            }
+            DB::commit();
+            Session::flash('message', 'The Update Operation was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
+    }
+    function getTruck()
+    {
+        return Truck::query()
+            ->select([
+                'id',
+                'name',
+                'lwh',
+                'load_capacity'
+            ])
+            ->where('is_active', 1)
+            ->get();
     }
 }
