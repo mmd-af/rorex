@@ -14,8 +14,8 @@ class DashboardAjaxController extends Controller
     {
         $this->dashboardRepository = $dashboardRepository;
     }
-    public function getTruck()
-    {
-        return $this->dashboardRepository->getTruck();
-    }
+    // public function getTruck()
+    // {
+    //     return $this->dashboardRepository->getTruck();
+    // }
 }

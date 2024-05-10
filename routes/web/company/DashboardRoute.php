@@ -11,10 +11,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Company\Dashboard'], function
             ]);
         });
         Route::group(['prefix' => 'dashboard-ajax', 'as' => 'dashboard.ajax.'], function () {
-            Route::get('/getTruck', [
-                'as' => 'getTruck',
-                'uses' => 'DashboardAjaxController@getTruck'
-            ]);
+            // Route::get('/getTruck', [
+            //     'as' => 'getTruck',
+            //     'uses' => 'DashboardAjaxController@getTruck'
+            // ]);
         });
     });
 });
