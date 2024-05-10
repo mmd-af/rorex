@@ -4,6 +4,8 @@ namespace App\Repositories\Admin;
 
 use App\Models\Transportation\Transportation;
 use App\Models\Truck\Truck;
+use App\Models\Truckable\Truckable;
+use App\Models\Company\Company;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -114,7 +116,7 @@ class TransportationRepository extends BaseRepository
         }
     }
 
-    function store($request)
+    public function store($request)
     {
         DB::beginTransaction();
         try {
@@ -144,7 +146,7 @@ class TransportationRepository extends BaseRepository
             Session::flash('error', $e->getMessage());
         }
     }
-    function getTruck()
+    public function getTrucks()
     {
         return Truck::query()
             ->select([
@@ -155,5 +157,18 @@ class TransportationRepository extends BaseRepository
             ])
             ->where('is_active', 1)
             ->get();
+    }
+
+    public function getCompaniesWithTruck($request)
+    {
+        $findCompanies = Truckable::where('truckable_type', Company::class)
+            ->where('truck_id', $request->id)
+            ->pluck('truckable_id');
+        $companies = [];
+        foreach ($findCompanies as $companyId) {
+            $company = Company::find($companyId);
+            $companies[] = $company;
+        }
+        return $companies;
     }
 }

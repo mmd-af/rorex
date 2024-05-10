@@ -27,9 +27,13 @@ Route::group(['middleware' => ['super.admin'], 'namespace' => 'App\Http\Controll
                 'as' => 'active',
                 'uses' => 'TransportationAjaxController@active'
             ]);
-            Route::get('/getTruck', [
-                'as' => 'getTruck',
-                'uses' => 'TransportationAjaxController@getTruck'
+            Route::get('/getTrucks', [
+                'as' => 'getTrucks',
+                'uses' => 'TransportationAjaxController@getTrucks'
+            ]);
+            Route::post('/getCompaniesWithTruck', [
+                'as' => 'getCompaniesWithTruck',
+                'uses' => 'TransportationAjaxController@getCompaniesWithTruck'
             ]);
         });
     });

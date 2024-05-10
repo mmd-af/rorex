@@ -148,13 +148,13 @@
                             <label for="description" class="form-label">Description</label>
                             <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                         </div>
+                        <div id="showAllowCompanies"></div>
+                        <div class="modal-footer mt-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
 
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
                     </form>
-
-                    <div class="modal-footer mt-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -312,7 +312,7 @@
             let truck2 = document.getElementById('truck2');
             truck2.innerHTML += `
                         <option value="">please select truck</option>`;
-            axios.get("{{ route('admin.transportations.ajax.getTruck') }}")
+            axios.get("{{ route('admin.transportations.ajax.getTrucks') }}")
                 .then(response => {
                     response.data.forEach(element => {
                         truck1.innerHTML += `
@@ -330,6 +330,7 @@
         }
 
         function setQty1(event) {
+            getCompaniesWithTruck(event.target.value)
             let qty1 = document.getElementById('qty1');
             qty1.innerHTML = `<input type="number" name="${event.target.value}" class="form-control" value=""
                                             min="0">`;
@@ -339,6 +340,25 @@
             let qty2 = document.getElementById('qty2');
             qty2.innerHTML = `<input type="number" name="${event.target.value}" class="form-control" value=""
                                         min="0">`;
+        }
+
+        function getCompaniesWithTruck(id) {
+            let showAllowCompanies = document.getElementById('showAllowCompanies');
+            showAllowCompanies.innerHTML = ``;
+            let data = {
+                id: id
+            }
+            axios.post("{{ route('admin.transportations.ajax.getCompaniesWithTruck') }}", data)
+                .then(response => {
+                    console.log(response);
+                    response.data.forEach(element => {
+                        // showAllowCompanies.innerHTML += ``;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
         }
     </script>
 @endsection
