@@ -13,6 +13,6 @@ trait CompanyRelationships
     }
     public function trucks()
     {
-        return $this->morphToMany(Truck::class, 'truckable')->withPivot('qty');
+        return $this->morphToMany(Truck::class, 'truckable');
     }
 }

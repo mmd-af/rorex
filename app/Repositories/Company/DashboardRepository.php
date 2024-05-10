@@ -12,8 +12,6 @@ class DashboardRepository extends BaseRepository
     {
         $this->setModel($model);
     }
-
-
     function getCompany()
     {
         $userId = Auth::id();
@@ -37,5 +35,24 @@ class DashboardRepository extends BaseRepository
             ])
             ->where('is_active', 1)
             ->get();
+    }
+    function syncTruckForCompany($request)
+    {
+        // $truck=Truck::findOrFail($request->truckId);
+        // $this->getCompany()->trucks->sync($truck);
+
+
+        $truckId = $request->truckId;
+        $company = $this->getCompany();
+
+        if ($company->trucks->contains($truckId)) {
+            $company->trucks()->detach($truckId);
+            $message = 'Truck removed successfully from company';
+        } else {
+            $company->trucks()->attach($truckId);
+            $message = 'Truck added successfully to company';
+        }
+
+        return response()->json(['message' => $message]);
     }
 }

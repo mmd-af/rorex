@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('truck_id');
             $table->foreign('truck_id')->references('id')->on('trucks')->onDelete('cascade');
-            $table->integer('qty');
+            $table->integer('qty')->nullable();
             $table->morphs('truckable');
             $table->timestamps();
         });
