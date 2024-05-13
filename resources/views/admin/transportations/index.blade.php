@@ -119,6 +119,15 @@
                             <label for="destination_city" class="form-label">Destination City</label>
                             <input type="text" class="form-control" id="destination_city" name="destination_city">
                         </div>
+                        <div class="mb-3">
+                            <label for="weight_of_each_car" class="form-label">Weight of Each Truck</label>
+                            <input type="text" class="form-control" id="weight_of_each_car"
+                                name="weight_of_each_car">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
                         <div class="mb-3 bg-info p-3">
                             <label for="truck_type" class="form-label">Truck</label>
                             <div class="p-3">
@@ -139,16 +148,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="weight_of_each_car" class="form-label">Weight of Each Truck</label>
-                            <input type="text" class="form-control" id="weight_of_each_car"
-                                name="weight_of_each_car">
+                        <div id="showAllowCompanies">
+                            
                         </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                        </div>
-                        <div id="showAllowCompanies"></div>
                         <div class="modal-footer mt-3">
                             <button type="submit" class="btn btn-primary">Submit</button>
 
@@ -350,7 +352,7 @@
             }
             axios.post("{{ route('admin.transportations.ajax.getCompaniesWithTruck') }}", data)
                 .then(response => {
-                    console.log(response);
+                    console.log(response.data);
                     response.data.forEach(element => {
                         // showAllowCompanies.innerHTML += ``;
                     });

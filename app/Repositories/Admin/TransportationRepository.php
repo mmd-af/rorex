@@ -166,7 +166,15 @@ class TransportationRepository extends BaseRepository
             ->pluck('truckable_id');
         $companies = [];
         foreach ($findCompanies as $companyId) {
-            $company = Company::find($companyId);
+            $company = Company::query()
+                ->select([
+                    'id',
+                    'user_id',
+                    'company_name'
+                ])
+                ->where('id', $companyId)
+                ->with('users')
+                ->first();
             $companies[] = $company;
         }
         return $companies;
