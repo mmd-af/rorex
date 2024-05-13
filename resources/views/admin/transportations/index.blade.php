@@ -149,7 +149,6 @@
                             </div>
                         </div>
                         <div id="showAllowCompanies">
-                            
                         </div>
                         <div class="modal-footer mt-3">
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -332,29 +331,39 @@
         }
 
         function setQty1(event) {
-            getCompaniesWithTruck(event.target.value)
             let qty1 = document.getElementById('qty1');
-            qty1.innerHTML = `<input type="number" name="${event.target.value}" class="form-control" value=""
+            qty1.innerHTML = `<input type="number" name="${event.target.value}" class="form-control truckId" value=""
                                             min="0">`;
+            getCompaniesWithTruck()
+
         }
 
         function setQty2(event) {
             let qty2 = document.getElementById('qty2');
-            qty2.innerHTML = `<input type="number" name="${event.target.value}" class="form-control" value=""
+            qty2.innerHTML = `<input type="number" name="${event.target.value}" class="form-control truckId" value=""
                                         min="0">`;
+            getCompaniesWithTruck()
+
         }
 
-        function getCompaniesWithTruck(id) {
+        function getCompaniesWithTruck() {
+            var elements = document.getElementsByClassName("truckId");
+            var names = [];
+            for (var i = 0; i < elements.length; i++) {
+                names.push(elements[i].name);
+            }
+            console.log(names);
             let showAllowCompanies = document.getElementById('showAllowCompanies');
             showAllowCompanies.innerHTML = ``;
             let data = {
-                id: id
+                id: names
             }
             axios.post("{{ route('admin.transportations.ajax.getCompaniesWithTruck') }}", data)
                 .then(response => {
                     console.log(response.data);
                     response.data.forEach(element => {
-                        // showAllowCompanies.innerHTML += ``;
+                        showAllowCompanies.innerHTML +=
+                            `<div class="alert alert-warning">${element.company_name} (${element.vat_id})</div>`;
                     });
                 })
                 .catch(error => {

@@ -158,19 +158,31 @@ class TransportationRepository extends BaseRepository
             ->where('is_active', 1)
             ->get();
     }
+    static function getCompanyWithTruckId($truckId)
+    {
+        return Truckable::where('truckable_type', Company::class)
+            ->where('truck_id', $truckId)
+            ->pluck('truckable_id')
+            ->toArray();
+    }
 
     public function getCompaniesWithTruck($request)
     {
-        $findCompanies = Truckable::where('truckable_type', Company::class)
-            ->where('truck_id', $request->id)
-            ->pluck('truckable_id');
+        $uniqueIds = array_unique($request->id);
+        $findCompanies = [];
+        foreach ($uniqueIds as $truckId) {
+            $companies = $this->getCompanyWithTruckId($truckId);
+            array_push($findCompanies, ...$companies);
+        }
+        $uniqueCompanies = array_unique($findCompanies);
         $companies = [];
-        foreach ($findCompanies as $companyId) {
+        foreach ($uniqueCompanies as $companyId) {
             $company = Company::query()
                 ->select([
                     'id',
                     'user_id',
-                    'company_name'
+                    'company_name',
+                    'vat_id'
                 ])
                 ->where('id', $companyId)
                 ->with('users')
