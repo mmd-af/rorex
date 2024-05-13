@@ -363,7 +363,13 @@
                     console.log(response.data);
                     response.data.forEach(element => {
                         showAllowCompanies.innerHTML +=
-                            `<div class="alert alert-warning">${element.company_name} (${element.vat_id})</div>`;
+                            `<div class="alert alert-warning d-flex justify-content-between">${element.company_name} (${element.vat_id})
+                                <input name="authorized_company[]" type="hidden" value="${element.id}"/>
+                                <div class="form-switch">
+                                <input class="form-check-input"
+                                    type="checkbox" role="switch" name="is_active[]" value="${element.id}" checked>
+                            </div>
+                                </div>`;
                     });
                 })
                 .catch(error => {

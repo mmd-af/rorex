@@ -4,6 +4,7 @@ namespace App\Models\Transportation;
 
 use App\Models\User\User;
 use App\Models\Truck\Truck;
+use App\Models\Company\Company;
 
 trait TransportationRelationships
 {
@@ -14,5 +15,9 @@ trait TransportationRelationships
     public function trucks()
     {
         return $this->morphToMany(Truck::class, 'truckable')->withPivot('qty');
+    }
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class);
     }
 }

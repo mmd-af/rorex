@@ -133,6 +133,11 @@ class TransportationRepository extends BaseRepository
             $transportation->weight_of_each_car = $request->weight_of_each_car;
             $transportation->description = $request->description;
             $transportation->save();
+            $transportation->companies()->attach($request->authorized_company);
+            $is_active_companies = $request->is_active;
+            if (!empty($is_active_companies)) {
+                $transportation->companies()->wherePivotIn('company_id', $is_active_companies)->update(['is_active' => true]);
+            }
             foreach ($request->all() as $key => $value) {
                 if (is_int($key)) {
                     $truck = Truck::find($key);
