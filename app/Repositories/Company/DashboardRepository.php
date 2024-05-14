@@ -65,6 +65,6 @@ class DashboardRepository extends BaseRepository
                 $query->wherePivot('is_active', 1);
             }])
             ->first();
-        return $company->transportations;
+        return $company->transportations->where('is_active', 1);
     }
 }
