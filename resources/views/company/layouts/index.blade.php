@@ -17,6 +17,19 @@
 </head>
 
 <body>
+    <nav class="" style="background-color: #009799;">
+        <div class="d-flex justify-content-between">
+            <h3 class="mt-3"><a class="navbar-brand text-light m-3" href="{{ url('/') }}">rorex.ro</a></h3>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button class="btn btn-light btn-sm m-3"
+                    onclick="event.preventDefault();
+                                    this.closest('form').submit();">
+                    <small>{{ __('Log Out') }}</small>
+                </button>
+            </form>
+        </div>
+    </nav>
     @yield('content')
     <script src="{{ asset('admin-panel/js/scripts.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
