@@ -22,6 +22,9 @@
                                     <a class="list-group-item list-group-item-action" id="list-profile-list"
                                         data-bs-toggle="list" href="#specifications-{{ $transport->id }}" role="tab"
                                         aria-controls="list-profile">Specifications</a>
+                                    <a class="list-group-item list-group-item-action" id="list-profile-list"
+                                        data-bs-toggle="list" href="#trucks-{{ $transport->id }}" role="tab"
+                                        aria-controls="list-profile">Trucks</a>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-lg-8">
@@ -71,6 +74,39 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="trucks-{{ $transport->id }}" role="tabpanel"
+                                        aria-labelledby="list-home-list">
+
+                                        @foreach ($transport->trucks as $truck)
+                                            <div class="table-responsive">
+                                                <table class="table table-primary">
+                                                    <thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Truck Name</td>
+                                                            <td>{{ $truck->name }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>L W H</td>
+                                                            <td>{{ $truck->lwh }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Total Height</td>
+                                                            <td>{{ $truck->total_height }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Load Capacity</td>
+                                                            <td>{{ $truck->load_capacity }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Covered</td>
+                                                            <td>{{ $truck->covered }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-success m-3 float-end">Apply</button>

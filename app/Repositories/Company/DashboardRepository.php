@@ -63,7 +63,7 @@ class DashboardRepository extends BaseRepository
             ->where('user_id', $userId)
             ->with(['transportations' => function ($query) {
                 $query->wherePivot('is_active', 1);
-            }])
+            }, 'transportations.trucks'])
             ->first();
         return $company->transportations->where('is_active', 1);
     }
