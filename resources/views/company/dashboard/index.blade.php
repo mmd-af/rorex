@@ -32,26 +32,25 @@
                 <div id="showTransportation">
                     @foreach ($transportations as $transport)
                         <div class="row m-5 p-5 border border-1 rounded-3 shadow shadow-lg">
-                            <div class="col-4">
+                            <div class="col-sm-12 col-lg-4">
                                 <div class="list-group" id="list-tab" role="tablist">
                                     <a class="list-group-item list-group-item-action active" id="list-home-list"
-                                        data-bs-toggle="list" href="#description" role="tab"
+                                        data-bs-toggle="list" href="#description-{{ $transport->id }}" role="tab"
                                         aria-controls="list-home">Description</a>
                                     <a class="list-group-item list-group-item-action" id="list-profile-list"
-                                        data-bs-toggle="list" href="#specifications" role="tab"
+                                        data-bs-toggle="list" href="#specifications-{{ $transport->id }}" role="tab"
                                         aria-controls="list-profile">Specifications</a>
                                 </div>
                             </div>
-                            <div class="col-8">
+                            <div class="col-sm-12 col-lg-8">
                                 <div class="tab-content" id="nav-tabContent">
-                                    <div class="tab-pane fade show active" id="description" role="tabpanel"
-                                        aria-labelledby="list-home-list">
+                                    <div class="tab-pane fade show active" id="description-{{ $transport->id }}"
+                                        role="tabpanel" aria-labelledby="list-home-list">
                                         <h3>{{ $transport->product_name }}</h3>
                                         {!! $transport->description !!}
                                     </div>
-                                    <div class="tab-pane fade" id="specifications" role="tabpanel"
+                                    <div class="tab-pane fade" id="specifications-{{ $transport->id }}" role="tabpanel"
                                         aria-labelledby="list-profile-list">
-
                                         <div class="table-responsive">
                                             <table class="table table-primary">
                                                 <tbody>
@@ -92,6 +91,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <button type="submit" class="btn btn-success m-3 float-end">Apply</button>
                             </div>
                         </div>
                     @endforeach
