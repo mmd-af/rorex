@@ -27,6 +27,75 @@
                         </div>
                     </form>
                 @endif
+
+
+                <div id="showTransportation">
+                    @foreach ($transportations as $transport)
+                        <div class="row m-5 p-5 border border-1 rounded-3 shadow shadow-lg">
+                            <div class="col-4">
+                                <div class="list-group" id="list-tab" role="tablist">
+                                    <a class="list-group-item list-group-item-action active" id="list-home-list"
+                                        data-bs-toggle="list" href="#description" role="tab"
+                                        aria-controls="list-home">Description</a>
+                                    <a class="list-group-item list-group-item-action" id="list-profile-list"
+                                        data-bs-toggle="list" href="#specifications" role="tab"
+                                        aria-controls="list-profile">Specifications</a>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="description" role="tabpanel"
+                                        aria-labelledby="list-home-list">
+                                        <h3>{{ $transport->product_name }}</h3>
+                                        {!! $transport->description !!}
+                                    </div>
+                                    <div class="tab-pane fade" id="specifications" role="tabpanel"
+                                        aria-labelledby="list-profile-list">
+
+                                        <div class="table-responsive">
+                                            <table class="table table-primary">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Product Name</td>
+                                                        <td>{{ $transport->product_name }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>From Date</td>
+                                                        <td>{{ $transport->from_date }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Until Date</td>
+                                                        <td>{{ $transport->until_date }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Country of Origin</td>
+                                                        <td>{{ $transport->country_of_origin }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>City of Origin</td>
+                                                        <td>{{ $transport->city_of_origin }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Destination Country</td>
+                                                        <td>{{ $transport->destination_country }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Destination City</td>
+                                                        <td>{{ $transport->destination_city }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Weight of each Car</td>
+                                                        <td>{{ $transport->weight_of_each_car }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
             <div class="col-sm-12 col-md-3">
                 <div class="alert alert-info">

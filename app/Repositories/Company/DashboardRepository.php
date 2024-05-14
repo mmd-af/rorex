@@ -38,10 +38,6 @@ class DashboardRepository extends BaseRepository
     }
     function syncTruckForCompany($request)
     {
-        // $truck=Truck::findOrFail($request->truckId);
-        // $this->getCompany()->trucks->sync($truck);
-
-
         $truckId = $request->truckId;
         $company = $this->getCompany();
 
@@ -54,5 +50,21 @@ class DashboardRepository extends BaseRepository
         }
 
         return response()->json(['message' => $message]);
+    }
+
+    function getTransportations()
+    {
+        $userId = Auth::id();
+        $company = $this->query()
+            ->select([
+                'id',
+                'user_id'
+            ])
+            ->where('user_id', $userId)
+            ->with(['transportations' => function ($query) {
+                $query->wherePivot('is_active', 1);
+            }])
+            ->first();
+        return $company->transportations;
     }
 }

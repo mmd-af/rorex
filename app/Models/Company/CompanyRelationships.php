@@ -18,6 +18,6 @@ trait CompanyRelationships
     }
     public function transportations()
     {
-        return $this->belongsToMany(Transportation::class);
+        return $this->belongsToMany(Transportation::class)->withPivot('is_active');
     }
 }
