@@ -79,7 +79,7 @@ class TransportationRepository extends BaseRepository
                 'is_active'
             ])
             ->where('id', $request->id)
-            ->with(['users', 'trucks'])
+            ->with(['users', 'trucks', 'companies'])
             ->first();
 
         return response()->json($company);

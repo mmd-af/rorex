@@ -237,7 +237,6 @@
             }
             axios.post("{{ route('admin.transportations.ajax.show') }}", data)
                 .then(response => {
-                    console.log(response.data);
                     transportationInformation.innerHTML = `
                                     <tr>
                                         <th scope="row">Product Name</th>
@@ -284,6 +283,14 @@
                                         </tr>
                                         
                                         `;
+                    });
+                    response.data.companies.forEach(element => {
+                        const isActive = element.pivot.is_active ? 'True' : 'False';
+                        transportationInformation.innerHTML += `
+                                        <tr>
+                                           <th class="border-success" scope="row">${element.company_name}</th>
+                                           <td class="border-success">${isActive}</td>
+                                          </tr>`;
                     });
 
                 })
