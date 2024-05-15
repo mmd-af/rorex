@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Company;
 
+use App\Models\TransportOrder\TransportOrder;
 use App\Models\Truck\Truck;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Company\Company;
@@ -66,5 +67,19 @@ class DashboardRepository extends BaseRepository
             }, 'transportations.trucks'])
             ->first();
         return $company->transportations->where('is_active', 1);
+    }
+    function storeTransportOrder($request)
+    {
+        $data = $request->all();
+        foreach ($data as $key => $value) {
+            if (is_numeric($key) && is_numeric($value)) {
+                $transportOrder = new TransportOrder();
+                $transportOrder->company_id = $request->company_id;
+                $transportOrder->transportation_id = $request->transportationId;
+                $transportOrder->truck_id = $key;
+                $transportOrder->price = $value;
+                $transportOrder->save();
+            }
+        }
     }
 }

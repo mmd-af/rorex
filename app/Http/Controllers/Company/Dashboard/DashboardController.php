@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Company\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Company\DashboardRepository;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -17,9 +18,15 @@ class DashboardController extends Controller
     public function index()
     {
         $company = $this->dashboardRepository->getCompany();
-        $companyTrucks = $company->trucks;
+        // $companyTrucks = $company->trucks;
         $allTrucks = $this->dashboardRepository->getTrucks();
         $transportations = $this->dashboardRepository->getTransportations();
-        return view('company.dashboard.index', compact('companyTrucks', 'allTrucks', 'transportations'));
+        return view('company.dashboard.index', compact('company', 'allTrucks', 'transportations'));
+    }
+
+    public function store(Request $request)
+    {
+        $this->dashboardRepository->storeTransportOrder($request);
+        return redirect()->route('company.dashboard.index');
     }
 }

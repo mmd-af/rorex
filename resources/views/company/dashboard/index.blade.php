@@ -151,7 +151,7 @@
                                 <div class="form-switch">
                                     <input onclick="syncTruckForCompany({{ $truck->id }})" class="form-check-input"
                                         type="checkbox" role="switch" id="signed_by" name="signed_by" value=""
-                                        {{ $companyTrucks->contains($truck->id) ? 'checked' : '' }}>
+                                        {{ $company->trucks->contains($truck->id) ? 'checked' : '' }}>
                                 </div>
                             </li>
                         @endforeach
@@ -168,8 +168,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post">
+                    <form action="{{ route('company.dashboard.store') }}" method="post">
                         @csrf
+                        <input type="hidden" name="company_id" value="{{ $company->id }}">
                         <b>If you do not have the corresponding truck, enter the number 0.</b>
                         <div id="suggestOrder">
                         </div>
@@ -206,7 +207,7 @@
             trasfer.trucks.forEach(element => {
                 suggestOrder.innerHTML += `<div class="mb-3 mt-3">
                                 <label for="" class="form-label">Suggest price for truck <b>${element.name}</b></label>
-                                <input type="number" class="form-control" name="${element.id}" id="" value="" />
+                                <input type="number" class="form-control" name="${element.id}" id="" value="" required />
                             </div>`;
             });
         }
