@@ -77,7 +77,6 @@
                                     </div>
                                     <div class="tab-pane fade" id="trucks-{{ $transport->id }}" role="tabpanel"
                                         aria-labelledby="list-home-list">
-
                                         @foreach ($transport->trucks as $truck)
                                             <div class="table-responsive">
                                                 <table class="table table-primary">
@@ -109,7 +108,11 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-success m-3 float-end">Apply</button>
+                                <button type="button" onclick="applyOrder({{ $transport }})"
+                                    class="btn btn-success m-3 float-end" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    Apply
+                                </button>
                             </div>
                         </div>
                     @endforeach
@@ -157,6 +160,28 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Apply</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post">
+                        @csrf
+                        <b>If you do not have the corresponding truck, enter the number 0.</b>
+                        <div id="suggestOrder">
+                        </div>
+                        <button type="submit" class="btn btn-success float-end mt-5">Save</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -172,6 +197,18 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
+        }
+
+        function applyOrder(trasfer) {
+            let suggestOrder = document.getElementById('suggestOrder');
+            suggestOrder.innerHTML = ``;
+            suggestOrder.innerHTML = `<input type="hidden" name="transportationId" value="${trasfer.id}">`;
+            trasfer.trucks.forEach(element => {
+                suggestOrder.innerHTML += `<div class="mb-3 mt-3">
+                                <label for="" class="form-label">Suggest price for truck <b>${element.name}</b></label>
+                                <input type="number" class="form-control" name="${element.id}" id="" value="" />
+                            </div>`;
+            });
         }
     </script>
 @endsection
