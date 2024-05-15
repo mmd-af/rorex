@@ -18,7 +18,6 @@ class DashboardController extends Controller
     public function index()
     {
         $company = $this->dashboardRepository->getCompany();
-        // $companyTrucks = $company->trucks;
         $allTrucks = $this->dashboardRepository->getTrucks();
         $transportations = $this->dashboardRepository->getTransportations();
         return view('company.dashboard.index', compact('company', 'allTrucks', 'transportations'));

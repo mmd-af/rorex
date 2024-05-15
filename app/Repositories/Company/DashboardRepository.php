@@ -13,7 +13,7 @@ class DashboardRepository extends BaseRepository
     {
         $this->setModel($model);
     }
-    function getCompany()
+    public function getCompany()
     {
         $userId = Auth::id();
         return $this->query()
@@ -25,7 +25,7 @@ class DashboardRepository extends BaseRepository
             ->with('trucks')
             ->first();
     }
-    function getTrucks()
+    public function getTrucks()
     {
         return Truck::query()
             ->select([
@@ -37,7 +37,7 @@ class DashboardRepository extends BaseRepository
             ->where('is_active', 1)
             ->get();
     }
-    function syncTruckForCompany($request)
+    public function syncTruckForCompany($request)
     {
         $truckId = $request->truckId;
         $company = $this->getCompany();
@@ -53,7 +53,7 @@ class DashboardRepository extends BaseRepository
         return response()->json(['message' => $message]);
     }
 
-    function getTransportations()
+    public function getTransportations()
     {
         $userId = Auth::id();
         $company = $this->query()
@@ -68,18 +68,35 @@ class DashboardRepository extends BaseRepository
             ->first();
         return $company->transportations->where('is_active', 1);
     }
-    function storeTransportOrder($request)
+    static function checkCompanyOrder($request)
     {
-        $data = $request->all();
-        foreach ($data as $key => $value) {
-            if (is_numeric($key) && is_numeric($value)) {
-                $transportOrder = new TransportOrder();
-                $transportOrder->company_id = $request->company_id;
-                $transportOrder->transportation_id = $request->transportationId;
-                $transportOrder->truck_id = $key;
-                $transportOrder->price = $value;
-                $transportOrder->save();
+        return TransportOrder::query()
+            ->select([
+                'id',
+                'company_id',
+                'transportation_id'
+            ])
+            ->where('company_id', $request->company_id)
+            ->where('transportation_id', $request->transportationId)
+            ->first();
+    }
+    public function storeTransportOrder($request)
+    {
+        $checkCompanyOrder = $this->checkCompanyOrder($request);
+        if ($checkCompanyOrder === null) {
+            $data = $request->all();
+            foreach ($data as $key => $value) {
+                if (is_numeric($key) && is_numeric($value)) {
+                    $transportOrder = new TransportOrder();
+                    $transportOrder->company_id = $request->company_id;
+                    $transportOrder->transportation_id = $request->transportationId;
+                    $transportOrder->truck_id = $key;
+                    $transportOrder->price = $value;
+                    $transportOrder->save();
+                }
             }
+        } else {
+            dd("sharmande");
         }
     }
 }
