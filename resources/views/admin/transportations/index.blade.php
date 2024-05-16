@@ -93,40 +93,40 @@
                         @csrf
                         <div class="mb-3">
                             <label for="product_name" class="form-label">Product Name</label>
-                            <input type="text" class="form-control" id="product_name" name="product_name">
+                            <input type="text" class="form-control" id="product_name" name="product_name" required>
                         </div>
                         <div class="mb-3">
                             <label for="from_date" class="form-label">From Date</label>
-                            <input type="date" class="form-control" id="from_date" name="from_date">
+                            <input type="date" class="form-control" id="from_date" name="from_date" required>
                         </div>
                         <div class="mb-3">
                             <label for="until_date" class="form-label">Until Date</label>
-                            <input type="date" class="form-control" id="until_date" name="until_date">
+                            <input type="date" class="form-control" id="until_date" name="until_date" required>
                         </div>
                         <div class="mb-3">
                             <label for="country_of_origin" class="form-label">Country of Origin</label>
-                            <input type="text" class="form-control" id="country_of_origin" name="country_of_origin">
+                            <input type="text" class="form-control" id="country_of_origin" name="country_of_origin" required>
                         </div>
                         <div class="mb-3">
                             <label for="city_of_origin" class="form-label">City of Origin</label>
-                            <input type="text" class="form-control" id="city_of_origin" name="city_of_origin">
+                            <input type="text" class="form-control" id="city_of_origin" name="city_of_origin" required>
                         </div>
                         <div class="mb-3">
                             <label for="destination_country" class="form-label">Destination Country</label>
-                            <input type="text" class="form-control" id="destination_country" name="destination_country">
+                            <input type="text" class="form-control" id="destination_country" name="destination_country" required>
                         </div>
                         <div class="mb-3">
                             <label for="destination_city" class="form-label">Destination City</label>
-                            <input type="text" class="form-control" id="destination_city" name="destination_city">
+                            <input type="text" class="form-control" id="destination_city" name="destination_city" required>
                         </div>
                         <div class="mb-3">
-                            <label for="weight_of_each_car" class="form-label">Weight of Each Truck</label>
+                            <label for="weight_of_each_car" class="form-label">Weight of Each Truck (Kg)</label>
                             <input type="text" class="form-control" id="weight_of_each_car"
-                                name="weight_of_each_car">
+                                name="weight_of_each_car" required>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                         </div>
                         <div class="mb-3 bg-info p-3">
                             <label for="truck_type" class="form-label">Truck</label>
@@ -340,7 +340,7 @@
         function setQty1(event) {
             let qty1 = document.getElementById('qty1');
             qty1.innerHTML = `<input type="number" name="${event.target.value}" class="form-control truckId" value=""
-                                            min="0">`;
+                                            min="0" required>`;
             getCompaniesWithTruck()
 
         }
@@ -348,7 +348,7 @@
         function setQty2(event) {
             let qty2 = document.getElementById('qty2');
             qty2.innerHTML = `<input type="number" name="${event.target.value}" class="form-control truckId" value=""
-                                        min="0">`;
+                                        min="0" required>`;
             getCompaniesWithTruck()
 
         }

@@ -49,11 +49,16 @@ class TransportationRepository extends BaseRepository
                     </div>';
                 })
                 ->addColumn('action', function ($row) {
-                    return '<button onclick="show(' . $row->id . ')" type="button"
-                                    class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#show">
-                               <i class="fa-solid fa-eye"></i>
-                            </button>';
+                    return '<button onclick="showOrder(' . $row->id . ')" type="button"
+                       class="btn btn-info text-white btn-sm mx-3" data-bs-toggle="modal"
+                        data-bs-target="#show">
+                        <i class="fa fa-first-order" aria-hidden="true"></i>
+                        </button>
+                        <button onclick="show(' . $row->id . ')" type="button"
+                           class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#show">
+                         <i class="fa-solid fa-eye"></i>
+                        </button>';
                 })
                 ->rawColumns(['is_active', 'action'])
                 ->make(true);

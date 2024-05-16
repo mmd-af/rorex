@@ -21,9 +21,12 @@
                 <div class="row text-center">
                     @auth
                         <div class="col-12">
-                            <h3 class="text-danger">You account is disable</h3>
+                            <h3 class="text-danger">Your account is under review</h3>
                         </div>
-                        <div class="col-12">
+                        <div class="d-flex justify-content-center">
+                            <a href="{{ route('login') }}" class="btn btn-outline-info text-primary mx-2">
+                                try to login
+                            </a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button class="btn btn-outline-info text-primary mx-2"

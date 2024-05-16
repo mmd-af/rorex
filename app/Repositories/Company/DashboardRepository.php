@@ -19,10 +19,15 @@ class DashboardRepository extends BaseRepository
         return $this->query()
             ->select([
                 'id',
-                'user_id'
+                'user_id',
+                'company_name',
+                'activity_domain',
+                'vat_id',
+                'registration_number',
+                'phone_number'
             ])
             ->where('user_id', $userId)
-            ->with('trucks')
+            ->with(['users', 'trucks'])
             ->first();
     }
     public function getTrucks()

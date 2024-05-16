@@ -68,7 +68,7 @@
                                                         <td>{{ $transport->destination_city }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Weight of each Car</td>
+                                                        <td>Weight of each Car (Kg)</td>
                                                         <td>{{ $transport->weight_of_each_car }}</td>
                                                     </tr>
                                                 </tbody>
@@ -82,6 +82,11 @@
                                                 <table class="table table-primary">
                                                     <thead>
                                                     <tbody>
+                                                        <tr>
+                                                            <td class="bg-info "><strong>QTY</strong></td>
+                                                            <td class="bg-info "><strong>{{ $truck->pivot->qty }}</strong>
+                                                            </td>
+                                                        </tr>
                                                         <tr>
                                                             <td>Truck Name</td>
                                                             <td>{{ $truck->name }}</td>
@@ -137,9 +142,54 @@
                         </form>
                     @endif
                 </div>
+
+                <div class="bg-secondary p-3 mt-3">
+                    <div class="alert alert-light">
+                        Your profile
+                    </div>
+                    <ol class="list-group list-group-numbered" id="truckList">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Company Name</div>
+                                {{ $company->company_name }}
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Activity Domain</div>
+                                {{ $company->activity_domain }}
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Vat Id</div>
+                                {{ $company->vat_id }}
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Registration Number</div>
+                                {{ $company->registration_number }}
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Phone Number</div>
+                                {{ $company->phone_number }}
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Email:</div>
+                                {{ $company->users->email }}
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+
                 <div class="bg-info p-3 mt-3">
                     <div class="alert alert-info">
-                        Select your Trucks
+                        Active your Trucks
                     </div>
                     <ol class="list-group list-group-numbered" id="truckList">
                         @foreach ($allTrucks as $truck)
@@ -206,10 +256,21 @@
             suggestOrder.innerHTML = `<input type="hidden" name="transportationId" value="${trasfer.id}">`;
             trasfer.trucks.forEach(element => {
                 suggestOrder.innerHTML += `<div class="mb-3 mt-3">
-                                <label for="" class="form-label">Suggest price for truck <b>${element.name}</b></label>
-                                <input type="number" class="form-control" name="${element.id}" id="" value="" required />
+                                <label for="suggestPrice" class="form-label">Suggest price for each truck <b>${element.name}</b> ------------ total QTY= <b>${element.pivot.qty}</b></label>
+                                <div class="d-flex jusdtify-content-center">  
+                                <div class="col-8"><input type="number" class="form-control" name="${element.id}" id="suggestPrice" value="" oninput="calculateResult(${element.pivot.qty})" required /></div>
+                                <div class="col-4"><div class="border text-center p-1" id="showResult"></div></div>
+                                </div>
                             </div>`;
             });
+        }
+
+        function calculateResult(qty) {
+            var input = document.getElementById("suggestPrice").value;
+            var showResult = document.getElementById("showResult");
+            console.log(qty, input);
+            let result = qty * input;
+            showResult.innerText = result + "€";
         }
     </script>
 @endsection
