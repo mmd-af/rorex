@@ -79,6 +79,23 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="showOrder" tabindex="-1" aria-labelledby="ShowOrderLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="showLabel">Companies Request</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body" id="companies_information">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" id="createNewTrasportation" tabindex="-1" aria-labelledby="createNewTrasportationLabel"
         aria-hidden="true">
@@ -105,24 +122,28 @@
                         </div>
                         <div class="mb-3">
                             <label for="country_of_origin" class="form-label">Country of Origin</label>
-                            <input type="text" class="form-control" id="country_of_origin" name="country_of_origin" required>
+                            <input type="text" class="form-control" id="country_of_origin" name="country_of_origin"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="city_of_origin" class="form-label">City of Origin</label>
-                            <input type="text" class="form-control" id="city_of_origin" name="city_of_origin" required>
+                            <input type="text" class="form-control" id="city_of_origin" name="city_of_origin"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="destination_country" class="form-label">Destination Country</label>
-                            <input type="text" class="form-control" id="destination_country" name="destination_country" required>
+                            <input type="text" class="form-control" id="destination_country"
+                                name="destination_country" required>
                         </div>
                         <div class="mb-3">
                             <label for="destination_city" class="form-label">Destination City</label>
-                            <input type="text" class="form-control" id="destination_city" name="destination_city" required>
+                            <input type="text" class="form-control" id="destination_city" name="destination_city"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="weight_of_each_car" class="form-label">Weight of Each Truck (Kg)</label>
-                            <input type="text" class="form-control" id="weight_of_each_car"
-                                name="weight_of_each_car" required>
+                            <input type="text" class="form-control" id="weight_of_each_car" name="weight_of_each_car"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Description</label>
@@ -293,6 +314,54 @@
                                           </tr>`;
                     });
 
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function showOrder(id) {
+            let companiesInformation = document.getElementById('companies_information');
+            companiesInformation.innerHTML = ``;
+            let data = {
+                id: id
+            }
+            axios.post("{{ route('admin.transportations.ajax.showCompaniesOrder') }}", data)
+                .then(response => {
+                    response.data.forEach(element => {
+                        companiesInformation.innerHTML += `<div class="row mb-4">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h4 class="mb-0">${element.company.company_name}</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-sm table-striped">
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">representative's name</th>
+                                                    <td>${element.company.person_name}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Phone</th>
+                                                    <td>${element.company.phone_number}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Email</th>
+                                                    <td>${element.company.users.email}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-footer bg-info text-white">
+                                        <h4 class="mb-0">Proposal</h4>
+                                        <h6 class="mb-0">For ${element.truck.name} | ${element.truck.lwh}</p>
+                                        <h5 class="mb-0">price: ${element.price} €</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
                 })
                 .catch(error => {
                     console.error('Error:', error);

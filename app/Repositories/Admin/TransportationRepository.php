@@ -6,6 +6,7 @@ use App\Models\Transportation\Transportation;
 use App\Models\Truck\Truck;
 use App\Models\Truckable\Truckable;
 use App\Models\Company\Company;
+use App\Models\TransportOrder\TransportOrder;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -51,7 +52,7 @@ class TransportationRepository extends BaseRepository
                 ->addColumn('action', function ($row) {
                     return '<button onclick="showOrder(' . $row->id . ')" type="button"
                        class="btn btn-info text-white btn-sm mx-3" data-bs-toggle="modal"
-                        data-bs-target="#show">
+                        data-bs-target="#showOrder">
                         <i class="fa fa-first-order" aria-hidden="true"></i>
                         </button>
                         <button onclick="show(' . $row->id . ')" type="button"
@@ -88,6 +89,21 @@ class TransportationRepository extends BaseRepository
             ->first();
 
         return response()->json($company);
+    }
+    public function showCompaniesOrder($request)
+    {
+        $reasporOrder = TransportOrder::query()
+            ->select([
+                'id',
+                'company_id',
+                'transportation_id',
+                'truck_id',
+                'price'
+            ])
+            ->where('transportation_id', $request->id)
+            ->with(['company.users', 'transportation', 'truck'])
+            ->get();
+        return response()->json($reasporOrder);
     }
     public function active($request)
     {

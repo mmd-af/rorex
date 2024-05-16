@@ -23,6 +23,10 @@ Route::group(['middleware' => ['super.admin'], 'namespace' => 'App\Http\Controll
                 'as' => 'show',
                 'uses' => 'TransportationAjaxController@show'
             ]);
+            Route::post('/showCompaniesOrder', [
+                'as' => 'showCompaniesOrder',
+                'uses' => 'TransportationAjaxController@showCompaniesOrder'
+            ]);
             Route::post('/active', [
                 'as' => 'active',
                 'uses' => 'TransportationAjaxController@active'

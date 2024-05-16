@@ -24,6 +24,10 @@ class TransportationAjaxController extends Controller
     {
         return $this->transportationRepository->show($request);
     }
+    public function showCompaniesOrder(Request $request)
+    {
+        return $this->transportationRepository->showCompaniesOrder($request);
+    }
     public function active(Request $request)
     {
         return $this->transportationRepository->active($request);

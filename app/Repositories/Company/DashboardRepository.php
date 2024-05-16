@@ -92,12 +92,14 @@ class DashboardRepository extends BaseRepository
             $data = $request->all();
             foreach ($data as $key => $value) {
                 if (is_numeric($key) && is_numeric($value)) {
-                    $transportOrder = new TransportOrder();
-                    $transportOrder->company_id = $request->company_id;
-                    $transportOrder->transportation_id = $request->transportationId;
-                    $transportOrder->truck_id = $key;
-                    $transportOrder->price = $value;
-                    $transportOrder->save();
+                    if ($value > 0) {
+                        $transportOrder = new TransportOrder();
+                        $transportOrder->company_id = $request->company_id;
+                        $transportOrder->transportation_id = $request->transportationId;
+                        $transportOrder->truck_id = $key;
+                        $transportOrder->price = $value;
+                        $transportOrder->save();
+                    }
                 }
             }
         } else {
