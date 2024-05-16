@@ -224,7 +224,8 @@
                         <b>If you do not have the corresponding truck, enter the number 0.</b>
                         <div id="suggestOrder">
                         </div>
-                        <button type="submit" class="btn btn-success float-end mt-5">Save</button>
+                        <div class="alert alert-success text-center" id="totalPrice"></div>
+                        <button type="submit" class="btn btn-success float-end mt-5">Send Request</button>
                     </form>
                 </div>
             </div>
@@ -250,27 +251,36 @@
                 });
         }
 
-        function applyOrder(trasfer) {
+        function applyOrder(transfer) {
             let suggestOrder = document.getElementById('suggestOrder');
             suggestOrder.innerHTML = ``;
-            suggestOrder.innerHTML = `<input type="hidden" name="transportationId" value="${trasfer.id}">`;
-            trasfer.trucks.forEach(element => {
-                suggestOrder.innerHTML += `<div class="mb-3 mt-3">
-                                <label for="suggestPrice" class="form-label">Suggest price for each truck <b>${element.name}</b> ------------ total QTY= <b>${element.pivot.qty}</b></label>
-                                <div class="d-flex jusdtify-content-center">  
-                                <div class="col-8"><input type="number" class="form-control" name="${element.id}" id="suggestPrice" value="" oninput="calculateResult(${element.pivot.qty})" required /></div>
-                                <div class="col-4"><div class="border text-center p-1" id="showResult"></div></div>
-                                </div>
-                            </div>`;
+            suggestOrder.innerHTML = `<input type="hidden" name="transportationId" value="${transfer.id}">`;
+            transfer.trucks.forEach(element => {
+                let truckId = element.id;
+                suggestOrder.innerHTML += `
+            <div class="mb-3 mt-3">
+                <label for="suggestPrice_${truckId}" class="form-label">Suggest price for each truck <b>${element.name}</b> ------------ total QTY= <b>${element.pivot.qty}</b></label>
+                <div class="d-flex jusdtify-content-center">  
+                    <div class="col-8"><input type="number" class="form-control" name="${truckId}" id="suggestPrice_${truckId}" value="" oninput="calculateResult(${element.pivot.qty}, ${truckId})" required /></div>
+                    <div class="col-4"><div class="alert alert-warning text-center p-1 m-2" id="showResult_${truckId}"></div></div>
+                </div>
+            </div>`;
             });
         }
 
-        function calculateResult(qty) {
-            var input = document.getElementById("suggestPrice").value;
-            var showResult = document.getElementById("showResult");
-            console.log(qty, input);
+        function calculateResult(qty, truckId) {
+            var input = document.getElementById(`suggestPrice_${truckId}`).value;
+            var showResult = document.getElementById(`showResult_${truckId}`);
             let result = qty * input;
             showResult.innerText = result + "€";
+
+            var totalPrice = 0;
+            document.querySelectorAll('[id^="showResult_"]').forEach(element => {
+                totalPrice += parseFloat(element.innerText) || 0;
+            });
+
+            var totalPriceElement = document.getElementById("totalPrice");
+            totalPriceElement.innerText = "Total Price= " + totalPrice + "€";
         }
     </script>
 @endsection
