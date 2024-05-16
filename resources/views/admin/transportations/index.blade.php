@@ -4,6 +4,15 @@
     Transportations
 @endsection
 @section('style')
+    <style>
+        .make-box {
+            width: 300px;
+            height: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 0 auto;
+        }
+    </style>
 @endsection
 @section('content')
     <ol class="breadcrumb mb-4">
@@ -87,7 +96,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="modal-body" id="companies_information">
+                    <div class="modal-body">
+                        <div class="row mb-4" id="companies_information">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -326,48 +337,67 @@
             let data = {
                 id: id
             }
+            // TODO injabayad peydasah konim
             axios.post("{{ route('admin.transportations.ajax.showCompaniesOrder') }}", data)
                 .then(response => {
                     response.data.forEach(element => {
-                        companiesInformation.innerHTML += `<div class="row mb-4">
-                            <div class="col">
-                                <div class="card">
-                                    <div class="card-header bg-primary text-white">
-                                        <h4 class="mb-0">${element.company.company_name}</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <table class="table table-sm table-striped">
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row">representative's name</th>
-                                                    <td>${element.company.person_name}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Phone</th>
-                                                    <td>${element.company.phone_number}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Email</th>
-                                                    <td>${element.company.users.email}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="card-footer bg-info text-white">
-                                        <h4 class="mb-0">Proposal</h4>
-                                        <h6 class="mb-0">For ${element.truck.name} | ${element.truck.lwh}</p>
-                                        <h5 class="mb-0">price: ${element.price} €</p>
-                                    </div>
-                                </div>
+                        console.log(element.transportation.trucks[0].pivot.qty);
+                        companiesInformation.innerHTML += `
+                    <div class="col-4 m-3">
+                        <div class="accordion make-box bg-primary" id="accordionExample">
+                            <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                         data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                         ${element.company.company_name} | ${element.transportation.trucks[0].pivot.qty} 
+                                     </button>
+                                      </h2>
+                                 <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                     <div class="accordion-body">
+                                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                     </div>
+                                 </div>
                             </div>
-                        </div>`;
+                        </div>
+                    </div>`;
                     });
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
         }
-
+        // <div class="row mb-4">
+        //                     <div class="col">
+        //                         <div class="card">
+        //                             <div class="card-header bg-primary text-white">
+        //                                 <h4 class="mb-0">${element.company.company_name}</h4>
+        //                             </div>
+        //                             <div class="card-body">
+        //                                 <table class="table table-sm table-striped">
+        //                                     <tbody>
+        //                                         <tr>
+        //                                             <th scope="row">representative's name</th>
+        //                                             <td>${element.company.person_name}</td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <th scope="row">Phone</th>
+        //                                             <td>${element.company.phone_number}</td>
+        //                                         </tr>
+        //                                         <tr>
+        //                                             <th scope="row">Email</th>
+        //                                             <td>${element.company.users.email}</td>
+        //                                         </tr>
+        //                                     </tbody>
+        //                                 </table>
+        //                             </div>
+        //                             <div class="card-footer bg-info text-white">
+        //                                 <h4 class="mb-0">Proposal</h4>
+        //                                 <h6 class="mb-0">For ${element.truck.name} | ${element.truck.lwh}</p>
+        //                                 <h5 class="mb-0">price: ${element.price} €</p>
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                 </div>
         function handleActive(event, id) {
             event.preventDefault();
             axios.post("{{ route('admin.transportations.ajax.active') }}", {

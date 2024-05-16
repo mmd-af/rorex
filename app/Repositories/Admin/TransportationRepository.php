@@ -101,8 +101,10 @@ class TransportationRepository extends BaseRepository
                 'price'
             ])
             ->where('transportation_id', $request->id)
-            ->with(['company.users', 'transportation', 'truck'])
+            ->with(['company.users', 'transportation.trucks', 'truck'])
             ->get();
+
+
         return response()->json($reasporOrder);
     }
     public function active($request)
