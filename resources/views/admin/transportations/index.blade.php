@@ -363,7 +363,9 @@
                         return acc;
                     }, {});
 
-                    Object.values(groupedCompanies).forEach(company => {
+                    const sortedCompanies = Object.values(groupedCompanies).sort((a, b) => a.totalPrice - b.totalPrice);
+
+                    sortedCompanies.forEach(company => {
                         let trucksDetails = '';
                         company.trucks.forEach(truck => {
                             trucksDetails += `
@@ -380,9 +382,12 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse-${company.companyDetails.id}" aria-expanded="false" aria-controls="collapseTwo">
-                                    ${company.companyName} | <h6 class="text-success">${company.totalPrice.toLocaleString('en-US')} €</h6>
-                                </button>
+                                 data-bs-target="#collapse-${company.companyDetails.id}" aria-expanded="false" aria-controls="collapseTwo">
+                                 ${company.companyName} 
+                                <span style="margin-left: 10px;">|</span>  
+                                <h6 class="text-success" style="margin-left: 10px;">${company.totalPrice.toLocaleString('en-US')} €</h6>
+                            </button>
+
                             </h2>
                             <div id="collapse-${company.companyDetails.id}" class="accordion-collapse collapse" data-bs-parent="#accordion-${company.companyDetails.id}">
                                 <div class="accordion-body">
