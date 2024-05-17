@@ -6,7 +6,7 @@
 @section('style')
     <style>
         .make-box {
-            width: 300px;
+            width: auto;
             height: auto;
             border: 1px solid #ddd;
             padding: 10px;
@@ -332,85 +332,77 @@
         }
 
         function showOrder(id) {
-            let companiesInformation = document.getElementById('companies_information');
+            const companiesInformation = document.getElementById('companies_information');
             companiesInformation.innerHTML = ``;
-            let data = {
+            const data = {
                 id: id
-            }
+            };
+
             axios.post("{{ route('admin.transportations.ajax.showCompaniesOrder') }}", data)
                 .then(response => {
-                    response.data.forEach(element => {
-                        const targetTruckId = element.truck_id;
-                        let indexTruck = null;
-                        element.transportation.trucks.forEach(truck => {
-                            if (truck.id === targetTruckId) {
-                                indexTruck = truck;
-                            }
+                    const groupedCompanies = response.data.reduce((acc, element) => {
+                        const companyId = element.company_id;
+                        if (!acc[companyId]) {
+                            acc[companyId] = {
+                                companyName: element.company.company_name,
+                                trucks: [],
+                                totalPrice: 0,
+                                companyDetails: element.company
+                            };
+                        }
+                        const truckQty = element.transportation.trucks.find(truck => truck.id === element
+                            .truck_id)?.pivot.qty || 1;
+                        acc[companyId].trucks.push({
+                            truckName: element.truck.name,
+                            lwh: element.truck.lwh,
+                            qty: truckQty,
+                            price: element.price,
+                            totalPrice: truckQty * element.price
                         });
+                        acc[companyId].totalPrice += truckQty * element.price;
+                        return acc;
+                    }, {});
+
+                    Object.values(groupedCompanies).forEach(company => {
+                        let trucksDetails = '';
+                        company.trucks.forEach(truck => {
+                            trucksDetails += `
+                    <p><b>Truck:</b> ${truck.truckName} (${truck.lwh})</p>
+                    <p><b>Quantity:</b> ${truck.qty}</p>
+                    <p><b>Price per truck:</b> ${truck.price.toLocaleString('en-US')} €</p>
+                    <p><b>Total price for this truck:</b> ${truck.totalPrice.toLocaleString('en-US')} €</p>
+                    <hr>`;
+                        });
+
                         companiesInformation.innerHTML += `
-                    <div class="col-5 m-3">
-                        <div class="accordion make-box bg-primary" id="accordion-${element.id}">
-                            <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                         data-bs-target="#collapse-${element.id}" aria-expanded="false" aria-controls="collapseTwo">
-                                         ${element.company.company_name} | <b> ${element.truck.name} </b>  |
-                                        <h6 class="text-success"> ${(indexTruck.pivot.qty*element.price).toLocaleString('en-US')} € </h6>
-                                     </button>
-                                      </h2>
-                                 <div id="collapse-${element.id}" class="accordion-collapse collapse" data-bs-parent="#accordion-${element.id}">
-                                     <div class="accordion-body">
-                                       
-                                       <p class="mb-0">${element.truck.lwh} 
-                                        <hr>
-                                        price for each truck: <b> ${element.price} €</b></p>
-                                      
-                                        <div class="col-12 border p-1"><b>Representative's name:</b> ${element.company.person_name}</div>
-                                        <div class="col-12 border p-1"><b>Phone:</b> ${element.company.phone_number}</div>
-                                        <div class="col-12 border p-1"><b>Email:</b> ${element.company.users.email}</div>
-                                     </div>
-                                 </div>
+                <div class="col-12 m-3">
+                    <div class="accordion make-box bg-primary" id="accordion-${company.companyDetails.id}">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse-${company.companyDetails.id}" aria-expanded="false" aria-controls="collapseTwo">
+                                    ${company.companyName} | <h6 class="text-success">${company.totalPrice.toLocaleString('en-US')} €</h6>
+                                </button>
+                            </h2>
+                            <div id="collapse-${company.companyDetails.id}" class="accordion-collapse collapse" data-bs-parent="#accordion-${company.companyDetails.id}">
+                                <div class="accordion-body">
+                                    ${trucksDetails}
+                                    <div class="col-12 border p-1"><b>Representative's name:</b> ${company.companyDetails.person_name}</div>
+                                    <div class="col-12 border p-1"><b>Phone:</b> ${company.companyDetails.phone_number}</div>
+                                    <div class="col-12 border p-1"><b>Email:</b> ${company.companyDetails.users.email}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>`;
+                    </div>
+                </div>`;
                     });
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
         }
-        // <div class="row mb-4">
-        //                     <div class="col">
-        //                         <div class="card">
-        //                             <div class="card-header bg-primary text-white">
-        //                                 <h4 class="mb-0">${element.company.company_name}</h4>
-        //                             </div>
-        //                             <div class="card-body">
-        //                                 <table class="table table-sm table-striped">
-        //                                     <tbody>
-        //                                         <tr>
-        //                                             <th scope="row">representative's name</th>
-        //                                             <td>${element.company.person_name}</td>
-        //                                         </tr>
-        //                                         <tr>
-        //                                             <th scope="row">Phone</th>
-        //                                             <td>${element.company.phone_number}</td>
-        //                                         </tr>
-        //                                         <tr>
-        //                                             <th scope="row">Email</th>
-        //                                             <td>${element.company.users.email}</td>
-        //                                         </tr>
-        //                                     </tbody>
-        //                                 </table>
-        //                             </div>
-        //                             <div class="card-footer bg-info text-white">
-        //                                 <h4 class="mb-0">Proposal</h4>
-        //                                 <h6 class="mb-0">For ${element.truck.name} | ${element.truck.lwh}</p>
-        //                                 <h5 class="mb-0">price: ${element.price} €</p>
-        //                             </div>
-        //                         </div>
-        //                     </div>
-        //                 </div>
+
+
         function handleActive(event, id) {
             event.preventDefault();
             axios.post("{{ route('admin.transportations.ajax.active') }}", {
