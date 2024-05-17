@@ -337,24 +337,37 @@
             let data = {
                 id: id
             }
-            // TODO injabayad peydasah konim
             axios.post("{{ route('admin.transportations.ajax.showCompaniesOrder') }}", data)
                 .then(response => {
                     response.data.forEach(element => {
-                        console.log(element.transportation.trucks[0].pivot.qty);
+                        const targetTruckId = element.truck_id;
+                        let indexTruck = null;
+                        element.transportation.trucks.forEach(truck => {
+                            if (truck.id === targetTruckId) {
+                                indexTruck = truck;
+                            }
+                        });
                         companiesInformation.innerHTML += `
-                    <div class="col-4 m-3">
-                        <div class="accordion make-box bg-primary" id="accordionExample">
+                    <div class="col-5 m-3">
+                        <div class="accordion make-box bg-primary" id="accordion-${element.id}">
                             <div class="accordion-item">
                                     <h2 class="accordion-header">
                                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                         data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                         ${element.company.company_name} | ${element.transportation.trucks[0].pivot.qty} 
+                                         data-bs-target="#collapse-${element.id}" aria-expanded="false" aria-controls="collapseTwo">
+                                         ${element.company.company_name} | <b> ${element.truck.name} </b>  |
+                                        <h6 class="text-success"> ${(indexTruck.pivot.qty*element.price).toLocaleString('en-US')} € </h6>
                                      </button>
                                       </h2>
-                                 <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                 <div id="collapse-${element.id}" class="accordion-collapse collapse" data-bs-parent="#accordion-${element.id}">
                                      <div class="accordion-body">
-                                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                       
+                                       <p class="mb-0">${element.truck.lwh} 
+                                        <hr>
+                                        price for each truck: <b> ${element.price} €</b></p>
+                                      
+                                        <div class="col-12 border p-1"><b>Representative's name:</b> ${element.company.person_name}</div>
+                                        <div class="col-12 border p-1"><b>Phone:</b> ${element.company.phone_number}</div>
+                                        <div class="col-12 border p-1"><b>Email:</b> ${element.company.users.email}</div>
                                      </div>
                                  </div>
                             </div>

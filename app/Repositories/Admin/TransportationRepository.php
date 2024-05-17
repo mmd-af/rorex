@@ -92,7 +92,7 @@ class TransportationRepository extends BaseRepository
     }
     public function showCompaniesOrder($request)
     {
-        $reasporOrder = TransportOrder::query()
+        $trasportOrder = TransportOrder::query()
             ->select([
                 'id',
                 'company_id',
@@ -105,7 +105,7 @@ class TransportationRepository extends BaseRepository
             ->get();
 
 
-        return response()->json($reasporOrder);
+        return response()->json($trasportOrder);
     }
     public function active($request)
     {
