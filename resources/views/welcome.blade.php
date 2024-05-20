@@ -16,7 +16,9 @@
 <body>
     <div class="container">
         <div class="row justify-content-center">
-            <img class="img-fluid w-25" src="{{ asset('build/img/logo.png') }}" alt="ROREX - PIPE">
+            <a href="https://rorexpipe.com/" class="text-center" target="_blank">
+                <img class="img-fluid w-25" src="{{ asset('build/img/logo.png') }}" alt="ROREX - PIPE">
+            </a>
         </div>
         @if (Route::has('login'))
             <div class="row justify-content-center">
@@ -24,14 +26,14 @@
                     <div class="card text-center text-white m-3 p-3" style="width: 18rem; background-color: #009799">
                         <div class="card-body">
                             <h5 class="card-title">Dashboard</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            {{-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> --}}
                             <a href="{{ route('user.dashboard.index') }}" class="btn btn-info px-5 py-3">Dashboard</a>
                         </div>
                     </div>
                     <div class="card text-center m-3 p-3" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">Log out</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            {{-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> --}}
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button class="btn btn-primary"
@@ -46,21 +48,21 @@
                     <div class="card text-center m-3 p-3" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">User Register</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            {{-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> --}}
                             <a href="{{ route('register') }}" class="btn btn-primary">User Register</a>
                         </div>
                     </div>
                     <div class="card text-center text-white m-3 p-3" style="width: 18rem; background-color: #009799">
                         <div class="card-body">
                             <h5 class="card-title">Login</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            {{-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> --}}
                             <a href="{{ route('login') }}" class="btn btn-info px-5 py-3">Login</a>
                         </div>
                     </div>
                     <div class="card text-center m-3 p-3" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">Company Register</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            {{-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> --}}
                             <a href="{{ route('companies.register') }}" class="btn btn-primary">Company Register</a>
                         </div>
                     </div>
