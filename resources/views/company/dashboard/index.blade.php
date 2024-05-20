@@ -124,13 +124,13 @@
                 </div>
             </div>
             <div class="col-sm-12 col-md-3">
-                <div class="bg-warning p-3">
-                    @if (session('status') == 'verification-link-sent')
-                        <div class="text-success">
-                            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
-                        </div>
-                    @endif
-                    @if (!auth()->user()->hasVerifiedEmail())
+                @if (session('status') == 'verification-link-sent')
+                    <div class="text-success">
+                        {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+                    </div>
+                @endif
+                @if (!auth()->user()->hasVerifiedEmail())
+                    <div class="bg-warning p-3">
                         <div class="alert alert-warning" role="alert">
                             {{ __('Your email address is not verified. Please verify your email address.') }}
                         </div>
@@ -140,8 +140,8 @@
                                 <button type="submit" class="btn btn-success">{{ __('Send Verification Email') }}</button>
                             </div>
                         </form>
-                    @endif
-                </div>
+                    </div>
+                @endif
 
                 <div class="bg-secondary p-3 mt-3">
                     <div class="alert alert-light">
