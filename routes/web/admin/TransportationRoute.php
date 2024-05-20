@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['super.admin'], 'namespace' => 'App\Http\Controllers\Admin\Transportation'], function () {
+Route::group(['middleware' => ['permission:transportations_control'], 'namespace' => 'App\Http\Controllers\Admin\Transportation'], function () {
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::group(['prefix' => 'transportations', 'as' => 'transportations.'], function () {
             Route::get('/', [

@@ -53,7 +53,7 @@ class TransportationRepository extends BaseRepository
                     return '<button onclick="showOrder(' . $row->id . ')" type="button"
                        class="btn btn-info text-white btn-sm mx-3" data-bs-toggle="modal"
                         data-bs-target="#showOrder">
-                        <i class="fa fa-first-order" aria-hidden="true"></i>
+                        <i class="fa-solid fa-arrow-down-up-across-line"></i>
                         </button>
                         <button onclick="show(' . $row->id . ')" type="button"
                            class="btn btn-primary btn-sm" data-bs-toggle="modal"
