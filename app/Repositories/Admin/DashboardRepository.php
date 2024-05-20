@@ -4,6 +4,7 @@ namespace App\Repositories\Admin;
 
 use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
+use App\Models\Support\Support;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardRepository extends BaseRepository
@@ -20,8 +21,17 @@ class DashboardRepository extends BaseRepository
             ->where('assigned_to', Auth::id())
             ->with('request')
             ->get();
+        $supports = Support::query()
+            ->select([
+                'id',
+                'subject'
+            ])
+            ->where('organization', auth()->user()->getRoleNames())
+            ->where('read_at', null)
+            ->get();
         $qty = count($letter_assignments);
-        return response()->json(['qty' => $qty]);
+        $SupportQty = count($supports);
+        return response()->json(['qty' => $qty + $SupportQty]);
     }
 
     public function getNewNotifications($request)
@@ -36,6 +46,15 @@ class DashboardRepository extends BaseRepository
             ->where('assigned_to', Auth::id())
             ->with('request')
             ->get();
-        return response()->json(['letter_assignments' => $letter_assignments]);
+
+        $supports = Support::query()
+            ->select([
+                'id',
+                'subject'
+            ])
+            ->where('organization', auth()->user()->getRoleNames())
+            ->where('read_at', null)
+            ->get();
+        return response()->json(['letter_assignments' => $letter_assignments, 'supports' => $supports]);
     }
 }
