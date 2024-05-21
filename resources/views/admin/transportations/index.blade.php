@@ -341,6 +341,8 @@
             axios.post("{{ route('admin.transportations.ajax.showCompaniesOrder') }}", data)
                 .then(response => {
                     const groupedCompanies = response.data.reduce((acc, element) => {
+                        const orderId = element.id;
+                        console.log(orderId);
                         const companyId = element.company_id;
                         if (!acc[companyId]) {
                             acc[companyId] = {
@@ -366,18 +368,19 @@
                     const sortedCompanies = Object.values(groupedCompanies).sort((a, b) => a.totalPrice - b.totalPrice);
 
                     sortedCompanies.forEach(company => {
-                        let trucksDetails = '';
+                        let trucksDetails = ``;
                         company.trucks.forEach(truck => {
                             trucksDetails += `
                     <p><b>Truck:</b> ${truck.truckName} (${truck.lwh})</p>
                     <p><b>Quantity:</b> ${truck.qty}</p>
                     <p><b>Price per truck:</b> ${truck.price.toLocaleString('en-US')} €</p>
                     <p><b>Total price for this truck:</b> ${truck.totalPrice.toLocaleString('en-US')} €</p>
+                    <p><i class="fa-solid fa-square-check mx-auto fa-2xl shadow-lg text-info" onClick="alert()"></i></p>
                     <hr>`;
                         });
 
                         companiesInformation.innerHTML += `
-                <div class="col-12 m-3">
+                <div class="col-12 mt-3">
                     <div class="accordion make-box bg-primary" id="accordion-${company.companyDetails.id}">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
