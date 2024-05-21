@@ -13,66 +13,6 @@
                         <form method="POST" action="{{ route('companies.register') }}">
                             @csrf
                             <div class="row g-0">
-                                <div class="col-md-6 col-lg-6 d-none d-md-block">
-                                    <img src="{{ asset('build/img/rorex-pipe.jpg') }}" alt="login form" class="img-fluid"
-                                        style="border-radius: 1rem 0 0 1rem;" />
-                                    <div class="col-12 d-flex align-items-center">
-                                        <div class="card-body p-4 p-lg-5 text-black">
-                                            <div class="form-outline mb-4">
-                                                <label class="form-label" for="person_name">Person Name:*</label>
-                                                <input type="text" name="person_name" id="person_name"
-                                                    class="form-control" value="{{ old('person_name') }}" required />
-                                                @if ($errors->has('person_name'))
-                                                    <p style="color: red;">{{ $errors->first('person_name') }}</p>
-                                                @endif
-                                            </div>
-                                            <div class="form-outline mb-4">
-                                                <label class="form-label" for="job_title">Job Title:</label>
-                                                <input type="text" name="job_title" id="job_title" class="form-control"
-                                                    value="{{ old('job_title') }}" />
-                                                @if ($errors->has('job_title'))
-                                                    <p style="color: red;">{{ $errors->first('job_title') }}</p>
-                                                @endif
-                                            </div>
-                                            <div class="form-outline mb-4">
-                                                <label class="form-label" for="phone_number">Phone Number:*</label>
-                                                <input type="text" name="phone_number" id="phone_number"
-                                                    class="form-control" value="{{ old('phone_number') }}" required />
-                                                @if ($errors->has('phone_number'))
-                                                    <p style="color: red;">{{ $errors->first('phone_number') }}</p>
-                                                @endif
-                                            </div>
-                                            <div class="form-outline mb-4">
-                                                <label class="form-label" for="email">Email address:*</label>
-                                                <input type="text" name="email" id="email" class="form-control"
-                                                    value="{{ old('email') }}" required />
-                                                @if ($errors->has('email'))
-                                                    <p style="color: red;">{{ $errors->first('email') }}</p>
-                                                @endif
-                                            </div>
-                                            <div class="form-outline mb-4">
-                                                <label class="form-label" for="password">Password:*</label>
-                                                <input type="password" id="password" name="password" required
-                                                    autocomplete="current-password" class="form-control" required />
-                                                @if ($errors->has('password'))
-                                                    <p style="color: red;">{{ $errors->first('password') }}</p>
-                                                @endif
-                                            </div>
-                                            <div class="form-outline mb-4">
-                                                <label class="form-label" for="password_confirmation">Password
-                                                    Confirmation:*</label>
-                                                <input type="password" id="password_confirmation"
-                                                    name="password_confirmation" required
-                                                    autocomplete="current-password_confirmation" class="form-control"
-                                                    required />
-                                                @if ($errors->has('password_confirmation'))
-                                                    <p style="color: red;">{{ $errors->first('password_confirmation') }}
-                                                    </p>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="col-md-6 col-lg-6 d-flex align-items-center">
                                     <div class="card-body p-4 p-lg-5 text-black">
                                         <div class="d-flex align-items-center mb-3 pb-1">
@@ -174,6 +114,68 @@
                                         {{--                                            here</a></p> --}}
                                         {{--                                    <a href="#!" class="small text-muted">Terms of use.</a> --}}
                                         {{--                                    <a href="#!" class="small text-muted">Privacy policy</a> --}}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="d-none d-md-block float-end">
+                                        <img src="{{ asset('build/img/rorex-pipe.jpg') }}" alt="login form"
+                                            class="img-fluid" style="border-radius: 1rem 1rem 1rem 5rem;" />
+                                    </div>
+                                    <div class="col-12 d-flex align-items-center">
+                                        <div class="card-body p-4 p-lg-5 text-black">
+                                            <div class="form-outline mb-4">
+                                                <label class="form-label" for="person_name">Person Name:*</label>
+                                                <input type="text" name="person_name" id="person_name"
+                                                    class="form-control" value="{{ old('person_name') }}" required />
+                                                @if ($errors->has('person_name'))
+                                                    <p style="color: red;">{{ $errors->first('person_name') }}</p>
+                                                @endif
+                                            </div>
+                                            <div class="form-outline mb-4">
+                                                <label class="form-label" for="job_title">Job Title:</label>
+                                                <input type="text" name="job_title" id="job_title"
+                                                    class="form-control" value="{{ old('job_title') }}" />
+                                                @if ($errors->has('job_title'))
+                                                    <p style="color: red;">{{ $errors->first('job_title') }}</p>
+                                                @endif
+                                            </div>
+                                            <div class="form-outline mb-4">
+                                                <label class="form-label" for="phone_number">Phone Number:*</label>
+                                                <input type="text" name="phone_number" id="phone_number"
+                                                    class="form-control" value="{{ old('phone_number') }}" required />
+                                                @if ($errors->has('phone_number'))
+                                                    <p style="color: red;">{{ $errors->first('phone_number') }}</p>
+                                                @endif
+                                            </div>
+                                            <div class="form-outline mb-4">
+                                                <label class="form-label" for="email">Email address:*</label>
+                                                <input type="text" name="email" id="email" class="form-control"
+                                                    value="{{ old('email') }}" required />
+                                                @if ($errors->has('email'))
+                                                    <p style="color: red;">{{ $errors->first('email') }}</p>
+                                                @endif
+                                            </div>
+                                            <div class="form-outline mb-4">
+                                                <label class="form-label" for="password">Password:*</label>
+                                                <input type="password" id="password" name="password" required
+                                                    autocomplete="current-password" class="form-control" required />
+                                                @if ($errors->has('password'))
+                                                    <p style="color: red;">{{ $errors->first('password') }}</p>
+                                                @endif
+                                            </div>
+                                            <div class="form-outline mb-4">
+                                                <label class="form-label" for="password_confirmation">Password
+                                                    Confirmation:*</label>
+                                                <input type="password" id="password_confirmation"
+                                                    name="password_confirmation" required
+                                                    autocomplete="current-password_confirmation" class="form-control"
+                                                    required />
+                                                @if ($errors->has('password_confirmation'))
+                                                    <p style="color: red;">{{ $errors->first('password_confirmation') }}
+                                                    </p>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center p-3">
