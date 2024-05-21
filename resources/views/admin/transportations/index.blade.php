@@ -192,6 +192,33 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="saveOrder" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="saveOrderLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="saveOrderLabel">Save Order</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <div id="orderContent">
+                            <div class="input-group mb-3">
+                                <input type="file" class="form-control" id="inputGroupFile02">
+                                <label class="input-group-text" for="inputGroupFile02">Upload Contract</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -374,7 +401,11 @@
                     <p><b>Quantity:</b> ${truck.qty}</p>
                     <p><b>Price per truck:</b> ${truck.price.toLocaleString('en-US')} €</p>
                     <p><b>Total price for this truck:</b> ${truck.totalPrice.toLocaleString('en-US')} €</p>
-                    <p><i class="fa-solid fa-square-check mx-auto fa-2xl shadow-lg text-info" onClick="alert(${truck.orderId})"></i></p>
+                    <p>                
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#saveOrder" onClick="acceptOrder(${truck.orderId})">
+          Accept Order <i style="cursor:pointer;" class="fa-solid fa-square-check mx-auto fa-2xl shadow-lg text-info"></i>
+        </button>  
+                    </p>
                     <hr>`;
                         });
 
@@ -494,6 +525,11 @@
                     console.error('Error:', error);
                 });
 
+        }
+
+        function acceptOrder(orderId) {
+            let orderContent = document.getElementById('orderContent');
+            orderContent.innerHTML += `<input type="hidden" name="orderId" value="${orderId}">`;
         }
     </script>
 @endsection
