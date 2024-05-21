@@ -341,8 +341,6 @@
             axios.post("{{ route('admin.transportations.ajax.showCompaniesOrder') }}", data)
                 .then(response => {
                     const groupedCompanies = response.data.reduce((acc, element) => {
-                        const orderId = element.id;
-                        console.log(orderId);
                         const companyId = element.company_id;
                         if (!acc[companyId]) {
                             acc[companyId] = {
@@ -355,6 +353,7 @@
                         const truckQty = element.transportation.trucks.find(truck => truck.id === element
                             .truck_id)?.pivot.qty || 1;
                         acc[companyId].trucks.push({
+                            orderId: element.id,
                             truckName: element.truck.name,
                             lwh: element.truck.lwh,
                             qty: truckQty,
@@ -375,7 +374,7 @@
                     <p><b>Quantity:</b> ${truck.qty}</p>
                     <p><b>Price per truck:</b> ${truck.price.toLocaleString('en-US')} €</p>
                     <p><b>Total price for this truck:</b> ${truck.totalPrice.toLocaleString('en-US')} €</p>
-                    <p><i class="fa-solid fa-square-check mx-auto fa-2xl shadow-lg text-info" onClick="alert()"></i></p>
+                    <p><i class="fa-solid fa-square-check mx-auto fa-2xl shadow-lg text-info" onClick="alert(${truck.orderId})"></i></p>
                     <hr>`;
                         });
 
