@@ -73,6 +73,20 @@ class DashboardRepository extends BaseRepository
             ->first();
         return $company->transportations->where('is_active', 1);
     }
+    public function getOrders($company)
+    {
+        return TransportOrder::query()
+            ->select([
+                'id',
+                'company_id',
+                'transportation_id',
+                'truck_id',
+                'price'
+            ])
+            ->where('company_id', $company->id)
+            ->with(['company', 'transportation', 'truck'])
+            ->get();
+    }
     static function checkCompanyOrder($request)
     {
         return TransportOrder::query()

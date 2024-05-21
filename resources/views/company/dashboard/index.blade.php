@@ -25,6 +25,11 @@
                                     <a class="list-group-item list-group-item-action" id="list-profile-list"
                                         data-bs-toggle="list" href="#trucks-{{ $transport->id }}" role="tab"
                                         aria-controls="list-profile">Trucks</a>
+                                    @if (!$orders->where('transportation_id', $transport->id)->isEmpty())
+                                        <a class="list-group-item list-group-item-action" id="list-profile-list"
+                                            data-bs-toggle="list" href="#order-{{ $transport->id }}" role="tab"
+                                            aria-controls="list-profile"><b>Your Offer</b></a>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-sm-12 col-lg-8">
@@ -112,12 +117,32 @@
                                             </div>
                                         @endforeach
                                     </div>
+                                    @if (!$orders->where('transportation_id', $transport->id)->isEmpty())
+                                        <div class="tab-pane fade" id="order-{{ $transport->id }}" role="tabpanel"
+                                            aria-labelledby="list-home-list">
+                                            @foreach ($orders->where('transportation_id', $transport->id) as $order)
+                                                <div class="table-responsive">
+                                                    <table class="table table-primary">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><b>Price: </b></td>
+                                                                <td>for <b>{{ $order->truck->name }}</b></td>
+                                                                <td>{{ $order->price }} €</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 </div>
-                                <button type="button" onclick="applyOrder({{ $transport }})"
-                                    class="btn btn-success m-3 float-end" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
-                                    Apply
-                                </button>
+                                @if ($orders->where('transportation_id', $transport->id)->isEmpty())
+                                    <button type="button" onclick="applyOrder({{ $transport }})"
+                                        class="btn btn-success m-3 float-end" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                        Apply
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     @endforeach

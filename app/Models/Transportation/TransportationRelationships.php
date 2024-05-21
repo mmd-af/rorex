@@ -5,6 +5,7 @@ namespace App\Models\Transportation;
 use App\Models\User\User;
 use App\Models\Truck\Truck;
 use App\Models\Company\Company;
+use App\Models\TransportOrder\TransportOrder;
 
 trait TransportationRelationships
 {
@@ -19,5 +20,9 @@ trait TransportationRelationships
     public function companies()
     {
         return $this->belongsToMany(Company::class)->withPivot('is_active');
+    }
+    public function orders()
+    {
+        return $this->hasMany(TransportOrder::class);
     }
 }

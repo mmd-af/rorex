@@ -20,7 +20,8 @@ class DashboardController extends Controller
         $company = $this->dashboardRepository->getCompany();
         $allTrucks = $this->dashboardRepository->getTrucks();
         $transportations = $this->dashboardRepository->getTransportations();
-        return view('company.dashboard.index', compact('company', 'allTrucks', 'transportations'));
+        $orders = $this->dashboardRepository->getOrders($company);
+        return view('company.dashboard.index', compact('company', 'allTrucks', 'transportations', 'orders'));
     }
 
     public function store(Request $request)
