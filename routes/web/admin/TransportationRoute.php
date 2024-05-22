@@ -13,6 +13,10 @@ Route::group(['middleware' => ['permission:transportations_control'], 'namespace
                 'as' => 'store',
                 'uses' => 'TransportationController@store'
             ]);
+            Route::post('/acceptOrder', [
+                'as' => 'acceptOrder',
+                'uses' => 'TransportationController@acceptOrder'
+            ]);
         });
         Route::group(['prefix' => 'transportations-ajax', 'as' => 'transportations.ajax.'], function () {
             Route::get('/getDataTable', [

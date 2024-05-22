@@ -105,7 +105,7 @@ class TransportationRepository extends BaseRepository
             ->get();
         return response()->json($transportOrder);
     }
-    
+
     public function active($request)
     {
         DB::beginTransaction();
@@ -217,5 +217,10 @@ class TransportationRepository extends BaseRepository
             $companies[] = $company;
         }
         return $companies;
+    }
+
+    public function acceptOrder($request)
+    {
+        dd($request->all());
     }
 }

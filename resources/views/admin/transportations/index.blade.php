@@ -201,19 +201,25 @@
                     <h1 class="modal-title fs-5" id="saveOrderLabel">Save Order</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="" method="post">
+                <form action="{{ route('admin.transportations.acceptOrder') }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="order_id" id="order_id" value="">
                     <div class="modal-body">
                         <div id="orderContent">
-                            <div class="input-group mb-3">
-                                <input type="file" class="form-control" id="inputGroupFile02">
-                                <label class="input-group-text" for="inputGroupFile02">Upload Contract</label>
+                            <div class="input-group mt-3">
+                                <input type="file" name="contract" class="form-control" id="contract">
+                                <label class="input-group-text" for="contract">Upload Contract</label>
+                            </div>
+                            <div class="input-group mt-4">
+                                <input type="number" name="last_price" class="form-control" id="last_price">
+                                <label class="input-group-text" for="last_price">Last Price (per truck)</label>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>
@@ -529,7 +535,9 @@
 
         function acceptOrder(orderId) {
             let orderContent = document.getElementById('orderContent');
-            orderContent.innerHTML += `<input type="hidden" name="orderId" value="${orderId}">`;
+            let orderIdElement = document.getElementById('order_id');
+            orderIdElement.value = orderId;
+            // orderContent.innerHTML += `<input type="hidden" name="orderId" value="${orderId}">`;
         }
     </script>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Transportation;
 use App\Http\Controllers\Controller;
 use App\Repositories\Admin\TransportationRepository;
 use App\Http\Requests\Admin\Transportation\StoreRequest;
+use Illuminate\Http\Request;
 
 class TransportationController extends Controller
 {
@@ -23,6 +24,11 @@ class TransportationController extends Controller
     public function store(StoreRequest $request)
     {
         $this->transportationRepository->store($request);
+        return redirect()->route('admin.transportations.index');
+    }
+    public function acceptOrder(Request $request)
+    {
+        $this->transportationRepository->acceptOrder($request);
         return redirect()->route('admin.transportations.index');
     }
 }
