@@ -101,6 +101,11 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#saveOrder" onClick="acceptOrder()">
+                            Submit Select Order <i style="cursor:pointer;"
+                                class="fa-solid fa-square-check mx-auto fa-2xl shadow-lg text-info"></i>
+                        </button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -407,11 +412,14 @@
                     <p><b>Quantity:</b> ${truck.qty}</p>
                     <p><b>Price per truck:</b> ${truck.price.toLocaleString('en-US')} €</p>
                     <p><b>Total price for this truck:</b> ${truck.totalPrice.toLocaleString('en-US')} €</p>
-                    <p>                
-        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#saveOrder" onClick="acceptOrder(${truck.orderId})">
-          Accept Order <i style="cursor:pointer;" class="fa-solid fa-square-check mx-auto fa-2xl shadow-lg text-info"></i>
-        </button>  
-                    </p>
+                        <div class="form-check d-flex justify-content-center">
+                            <div class="bg-warning px-5">    
+                            <input class="form-check-input allSelectOrder" type="checkbox" name="order[]" value="${truck.orderId}" id="order-${truck.orderId}">
+                             <label class="form-check-label" for="order-${truck.orderId}">
+                              select
+                             </label>
+                             </div>
+                        </div> 
                     <hr>`;
                         });
 
@@ -533,11 +541,22 @@
 
         }
 
-        function acceptOrder(orderId) {
-            let orderContent = document.getElementById('orderContent');
-            let orderIdElement = document.getElementById('order_id');
-            orderIdElement.value = orderId;
-            // orderContent.innerHTML += `<input type="hidden" name="orderId" value="${orderId}">`;
+        function acceptOrder() {
+            // let orderContent = document.getElementById('orderContent');
+            // let orderIdElement = document.getElementById('order_id');
+            // orderIdElement.value = orderId;
+            // let data = {
+            //     id: orderId
+            // }
+            const checkboxes = document.querySelectorAll('.allSelectOrder');
+            const selectedOrders = [];
+            checkboxes.forEach((checkbox) => {
+                if (checkbox.checked) {
+                    selectedOrders.push(checkbox.value);
+                }
+            });
+
+            console.log(selectedOrders);
         }
     </script>
 @endsection
