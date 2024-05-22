@@ -73,6 +73,7 @@ class TransportationRepository extends BaseRepository
                 'id',
                 'user_id',
                 'product_name',
+                'product_number',
                 'from_date',
                 'until_date',
                 'country_of_origin',
@@ -145,6 +146,7 @@ class TransportationRepository extends BaseRepository
             $transportation = new Transportation();
             $transportation->user_id = Auth::id();
             $transportation->product_name = $request->product_name;
+            $transportation->product_number = $request->product_number;
             $transportation->from_date = $request->from_date;
             $transportation->until_date = $request->until_date;
             $transportation->country_of_origin = $request->country_of_origin;

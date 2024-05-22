@@ -129,6 +129,10 @@
                             <input type="text" class="form-control" id="product_name" name="product_name" required>
                         </div>
                         <div class="mb-3">
+                            <label for="product_number" class="form-label">Product Number</label>
+                            <input type="number" class="form-control" id="product_number" name="product_number" required>
+                        </div>
+                        <div class="mb-3">
                             <label for="from_date" class="form-label">From Date</label>
                             <input type="date" class="form-control" id="from_date" name="from_date" required>
                         </div>
@@ -311,6 +315,10 @@
                                     <tr>
                                         <th scope="row">Product Name</th>
                                         <td>${response.data.product_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Product Name</th>
+                                        <td>${response.data.product_number}</td>
                                     </tr>
                                     <tr>
                                         <th scope="row">From Date</th>
