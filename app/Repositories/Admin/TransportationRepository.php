@@ -223,6 +223,10 @@ class TransportationRepository extends BaseRepository
 
     public function acceptOrder($request)
     {
-        dd($request->all());
+        $orderIds = explode(',', $request->order_id);
+
+        // $orders = Order::whereIn('id', $orderIds)->get();
+
+        dd($orderIds, $request->all());
     }
 }

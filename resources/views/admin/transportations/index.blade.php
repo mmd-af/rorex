@@ -550,21 +550,19 @@
         }
 
         function acceptOrder() {
-            // let orderContent = document.getElementById('orderContent');
-            // let orderIdElement = document.getElementById('order_id');
-            // orderIdElement.value = orderId;
-            // let data = {
-            //     id: orderId
-            // }
+            let orderIdElement = document.getElementById('order_id');
             const checkboxes = document.querySelectorAll('.allSelectOrder');
-            const selectedOrders = [];
+            let selectedValues = [];
             checkboxes.forEach((checkbox) => {
                 if (checkbox.checked) {
-                    selectedOrders.push(checkbox.value);
+                    selectedValues.push(checkbox.value);
                 }
             });
+            orderIdElement.value = selectedValues.join(',');
 
-            console.log(selectedOrders);
+
+
+            
         }
     </script>
 @endsection
