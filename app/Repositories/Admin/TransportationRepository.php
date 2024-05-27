@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class TransportationRepository extends BaseRepository
 {
@@ -223,12 +224,32 @@ class TransportationRepository extends BaseRepository
 
     public function acceptOrder($request)
     {
-            dd($request->all());
+        DB::beginTransaction();
+        try {
+            $order_ids = $request->input('order_id');
+            $last_prices = $request->input('last_price');
+            $contractFile = $request->file('contract');
+            $filename = Str::uuid() . '.' . $contractFile->getClientOriginalExtension();
+            $contractFile->storeAs('contracts', $filename, 'public');
+            foreach ($order_ids as $index => $order_id) {
+                $order = TransportOrder::find($order_id);
+                if ($order) {
+                    $order->last_price = $last_prices[$index];
+                    $order->contract =  '/contracts/' . $filename;
+                    $order->save();
+                }
+            }
+            DB::commit();
+            Session::flash('message', 'Proccess was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
     }
     public function getOrderInformations($request)
     {
         return TransportOrder::whereIn('id', $request->id)
-        ->with(['company','truck'])
-        ->get();
+            ->with(['company', 'truck'])
+            ->get();
     }
 }
