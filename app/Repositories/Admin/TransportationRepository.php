@@ -257,6 +257,14 @@ class TransportationRepository extends BaseRepository
     }
     public function destroyOrderContract($request)
     {
-        return "ok baadan";
+        $transportOrder = TransportOrder::findOrFail($request->orderId);
+        $filePath = public_path($transportOrder->contract);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+        $transportOrder->last_price = null;
+        $transportOrder->contract = null;
+        $transportOrder->save();
+        return $request->orderId;
     }
 }

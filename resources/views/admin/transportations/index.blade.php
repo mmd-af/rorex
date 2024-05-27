@@ -437,10 +437,10 @@
                 <p><b>Quantity:</b> ${truck.qty}</p>
                 <p><b>Price per truck:</b>
                     ${truck.lastPrice === null ? `${truck.price.toLocaleString('en-US')} €` : `<span class="text-decoration-line-through">${truck.price.toLocaleString('en-US')} €</span>
-                                                    <b> ${truck.lastPrice.toLocaleString('en-US')} €`}</b></p>
+                                                                <b> ${truck.lastPrice.toLocaleString('en-US')} €`}</b></p>
                 <p><b>Total price for this truck:</b>
                     ${truck.lastPrice === null ? `${truck.totalPrice.toLocaleString('en-US')} €` : `<span class="text-decoration-line-through">${truck.originalTotalPrice.toLocaleString('en-US')} €</span>
-                                                    <b> ${truck.totalPrice.toLocaleString('en-US')} €`}</b></p>
+                                                                <b> ${truck.totalPrice.toLocaleString('en-US')} €`}</b></p>
                 <div class="form-check d-flex justify-content-center">
                     <div class="bg-warning rounded-3 px-5">    
                         <input class="form-check-input allSelectOrder" type="checkbox" name="order[]" value="${truck.orderId}" id="order-${truck.orderId}">
@@ -449,8 +449,8 @@
                         </label>
                     </div>
                     ${truck.contract ? `<a class="btn btn-info mx-2" href="${truck.contract}" target="_blank">Show Contract</a>
-                                                                <a class="btn btn-danger mx-2" href="#" onClick="destroyOrderContract(${truck.orderId})">Delete Contract</a>
-                                            ` : ''}
+                                                                            <a class="btn btn-danger mx-2" href="#" onClick="destroyOrderContract(${truck.orderId})">Delete Contract</a>
+                                                        ` : ''}
                 </div> 
                 <hr>`;
                         });
@@ -582,16 +582,19 @@
                     selectedValues.push(checkbox.value);
                 }
             });
-            let data = {
-                id: selectedValues
-            }
-            axios.post("{{ route('admin.transportations.ajax.getOrderInformations') }}", data)
-                .then(response => {
-                    let responseData = response.data;
-                    let companyIds = responseData.map(item => item.company_id);
-                    let allSameCompanyId = companyIds.every(id => id === companyIds[0]);
-                    if (allSameCompanyId) {
-                        let newHTML = ` <thead>
+            if (selectedValues.length === 0) {
+                alert('You have not selected any options.');
+            } else {
+                let data = {
+                    id: selectedValues
+                }
+                axios.post("{{ route('admin.transportations.ajax.getOrderInformations') }}", data)
+                    .then(response => {
+                        let responseData = response.data;
+                        let companyIds = responseData.map(item => item.company_id);
+                        let allSameCompanyId = companyIds.every(id => id === companyIds[0]);
+                        if (allSameCompanyId) {
+                            let newHTML = ` <thead>
                         <tr>
                             <td>Company Name</td>
                             <td>
@@ -606,24 +609,25 @@
                             </tr>
                         </thead>
                         `;
-                        selectOrderInformation.insertAdjacentHTML('beforebegin', newHTML);
-                        responseData.forEach(element => {
-                            selectOrderInformation.innerHTML += ` <tr>
+                            selectOrderInformation.insertAdjacentHTML('beforebegin', newHTML);
+                            responseData.forEach(element => {
+                                selectOrderInformation.innerHTML += ` <tr>
                             <td>${element.truck.name}</td>
                                     <td>
                                         <label><small>Offer Price= <b>${element.price}</b></small></label>
                                         <input type="hidden" name="order_id[]" id="" value="${element.id}" />
                                         <input type="number" name="last_price[]" class="form-control" placeholder ="new price" value="" /></td> 
                                     </tr>`;
-                        });
+                            });
 
-                    } else {
-                        alert('Please select items with the same company ID.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                        } else {
+                            alert('Please select items with the same company ID.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
         }
 
         function destroyOrderContract(orderId) {
