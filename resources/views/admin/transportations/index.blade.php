@@ -591,12 +591,12 @@
                         `;
                         selectOrderInformation.insertAdjacentHTML('beforebegin', newHTML);
                         responseData.forEach(element => {
-                            // console.log(element);
+                            console.log(element);
                             selectOrderInformation.innerHTML += ` <tr>
                             <td>${element.truck.name}</td>
                                     <td>
                                         <input type="hidden" name="order_id[]" id="" value="${element.id}" />
-                                        <input type="number" name="last_price[]" class="form-control" placeholder ="last price" /></td> 
+                                        <input type="number" name="last_price[]" class="form-control" placeholder ="last price" value="${element.price}" /></td> 
                                     </tr>`;
                         });
 
