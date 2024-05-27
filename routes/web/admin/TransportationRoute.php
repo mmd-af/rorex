@@ -47,6 +47,11 @@ Route::group(['middleware' => ['permission:transportations_control'], 'namespace
                 'as' => 'getOrderInformations',
                 'uses' => 'TransportationAjaxController@getOrderInformations'
             ]);
+            Route::post('/destroyOrderContract', [
+                'as' => 'destroyOrderContract',
+                'uses' => 'TransportationAjaxController@destroyOrderContract'
+            ]);
+            
         });
     });
 });

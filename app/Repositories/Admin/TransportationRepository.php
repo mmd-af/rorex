@@ -255,4 +255,8 @@ class TransportationRepository extends BaseRepository
             ->with(['company', 'truck'])
             ->get();
     }
+    public function destroyOrderContract($request)
+    {
+        return "ok baadan";
+    }
 }

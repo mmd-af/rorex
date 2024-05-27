@@ -437,18 +437,20 @@
                 <p><b>Quantity:</b> ${truck.qty}</p>
                 <p><b>Price per truck:</b>
                     ${truck.lastPrice === null ? `${truck.price.toLocaleString('en-US')} €` : `<span class="text-decoration-line-through">${truck.price.toLocaleString('en-US')} €</span>
-                            <b> ${truck.lastPrice.toLocaleString('en-US')} €`}</b></p>
+                                                    <b> ${truck.lastPrice.toLocaleString('en-US')} €`}</b></p>
                 <p><b>Total price for this truck:</b>
                     ${truck.lastPrice === null ? `${truck.totalPrice.toLocaleString('en-US')} €` : `<span class="text-decoration-line-through">${truck.originalTotalPrice.toLocaleString('en-US')} €</span>
-                            <b> ${truck.totalPrice.toLocaleString('en-US')} €`}</b></p>
+                                                    <b> ${truck.totalPrice.toLocaleString('en-US')} €`}</b></p>
                 <div class="form-check d-flex justify-content-center">
-                    <div class="bg-warning px-5">    
+                    <div class="bg-warning rounded-3 px-5">    
                         <input class="form-check-input allSelectOrder" type="checkbox" name="order[]" value="${truck.orderId}" id="order-${truck.orderId}">
                         <label class="form-check-label" for="order-${truck.orderId}">
                             select
                         </label>
                     </div>
-                    ${truck.contract ? `<a class="btn btn-info mx-2" href="${truck.contract}" target="_blank">Show Contract</a>` : ''}
+                    ${truck.contract ? `<a class="btn btn-info mx-2" href="${truck.contract}" target="_blank">Show Contract</a>
+                                                                <a class="btn btn-danger mx-2" href="#" onClick="destroyOrderContract(${truck.orderId})">Delete Contract</a>
+                                            ` : ''}
                 </div> 
                 <hr>`;
                         });
@@ -622,6 +624,23 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
+        }
+
+        function destroyOrderContract(orderId) {
+            if (confirm("Are you sure you want to delete this order contract?")) {
+                let data = {
+                    orderId: orderId
+                }
+                axios.post("{{ route('admin.transportations.ajax.destroyOrderContract') }}", data)
+                    .then(response => {
+                        alert(response.data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                alert("Delete operation canceled.");
+            }
         }
     </script>
 @endsection

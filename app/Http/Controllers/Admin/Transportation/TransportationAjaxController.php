@@ -44,4 +44,8 @@ class TransportationAjaxController extends Controller
     {
         return $this->transportationRepository->getOrderInformations($request);
     }
+    public function destroyOrderContract(Request $request)
+    {
+        return $this->transportationRepository->destroyOrderContract($request);
+    }
 }
