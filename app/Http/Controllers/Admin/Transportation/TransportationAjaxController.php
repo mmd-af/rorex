@@ -40,4 +40,8 @@ class TransportationAjaxController extends Controller
     {
         return $this->transportationRepository->getCompaniesWithTruck($request);
     }
+    public function getOrderInformations(Request $request)
+    {
+        return $this->transportationRepository->getOrderInformations($request);
+    }
 }

@@ -223,10 +223,12 @@ class TransportationRepository extends BaseRepository
 
     public function acceptOrder($request)
     {
-        $orderIds = explode(',', $request->order_id);
-
-        // $orders = Order::whereIn('id', $orderIds)->get();
-
-        dd($orderIds, $request->all());
+            dd($request->all());
+    }
+    public function getOrderInformations($request)
+    {
+        return TransportOrder::whereIn('id', $request->id)
+        ->with(['company','truck'])
+        ->get();
     }
 }

@@ -202,9 +202,9 @@
         </div>
     </div>
 
-    <div class="modal fade" id="saveOrder" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="saveOrderLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade saveOrderModal" id="saveOrder" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="saveOrderLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="saveOrderLabel">Save Order</h1>
@@ -217,12 +217,22 @@
                     <div class="modal-body">
                         <div id="orderContent">
                             <div class="input-group mt-3">
-                                <input type="file" name="contract" class="form-control" id="contract">
+                                <input type="file" name="contract" class="form-control" id="contract" required>
                                 <label class="input-group-text" for="contract">Upload Contract</label>
                             </div>
-                            <div class="input-group mt-4">
-                                <input type="number" name="last_price" class="form-control" id="last_price">
-                                <label class="input-group-text" for="last_price">Last Price (per truck)</label>
+                            <div class="input-group mt-4 justify-content-center" id="orderInformations">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <th>Truck</th>
+                                                <th>Last Price (per truck)</th>
+                                            </tr>
+                                        </tbody>
+                                        <tbody id="selectOrderInformation">
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -551,6 +561,9 @@
 
         function acceptOrder() {
             let orderIdElement = document.getElementById('order_id');
+            let orderInformations = document.getElementById('orderInformations');
+            let selectOrderInformation = document.getElementById('selectOrderInformation');
+            selectOrderInformation.innerHTML = ``;
             const checkboxes = document.querySelectorAll('.allSelectOrder');
             let selectedValues = [];
             checkboxes.forEach((checkbox) => {
@@ -558,11 +571,42 @@
                     selectedValues.push(checkbox.value);
                 }
             });
-            orderIdElement.value = selectedValues.join(',');
+            let data = {
+                id: selectedValues
+            }
+            axios.post("{{ route('admin.transportations.ajax.getOrderInformations') }}", data)
+                .then(response => {
+                    let responseData = response.data;
+                    let companyIds = responseData.map(item => item.company_id);
+                    let allSameCompanyId = companyIds.every(id => id === companyIds[0]);
+                    if (allSameCompanyId) {
+                        let newHTML = ` <thead>
+                        <tr>
+                            <td>Company Name</td>
+                            <td>
+                               <strong class="text-success"> ${responseData[0].company.company_name} </strong>
+                                </td>
+                            </tr>
+                        </thead>
+                        `;
+                        selectOrderInformation.insertAdjacentHTML('beforebegin', newHTML);
+                        responseData.forEach(element => {
+                            // console.log(element);
+                            selectOrderInformation.innerHTML += ` <tr>
+                            <td>${element.truck.name}</td>
+                                    <td>
+                                        <input type="hidden" name="order_id[]" id="" value="${element.id}" />
+                                        <input type="number" name="last_price[]" class="form-control" placeholder ="last price" /></td> 
+                                    </tr>`;
+                        });
 
-
-
-            
+                    } else {
+                        alert('Please select items with the same company ID.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
     </script>
 @endsection

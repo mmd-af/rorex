@@ -43,6 +43,10 @@ Route::group(['middleware' => ['permission:transportations_control'], 'namespace
                 'as' => 'getCompaniesWithTruck',
                 'uses' => 'TransportationAjaxController@getCompaniesWithTruck'
             ]);
+            Route::post('/getOrderInformations', [
+                'as' => 'getOrderInformations',
+                'uses' => 'TransportationAjaxController@getOrderInformations'
+            ]);
         });
     });
 });
