@@ -414,7 +414,9 @@
                             lwh: element.truck.lwh,
                             qty: truckQty,
                             price: element.price,
-                            totalPrice: truckQty * element.price
+                            totalPrice: truckQty * element.price,
+                            lastPrice: element.last_price,
+                            contract: element.contract
                         });
                         acc[companyId].totalPrice += truckQty * element.price;
                         return acc;
@@ -425,10 +427,13 @@
                     sortedCompanies.forEach(company => {
                         let trucksDetails = ``;
                         company.trucks.forEach(truck => {
+                            console.log(truck.lastPrice);
                             trucksDetails += `
                     <p><b>Truck:</b> ${truck.truckName} (${truck.lwh})</p>
                     <p><b>Quantity:</b> ${truck.qty}</p>
-                    <p><b>Price per truck:</b> ${truck.price.toLocaleString('en-US')} €</p>
+    <p><b>Price per truck:</b>
+         ${truck.lastPrice === null ? `${truck.price.toLocaleString('en-US')} €`: `<span class="text-decoration-line-through">${truck.price.toLocaleString('en-US')} €</span>
+                        <b> ${truck.lastPrice.toLocaleString('en-US')} €`}</b></p>
                     <p><b>Total price for this truck:</b> ${truck.totalPrice.toLocaleString('en-US')} €</p>
                         <div class="form-check d-flex justify-content-center">
                             <div class="bg-warning px-5">    
@@ -437,6 +442,7 @@
                               select
                              </label>
                              </div>
+                             ${truck.contract ? `<a class="btn btn-info mx-2" href="${truck.contract}" target="_blank">Show Contract</a>` : ''}
                         </div> 
                     <hr>`;
                         });
@@ -533,7 +539,6 @@
             for (var i = 0; i < elements.length; i++) {
                 names.push(elements[i].name);
             }
-            console.log(names);
             let showAllowCompanies = document.getElementById('showAllowCompanies');
             showAllowCompanies.innerHTML = ``;
             let data = {
@@ -541,7 +546,6 @@
             }
             axios.post("{{ route('admin.transportations.ajax.getCompaniesWithTruck') }}", data)
                 .then(response => {
-                    console.log(response.data);
                     response.data.forEach(element => {
                         showAllowCompanies.innerHTML +=
                             `<div class="alert alert-warning d-flex justify-content-between">${element.company_name} (${element.vat_id})
@@ -587,16 +591,22 @@
                                <strong class="text-success"> ${responseData[0].company.company_name} </strong>
                                 </td>
                             </tr>
+                            <tr>
+                            <td><small>If the contract price is different from the offer price, enter the new price.</small></td>
+                            <td>
+                               
+                                </td>
+                            </tr>
                         </thead>
                         `;
                         selectOrderInformation.insertAdjacentHTML('beforebegin', newHTML);
                         responseData.forEach(element => {
-                            console.log(element);
                             selectOrderInformation.innerHTML += ` <tr>
                             <td>${element.truck.name}</td>
                                     <td>
+                                        <label><small>Offer Price= <b>${element.price}</b></small></label>
                                         <input type="hidden" name="order_id[]" id="" value="${element.id}" />
-                                        <input type="number" name="last_price[]" class="form-control" placeholder ="last price" value="${element.price}" /></td> 
+                                        <input type="number" name="last_price[]" class="form-control" placeholder ="new price" value="" /></td> 
                                     </tr>`;
                         });
 

@@ -100,7 +100,9 @@ class TransportationRepository extends BaseRepository
                 'company_id',
                 'transportation_id',
                 'truck_id',
-                'price'
+                'price',
+                'last_price',
+                'contract'
             ])
             ->where('transportation_id', $request->id)
             ->with(['company.users', 'transportation.trucks', 'truck'])
@@ -230,7 +232,8 @@ class TransportationRepository extends BaseRepository
             $last_prices = $request->input('last_price');
             $contractFile = $request->file('contract');
             $filename = Str::uuid() . '.' . $contractFile->getClientOriginalExtension();
-            $contractFile->storeAs('contracts', $filename, 'public');
+            // $contractFile->storeAs('contracts', $filename, 'public');
+            $contractFile->move(public_path('contracts'), $filename);
             foreach ($order_ids as $index => $order_id) {
                 $order = TransportOrder::find($order_id);
                 if ($order) {
