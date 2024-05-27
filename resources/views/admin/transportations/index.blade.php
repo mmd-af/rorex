@@ -408,17 +408,22 @@
                         }
                         const truckQty = element.transportation.trucks.find(truck => truck.id === element
                             .truck_id)?.pivot.qty || 1;
+                        const price = element.last_price !== null ? element.last_price : element.price;
+                        const originalTotalPrice = truckQty * element.price;
+                        const discountedTotalPrice = truckQty * price;
+
                         acc[companyId].trucks.push({
                             orderId: element.id,
                             truckName: element.truck.name,
                             lwh: element.truck.lwh,
                             qty: truckQty,
                             price: element.price,
-                            totalPrice: truckQty * element.price,
                             lastPrice: element.last_price,
-                            contract: element.contract
+                            contract: element.contract,
+                            totalPrice: discountedTotalPrice,
+                            originalTotalPrice: originalTotalPrice
                         });
-                        acc[companyId].totalPrice += truckQty * element.price;
+                        acc[companyId].totalPrice += discountedTotalPrice;
                         return acc;
                     }, {});
 
@@ -427,50 +432,50 @@
                     sortedCompanies.forEach(company => {
                         let trucksDetails = ``;
                         company.trucks.forEach(truck => {
-                            console.log(truck.lastPrice);
                             trucksDetails += `
-                    <p><b>Truck:</b> ${truck.truckName} (${truck.lwh})</p>
-                    <p><b>Quantity:</b> ${truck.qty}</p>
-    <p><b>Price per truck:</b>
-         ${truck.lastPrice === null ? `${truck.price.toLocaleString('en-US')} €`: `<span class="text-decoration-line-through">${truck.price.toLocaleString('en-US')} €</span>
-                        <b> ${truck.lastPrice.toLocaleString('en-US')} €`}</b></p>
-                    <p><b>Total price for this truck:</b> ${truck.totalPrice.toLocaleString('en-US')} €</p>
-                        <div class="form-check d-flex justify-content-center">
-                            <div class="bg-warning px-5">    
-                            <input class="form-check-input allSelectOrder" type="checkbox" name="order[]" value="${truck.orderId}" id="order-${truck.orderId}">
-                             <label class="form-check-label" for="order-${truck.orderId}">
-                              select
-                             </label>
-                             </div>
-                             ${truck.contract ? `<a class="btn btn-info mx-2" href="${truck.contract}" target="_blank">Show Contract</a>` : ''}
-                        </div> 
-                    <hr>`;
+                <p><b>Truck:</b> ${truck.truckName} (${truck.lwh})</p>
+                <p><b>Quantity:</b> ${truck.qty}</p>
+                <p><b>Price per truck:</b>
+                    ${truck.lastPrice === null ? `${truck.price.toLocaleString('en-US')} €` : `<span class="text-decoration-line-through">${truck.price.toLocaleString('en-US')} €</span>
+                            <b> ${truck.lastPrice.toLocaleString('en-US')} €`}</b></p>
+                <p><b>Total price for this truck:</b>
+                    ${truck.lastPrice === null ? `${truck.totalPrice.toLocaleString('en-US')} €` : `<span class="text-decoration-line-through">${truck.originalTotalPrice.toLocaleString('en-US')} €</span>
+                            <b> ${truck.totalPrice.toLocaleString('en-US')} €`}</b></p>
+                <div class="form-check d-flex justify-content-center">
+                    <div class="bg-warning px-5">    
+                        <input class="form-check-input allSelectOrder" type="checkbox" name="order[]" value="${truck.orderId}" id="order-${truck.orderId}">
+                        <label class="form-check-label" for="order-${truck.orderId}">
+                            select
+                        </label>
+                    </div>
+                    ${truck.contract ? `<a class="btn btn-info mx-2" href="${truck.contract}" target="_blank">Show Contract</a>` : ''}
+                </div> 
+                <hr>`;
                         });
 
                         companiesInformation.innerHTML += `
-                <div class="col-12 mt-3">
-                    <div class="accordion make-box bg-primary" id="accordion-${company.companyDetails.id}">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                 data-bs-target="#collapse-${company.companyDetails.id}" aria-expanded="false" aria-controls="collapseTwo">
-                                 ${company.companyName} 
+            <div class="col-12 mt-3">
+                <div class="accordion make-box bg-primary" id="accordion-${company.companyDetails.id}">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse-${company.companyDetails.id}" aria-expanded="false" aria-controls="collapseTwo">
+                                ${company.companyName} 
                                 <span style="margin-left: 10px;">|</span>  
                                 <h6 class="text-success" style="margin-left: 10px;">${company.totalPrice.toLocaleString('en-US')} €</h6>
                             </button>
-
-                            </h2>
-                            <div id="collapse-${company.companyDetails.id}" class="accordion-collapse collapse" data-bs-parent="#accordion-${company.companyDetails.id}">
-                                <div class="accordion-body">
-                                    ${trucksDetails}
-                                    <div class="col-12 border p-1"><b>Representative's name:</b> ${company.companyDetails.person_name}</div>
-                                    <div class="col-12 border p-1"><b>Phone:</b> ${company.companyDetails.phone_number}</div>
-                                    <div class="col-12 border p-1"><b>Email:</b> ${company.companyDetails.users.email}</div>
-                                </div>
+                        </h2>
+                        <div id="collapse-${company.companyDetails.id}" class="accordion-collapse collapse" data-bs-parent="#accordion-${company.companyDetails.id}">
+                            <div class="accordion-body">
+                                ${trucksDetails}
+                                <div class="col-12 border p-1"><b>Representative's name:</b> ${company.companyDetails.person_name}</div>
+                                <div class="col-12 border p-1"><b>Phone:</b> ${company.companyDetails.phone_number}</div>
+                                <div class="col-12 border p-1"><b>Email:</b> ${company.companyDetails.users.email}</div>
                             </div>
                         </div>
                     </div>
-                </div>`;
+                </div>
+            </div>`;
                     });
                 })
                 .catch(error => {
