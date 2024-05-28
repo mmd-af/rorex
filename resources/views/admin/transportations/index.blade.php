@@ -442,12 +442,13 @@
                     ${truck.lastPrice === null ? `${truck.totalPrice.toLocaleString('en-US')} €` : `<span class="text-decoration-line-through">${truck.originalTotalPrice.toLocaleString('en-US')} €</span>
                                                                     <b> ${truck.totalPrice.toLocaleString('en-US')} €`}</b></p>
                 <div class="form-check d-flex justify-content-center">
-                    <div class="bg-warning rounded-3 px-5">    
+                    ${truck.contract === null ?
+                    `<div class="bg-warning rounded-3 px-5">    
                         <input class="form-check-input allSelectOrder" type="checkbox" name="order[]" value="${truck.orderId}" id="order-${truck.orderId}">
                         <label class="form-check-label" for="order-${truck.orderId}">
                             select
                         </label>
-                    </div>
+                    </div>` : ``}
                     ${truck.contract ? `<a class="btn btn-info mx-2" href="${truck.contract}" target="_blank">Show Contract</a>
                                                                                 <a class="btn btn-danger mx-2" href="#" onClick="destroyOrderContract(${truck.orderId})">Delete Contract</a>
                                                             ` : ''}
@@ -484,7 +485,6 @@
                     console.error('Error:', error);
                 });
         }
-
 
         function handleActive(event, id) {
             event.preventDefault();
