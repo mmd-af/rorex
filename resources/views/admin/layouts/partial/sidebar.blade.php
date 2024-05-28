@@ -73,6 +73,9 @@
                         @can('transportations_control')
                             <a class="nav-link" href="{{ route('admin.transportations.index') }}">Transportation</a>
                         @endcan
+                        @can('orders_control')
+                            <a class="nav-link" href="{{ route('admin.orders.index') }}">Order</a>
+                        @endcan
                         @can('companies_control')
                             <a class="nav-link" href="{{ route('admin.companies.index') }}">Companies</a>
                         @endcan
