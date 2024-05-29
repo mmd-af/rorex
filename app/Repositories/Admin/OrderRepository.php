@@ -24,6 +24,7 @@ class OrderRepository extends BaseRepository
                 'last_price',
                 'contract'
             ])
+            ->where('contract', '<>', null)
             ->with(['company', 'transportation', 'truck'])
             ->get();
 

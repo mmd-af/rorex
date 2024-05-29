@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transportation_orders', function (Blueprint $table) {
+            $table->boolean('is_active')->default(1)->after('price');
             $table->string('contract')->nullable()->after('price');
             $table->string('last_price')->nullable()->after('price');
         });
@@ -23,6 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('transportation_orders', function (Blueprint $table) {
+            $table->dropColumn('is_active');
             $table->dropColumn('contract');
             $table->dropColumn('last_price');
         });

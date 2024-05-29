@@ -17,6 +17,7 @@
             <table id="orderTable" class="table table-bordered table-striped text-center">
                 <thead>
                     <tr>
+                        <th>Id</th>
                         <th>Company Name</th>
                         <th>Transportation</th>
                         <th>Truck Name</th>
@@ -28,7 +29,7 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Company Name</th>
+                        <th>Id</th>
                         <th>Transportation</th>
                         <th>Truck Name</th>
                         <th>First Price</th>
@@ -54,6 +55,10 @@
                 pageLength: 25,
                 ajax: "{{ route('admin.orders.ajax.getDataTable') }}",
                 columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
                         data: 'company',
                         name: 'company'
                     },
