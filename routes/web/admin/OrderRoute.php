@@ -17,6 +17,10 @@ Route::group(['middleware' => ['permission:orders_control'], 'namespace' => 'App
                 'as' => 'uploadCmr',
                 'uses' => 'OrderController@uploadCmr'
             ]);
+            Route::delete('/{cmr}/cmrDestroy', [
+                'as' => 'cmrDestroy',
+                'uses' => 'OrderController@cmrDestroy'
+            ]);
         });
         Route::group(['prefix' => 'orders-ajax', 'as' => 'orders.ajax.'], function () {
             Route::get('/getDataTable', [

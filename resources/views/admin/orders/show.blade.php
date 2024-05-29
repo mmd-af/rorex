@@ -269,6 +269,12 @@
                         <div class="ms-2 me-auto">
                             <div class="fw-bold">Tracking Number: {{ $cmr->id }}</div>
                             <a href="{{ asset($cmr->cmr) }}" target="_blank">cmr-{{ $cmr->id }}</a>
+                            <form class="float-end" action="{{ route('admin.orders.cmrDestroy', $cmr->id) }}" method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete this file?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>
+                            </form>
                         </div>
                     </li>
                 @endforeach

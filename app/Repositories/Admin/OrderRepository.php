@@ -86,4 +86,16 @@ class OrderRepository extends BaseRepository
             Session::flash('error', $e->getMessage());
         }
     }
+
+    public function cmrDestroy($cmr)
+    {
+        $cmrOrder = CmrOrder::findOrFail($cmr);
+        $orderId = $cmrOrder->order_id;
+        $filePath = public_path($cmrOrder->cmr);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+        $cmrOrder->delete();
+        return $orderId;
+    }
 }
