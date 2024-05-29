@@ -32,4 +32,8 @@ trait TransportOrderRelationships
     {
         return $this->hasMany(InvoiceOrder::class, 'order_id');
     }
+    public function fileOrders()
+    {
+        return $this->hasMany(InvoiceOrder::class, 'order_id');
+    }
 }
