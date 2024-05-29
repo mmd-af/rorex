@@ -29,6 +29,24 @@
                                         <a class="list-group-item list-group-item-action" id="list-profile-list"
                                             data-bs-toggle="list" href="#order-{{ $transport->id }}" role="tab"
                                             aria-controls="list-profile"><b>Your Offer</b></a>
+                                        @if ($orders->where('transportation_id', $transport->id)->first()->contract)
+                                            <a class="list-group-item list-group-item-action" id="list-profile-list"
+                                                data-bs-toggle="list" href="#invoice-{{ $transport->id }}" role="tab"
+                                                aria-controls="list-profile"><b>Invoice</b></a>
+                                        @endif
+
+                                        {{-- <div class="mt-4">
+                                                <form action="{{ route('admin.orders.uploadCmr') }}" method="post" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                                    <div class="input-group mb-3">
+                                                        <input type="file" name="cmr" class="form-control form-control-sm" id="cmr"
+                                                            required>
+                                                        <label class="input-group-text" for="cmr">Add CMR</label>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-success btn-sm">upload</button>
+                                                </form>
+                                            </div>                                            --}}
                                     @endif
                                 </div>
                             </div>
@@ -134,6 +152,27 @@
                                                 </div>
                                             @endforeach
                                         </div>
+                                        @if ($orders->where('transportation_id', $transport->id)->first()->contract)
+                                            <div class="tab-pane fade" id="invoice-{{ $transport->id }}" role="tabpanel"
+                                                aria-labelledby="list-home-list">
+                                                <div class="mt-4">
+                                                    <form action="{{ route('company.dashboard.uploadInvoice') }}" method="post"
+                                                        enctype="multipart/form-data">
+                                                        @csrf
+                                                        <input type="hidden" name="order_id"
+                                                            value="{{ $orders->where('transportation_id', $transport->id)->first()->id }}">
+                                                        <div class="input-group mb-3">
+                                                            <input type="file" name="invoice"
+                                                                class="form-control form-control-sm" id="invoice"
+                                                                required>
+                                                            <label class="input-group-text" for="invoice">Add Invoice</label>
+                                                        </div>
+                                                        <button type="submit"
+                                                            class="btn btn-success btn-sm">upload</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
                                 @if ($orders->where('transportation_id', $transport->id)->isEmpty())
@@ -162,7 +201,8 @@
                         <form method="POST" action="{{ route('verification.send') }}">
                             @csrf
                             <div>
-                                <button type="submit" class="btn btn-success">{{ __('Send Verification Email') }}</button>
+                                <button type="submit"
+                                    class="btn btn-success">{{ __('Send Verification Email') }}</button>
                             </div>
                         </form>
                     </div>

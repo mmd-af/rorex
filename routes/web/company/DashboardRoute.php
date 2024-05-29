@@ -13,6 +13,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Company\Dashboard'], function
                 'as' => 'store',
                 'uses' => 'DashboardController@store'
             ]);
+            Route::post('/uploadInvoice', [
+                'as' => 'uploadInvoice',
+                'uses' => 'DashboardController@uploadInvoice'
+            ]);
         });
         Route::group(['prefix' => 'dashboard-ajax', 'as' => 'dashboard.ajax.'], function () {
             Route::post('/syncTruckForCompany', [

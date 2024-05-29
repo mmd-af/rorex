@@ -6,6 +6,7 @@
 /public/img
 /public/contracts
 /public/cmrs
+/public/invoices
 /storage/*.key
 /vendor
 .env

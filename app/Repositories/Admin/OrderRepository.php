@@ -65,7 +65,7 @@ class OrderRepository extends BaseRepository
                 'contract'
             ])
             ->where('id', $order)
-            ->with(['company', 'company.users', 'transportation', 'transportation.trucks', 'truck', 'cmrOrders'])
+            ->with(['company', 'company.users', 'transportation', 'transportation.trucks', 'truck', 'cmrOrders', 'invoiceOrders'])
             ->first();
     }
     public function uploadCmr($request)

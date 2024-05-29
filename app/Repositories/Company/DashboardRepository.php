@@ -6,6 +6,11 @@ use App\Models\TransportOrder\TransportOrder;
 use App\Models\Truck\Truck;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Company\Company;
+use App\Models\InvoiceOrder\InvoiceOrder;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class DashboardRepository extends BaseRepository
 {
@@ -81,7 +86,9 @@ class DashboardRepository extends BaseRepository
                 'company_id',
                 'transportation_id',
                 'truck_id',
-                'price'
+                'price',
+                'last_price',
+                'contract'
             ])
             ->where('company_id', $company->id)
             ->with(['company', 'transportation', 'truck'])
@@ -116,8 +123,24 @@ class DashboardRepository extends BaseRepository
                     }
                 }
             }
-        } else {
-            dd("sharmande");
+        }
+    }
+    public function uploadInvoice($request)
+    {
+        DB::beginTransaction();
+        try {
+            $invoiceFile = $request->file('invoice');
+            $filename = Str::uuid() . '.' . $invoiceFile->getClientOriginalExtension();
+            $invoiceFile->move(public_path('invoices'), $filename);
+            $invoiceOrder = new InvoiceOrder();
+            $invoiceOrder->order_id = $request->input('order_id');
+            $invoiceOrder->invoice =  '/invoices/' . $filename;
+            $invoiceOrder->save();
+            DB::commit();
+            Session::flash('message', 'Proccess was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
         }
     }
 }

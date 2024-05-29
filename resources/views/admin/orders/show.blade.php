@@ -260,26 +260,36 @@
         </div>
         <div class="col-sm-12 col-lg-4 mt-3">
             <h3>Invoice</h3>
+            <ol class="list-group list-group-numbered">
+                @foreach ($order->invoiceOrders as $invoice)
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Tracking Number: {{ $invoice->id }}</div>
+                            <a href="{{ asset($invoice->invoice) }}" target="_blank">invoice-{{ $invoice->id }}</a>
+                        </div>
+                    </li>
+                @endforeach
+            </ol>
         </div>
         <div class="col-sm-12 col-lg-4 mt-3">
             <h3>CMR</h3>
-            <ol class="list-group list-group-numbered" id="truckList">
+            <ol class="list-group list-group-numbered">
                 @foreach ($order->cmrOrders as $cmr)
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
                             <div class="fw-bold">Tracking Number: {{ $cmr->id }}</div>
                             <a href="{{ asset($cmr->cmr) }}" target="_blank">cmr-{{ $cmr->id }}</a>
-                            <form class="float-end" action="{{ route('admin.orders.cmrDestroy', $cmr->id) }}" method="POST"
-                                onsubmit="return confirm('Are you sure you want to delete this file?');">
+                            <form class="float-end" action="{{ route('admin.orders.cmrDestroy', $cmr->id) }}"
+                                method="POST" onsubmit="return confirm('Are you sure you want to delete this file?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"> <i class="fa fa-trash" aria-hidden="true"></i> </button>
+                                <button type="submit" class="btn btn-danger btn-sm"> <i class="fa fa-trash"
+                                        aria-hidden="true"></i> </button>
                             </form>
                         </div>
                     </li>
                 @endforeach
             </ol>
-
             <div class="mt-4">
                 <form action="{{ route('admin.orders.uploadCmr') }}" method="post" enctype="multipart/form-data">
                     @csrf
