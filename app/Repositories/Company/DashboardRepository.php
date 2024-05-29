@@ -143,4 +143,13 @@ class DashboardRepository extends BaseRepository
             Session::flash('error', $e->getMessage());
         }
     }
+    public function invoiceDestroy($invoice)
+    {
+        $invoiceOrder = InvoiceOrder::findOrFail($invoice);
+        $filePath = public_path($invoiceOrder->invoice);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+        $invoiceOrder->delete();
+    }
 }

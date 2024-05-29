@@ -17,6 +17,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Company\Dashboard'], function
                 'as' => 'uploadInvoice',
                 'uses' => 'DashboardController@uploadInvoice'
             ]);
+            Route::delete('/{invoice}/invoiceDestroy', [
+                'as' => 'invoiceDestroy',
+                'uses' => 'DashboardController@invoiceDestroy'
+            ]);
         });
         Route::group(['prefix' => 'dashboard-ajax', 'as' => 'dashboard.ajax.'], function () {
             Route::post('/syncTruckForCompany', [

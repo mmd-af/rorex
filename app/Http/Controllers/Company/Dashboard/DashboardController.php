@@ -29,10 +29,15 @@ class DashboardController extends Controller
         $this->dashboardRepository->storeTransportOrder($request);
         return redirect()->route('company.dashboard.index');
     }
-    
+
     public function uploadInvoice(Request $request)
     {
         $this->dashboardRepository->uploadInvoice($request);
+        return redirect()->route('company.dashboard.index');
+    }
+    public function invoiceDestroy($invoice)
+    {
+        $this->dashboardRepository->invoiceDestroy($invoice);
         return redirect()->route('company.dashboard.index');
     }
 }
