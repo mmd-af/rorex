@@ -16,7 +16,8 @@
 
 
     <!-- Transportation Button trigger modal -->
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#transportationInformation">
+    <button type="button" class="btn btn-outline-primary mx-3 p-3 mt-2" data-bs-toggle="modal"
+        data-bs-target="#transportationInformation">
         Show Transportation
     </button>
 
@@ -97,7 +98,8 @@
     </div>
 
     <!-- Company Button trigger modal -->
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#companyInformation">
+    <button type="button" class="btn btn-outline-primary mx-3 p-3 mt-2" data-bs-toggle="modal"
+        data-bs-target="#companyInformation">
         Show Company
     </button>
 
@@ -176,8 +178,119 @@
             </div>
         </div>
     </div>
+
+    <!-- Truck Button trigger modal -->
+    <button type="button" class="btn btn-outline-primary mx-3 p-3 mt-2" data-bs-toggle="modal"
+        data-bs-target="#truckInformation">
+        Show Truck
+    </button>
+
+    <!-- Truck Modal -->
+    <div class="modal fade" id="truckInformation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="truckInformationLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="truckInformationLabel">Truck</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ol class="list-group list-group-numbered" id="truckList">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Truck Name</div>
+                                {{ $order->truck->name }}
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">LWH</div>
+                                {{ $order->truck->lwh }}
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Total Height</div>
+                                {{ $order->truck->total_height }}
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Load Capacity</div>
+                                {{ $order->truck->load_capacity }}
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Covered</div>
+                                {{ $order->truck->covered }}
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr style=" border-top: 6px solid #000;">
+
+    <div class="row">
+        <div class="col-sm-12 col-lg-4">
+            <ol class="list-group" id="truckList">
+                <li class="list-group-item">
+                    <div class="ms-2 me-auto">
+                        <h3>Information</h3>
+                        <h6>Price for each Truck</h6>
+                        @if ($order->last_price === null)
+                            <span class="text-success"><b>{{ $order->price }} €</b></span>
+                        @else
+                            <span class="text-decoration-line-through text-danger">{{ $order->price }} €</span>
+                            <span class="text-success"><b>{{ $order->last_price }}
+                                    €</b></span>
+                        @endif
+
+                    </div>
+                    <a href="{{ asset($order->contract) }}" class="btn btn-outline-info m-3 p-3"
+                        target="_blank">Contract</a>
+
+                </li>
+            </ol>
+        </div>
+        <div class="col-sm-12 col-lg-4">
+            <h3>Invoice</h3>
+        </div>
+        <div class="col-sm-12 col-lg-4">
+            <h3>Upload CMR</h3>
+            <div class="mt-4">
+                <form action="" method="post">
+                    @csrf
+                    <div class="input-group mb-3">
+                        <input type="file" name="cmr" class="form-control form-control-sm" id="cmr"
+                            required>
+                        <label class="input-group-text" for="cmr">Upload</label>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm">upload</button>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
-    <script></script>
+    <script>
+        // document.getElementById('add-file-upload').addEventListener('click', function() {
+        //     var container = document.getElementById('file-upload-container');
+        //     var newFileInputDiv = document.createElement('div');
+        //     newFileInputDiv.className = 'mb-3';
+
+        //     var newFileInput = document.createElement('input');
+        //     newFileInput.type = 'file';
+        //     newFileInput.className = 'form-control-file';
+
+        //     newFileInputDiv.appendChild(newFileInput);
+        //     container.appendChild(newFileInputDiv);
+        // });
+    </script>
 @endsection
