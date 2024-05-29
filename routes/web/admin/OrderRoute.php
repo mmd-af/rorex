@@ -13,6 +13,10 @@ Route::group(['middleware' => ['permission:orders_control'], 'namespace' => 'App
                 'as' => 'show',
                 'uses' => 'OrderController@show'
             ]);
+            Route::post('/uploadCmr', [
+                'as' => 'uploadCmr',
+                'uses' => 'OrderController@uploadCmr'
+            ]);
         });
         Route::group(['prefix' => 'orders-ajax', 'as' => 'orders.ajax.'], function () {
             Route::get('/getDataTable', [

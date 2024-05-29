@@ -2,8 +2,13 @@
 
 namespace App\Repositories\Admin;
 
+use App\Models\CmrOrder\CmrOrder;
 use App\Models\TransportOrder\TransportOrder;
 use Yajra\DataTables\Facades\DataTables;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class OrderRepository extends BaseRepository
 {
@@ -62,5 +67,23 @@ class OrderRepository extends BaseRepository
             ->where('id', $order)
             ->with(['company', 'company.users', 'transportation', 'transportation.trucks', 'truck', 'cmrOrders'])
             ->first();
+    }
+    public function uploadCmr($request)
+    {
+        DB::beginTransaction();
+        try {
+            $cmrFile = $request->file('cmr');
+            $filename = Str::uuid() . '.' . $cmrFile->getClientOriginalExtension();
+            $cmrFile->move(public_path('cmrs'), $filename);
+            $cmrOrder = new CmrOrder();
+            $cmrOrder->order_id = $request->input('order_id');
+            $cmrOrder->cmr =  '/cmrs/' . $filename;
+            $cmrOrder->save();
+            DB::commit();
+            Session::flash('message', 'Proccess was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
     }
 }

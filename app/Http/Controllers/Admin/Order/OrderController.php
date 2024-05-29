@@ -26,4 +26,9 @@ class OrderController extends Controller
         $order = $this->orderRepository->show($order);
         return view('admin.orders.show', compact('order'));
     }
+    public function uploadCmr(Request $request)
+    {
+        $this->orderRepository->uploadCmr($request);
+        return redirect()->route('admin.orders.show', $request->order_id);
+    }
 }

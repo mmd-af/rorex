@@ -237,7 +237,7 @@
     <hr style=" border-top: 6px solid #000;">
 
     <div class="row">
-        <div class="col-sm-12 col-lg-4">
+        <div class="col-sm-12 col-lg-4 mt-3">
             <ol class="list-group" id="truckList">
                 <li class="list-group-item">
                     <div class="ms-2 me-auto">
@@ -258,18 +258,30 @@
                 </li>
             </ol>
         </div>
-        <div class="col-sm-12 col-lg-4">
+        <div class="col-sm-12 col-lg-4 mt-3">
             <h3>Invoice</h3>
         </div>
-        <div class="col-sm-12 col-lg-4">
-            <h3>Upload CMR</h3>
+        <div class="col-sm-12 col-lg-4 mt-3">
+            <h3>CMR</h3>
+            <ol class="list-group list-group-numbered" id="truckList">
+                @foreach ($order->cmrOrders as $cmr)
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Tracking Number: {{ $cmr->id }}</div>
+                            <a href="{{ asset($cmr->cmr) }}" target="_blank">cmr-{{ $cmr->id }}</a>
+                        </div>
+                    </li>
+                @endforeach
+            </ol>
+
             <div class="mt-4">
-                <form action="" method="post">
+                <form action="{{ route('admin.orders.uploadCmr') }}" method="post" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="order_id" value="{{ $order->id }}">
                     <div class="input-group mb-3">
                         <input type="file" name="cmr" class="form-control form-control-sm" id="cmr"
                             required>
-                        <label class="input-group-text" for="cmr">Upload</label>
+                        <label class="input-group-text" for="cmr">Add CMR</label>
                     </div>
                     <button type="submit" class="btn btn-success btn-sm">upload</button>
                 </form>
@@ -279,18 +291,5 @@
 @endsection
 
 @section('script')
-    <script>
-        // document.getElementById('add-file-upload').addEventListener('click', function() {
-        //     var container = document.getElementById('file-upload-container');
-        //     var newFileInputDiv = document.createElement('div');
-        //     newFileInputDiv.className = 'mb-3';
-
-        //     var newFileInput = document.createElement('input');
-        //     newFileInput.type = 'file';
-        //     newFileInput.className = 'form-control-file';
-
-        //     newFileInputDiv.appendChild(newFileInput);
-        //     container.appendChild(newFileInputDiv);
-        // });
-    </script>
+    <script></script>
 @endsection
