@@ -12,6 +12,9 @@
         <li class="breadcrumb-item active">Orders</li>
     </ol>
     @include('admin.layouts.partial.errors')
+
+
+    @dd($order)
     <div class="card mb-4">
         <div class="card-body table-responsive">
             <table id="orderTable" class="table table-bordered table-striped text-center">

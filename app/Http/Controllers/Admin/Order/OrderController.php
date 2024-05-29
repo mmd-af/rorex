@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Order;
 use App\Http\Controllers\Controller;
 use App\Repositories\Admin\OrderRepository;
 use App\Http\Requests\Admin\Order\StoreRequest;
+use App\Models\TransportOrder\TransportOrder;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -19,5 +20,10 @@ class OrderController extends Controller
     public function index()
     {
         return view('admin.orders.index');
+    }
+    public function show($order)
+    {
+        $order = $this->orderRepository->show($order);
+        return view('admin.orders.show', compact('order'));
     }
 }

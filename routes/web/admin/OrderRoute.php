@@ -9,6 +9,10 @@ Route::group(['middleware' => ['permission:orders_control'], 'namespace' => 'App
                 'as' => 'index',
                 'uses' => 'OrderController@index'
             ]);
+            Route::get('/{order}/show', [
+                'as' => 'show',
+                'uses' => 'OrderController@show'
+            ]);
         });
         Route::group(['prefix' => 'orders-ajax', 'as' => 'orders.ajax.'], function () {
             Route::get('/getDataTable', [

@@ -19,10 +19,7 @@ class OrderRepository extends BaseRepository
                 'id',
                 'company_id',
                 'transportation_id',
-                'truck_id',
-                'price',
-                'last_price',
-                'contract'
+                'truck_id'
             ])
             ->where('contract', '<>', null)
             ->with(['company', 'transportation', 'truck'])
@@ -39,27 +36,31 @@ class OrderRepository extends BaseRepository
                 ->addColumn('truck', function ($row) {
                     return $row->truck->name;
                 })
-                ->addColumn('contract', function ($row) {
-                    if ($row->contract) {
-                        return '<a href="' . asset($row->contract) . '" download>Download</a>';
-                    }
-                    return 'No Contract';
-                })
                 ->addColumn('action', function ($row) {
-                    return '<button onclick="showOrder(' . $row->id . ')" type="button"
-                       class="btn btn-success text-white btn-sm mx-3" data-bs-toggle="modal"
-                        data-bs-target="#showOrder">
-                        <i class="fa-solid fa-accept"></i>
-                        </button>
-                        <button onclick="show(' . $row->id . ')" type="button"
-                           class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#show">
-                         <i class="fa-solid fa-trash"></i>
-                        </button>';
+                    $url = route('admin.orders.show', $row->id);
+                    return '<a href="' . $url . '" class="btn btn-info text-white btn-sm mx-3">
+                        <i class="fa-solid fa-eye"></i>
+                        </a>';
                 })
-                ->rawColumns(['company', 'transportation', 'truck', 'contract', 'action'])
+                ->rawColumns(['company', 'transportation', 'truck', 'action'])
                 ->make(true);
         }
         return false;
+    }
+    public function show($order)
+    {
+        return $this->query()
+            ->select([
+                'id',
+                'company_id',
+                'transportation_id',
+                'truck_id',
+                'price',
+                'last_price',
+                'contract'
+            ])
+            ->where('id', $order)
+            ->with(['company', 'transportation', 'truck'])
+            ->first();
     }
 }
