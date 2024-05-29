@@ -60,7 +60,7 @@ class OrderRepository extends BaseRepository
                 'contract'
             ])
             ->where('id', $order)
-            ->with(['company', 'company.users', 'transportation', 'transportation.trucks', 'truck'])
+            ->with(['company', 'company.users', 'transportation', 'transportation.trucks', 'truck', 'cmrOrders'])
             ->first();
     }
 }

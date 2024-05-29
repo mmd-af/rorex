@@ -5,6 +5,7 @@ namespace App\Models\TransportOrder;
 use App\Models\Company\Company;
 use App\Models\Transportation\Transportation;
 use App\Models\Truck\Truck;
+use App\Models\CmrOrder\CmrOrder;
 
 trait TransportOrderRelationships
 {
@@ -21,5 +22,9 @@ trait TransportOrderRelationships
     public function truck()
     {
         return $this->belongsTo(Truck::class);
+    }
+    public function cmrOrders()
+    {
+        return $this->hasMany(CmrOrder::class, 'order_id');
     }
 }
