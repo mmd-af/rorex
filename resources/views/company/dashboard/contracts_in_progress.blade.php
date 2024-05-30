@@ -19,8 +19,31 @@
                             <div id="collapse{{ $order->id }}" class="accordion-collapse collapse"
                                 aria-labelledby="heading{{ $order->id }}" data-bs-parent="#orderAccordion">
                                 <div class="accordion-body">
+                                    <!-- Contract Section -->
+                                    <div class="border shadow-lg p-3">
+                                        <ol class="list-group" id="truckList">
+                                            <li class="list-group-item">
+                                                <div class="ms-2 me-auto">
+                                                    <h3>Information</h3>
+                                                    <h6>Price for each Truck</h6>
+                                                    @if ($order->last_price === null)
+                                                        <span class="text-success"><b>{{ $order->price }} €</b></span>
+                                                    @else
+                                                        <span
+                                                            class="text-decoration-line-through text-danger">{{ $order->price }}
+                                                            €</span>
+                                                        <span class="text-success"><b>{{ $order->last_price }}
+                                                                €</b></span>
+                                                    @endif
+
+                                                </div>
+                                                <a href="{{ asset($order->contract) }}"
+                                                    class="btn btn-outline-info m-3 p-3" target="_blank">Contract</a>
+                                            </li>
+                                        </ol>
+                                    </div>
                                     <!-- Invoice Section -->
-                                    <div id="invoice-{{ $order->id }}">
+                                    <div class="border shadow-lg p-3 mt-4">
                                         <h4>Invoice</h4>
                                         <ol class="list-group list-group-numbered mb-4">
                                             @foreach ($order->invoiceOrders as $invoice)
@@ -58,9 +81,8 @@
                                             </form>
                                         </div>
                                     </div>
-
                                     <!-- CMR Section -->
-                                    <div id="cmr-{{ $order->id }}" class="mt-4">
+                                    <div class="border shadow-lg p-3 mt-4">
                                         <h4>CMR</h4>
                                         <ol class="list-group list-group-numbered mb-4">
                                             @foreach ($order->cmrOrders as $cmr)
@@ -75,9 +97,8 @@
                                             @endforeach
                                         </ol>
                                     </div>
-
                                     <!-- Files Section -->
-                                    <div id="file-{{ $order->id }}" class="mt-4">
+                                    <div class="border shadow-lg p-3 mt-4">
                                         <h4>Files</h4>
                                         <ol class="list-group list-group-numbered mb-4">
                                             @foreach ($order->fileOrders as $file)
