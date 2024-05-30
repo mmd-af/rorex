@@ -10,9 +10,6 @@
                 <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list"
                     href="#trucks-{{ $transport->id }}" role="tab" aria-controls="list-profile">Trucks</a>
                 @if (!$orders->where('transportation_id', $transport->id)->isEmpty())
-                    <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list"
-                        href="#order-{{ $transport->id }}" role="tab" aria-controls="list-profile"><b>Your
-                            Offer</b></a>
                     @if ($orders->where('transportation_id', $transport->id)->first()->contract)
                         <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list"
                             href="#invoice-{{ $transport->id }}" role="tab"
@@ -112,22 +109,6 @@
                     @endforeach
                 </div>
                 @if (!$orders->where('transportation_id', $transport->id)->isEmpty())
-                    <div class="tab-pane fade" id="order-{{ $transport->id }}" role="tabpanel"
-                        aria-labelledby="list-home-list">
-                        @foreach ($orders->where('transportation_id', $transport->id) as $order)
-                            <div class="table-responsive">
-                                <table class="table table-primary">
-                                    <tbody>
-                                        <tr>
-                                            <td><b>Price: </b></td>
-                                            <td>for <b>{{ $order->truck->name }}</b></td>
-                                            <td>{{ $order->price }} €</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endforeach
-                    </div>
                     @if ($orders->where('transportation_id', $transport->id)->first()->contract)
                         <div class="tab-pane fade" id="invoice-{{ $transport->id }}" role="tabpanel"
                             aria-labelledby="list-home-list">
@@ -214,7 +195,22 @@
                     Apply
                 </button>
             @else
-      
+                <div class="border shadow mt-5 p-3" id="order-{{ $transport->id }}">
+                    <h5>Your Offer:</h5>
+                    @foreach ($orders->where('transportation_id', $transport->id) as $order)
+                        <div class="table-responsive">
+                            <table class="table table-warning">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Price: </b></td>
+                                        <td>for <b>{{ $order->truck->name }}</b></td>
+                                        <td>{{ $order->price }} €</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    @endforeach
+                </div>
             @endif
         </div>
     </div>
