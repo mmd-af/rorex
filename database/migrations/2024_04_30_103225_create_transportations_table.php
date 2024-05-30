@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('product_name');
+            $table->integer('product_number')->nullable();
             $table->date('from_date');
             $table->date('until_date');
             $table->string('country_of_origin');

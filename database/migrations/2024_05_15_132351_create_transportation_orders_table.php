@@ -20,6 +20,9 @@ return new class extends Migration
             $table->foreignId('truck_id');
             $table->foreign('truck_id')->references('id')->on('trucks')->onDelete('cascade');
             $table->string('price');
+            $table->string('last_price')->nullable();
+            $table->string('contract')->nullable();
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
     }
