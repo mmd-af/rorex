@@ -1,5 +1,7 @@
 @foreach ($transportations as $transport)
-    <div class="row m-5 p-5 border border-1 rounded-3 shadow shadow-lg">
+    {{-- {{dd($transport->orders)}} --}}
+    {{-- @if (count($transport->orders->contract) == 0) --}}
+    <div class="row m-5 p-3 border border-1 rounded-3 shadow shadow-lg">
         <div class="col-sm-12 col-lg-4">
             <div class="list-group" id="list-tab" role="tablist">
                 <a class="list-group-item list-group-item-action active" id="list-home-list" data-bs-toggle="list"
@@ -26,6 +28,10 @@
                                 <tr>
                                     <td>Product Name</td>
                                     <td>{{ $transport->product_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Product Number</td>
+                                    <td>{{ $transport->product_number }}</td>
                                 </tr>
                                 <tr>
                                     <td>From Date</td>
@@ -98,8 +104,8 @@
                 </div>
             </div>
             @if ($orders->where('transportation_id', $transport->id)->isEmpty())
-                <button type="button" onclick="applyOrder({{ $transport }})"
-                    class="btn btn-success m-3 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" onclick="applyOrder({{ $transport }})" class="btn btn-success m-3 float-end"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Apply
                 </button>
             @else
@@ -122,4 +128,5 @@
             @endif
         </div>
     </div>
+    {{-- @endif --}}
 @endforeach
