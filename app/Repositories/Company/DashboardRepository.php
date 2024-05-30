@@ -91,7 +91,7 @@ class DashboardRepository extends BaseRepository
                 'contract'
             ])
             ->where('company_id', $company->id)
-            ->with(['company', 'transportation', 'truck'])
+            ->with(['company', 'company.users', 'transportation', 'transportation.trucks', 'truck', 'cmrOrders', 'invoiceOrders', 'fileOrders'])
             ->get();
     }
     static function checkCompanyOrder($request)
