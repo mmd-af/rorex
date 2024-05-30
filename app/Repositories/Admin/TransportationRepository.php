@@ -28,6 +28,7 @@ class TransportationRepository extends BaseRepository
                 'id',
                 'user_id',
                 'product_name',
+                'product_number',
                 'from_date',
                 'until_date',
                 'country_of_origin',
