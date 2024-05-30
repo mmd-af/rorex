@@ -309,7 +309,7 @@
                 @foreach ($order->fileOrders as $file)
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <div class="fw-bold">Tracking Number: {{ $file->id }}</div>
+                            <div>Tracking Number: {{ $file->id }}</div>
                             <h6>{{ $file->name }}</h6>
                             <a href="{{ asset($file->file) }}" target="_blank">file-{{ $file->id }}</a>
                             <form class="float-end" action="{{ route('admin.orders.fileDestroy', $file->id) }}"

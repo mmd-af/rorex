@@ -36,6 +36,9 @@
                                             <a class="list-group-item list-group-item-action" id="list-profile-list"
                                                 data-bs-toggle="list" href="#cmr-{{ $transport->id }}" role="tab"
                                                 aria-controls="list-profile"><b>CMR</b></a>
+                                                <a class="list-group-item list-group-item-action" id="list-profile-list"
+                                                data-bs-toggle="list" href="#file-{{ $transport->id }}" role="tab"
+                                                aria-controls="list-profile"><b>Files</b></a>
                                         @endif
                                     @endif
                                 </div>
@@ -201,6 +204,24 @@
                                                                 </div>
                                                                 <a href="{{ asset($cmr->cmr) }}"
                                                                     target="_blank">cmr-{{ $cmr->id }}</a>
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+                                                </ol>
+                                            </div>
+                                            <div class="tab-pane fade" id="file-{{ $transport->id }}" role="tabpanel"
+                                                aria-labelledby="list-home-list">
+                                                <h3>Files</h3>
+                                                <ol class="list-group list-group-numbered">
+                                                    @foreach ($orders->where('transportation_id', $transport->id)->first()->fileOrders as $file)
+                                                        <li
+                                                            class="list-group-item d-flex justify-content-between align-items-start">
+                                                            <div class="ms-2 me-auto">
+                                                                <div>Tracking Number: {{ $file->id }}
+                                                                </div>
+                                                                <h6>{{ $file->name }}</h6>
+                                                                <a href="{{ asset($file->file) }}"
+                                                                    target="_blank">file-{{ $file->id }}</a>
                                                             </div>
                                                         </li>
                                                     @endforeach
