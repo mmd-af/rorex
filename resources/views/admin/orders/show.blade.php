@@ -237,7 +237,7 @@
     <hr style=" border-top: 6px solid #000;">
 
     <div class="row">
-        <div class="col-sm-12 col-lg-4 m-1 p-3 shadow" style="background-color: beige">
+        <div class="col-sm-12 col-lg-4 m-2 p-3 shadow" style="background-color: beige">
             <ol class="list-group" id="truckList">
                 <li class="list-group-item">
                     <div class="ms-2 me-auto">
@@ -258,7 +258,7 @@
                 </li>
             </ol>
         </div>
-        <div class="col-sm-12 col-lg-4 m-1 p-3 shadow" style="background-color: beige">
+        <div class="col-sm-12 col-lg-4 m-2 p-3 shadow" style="background-color: beige">
             <h3>Invoice</h3>
             <ol class="list-group list-group-numbered">
                 @foreach ($order->invoiceOrders as $invoice)
@@ -271,7 +271,7 @@
                 @endforeach
             </ol>
         </div>
-        <div class="col-sm-12 col-lg-4 m-1 p-3 shadow" style="background-color: beige">
+        <div class="col-sm-12 col-lg-4 m-2 p-3 shadow" style="background-color: beige">
             <h3>CMR</h3>
             <ol class="list-group list-group-numbered">
                 @foreach ($order->cmrOrders as $cmr)
@@ -303,7 +303,7 @@
                 </form>
             </div>
         </div>
-        <div class="col-sm-12 col-lg-4 m-1 p-3 shadow" style="background-color: beige">
+        <div class="col-sm-12 col-lg-4 m-2 p-3 shadow" style="background-color: beige">
             <h3>Files</h3>
             <ol class="list-group list-group-numbered">
                 @foreach ($order->fileOrders as $file)
