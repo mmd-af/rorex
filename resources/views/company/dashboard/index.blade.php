@@ -35,7 +35,9 @@
                             @include('company.dashboard.request_lists')
                         </div>
                         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
-                            tabindex="0">...</div>
+                            tabindex="0">
+                            @include('company.dashboard.contracts_in_progress')
+                        </div>
                         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab"
                             tabindex="0">...</div>
                     </div>
