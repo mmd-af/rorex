@@ -16,14 +16,14 @@
 @endsection
 @section('content')
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Transportations</li>
+        <li class="breadcrumb-item active">Transport Requests</li>
     </ol>
     <div class="row">
         <div class="col-xl-3 col-md-6">
             <div class="mb-4">
                 <button class="btn btn-primary px-5" onclick="getTruck()" style="cursor: pointer" data-bs-toggle="modal"
-                    data-bs-target="#createNewTrasportation" data-info="Modal 1 Content">
-                    Create Transportation <i class="fa fa-plus" aria-hidden="true"></i>
+                    data-bs-target="#createNewTransportation" data-info="Modal 1 Content">
+                    Create Transport Request <i class="fa fa-plus" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
@@ -113,12 +113,12 @@
         </div>
     </div>
 
-    <div class="modal fade" id="createNewTrasportation" tabindex="-1" aria-labelledby="createNewTrasportationLabel"
+    <div class="modal fade" id="createNewTransportation" tabindex="-1" aria-labelledby="createNewTransportationLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="createNewTrasportationLabel">Create New Trasportation</h1>
+                    <h1 class="modal-title fs-5" id="createNewTransportationLabel">Create New Transport Request</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

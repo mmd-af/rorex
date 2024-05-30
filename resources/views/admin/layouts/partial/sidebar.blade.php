@@ -71,10 +71,10 @@
                     data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         @can('transportations_control')
-                            <a class="nav-link" href="{{ route('admin.transportations.index') }}">Transportation</a>
+                            <a class="nav-link" href="{{ route('admin.transportations.index') }}">Transport Requests</a>
                         @endcan
                         @can('orders_control')
-                            <a class="nav-link" href="{{ route('admin.orders.index') }}">Order</a>
+                            <a class="nav-link" href="{{ route('admin.orders.index') }}">Orders</a>
                         @endcan
                         @can('companies_control')
                             <a class="nav-link" href="{{ route('admin.companies.index') }}">Companies</a>
