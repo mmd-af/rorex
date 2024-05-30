@@ -3,6 +3,7 @@
 namespace App\Repositories\Admin;
 
 use App\Models\CmrOrder\CmrOrder;
+use App\Models\FileOrder\FileOrder;
 use App\Models\TransportOrder\TransportOrder;
 use Yajra\DataTables\Facades\DataTables;
 use Exception;
@@ -65,7 +66,7 @@ class OrderRepository extends BaseRepository
                 'contract'
             ])
             ->where('id', $order)
-            ->with(['company', 'company.users', 'transportation', 'transportation.trucks', 'truck', 'cmrOrders', 'invoiceOrders'])
+            ->with(['company', 'company.users', 'transportation', 'transportation.trucks', 'truck', 'cmrOrders', 'invoiceOrders', 'fileOrders'])
             ->first();
     }
     public function uploadCmr($request)
@@ -96,6 +97,37 @@ class OrderRepository extends BaseRepository
             unlink($filePath);
         }
         $cmrOrder->delete();
+        return $orderId;
+    }
+    public function uploadFile($request)
+    {
+        DB::beginTransaction();
+        try {
+            $fileFile = $request->file('file');
+            $filename = Str::uuid() . '.' . $fileFile->getClientOriginalExtension();
+            $fileFile->move(public_path('files'), $filename);
+            $fileOrder = new FileOrder();
+            $fileOrder->name = $request->input('name');
+            $fileOrder->order_id = $request->input('order_id');
+            $fileOrder->file =  '/files/' . $filename;
+            $fileOrder->save();
+            DB::commit();
+            Session::flash('message', 'Proccess was Completed Successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            Session::flash('error', $e->getMessage());
+        }
+    }
+
+    public function fileDestroy($file)
+    {
+        $fileOrder = FileOrder::findOrFail($file);
+        $orderId = $fileOrder->order_id;
+        $filePath = public_path($fileOrder->file);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+        $fileOrder->delete();
         return $orderId;
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Transportation\Transportation;
 use App\Models\Truck\Truck;
 use App\Models\CmrOrder\CmrOrder;
 use App\Models\InvoiceOrder\InvoiceOrder;
+use App\Models\FileOrder\FileOrder;
 
 trait TransportOrderRelationships
 {
@@ -34,6 +35,6 @@ trait TransportOrderRelationships
     }
     public function fileOrders()
     {
-        return $this->hasMany(InvoiceOrder::class, 'order_id');
+        return $this->hasMany(FileOrder::class, 'order_id');
     }
 }

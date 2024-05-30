@@ -21,6 +21,14 @@ Route::group(['middleware' => ['permission:orders_control'], 'namespace' => 'App
                 'as' => 'cmrDestroy',
                 'uses' => 'OrderController@cmrDestroy'
             ]);
+            Route::post('/uploadFile', [
+                'as' => 'uploadFile',
+                'uses' => 'OrderController@uploadFile'
+            ]);
+            Route::delete('/{file}/fileDestroy', [
+                'as' => 'fileDestroy',
+                'uses' => 'OrderController@fileDestroy'
+            ]);
         });
         Route::group(['prefix' => 'orders-ajax', 'as' => 'orders.ajax.'], function () {
             Route::get('/getDataTable', [

@@ -303,6 +303,41 @@
                 </form>
             </div>
         </div>
+        <div class="col-sm-12 col-lg-4 mt-3">
+            <h3>Files</h3>
+            <ol class="list-group list-group-numbered">
+                @foreach ($order->fileOrders as $file)
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Tracking Number: {{ $file->id }}</div>
+                            <h6>{{ $file->name }}</h6>
+                            <a href="{{ asset($file->file) }}" target="_blank">file-{{ $file->id }}</a>
+                            <form class="float-end" action="{{ route('admin.orders.fileDestroy', $file->id) }}"
+                                method="POST" onsubmit="return confirm('Are you sure you want to delete this file?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"> <i class="fa fa-trash"
+                                        aria-hidden="true"></i> </button>
+                            </form>
+                        </div>
+                    </li>
+                @endforeach
+            </ol>
+            <div class="mt-4">
+                <form action="{{ route('admin.orders.uploadFile') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                    <input type="text" class="form-control form-control-sm" name="name" id="name" placeholder="file name"
+                        value="{{ old('name') }}" required>
+                    <div class="input-group mb-3">
+                        <input type="file" name="file" class="form-control form-control-sm" id="file"
+                            required>
+                        <label class="input-group-text" for="file">Add File</label>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm">upload</button>
+                </form>
+            </div>
+        </div>
     </div>
 @endsection
 

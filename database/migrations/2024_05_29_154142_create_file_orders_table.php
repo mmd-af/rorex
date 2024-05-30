@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('order_id');
             $table->foreign('order_id')->references('id')->on('transportation_orders')->onDelete('cascade');
-            $table->string('invoice');
+            $table->string('file');
             $table->timestamps();
         });
     }
