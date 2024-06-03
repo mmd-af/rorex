@@ -17,6 +17,7 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Exception;
+use App\Events\CompanyRegistered;
 
 class RegisteredUserController extends Controller
 {
@@ -84,6 +85,7 @@ class RegisteredUserController extends Controller
                 $permission->save();
             }
             $user->givePermissionTo($permission);
+            event(new CompanyRegistered($user));
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {
