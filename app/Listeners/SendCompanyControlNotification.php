@@ -25,7 +25,9 @@ class SendCompanyControlNotification
     {
         $users = User::whereHas('permissions', function ($query) {
             $query->where('name', 'companies_control');
-        })->get();
+        })
+            ->whereNotNull('email_verified_at')
+            ->get();
         $data = [
             'title' => 'A newly registered company',
             'content' => 'A new company has been registered on the website. You can check its information from the company control section. You can also access it from the link below.',
