@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Admin;
 
+use App\Events\CompanyActivedEvent;
 use App\Models\Company\Company;
 use App\Models\User\User;
 use Exception;
@@ -85,6 +86,9 @@ class CompanyRepository extends BaseRepository
             $user = User::findOrFail($request->id);
             $user->is_active = !$user->is_active;
             $user->save();
+            if ($user->is_active == "true") {
+                event(new CompanyActivedEvent($user));
+            }
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {

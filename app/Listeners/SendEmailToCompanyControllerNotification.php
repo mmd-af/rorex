@@ -3,12 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\CompanyRegistered;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Mail;
 
-class SendCompanyControlNotification
+class SendEmailToCompanyControllerNotification
 {
     /**
      * Create the event listener.
@@ -35,7 +33,7 @@ class SendCompanyControlNotification
             'button_text' => 'Company Control'
         ];
         foreach ($users as $user) {
-            Mail::send('vendor.emails.new_company_notification', $data, function ($message) use ($user) {
+            Mail::send('vendor.emails.style1', $data, function ($message) use ($user) {
                 $message->to($user->email)
                     ->subject('A newly registered company');
             });
