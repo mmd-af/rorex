@@ -16,6 +16,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('admin.dashboard.index');
+        $users = $this->dashboardRepository->getAllUser();
+        return view('admin.dashboard.index', compact('users'));
     }
 }

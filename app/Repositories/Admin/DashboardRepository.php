@@ -3,12 +3,25 @@
 namespace App\Repositories\Admin;
 
 use App\Models\LetterAssignment\LetterAssignment;
-use App\Models\StaffRequest\StaffRequest;
+use App\Models\User\User;
 use App\Models\Support\Support;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardRepository extends BaseRepository
 {
+    public function getAllUser()
+    {
+        return User::query()
+            ->select([
+                'id',
+                'name',
+                'first_name',
+                'email'
+            ])
+            ->with('roles', 'permissions')
+            ->get();
+    }
+
     public function checkNewNotification($request)
     {
         $letter_assignments = LetterAssignment::query()
