@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Admin;
 
+use App\Events\CompanyInformEvent;
 use App\Models\Transportation\Transportation;
 use App\Models\Truck\Truck;
 use App\Models\Truckable\Truckable;
@@ -163,8 +164,16 @@ class TransportationRepository extends BaseRepository
             $transportation->save();
             $transportation->companies()->attach($request->authorized_company);
             $is_active_companies = $request->is_active;
+
             if (!empty($is_active_companies)) {
                 $transportation->companies()->wherePivotIn('company_id', $is_active_companies)->update(['is_active' => true]);
+
+                $activeCompanies = $transportation->companies()->wherePivotIn('company_id', $is_active_companies)->get();
+
+
+                foreach ($activeCompanies as $company) {
+                    event(new CompanyInformEvent($company));
+                }
             }
             foreach ($request->all() as $key => $value) {
                 if (is_int($key)) {

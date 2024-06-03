@@ -28,7 +28,7 @@ class SendActivedEmailToCompanyNotification
             'title' => 'Your account has been activated',
             'content' => 'Your Company account has been activated, now you can select your vehicles to receive requests and offers in your Company panel.',
             'button_url' => route('login'),
-            'button_text' => 'Company Control'
+            'button_text' => 'Company Panel'
         ];
 
         Mail::send('vendor.emails.style1', $data, function ($message) use ($event) {

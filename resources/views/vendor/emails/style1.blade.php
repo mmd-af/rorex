@@ -30,6 +30,7 @@
 
         .content {
             margin: 20px 0;
+            font-size: 20px;
         }
 
         .button {

@@ -3,13 +3,14 @@
 namespace App\Providers;
 
 use App\Events\CompanyActivedEvent;
+use App\Events\CompanyInformEvent;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 use App\Events\CompanyRegistered;
 use App\Listeners\SendEmailToCompanyControllerNotification;
 use App\Listeners\SendActivedEmailToCompanyNotification;
+use App\Listeners\SendEmailToCompanyToInformNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         CompanyActivedEvent::class => [
             SendActivedEmailToCompanyNotification::class,
+        ],
+        CompanyInformEvent::class => [
+            SendEmailToCompanyToInformNotification::class,
         ]
     ];
 
