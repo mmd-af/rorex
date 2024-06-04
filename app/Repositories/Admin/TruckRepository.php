@@ -41,7 +41,7 @@ class TruckRepository extends BaseRepository
                 ->addColumn('action', function ($row) {
                     return '<button onclick="show(' . $row->id . ')" type="button"
                                     class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#show">
+                                    data-bs-target="#showTrucks">
                                <i class="fa-solid fa-eye"></i>
                             </button>';
                 })
@@ -97,6 +97,16 @@ class TruckRepository extends BaseRepository
             DB::rollBack();
             Session::flash('error', $e->getMessage());
         }
+    }
+    public function fullUpdate($request, $truck)
+    {
+        $truck->name = $request->name;
+        $truck->lwh = $request->lwh;
+        $truck->total_height = $request->total_height;
+        $truck->load_capacity = $request->load_capacity;
+        $truck->covered = $request->covered;
+        $truck->save();
+        Session::flash('message', 'The Operation was Completed Successfully');
     }
 
     function store($request)

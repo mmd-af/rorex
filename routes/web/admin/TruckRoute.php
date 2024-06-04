@@ -13,6 +13,10 @@ Route::group(['middleware' => ['permission:trucks_control'], 'namespace' => 'App
                 'as' => 'store',
                 'uses' => 'TruckController@store'
             ]);
+            Route::put('{truck}/update', [
+                'as' => 'update',
+                'uses' => 'TruckController@update'
+            ]);
         });
         Route::group(['prefix' => 'trucks-ajax', 'as' => 'trucks.ajax.'], function () {
             Route::get('/getDataTable', [

@@ -51,34 +51,6 @@
             </table>
         </div>
     </div>
-    <div class="modal fade" id="show" tabindex="-1" aria-labelledby="ShowLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="showLabel">trucks</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th colspan="2">Information</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="truck_information">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="modal fade" id="createNewTruck" tabindex="-1" aria-labelledby="createNewTruckLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -120,7 +92,58 @@
                             <label for="covered">Covered:</label>
                             <div class="form-switch">
                                 <input type="hidden" name="covered" value="0">
-                                <input class="form-check-input" type="checkbox" role="switch" id="covered"
+                                <input class="form-check-input" type="checkbox" role="switch" id="covered" name="covered"
+                                    value="1">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                    <div class="modal-footer mt-3">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="showTrucks" tabindex="-1" aria-labelledby="truckShowLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="truckShowLabel">Truck</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" action="" method="post">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" id="edit-name" name="name" class="form-control" value=""
+                                required>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="lwh">Length Width Height (LWH) (Cm):</label>
+                            <div class="d-flex">
+                                <input type="text" id="edit-lwh" name="lwh" class="form-control" value=""
+                                    required>
+                            </div>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="total_height">Total Height (Cm):</label>
+                            <input type="number" id="edit-total_height" name="total_height" class="form-control"
+                                value="" required>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="load_capacity">Load Capacity (Kg):</label>
+                            <input type="number" id="edit-load_capacity" name="load_capacity" class="form-control"
+                                value="" required>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="covered">Covered:</label>
+                            <div class="form-switch">
+                                <input type="hidden" name="covered" value="0">
+                                <input class="form-check-input" type="checkbox" role="switch" id="edit-covered"
                                     name="covered" value="1">
                             </div>
                         </div>
@@ -203,73 +226,24 @@
         });
 
         function show(id) {
-            let truckInformation = document.getElementById('truck_information');
-            truckInformation.innerHTML = ``;
+            let editForm = document.getElementById("editForm");
+            let url = "{{ route('admin.trucks.update', ':id') }}";
+            url = url.replace(':id', id);
+            editForm.setAttribute("action", url);
             let data = {
                 id: id
             }
             axios.post("{{ route('admin.trucks.ajax.show') }}", data)
-                .then(response => {
-                    truckInformation.innerHTML = `<tr>
-                                        <th scope="row">truck Name</th>
-                                        <td>${response.data.truck_name}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Activity Domain</th>
-                                        <td>${response.data.activity_domain}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Vat id</th>
-                                        <td>${response.data.vat_id}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Registration Number</th>
-                                        <td>${response.data.registration_number}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Country</th>
-                                        <td>${response.data.country}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">County</th>
-                                        <td>${response.data.county}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">City</th>
-                                        <td>${response.data.city}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Zip Code</th>
-                                        <td>${response.data.zip_code}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Address</th>
-                                        <td>${response.data.address}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Building</th>
-                                        <td>${response.data.building}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Person Name</th>
-                                        <td>${response.data.person_name}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Job Title</th>
-                                        <td>${response.data.job_title}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Phone Number</th>
-                                        <td>${response.data.phone_number}</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Email</th>
-                                        <td>${response.data.users.email}</td>
-                                    </tr>`;
-
+                .then(function(response) {
+                    const data = response.data;
+                    document.getElementById('edit-name').value = data.name;
+                    document.getElementById('edit-lwh').value = data.lwh;
+                    document.getElementById('edit-total_height').value = data.total_height;
+                    document.getElementById('edit-load_capacity').value = data.load_capacity;
+                    document.getElementById('edit-covered').checked = data.covered;
                 })
-                .catch(error => {
-                    console.error('Error:', error);
+                .catch(function(error) {
+                    console.log(error);
                 });
         }
 
