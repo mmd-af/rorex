@@ -102,10 +102,20 @@ class CompanyRepository extends BaseRepository
     {
         DB::beginTransaction();
         try {
-            $company->is_active = $request->has('is_active') ? 1 : 0;
+            $company->company_name = $request->company_name;
+            $company->activity_domain = $request->activity_domain;
+            $company->vat_id = $request->vat_id;
+            $company->registration_number = $request->registration_number;
+            $company->country = $request->country;
+            $company->county = $request->county;
+            $company->city = $request->city;
+            $company->zip_code = $request->zip_code;
+            $company->address = $request->address;
+            $company->building = $request->building;
+            $company->person_name = $request->person_name;
+            $company->job_title = $request->job_title;
+            $company->phone_number = $request->phone_number;
             $company->save();
-            $company->syncRoles($request->roles);
-            $company->syncPermissions($request->permissions);
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {

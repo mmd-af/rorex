@@ -9,6 +9,10 @@ Route::group(['middleware' => ['permission:companies_control'], 'namespace' => '
                 'as' => 'index',
                 'uses' => 'CompanyController@index'
             ]);
+            Route::put('{company}/update', [
+                'as' => 'update',
+                'uses' => 'CompanyController@update'
+            ]);
         });
         Route::group(['prefix' => 'companies-ajax', 'as' => 'companies.ajax.'], function () {
             Route::get('/getDataTable', [
