@@ -5,6 +5,7 @@
         overflow: hidden;
         z-index: 9999;
     }
+
     .img__wrapper2 {
         position: absolute;
         overflow: hidden;
@@ -30,13 +31,14 @@
         -webkit-transform: rotate(-45deg) scale(0.75, 1);
         z-index: 9999;
     }
+
     .sold_out2 {
         color: #fff;
         display: block;
         padding: 30px 0px 5px 130px;
         text-shadow: 0 0 0.75em #444;
-         font: bold 250px/1em Arial, Sans-Serif;
-         opacity: 0.5; 
+        font: bold 250px/1em Arial, Sans-Serif;
+        opacity: 0.5;
         z-index: -999999;
 
     }
@@ -58,7 +60,7 @@
 @foreach ($transportations as $transport)
     @if (
         !$transport->orders->contains(function ($order) use ($company) {
-            return $order->company_id == $company->id;
+            return $order->company_id == $company->id && !empty($order->contract);
         }))
         <div class="row m-5 border border-1 rounded-3 shadow shadow-lg">
             @if (
