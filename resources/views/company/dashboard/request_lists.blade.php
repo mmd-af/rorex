@@ -5,6 +5,11 @@
         overflow: hidden;
         z-index: 9999;
     }
+    .img__wrapper2 {
+        position: absolute;
+        overflow: hidden;
+        z-index: -999999;
+    }
 
     .sold_out {
         top: 2em;
@@ -24,6 +29,16 @@
         -webkit-box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
         -webkit-transform: rotate(-45deg) scale(0.75, 1);
         z-index: 9999;
+    }
+    .sold_out2 {
+        color: #fff;
+        display: block;
+        padding: 30px 0px 5px 130px;
+        text-shadow: 0 0 0.75em #444;
+         font: bold 250px/1em Arial, Sans-Serif;
+         opacity: 0.5; 
+        z-index: -999999;
+
     }
 
     .sold_out:before {
@@ -51,8 +66,11 @@
                     return !empty($order->contract);
                 }))
                 <div class="img__wrapper">
-                    <img src="" alt="" />
                     <p class="sold_out" href="">Finished</p>
+                </div>
+
+                <div class="img__wrapper2">
+                    <p class="sold_out2" href="">Finished</p>
                 </div>
             @endif
             <div class="col-sm-12 col-lg-4 py-3">
