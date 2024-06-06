@@ -270,7 +270,6 @@
             let descriptionData = document.getElementById('descriptionData');
             descriptionData.innerHTML = ``;
             subject = subject.value;
-            console.log(subject);
             if (subject === "Forgot Punch") {
                 descriptionData.innerHTML = `<label for="description" class="col-form-label">At what time?</label>
                             <input type="time" class="form-control" name="description" id="description" required>`;

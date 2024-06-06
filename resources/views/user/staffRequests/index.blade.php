@@ -205,7 +205,7 @@
                                 <div class="col-sm-12 col-lg-6">
                                     <label for="departamentRole" class="col-form-label">Referred to:</label>
                                     <select class="form-control" name="departamentRole" id="departamentRole"
-                                        onchange="getRelateUserWithRole()">
+                                        onchange="getRelateUserWithRole()" required>
                                         <option value="">SELECT DEPARTMENT</option>
                                     </select>
                                 </div>
@@ -235,12 +235,12 @@
                                 <div class="col-md-6">
                                     <label for="startDate" class="form-label">Start Date:</label>
                                     <input type="date" name="start_date" class="form-control" id="startDate"
-                                           onchange="calculateDateDifference(1)">
+                                           onchange="calculateDateDifference(1)" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="endDate" class="form-label">End Date:</label>
                                     <input type="date" name="end_date" class="form-control" id="endDate"
-                                           onchange="calculateDateDifference(1)">
+                                           onchange="calculateDateDifference(1)" required>
                                 </div>
                                 <div class="col-md-6">
                                     <h6 id="dateDifference"></h6>
@@ -258,12 +258,12 @@
                                 <div class="col-md-6">
                                     <label for="startDate" class="form-label">Start Date:</label>
                                     <input type="date" name="start_date" class="form-control" id="startDate"
-                                           onchange="calculateDateDifference(2)">
+                                           onchange="calculateDateDifference(2)" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="endDate" class="form-label">End Date:</label>
                                     <input type="date" name="end_date" class="form-control" id="endDate"
-                                           onchange="calculateDateDifference(2)">
+                                           onchange="calculateDateDifference(2)" required>
                                 </div>
                                 <div class="col-md-6">
                                     <h6 id="dateDifference"></h6>
@@ -292,16 +292,16 @@
      <div class="row">
            <div class="col-md-6">
               <label for="startDate" class="form-label">Date:</label>
-              <input type="date" name="start_date" class="form-control" id="startDate">
+              <input type="date" name="start_date" class="form-control" id="startDate" required>
            </div>
     </div>
     <div class="col-md-6">
         <label for="startTime" class="form-label">Start Time:</label>
-        <input type="time" name="start_time" class="form-control" id="startTime" onchange="calculateTimeDifference()">
+        <input type="time" name="start_time" class="form-control" id="startTime" onchange="calculateTimeDifference()" required>
     </div>
     <div class="col-md-6">
         <label for="endTime" class="form-label">End Time:</label>
-        <input type="time" name="end_time" class="form-control" id="endTime" onchange="calculateTimeDifference()">
+        <input type="time" name="end_time" class="form-control" id="endTime" onchange="calculateTimeDifference()" required>
     </div>
     <div class="col-md-6">
         <h6 id="timeDifference"></h6>
@@ -322,10 +322,22 @@
 <input type="hidden" name="kind" value="CustomRequest">
 <input type="hidden" class="form-control" name="vacation_day" value="0">
 <input type="hidden" class="form-control" name="start_date" value="${start_date.toISOString().split('T')[0]}">
-<label for="subject">Subject:</label>
-<input type="text" class="form-control" name="subject" id="subject" value="" required>
-<label for="description">Description:</label>
-<textarea name="description" class="form-control" id="description" required></textarea>`;
+<div class="mb-4">
+                            <label for="subject" class="col-form-label">Subject:</label>
+                            <select class="form-control" name="subject" id="subject" onchange="handelRequestWithSubject()"
+                                required>
+                                <option value="">-- select subject --</option>
+                                <option value="Forgot Punch">Forgot Punch</option>
+                                <option value="Forgot Bring My Cart">Forgot Bring My Cart</option>
+                                <option value="Consider as allow Leave">Consider as allowed Leave</option>
+                                <option value="Consider OverTime">Consider OverTime</option>
+                                <option value="Work at Home (Remote)">Work at Home (Remote)</option>
+                                <option value="Mission">Mission</option>
+                                <option value="other">other</option>
+                            </select>
+                        </div>
+                        <div class="mb-4" id="descriptionData">
+                        </div>`;
         }
 
         function MissionRequest() {
@@ -338,7 +350,7 @@
 <input type="hidden" class="form-control" name="vacation_day" value="0">
 <input type="hidden" class="form-control" name="start_date" value="${start_date.toISOString().split('T')[0]}">
 <label for="subject">Subject:</label>
-<input type="text" class="form-control" name="subject" id="subject" value="Request for Mission" required readonly>
+<input type="text" class="form-control" name="subject" id="subject" value="Request for Mission" readonly>
 <label for="description">Description:</label>
 <textarea name="description" class="form-control" id="description" required>
     please consider mission on these days:
@@ -346,7 +358,72 @@
     from --:-- to --:-- hour
     
     </textarea>`;
-    }
+        }
+
+        function handelRequestWithSubject() {
+            let subject = document.getElementById('subject');
+            let descriptionData = document.getElementById('descriptionData');
+            descriptionData.innerHTML = ``;
+            subject = subject.value;
+            if (subject === "Forgot Punch") {
+                descriptionData.innerHTML = `
+                <label for"check-date" class="col-form-label">choose date:</label>
+                <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
+                <label for="description" class="col-form-label">At what time?</label>
+                            <input type="time" class="form-control" name="description" id="description" required>`;
+            }
+            if (subject === "Forgot Bring My Cart") {
+                descriptionData.innerHTML = `
+                <label for"check-date" class="col-form-label">choose date:</label>
+                <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
+                <label for="description" class="col-form-label">Start Work:</label>
+                            <input type="time" class="form-control" name="description[]" id="description" required>
+                            <label for="description" class="col-form-label">End Work:</label>
+                            <input type="time" class="form-control" name="description[]" id="description" required>`;
+            }
+            if (subject === "Consider as allow Leave") {
+                descriptionData.innerHTML =
+                    `
+                    <label for"check-date" class="col-form-label">choose date:</label>
+                    <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
+                    <label for="description" class="col-form-label">how many hour?</label>
+                            <input type="number" min="0" step="any" class="form-control" name="description" id="description" required>`;
+            }
+            if (subject === "Consider OverTime") {
+                descriptionData.innerHTML =
+                    `
+                    <label for"check-date" class="col-form-label">choose date:</label>
+                    <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
+                    <label for="description" class="col-form-label">how many hour?</label>
+                            <input type="number" min="0" step="any" class="form-control" name="description" id="description" required>`;
+            }
+            if (subject === "Work at Home (Remote)") {
+                descriptionData.innerHTML =
+                    `
+                <label for"check-date" class="col-form-label">choose date:</label>
+                <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
+                <label for="description" class="col-form-label">Start Work:</label>
+                            <input type="time" class="form-control" name="description[]" id="description" required>
+                            <label for="description" class="col-form-label">End Work:</label>
+                            <input type="time" class="form-control" name="description[]" id="description" required>`;
+            }
+            if (subject === "Mission") {
+                descriptionData.innerHTML =
+                    `
+                <label for"check-date" class="col-form-label">choose date:</label>
+                <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
+                <label for="description" class="col-form-label">please describe it:</label>
+                            <textarea class="form-control" name="description" id="description" required></textarea>`;
+            }
+            if (subject === "other") {
+                descriptionData.innerHTML =
+                    `
+                <label for"check-date" class="col-form-label">choose date:</label>
+               <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
+                <label for="description" class="col-form-label">Message:</label>
+                            <textarea class="form-control" name="description" id="description" required></textarea>`;
+            }
+        }
 
         $(document).ready(function() {
             $('#staffRequestTable').DataTable({
@@ -409,7 +486,12 @@
                 }
                 var timeDifference = Math.abs(endDate - startDate + 1);
                 var dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-                let numberOfExcludingHolidays = prompt('How many days EXCLUDING Holidays?');
+                let numberOfExcludingHolidays;
+                do {
+                    numberOfExcludingHolidays = prompt('How many days EXCLUDING Holidays? (Just enter the number)');
+                } while (numberOfExcludingHolidays === null || numberOfExcludingHolidays.trim() === '' || isNaN(
+                        numberOfExcludingHolidays) || !Number.isInteger(parseFloat(numberOfExcludingHolidays)));
+                numberOfExcludingHolidays = parseInt(numberOfExcludingHolidays, 10);
                 let showInformation = document.getElementById('dateDifference');
                 if (x === 1) {
                     showInformation.innerHTML =
@@ -419,7 +501,7 @@
                         <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
                         <input type="hidden" name="totally" value="${dayDifference}">
                         <input type="hidden" name="leave_balance" value="${leave_balance}">
-                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}">
+                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}" required>
                     </div>`;
                     if (leave_balance < numberOfExcludingHolidays) {
                         let daysWithoutPay = numberOfExcludingHolidays - leave_balance;
@@ -489,7 +571,7 @@
             axios.post('{{ route('user.staffRequests.ajax.getUserWithRole') }}', data)
                 .then(function(response) {
                     assigned_user.innerHTML = `
-                    <select class="form-control" name="assigned_to" id="assigned_to">
+                    <select class="form-control" name="assigned_to" id="assigned_to" required>
                     </select>`;
                     let assignedTo = document.getElementById('assigned_to');
                     assignedTo.innerHTML = ``;
@@ -525,6 +607,7 @@
             var daysWithoutPay = formData.get('daysWithoutPay');
             var leave_balance = formData.get('leave_balance');
             var kind = formData.get('kind');
+            var check_date_other_request = formData.get('check_date_other_request');
             var dateOfRequest = moment().format('YYYY/MM/DD');
             if (kind === "Rest" || kind === "SpecialEvents") {
                 var newDescription = 'Date: ' + dateOfRequest +
@@ -556,7 +639,9 @@
                     'Code Staff: ' + cod_staff + '</div><br>' +
                     '<div id="alignCenter"><b>' + subject +
                     '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
-                    '<br>' + description + '<br>Email: ' + email + '<hr>';
+                    '<br>' +
+                    '<b>Check for date: ' + check_date_other_request + ' </b>' +
+                    '<br>' + description + '<br>Email: ' + email + '<hr><small>request type: other request</small>';
             }
             let data = {
                 first_name: first_name,
