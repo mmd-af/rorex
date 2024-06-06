@@ -27,6 +27,7 @@
                 <tfoot>
                     <tr>
                         <th>Id</th>
+                        <th>Company Name</th>
                         <th>Transportation</th>
                         <th>Truck Name</th>
                         <th>Action</th>
