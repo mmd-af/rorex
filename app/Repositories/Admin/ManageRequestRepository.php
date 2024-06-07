@@ -304,14 +304,13 @@ class ManageRequestRepository extends BaseRepository
                 'status'
             ])
             ->where('request_id', $request->printInformation)
-            ->with(['user', 'request', 'role', 'assignedTo', 'signedBy'])
+            ->with(['user', 'request', 'request.user', 'role', 'assignedTo', 'signedBy'])
             ->get();
         if (!$data) {
             return response()->json(['message' => 'Data not found'], 404);
         }
-
         $description = $data[0]->request->description;
         $pdf = Pdf::loadView('pdf.template', compact(['data', 'description']))->setPaper('a6')->setWarnings(false);
-        return $pdf->download($data[0]->id . '-' . $data[0]->user_id . '-' . $data[0]->request_id . '.pdf');
+        return $pdf->download($data[0]->request->user->name . '-' . $data[0]->request->user->first_name . '-' . $data[0]->request_id . '.pdf');
     }
 }
