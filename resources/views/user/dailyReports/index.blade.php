@@ -133,6 +133,7 @@
                                 <option value="Consider OverTime">Consider OverTime</option>
                                 <option value="Work at Home (Remote)">Work at Home (Remote)</option>
                                 <option value="Mission">Mission</option>
+                                <option value="Change Shift">Change Shift</option>
                                 <option value="other">other</option>
                             </select>
                         </div>
@@ -291,10 +292,9 @@
                             <input type="number" min="0" step="any" class="form-control" name="description" id="description" required>`;
             }
             if (subject === "Work at Home (Remote)") {
-                descriptionData.innerHTML = `<label for="description" class="col-form-label">Start Work:</label>
-                            <input type="time" class="form-control" name="description[]" id="description" required>
-                            <label for="description" class="col-form-label">End Work:</label>
-                            <input type="time" class="form-control" name="description[]" id="description" required>`;
+                descriptionData.innerHTML =
+                    `<label for="description" class="col-form-label">Start Work:</label>
+                    <textarea class="form-control" name="description" id="description" required>I worked at home from .......... to ......... hour</textarea>`;
             }
             if (subject === "Mission") {
                 descriptionData.innerHTML = `<label for="description" class="col-form-label">please describe it:</label>
@@ -303,6 +303,11 @@
             if (subject === "other") {
                 descriptionData.innerHTML = `<label for="description" class="col-form-label">Message:</label>
                             <textarea class="form-control" name="description" id="description" required></textarea>`;
+            }
+            if (subject === "Change Shift") {
+                descriptionData.innerHTML =
+                    `<label for="description" class="col-form-label">Message:</label>
+                            <textarea class="form-control" name="description" id="description" required>I request to change my shift to .........</textarea>`;
             }
         }
 

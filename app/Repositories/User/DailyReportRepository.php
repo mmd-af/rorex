@@ -107,7 +107,7 @@ class DailyReportRepository extends BaseRepository
             'Code Staff: ' . $request->cod_staff . '</div><br>' .
             'Check For Date: ' . $request->check_date . '</div><br>' .
             '<div id="alignCenter"><b>' . $request->subject . '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' . $request->departament .
-            '<br><h3>' . $description . '</h3><br>Email: ' . $request->email . '<hr>';
+            '<br><h3>' . $description . '</h3><br>Email: ' . $request->email . '<hr><small>send from: Daily Report</small>';
 
         $data = [
             'userId' => $userId,

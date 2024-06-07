@@ -401,12 +401,10 @@
             if (subject === "Work at Home (Remote)") {
                 descriptionData.innerHTML =
                     `
-                <label for"check-date" class="col-form-label">choose date:</label>
-                <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
-                <label for="description" class="col-form-label">Start Work:</label>
-                            <input type="time" class="form-control" name="description[]" id="description" required>
-                            <label for="description" class="col-form-label">End Work:</label>
-                            <input type="time" class="form-control" name="description[]" id="description" required>`;
+                <label for"check_date_other_request" class="col-form-label">write the date on list</label>
+               <input type="text" class="form-control" id="check_date_other_request" name="check_date_other_request" value="Below for Work at Home (Remote)" readonly required>
+                <label for="description" class="col-form-label">Message:</label>
+                            <textarea class="form-control" name="description" id="description" required>I want to work at home from dd/mm/yyyy to dd/mm/yyyy from .......... to .........</textarea>`;
             }
             if (subject === "Mission") {
                 descriptionData.innerHTML =
