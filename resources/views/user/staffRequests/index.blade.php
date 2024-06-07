@@ -333,6 +333,7 @@
                                 <option value="Consider OverTime">Consider OverTime</option>
                                 <option value="Work at Home (Remote)">Work at Home (Remote)</option>
                                 <option value="Mission">Mission</option>
+                                <option value="Change Shift">Change Shift</option>
                                 <option value="other">other</option>
                             </select>
                         </div>
@@ -423,8 +424,15 @@
                 <label for="description" class="col-form-label">Message:</label>
                             <textarea class="form-control" name="description" id="description" required></textarea>`;
             }
+            if (subject === "Change Shift") {
+                descriptionData.innerHTML =
+                    `
+                <label for"check_date_other_request" class="col-form-label">write the date on list</label>
+               <input type="text" class="form-control" id="check_date_other_request" name="check_date_other_request" value="Below for Change Shift" readonly required>
+                <label for="description" class="col-form-label">Message:</label>
+                            <textarea class="form-control" name="description" id="description" required>I request to change my shift from dd/mm/yyyy to dd/mm/yyyy from ........... to .........</textarea>`;
+            }
         }
-
         $(document).ready(function() {
             $('#staffRequestTable').DataTable({
                 processing: true,
