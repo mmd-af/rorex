@@ -17,9 +17,13 @@
     </ol>
     @include('admin.layouts.partial.errors')
     <div class="d-flex justify-content-between">
-        <div></div>
         <div>
-            <a class="btn btn-outline-warning btn-sm text-warning"
+            @role('Support')
+                <a class="btn btn-outline-info my-2" href="{{ route('admin.manageRequests.fullLetters') }}">Full Letters</a>
+            @endrole
+        </div>
+        <div>
+            <a class="btn btn-outline-warning my-2 text-warning"
                 href="{{ route('admin.manageRequests.archived') }}">Archive</a>
         </div>
     </div>
@@ -211,7 +215,7 @@
 
         function setPass(id) {
             var confirmationMessage = prompt(
-            'Are you sure for Accept this? You can write a message for sender (optional):');
+                'Are you sure for Accept this? You can write a message for sender (optional):');
             if (confirmationMessage || confirmationMessage === '') {
                 axios.post("{{ route('admin.manageRequests.ajax.setPass') }}", {
                         id: id,
@@ -228,7 +232,7 @@
 
         function setRejected(id) {
             var confirmationMessage = prompt(
-            'Are you sure for Reject this? You can write a message for sender (optional):');
+                'Are you sure for Reject this? You can write a message for sender (optional):');
             if (confirmationMessage || confirmationMessage === '') {
                 axios.post("{{ route('admin.manageRequests.ajax.setReject') }}", {
                         id: id,

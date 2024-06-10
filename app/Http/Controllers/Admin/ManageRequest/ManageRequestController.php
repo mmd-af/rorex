@@ -20,6 +20,10 @@ class ManageRequestController extends Controller
     {
         return view('admin.manageRequests.index');
     }
+    public function fullLetters()
+    {
+        return view('admin.manageRequests.fullLetters');
+    }
 
     public function store(ManageRequestStoreRequest $request)
     {

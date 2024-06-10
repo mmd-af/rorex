@@ -18,6 +18,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin\ManageRequest'], functi
                 'as' => 'archived',
                 'uses' => 'ManageRequestController@archived'
             ]);
+            Route::get('/fullLetters', [
+                'as' => 'fullLetters',
+                'uses' => 'ManageRequestController@fullLetters'
+            ])->middleware('role:Support');
             Route::post('/exportPDF', [
                 'as' => 'exportPDF',
                 'uses' => 'ManageRequestController@exportPDF'
@@ -28,6 +32,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin\ManageRequest'], functi
                 'as' => 'getDataTable',
                 'uses' => 'ManageRequestAjaxController@getDataTable'
             ]);
+            Route::get('/getFullDataTable', [
+                'as' => 'getFullDataTable',
+                'uses' => 'ManageRequestAjaxController@getFullDataTable'
+            ])->middleware('role:Support');
             Route::post('/sign', [
                 'as' => 'sign',
                 'uses' => 'ManageRequestAjaxController@sign'

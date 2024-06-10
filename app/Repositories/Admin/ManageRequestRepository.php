@@ -101,6 +101,65 @@ class ManageRequestRepository extends BaseRepository
         }
         return false;
     }
+    public function getFullDataTable($request)
+    {
+        $data = $this->query()
+            ->select([
+                'id',
+                'request_id',
+                'role_id',
+                'assigned_to',
+                'status'
+            ])
+            ->with(['request'])
+            ->whereIn('id', function ($query) {
+                $query->selectRaw('MAX(id)')
+                    ->from('letter_assignments')
+                    ->groupBy('request_id');
+            })
+            ->latest();
+        if ($request->ajax()) {
+            return Datatables::of($data)
+                ->addColumn('requests', function ($row) {
+                    return "<p class=\"h5 bg-secondary text-light\">Tracking Number= " . $row->request->id . "</p><br>" . $row->request->description;
+                })
+                ->addColumn('progress', function ($row) {
+                    $status = '';
+                    $allRelatedRequest = $this->query()->where('request_id', $row->request_id)->get();
+                    foreach ($allRelatedRequest as $assignment) {
+                        $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
+                        if ($assignment->description) {
+                            $description = Str::limit($assignment->description, 45);
+                            $description = $assignment->description != $description ? '<div class="bg-info rounded-3">' . $description . '<details>
+                                        <summary>Show Full Message</summary>' . $assignment->description . '</div>
+                                    </details>' : '<div class="bg-info rounded-3">' . $assignment->description . '</div>';
+                        } else {
+                            $description = '';
+                        }
+
+                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $assignment->status . $description . '<hr>';
+                    }
+                    return $status;
+                })
+                ->addColumn(
+                    'action',
+                    function ($row) {
+                        $url = route('admin.manageRequests.exportPDF');
+                        return '
+                    <form action="' . $url . '" method="post">
+                    ' . csrf_field() . '
+                    <input type="hidden" name="printInformation" id="printInformation" value="' . $row->request->id . '">
+                             <button type="submit" class="btn btn-light btn-sm m-2" title="Export PDF">
+                            <i class="fa-solid fa-file-pdf fa-2x"></i>
+                            </button>
+                    </form>';
+                    }
+                )
+                ->rawColumns(['requests', 'progress', 'action'])
+                ->make(true);
+        }
+        return false;
+    }
 
     public function sign($request)
     {
@@ -241,7 +300,6 @@ class ManageRequestRepository extends BaseRepository
                 'role_id',
                 'assigned_to',
                 'signed_by',
-                'status',
                 'created_at'
             ])
             ->where('is_archive', 1)
