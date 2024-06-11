@@ -1,16 +1,16 @@
 var staticCacheName = "pwa-v" + new Date().getTime();
 var filesToCache = [
-    '/offline',
-    '/css/app.css',
-    '/js/app.js',
-    '/images/icons/icon-72x72.png',
-    '/images/icons/icon-96x96.png',
-    '/images/icons/icon-128x128.png',
-    '/images/icons/icon-144x144.png',
-    '/images/icons/icon-152x152.png',
-    '/images/icons/icon-192x192.png',
-    '/images/icons/icon-384x384.png',
-    '/images/icons/icon-512x512.png',
+    // '/offline',
+    // '/css/app.css',
+    // '/js/app.js',
+    '/pwa-img/rorex-72-72.png',
+    '/pwa-img/rorex-96-96.png',
+    // '/pwa-img/rorex-128x128.png',
+    '/pwa-img/rorex-144-144.png',
+    // '/pwa-img/rorex-152x152.png',
+    '/pwa-img/rorex-192-192.png',
+    // '/pwa-img/rorex-384x384.png',
+    '/pwa-img/rorex-512-512.png',
 ];
 
 // Cache on install
