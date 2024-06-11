@@ -87,7 +87,7 @@ class SupportRepository extends BaseRepository
                     $query->where('role_id', $role->id);
                 })->get();
                 foreach ($usersWithRole as $user) {
-                    if ($user->email_verified_at !== null) {
+                    if ($user->email_verified_at !== null && $user->receive_notifications) {
                         Mail::to($user->email)->send(new RequestMail($request->subject, $request->description));
                     }
                 }

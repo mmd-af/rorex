@@ -241,7 +241,7 @@ class ManageRequestRepository extends BaseRepository
             }
             $user->leave_balance = $newLeaveBalance;
             $user->save();
-            if ($user->email_verified_at !== null) {
+            if ($user->email_verified_at !== null && $user->receive_notifications) {
                 $meesage = $request->confirmationMessage ? "Your Request Acceptet with a Message" : "Your Request Acceptet";
                 $user->notify(new RequestRegisteredNotification($meesage, $request->confirmationMessage));
             }
@@ -277,7 +277,7 @@ class ManageRequestRepository extends BaseRepository
                 $staffRequest->save();
             }
             $user = User::find($staffRequest->user->id);
-            if ($user->email_verified_at !== null) {
+            if ($user->email_verified_at !== null && $user->receive_notifications) {
                 $meesage = $request->confirmationMessage ? "Your Request Was rejected with a Message" : "Your Request Was rejected";
                 $user->notify(new RequestRegisteredNotification($meesage, $request->confirmationMessage));
             }

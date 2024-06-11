@@ -52,13 +52,13 @@ class DailyReportSendRequestJob implements ShouldQueue
             $assignment->status = "waiting";
             $assignment->save();
             $user = User::find($this->data['assigned_to']);
-            if ($user->email_verified_at !== null) {
-                $user->notify(new RequestRegisteredNotification("New Request",$this->data['description']));
+            if ($user->email_verified_at !== null && $user->receive_notifications) {
+                $user->notify(new RequestRegisteredNotification("New Request", $this->data['description']));
             }
         } catch (\Exception $e) {
             $users = User::role('support')->get();
             foreach ($users as $user) {
-                $user->notify(new RequestRegisteredNotification("Error on user send request",$e->getMessage()));
+                $user->notify(new RequestRegisteredNotification("Error on user send request", $e->getMessage()));
             }
         }
     }
