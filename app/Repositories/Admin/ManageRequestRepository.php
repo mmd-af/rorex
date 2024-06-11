@@ -136,8 +136,11 @@ class ManageRequestRepository extends BaseRepository
                         } else {
                             $description = '';
                         }
-
-                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $assignment->status . $description . '<hr>';
+                        $condition = $assignment->status;
+                        if ($assignment->status == 'Rejected') {
+                            $condition = '<div class="bg-danger rounded-3 text-light">' . $assignment->status . '</div>';
+                        }
+                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $condition . $description . '<hr>';
                     }
                     return $status;
                 })
