@@ -5,46 +5,6 @@
 @endsection
 @section('style')
     <style id="printStyle">
-        @page {
-            size: landscape;
-            margin: 0;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        .page {
-            width: 210mm;
-            height: 148mm;
-            padding: 0;
-            margin: 0 auto;
-            border: 1px solid #ccc;
-            display: flex;
-        }
-
-        .content-container {
-            flex: 1;
-            margin: 5mm;
-            border: 2px solid #009799;
-            padding: 5mm;
-            box-sizing: border-box;
-        }
-
-        .logo-container img {
-            max-width: 100%;
-            height: auto;
-            width: 25%;
-        }
-
-        #statusPrint,
-        #statusPrint th,
-        #statusPrint td {
-            border: 1px solid #c0c0c0;
-            border-collapse: collapse;
-        }
-
         #box {
             border: 2px solid black;
             padding: 2px;
@@ -52,10 +12,6 @@
 
         #alignCenter {
             text-align: center;
-        }
-
-        #printSection {
-            zoom: 150%;
         }
     </style>
 @endsection
@@ -97,14 +53,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
+        {{-- <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
                 <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#LeaveRequest"
                     data-info="Modal 1 Content" onclick="MissionRequest()">
                     Mission Request <i class="fa-solid fa-square-arrow-up-right"></i>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="col-xl-3 col-md-6">
             <div class="card bg-warning text-white mb-4">
                 <div class="card-body">
@@ -374,13 +330,12 @@
                             <input type="time" class="form-control" name="description" id="description" required>`;
             }
             if (subject === "Forgot Bring My Cart") {
-                descriptionData.innerHTML = `
+                descriptionData.innerHTML =
+                    `
                 <label for"check-date" class="col-form-label">choose date:</label>
                 <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
-                <label for="description" class="col-form-label">Start Work:</label>
-                            <input type="time" class="form-control" name="description[]" id="description" required>
-                            <label for="description" class="col-form-label">End Work:</label>
-                            <input type="time" class="form-control" name="description[]" id="description" required>`;
+                <label for="description" class="col-form-label">Message:</label>
+                <textarea class="form-control" name="description" id="description" required>I forgot to bring my card. enter and exit time: --:-- to --:--</textarea>`;
             }
             if (subject === "Consider as allow Leave") {
                 descriptionData.innerHTML =
