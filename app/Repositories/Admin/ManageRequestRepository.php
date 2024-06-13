@@ -191,6 +191,7 @@ class ManageRequestRepository extends BaseRepository
                 ->first();
             $old_letterAssignment = $this->findBy('id', $request->letter_assign_id);
             $old_letterAssignment->status = "Referred to: " . $request->departamentRole;
+            $old_letterAssignment->description = $request->description;
             $old_letterAssignment->is_archive = 1;
             $old_letterAssignment->save();
             $letterAssignment = new LetterAssignment();
@@ -198,7 +199,6 @@ class ManageRequestRepository extends BaseRepository
             $letterAssignment->request_id = $old_letterAssignment->request_id;
             $letterAssignment->role_id = $role->id;
             $letterAssignment->assigned_to = $request->assigned_to;
-            $letterAssignment->description = $request->description;
             $letterAssignment->status = "waiting";
             $letterAssignment->save();
             $assignedTo = User::query()

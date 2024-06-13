@@ -7,6 +7,7 @@ use App\Models\StaffRequest\StaffRequest;
 use App\Models\User\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
@@ -79,11 +80,19 @@ class StaffRequestRepository extends BaseRepository
                     $status = '';
                     foreach ($row->assignments as $assignment) {
                         $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
+                        if ($assignment->description && ($assignment->status === "Accepted" || $assignment->status === "Rejected")) {
+                            $description = Str::limit($assignment->description, 45);
+                            $description = $assignment->description != $description ? '<div class="bg-info rounded-3">' . $description . '<details>
+                                        <summary>Show Full Message</summary>' . $assignment->description . '</div>
+                                    </details>' : '<div class="bg-info rounded-3">' . $assignment->description . '</div>';
+                        } else {
+                            $description = '';
+                        }
                         $condition = $assignment->status;
                         if ($assignment->status == 'Rejected') {
                             $condition = '<div class="bg-danger rounded-3 text-light">' . $assignment->status . '</div>';
                         }
-                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $condition  . '<hr>';
+                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $condition . $description . '<hr>';
                     }
                     return $status;
                 })
