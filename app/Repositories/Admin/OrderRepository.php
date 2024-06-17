@@ -29,6 +29,7 @@ class OrderRepository extends BaseRepository
             ])
             ->where('contract', '<>', null)
             ->with(['company', 'transportation', 'truck'])
+            ->where('is_active', 1)
             ->get();
 
         if ($request->ajax()) {
@@ -118,7 +119,6 @@ class OrderRepository extends BaseRepository
             Session::flash('error', $e->getMessage());
         }
     }
-
     public function fileDestroy($file)
     {
         $fileOrder = FileOrder::findOrFail($file);
@@ -129,5 +129,11 @@ class OrderRepository extends BaseRepository
         }
         $fileOrder->delete();
         return $orderId;
+    }
+    public function closeOrder($request)
+    {
+        $order = $this->findOrFail($request->order_id);
+        $order->is_active = 0;
+        $order->save();
     }
 }

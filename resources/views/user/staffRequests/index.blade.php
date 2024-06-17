@@ -149,11 +149,11 @@
                         <div class="mb-3">
                             <label for="email" class="col-form-label">Your Email:</label>
                             @if (empty(Auth::user()->email))
-                                <input type="text" class="form-control" name="email" id="email"
-                                    value="">
+                                <input type="email" class="form-control" name="email" id="email"
+                                    value="" required>
                             @else
                                 <p class="text-primary">{{ Auth::user()->email }}</p>
-                                <input type="hidden" name="email" value="{{ Auth::user()->email }}">
+                                <input type="hidden" name="email" value="{{ Auth::user()->email }}" required>
                             @endif
                         </div>
                         <div class="mb-3">

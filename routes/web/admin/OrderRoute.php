@@ -29,6 +29,10 @@ Route::group(['middleware' => ['permission:orders_control'], 'namespace' => 'App
                 'as' => 'fileDestroy',
                 'uses' => 'OrderController@fileDestroy'
             ]);
+            Route::post('/closeOrder', [
+                'as' => 'closeOrder',
+                'uses' => 'OrderController@closeOrder'
+            ]);
         });
         Route::group(['prefix' => 'orders-ajax', 'as' => 'orders.ajax.'], function () {
             Route::get('/getDataTable', [

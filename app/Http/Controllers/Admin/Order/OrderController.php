@@ -46,4 +46,9 @@ class OrderController extends Controller
         $order = $this->orderRepository->fileDestroy($cmr);
         return redirect()->route('admin.orders.show', $order);
     }
+    public function closeOrder(Request $request)
+    {
+        $this->orderRepository->closeOrder($request);
+        return redirect()->route('admin.orders.show', $request->order_id);
+    }
 }

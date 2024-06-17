@@ -327,8 +327,8 @@
                 <form action="{{ route('admin.orders.uploadFile') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="order_id" value="{{ $order->id }}">
-                    <input type="text" class="form-control form-control-sm" name="name" id="name" placeholder="file name"
-                        value="{{ old('name') }}" required>
+                    <input type="text" class="form-control form-control-sm" name="name" id="name"
+                        placeholder="file name" value="{{ old('name') }}" required>
                     <div class="input-group mb-3">
                         <input type="file" name="file" class="form-control form-control-sm" id="file"
                             required>
@@ -337,6 +337,21 @@
                     <button type="submit" class="btn btn-success btn-sm">upload</button>
                 </form>
             </div>
+        </div>
+
+
+        <div class="col-sm-12 col-lg-4 m-2 p-3 shadow" style="background-color: beige">
+            <h3>End of the project</h3>
+            <p>
+                <strong>
+                    Note that after closing the project, it is no longer possible to upload or edit.
+                </strong>
+            </p>
+            <form action="{{ route('admin.orders.closeOrder') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="order_id" value="{{ $order->id }}">
+                <button type="submit" class="btn btn-danger btn-sm">Close the project</button>
+            </form>
         </div>
     </div>
 @endsection
