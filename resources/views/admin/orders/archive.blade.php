@@ -15,7 +15,7 @@
     <div class="d-flex justify-content-between">
         <div></div>
         <div>
-            <a class="btn btn-warning m-3" href="{{route('admin.orders.archive')}}">Archive Order</a>
+            <a class="btn btn-info m-3" href="{{ route('admin.orders.index') }}">Orders</a>
         </div>
     </div>
     <div class="card mb-4">
@@ -54,7 +54,7 @@
                 processing: true,
                 serverSide: true,
                 pageLength: 25,
-                ajax: "{{ route('admin.orders.ajax.getDataTable') }}",
+                ajax: "{{ route('admin.orders.ajax.getArchiveDataTable') }}",
                 columns: [{
                         data: 'id',
                         name: 'id'

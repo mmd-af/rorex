@@ -14,9 +14,14 @@ class OrderAjaxController extends Controller
     {
         $this->orderRepository = $orderRepository;
     }
-
+    
     public function getDataTable(Request $request)
     {
         return $this->orderRepository->getDataTable($request);
+    }
+
+    public function getArchiveDataTable(Request $request)
+    {
+        return $this->orderRepository->getArchiveDataTable($request);
     }
 }

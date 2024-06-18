@@ -54,6 +54,43 @@ class OrderRepository extends BaseRepository
         }
         return false;
     }
+
+    public function getArchiveDataTable($request)
+    {
+        $data = $this->query()
+            ->select([
+                'id',
+                'company_id',
+                'transportation_id',
+                'truck_id'
+            ])
+            ->where('contract', '<>', null)
+            ->with(['company', 'transportation', 'truck'])
+            ->where('is_active', 0)
+            ->get();
+
+        if ($request->ajax()) {
+            return Datatables::of($data)
+                ->addColumn('company', function ($row) {
+                    return $row->company->company_name;
+                })
+                ->addColumn('transportation', function ($row) {
+                    return $row->transportation->product_name . " / " . $row->transportation->product_number;
+                })
+                ->addColumn('truck', function ($row) {
+                    return $row->truck->name;
+                })
+                ->addColumn('action', function ($row) {
+                    $url = route('admin.orders.show_archive', $row->id);
+                    return '<a href="' . $url . '" class="btn btn-info text-white btn-sm mx-3">
+                        <i class="fa-solid fa-eye"></i>
+                        </a>';
+                })
+                ->rawColumns(['company', 'transportation', 'truck', 'action'])
+                ->make(true);
+        }
+        return false;
+    }
     public function show($order)
     {
         return $this->query()
@@ -70,7 +107,22 @@ class OrderRepository extends BaseRepository
             ->with(['company', 'company.users', 'transportation', 'transportation.trucks', 'truck', 'cmrOrders', 'invoiceOrders', 'fileOrders'])
             ->first();
     }
-    public function uploadCmr($request)
+    public function show_archive($order)
+    {
+        return $this->query()
+            ->select([
+                'id',
+                'company_id',
+                'transportation_id',
+                'truck_id',
+                'price',
+                'last_price',
+                'contract'
+            ])
+            ->where('id', $order)
+            ->with(['company', 'company.users', 'transportation', 'transportation.trucks', 'truck', 'cmrOrders', 'invoiceOrders', 'fileOrders'])
+            ->first();
+    }    public function uploadCmr($request)
     {
         DB::beginTransaction();
         try {

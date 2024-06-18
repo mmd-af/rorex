@@ -9,9 +9,17 @@ Route::group(['middleware' => ['permission:orders_control'], 'namespace' => 'App
                 'as' => 'index',
                 'uses' => 'OrderController@index'
             ]);
+            Route::get('/archive', [
+                'as' => 'archive',
+                'uses' => 'OrderController@archive'
+            ]);
             Route::get('/{order}/show', [
                 'as' => 'show',
                 'uses' => 'OrderController@show'
+            ]);
+            Route::get('/{order}/show_archive', [
+                'as' => 'show_archive',
+                'uses' => 'OrderController@show_archive'
             ]);
             Route::post('/uploadCmr', [
                 'as' => 'uploadCmr',
@@ -38,6 +46,10 @@ Route::group(['middleware' => ['permission:orders_control'], 'namespace' => 'App
             Route::get('/getDataTable', [
                 'as' => 'getDataTable',
                 'uses' => 'OrderAjaxController@getDataTable'
+            ]);
+            Route::get('/getArchiveDataTable', [
+                'as' => 'getArchiveDataTable',
+                'uses' => 'OrderAjaxController@getArchiveDataTable'
             ]);
         });
     });
