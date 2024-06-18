@@ -90,6 +90,24 @@ class DashboardRepository extends BaseRepository
                 'last_price',
                 'contract'
             ])
+            ->where('is_active', 1)
+            ->where('company_id', $company->id)
+            ->with(['company', 'company.users', 'transportation', 'transportation.trucks', 'truck', 'cmrOrders', 'invoiceOrders', 'fileOrders'])
+            ->get();
+    }
+    public function getArchiveOrders($company)
+    {
+        return TransportOrder::query()
+            ->select([
+                'id',
+                'company_id',
+                'transportation_id',
+                'truck_id',
+                'price',
+                'last_price',
+                'contract'
+            ])
+            ->where('is_active', 0)
             ->where('company_id', $company->id)
             ->with(['company', 'company.users', 'transportation', 'transportation.trucks', 'truck', 'cmrOrders', 'invoiceOrders', 'fileOrders'])
             ->get();
