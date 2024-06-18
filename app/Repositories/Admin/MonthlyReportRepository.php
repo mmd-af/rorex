@@ -194,7 +194,7 @@ class MonthlyReportRepository extends BaseRepository
             $dailyAbsence += $dailyReport->absenta_zile;
             $delayWork += $dailyReport->tarziu_minute;
             $earlyExit += $dailyReport->devreme_minute;
-            $userName = $dailyReport->users->name . " " . $dailyReport->users->prenumele_tatalui;
+            $userName = $dailyReport->users->name . " " . $dailyReport->users->first_name;
         }
         $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily;
         $data[] = [
@@ -252,6 +252,9 @@ class MonthlyReportRepository extends BaseRepository
                 ->where('cod_staff', $staffCode)
                 ->with('users')
                 ->get();
+            if ($dailyReports->isEmpty()) {
+                continue;
+            }
             $hourNight = 0;
             $hourMorning = 0;
             $hourAfternoon = 0;
