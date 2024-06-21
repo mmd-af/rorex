@@ -78,7 +78,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="leaveForm">
+                    <form id="leaveForm" enctype="multipart/form-data">
                         <div class="mb-3 lh-lg h5">
                             @if (empty(Auth::user()->name))
                                 LastName:
@@ -241,6 +241,28 @@
                     <input type="hidden" name="description" value="">`;
         }
 
+        function LeaveRequestWithoutPaid(datesForLeave) {
+            datesForLeave.innerHTML = `
+                                <div class="col-md-6">
+                                    <label for="startDate" class="form-label">Start Date:</label>
+                                    <input type="date" name="start_date" class="form-control" id="startDate"
+                                           onchange="calculateDateDifference(3)" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="endDate" class="form-label">End Date:</label>
+                                    <input type="date" name="end_date" class="form-control" id="endDate"
+                                           onchange="calculateDateDifference(3)" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 id="dateDifference"></h6>
+                                </div>`;
+            let modalSubject = document.getElementById('modalSubject');
+            modalSubject.innerHTML = `
+                    <input type="hidden" name="kind" value="Rest">
+                    <input type="hidden" name="subject" value="Leave Request Without Paid">
+                    <input type="hidden" name="description" value="">`;
+        }
+
         function calculateDateDifference(x) {
             var startDateValue = document.getElementById('startDate').value.trim();
             var endDateValue = document.getElementById('endDate').value.trim();
@@ -282,7 +304,6 @@
                     }
                 }
                 if (x === 2) {
-                    // TODO add input for file
                     showInformation.innerHTML =
                         `<div class="mt-3">
                         <p class="text-primary">Totally= ${dayDifference} days</p>
@@ -291,34 +312,22 @@
                         <input type="hidden" name="totally" value="${dayDifference}">
                     </div>`;
                 }
+                if (x === 3) {
+                    showInformation.innerHTML =
+                        `<div class="mt-2">
+                        <p class="text-primary">Total requested days= ${dayDifference} days</p>
+                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
+                        <p class="text-danger">unpaid leave</p>
+                        <input type="hidden" name="totally" value="${dayDifference}">
+                        <input type="hidden" name="leave_balance" value="${leave_balance}">
+                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}" required>
+                        <input type="hidden" name="daysWithoutPay" value="${numberOfExcludingHolidays}">
+                    </div>`;
+                }
             }
         }
 
-
-        function actionForSelectType(event) {
-            console.log(event.target.value);
-            let datesForLeave = document.getElementById('datesForLeave');
-            datesForLeave.innerHTML = ``;
-            if (event.target.value === "Allowed Leave") {
-                LeaveRequestForRest(datesForLeave)
-            }
-            if (event.target.value === "Speacial Event") {
-
-            }
-            if (event.target.value === "Hourly") {
-
-            }
-            if (event.target.value === "Without Paid") {
-
-            }
-        }
-
-        // ...................................................................................
-
-
-
-        function LeaveRequestForSpecialEvents() {
-            let datesForLeave = document.getElementById('datesForLeave');
+        function LeaveRequestForSpecialEvents(datesForLeave) {
             datesForLeave.innerHTML = `
                                 <div class="col-md-6">
                                     <label for="startDate" class="form-label">Start Date:</label>
@@ -339,20 +348,16 @@
                                 <input type="hidden" name="kind" value="SpecialEvents">
                                 <input type="hidden" name="subject" value="leave for special events">
                                 <label for="description">explain:</label>
-                                <input type="text" class="form-control" name="description" id="description" value="" required>`;
-            const descriptionInput = document.getElementById('description');
-            let isTextAdded = false;
-            descriptionInput.addEventListener('change', function(event) {
-                if (!isTextAdded) {
-                    this.value = event.target.value + " and I will send the document.";
-                    isTextAdded = true;
-                    this.readOnly = true;
-                }
-            });
+                                <input type="text" class="form-control" name="description" id="description" value="" required>
+                                   <div class="mb-3">
+                                   <label for="file" class="form-label">file:</label>
+                                   <input type="file" class="form-control" name="file" id="file" required/>
+                                  <small id="file" class="form-text text-muted">The attached file is required for Special Events leave</small>
+                                  </div>
+`;
         }
 
-        function LeaveRequestForHour() {
-            let datesForLeave = document.getElementById('datesForLeave');
+        function LeaveRequestForHour(datesForLeave) {
             datesForLeave.innerHTML = `
             <div class="row">
                 <div class="col-md-6">
@@ -378,174 +383,21 @@
                                 <input type="hidden" name="description" value="hour">`;
         }
 
-        function CustomRequest() {
+        function actionForSelectType(event) {
             let datesForLeave = document.getElementById('datesForLeave');
             datesForLeave.innerHTML = ``;
-            let modalSubject = document.getElementById('modalSubject');
-            let start_date = new Date();
-            modalSubject.innerHTML = `
-                        <input type="hidden" name="kind" value="CustomRequest">
-                        <input type="hidden" class="form-control" name="vacation_day" value="0">
-                        <input type="hidden" class="form-control" name="start_date" value="${start_date.toISOString().split('T')[0]}">
-                        <div class="mb-4">
-                            <label for="subject" class="col-form-label">Subject:</label>
-                            <select class="form-control" name="subject" id="subject" onchange="handelRequestWithSubject()"
-                                required>
-                                <option value="">-- select subject --</option>
-                                <option value="Forgot Punch">Forgot Punch</option>
-                                <option value="Forgot Bring My Cart">Forgot Bring My Cart</option>
-                                <option value="OverTime">OverTime</option>
-                                <option value="Work at Home (Remote)">Work at Home (Remote)</option>
-                                <option value="Mission">Mission</option>
-                                <option value="Change Shift">Change Shift</option>
-                                <option value="other">other</option>
-                            </select>
-                        </div>
-                        <div class="mb-4" id="descriptionData">
-                        </div>`;
-        }
-
-        function MissionRequest() {
-            let datesForLeave = document.getElementById('datesForLeave');
-            datesForLeave.innerHTML = ``;
-            let modalSubject = document.getElementById('modalSubject');
-            let start_date = new Date();
-            modalSubject.innerHTML = `
-            <input type="hidden" name="kind" value="CustomRequest">
-            <input type="hidden" class="form-control" name="vacation_day" value="0">
-            <input type="hidden" class="form-control" name="start_date" value="${start_date.toISOString().split('T')[0]}">
-            <label for="subject">Subject:</label>
-            <input type="text" class="form-control" name="subject" id="subject" value="Request for Mission" readonly>
-            <label for="description">Description:</label>
-            <textarea name="description" class="form-control" id="description" required>
-                please consider mission on these days:
-                ${start_date.toISOString().split('T')[0]}
-                from --:-- to --:-- hour
-
-                </textarea>`;
-        }
-
-        function handelRequestWithSubject() {
-            let subject = document.getElementById('subject');
-            let descriptionData = document.getElementById('descriptionData');
-            descriptionData.innerHTML = ``;
-            subject = subject.value;
-            if (subject === "Forgot Punch") {
-                descriptionData.innerHTML = `
-                <label for"check-date" class="col-form-label">choose date:</label>
-                <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
-                <label for="description" class="col-form-label">At what time?</label>
-                            <input type="time" class="form-control" name="description" id="description" required>`;
+            if (event.target.value === "Allowed Leave") {
+                LeaveRequestForRest(datesForLeave)
             }
-            if (subject === "Forgot Bring My Cart") {
-                descriptionData.innerHTML =
-                    `
-                <label for"check-date" class="col-form-label">choose date:</label>
-                <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
-                <label for="description" class="col-form-label">Message:</label>
-                <textarea class="form-control" name="description" id="description" required>I forgot to bring my card. enter and exit time: --:-- to --:--</textarea>`;
+            if (event.target.value === "Speacial Event") {
+                LeaveRequestForSpecialEvents(datesForLeave)
             }
-            if (subject === "OverTime") {
-                descriptionData.innerHTML =
-                    `
-                    <label for"check-date" class="col-form-label">choose date:</label>
-                    <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
-                   <label for="description" class="col-form-label">please describe it:</label>
-                            <textarea class="form-control" name="description" id="description" required></textarea>`;
+            if (event.target.value === "Hourly") {
+                LeaveRequestForHour(datesForLeave)
             }
-            if (subject === "Work at Home (Remote)") {
-                descriptionData.innerHTML =
-                    `
-                <label for"check_date_other_request" class="col-form-label">write the date on list</label>
-               <input type="text" class="form-control" id="check_date_other_request" name="check_date_other_request" value="Below for Work at Home (Remote)" readonly required>
-                <label for="description" class="col-form-label">Message:</label>
-                            <textarea class="form-control" name="description" id="description" required>I want to work at home from dd/mm/yyyy to dd/mm/yyyy from .......... to .........</textarea>`;
+            if (event.target.value === "Without Paid") {
+                LeaveRequestWithoutPaid(datesForLeave)
             }
-            if (subject === "Mission") {
-                descriptionData.innerHTML =
-                    `
-                <label for"check-date" class="col-form-label">choose date:</label>
-                <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
-                <label for="description" class="col-form-label">please describe it:</label>
-                            <textarea class="form-control" name="description" id="description" required></textarea>`;
-            }
-            if (subject === "other") {
-                descriptionData.innerHTML =
-                    `
-                <label for"check-date" class="col-form-label">choose date:</label>
-               <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
-                <label for="description" class="col-form-label">Message:</label>
-                            <textarea class="form-control" name="description" id="description" required></textarea>`;
-            }
-            if (subject === "Change Shift") {
-                descriptionData.innerHTML =
-                    `
-                <label for"check_date_other_request" class="col-form-label">write the date on list</label>
-               <input type="text" class="form-control" id="check_date_other_request" name="check_date_other_request" value="Below for Change Shift" readonly required>
-                <label for="description" class="col-form-label">Message:</label>
-                            <textarea class="form-control" name="description" id="description" required>I request to change my shift from dd/mm/yyyy to dd/mm/yyyy from ........... to .........</textarea>`;
-            }
-        }
-
-        function calculateTimeDifference() {
-            var startTimeValue = document.getElementById('startTime').value.trim();
-            var endTimeValue = document.getElementById('endTime').value.trim();
-
-            if (startTimeValue !== '' && endTimeValue !== '') {
-                var startTime = new Date('1970-01-01T' + startTimeValue + ':00Z').getTime();
-                var endTime = new Date('1970-01-01T' + endTimeValue + ':00Z').getTime();
-                if (endTime < startTime) {
-                    document.getElementById('timeDifference').innerHTML =
-                        `<p class="text-danger">End time cannot be earlier than start time</p>`;
-                    return;
-                }
-                var timeDifferenceInMilliseconds = Math.abs(endTime - startTime);
-                var hours = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60));
-                var minutes = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
-
-                document.getElementById('timeDifference').innerHTML =
-                    `<p class="text-success">${hours} hours and ${minutes} minutes</p>
-             <input type="hidden" name="vacation_day" value="${hours}:${minutes}">`;
-            }
-        }
-
-        $(document).ready(function() {
-            let departamentRole = document.getElementById('departamentRole');
-            axios.get('{{ route('user.staffRequests.ajax.getRoles') }}')
-                .then(function(response) {
-                    response.data.forEach(function(item) {
-                        departamentRole.innerHTML +=
-                            `<option value="${item.name}">${item.name}</option>`;
-                    });
-                })
-                .catch(function(error) {
-                    console.error(error);
-                });
-        });
-
-        function getRelateUserWithRole() {
-            let assigned_user = document.getElementById('assigned_user');
-            assigned_user.innerHTML = `<div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-            </div>`;
-            let data = {
-                role_name: departamentRole.value
-            }
-            axios.post('{{ route('user.staffRequests.ajax.getUserWithRole') }}', data)
-                .then(function(response) {
-                    assigned_user.innerHTML = `
-                    <select class="form-control" name="assigned_to" id="assigned_to" required>
-                    </select>`;
-                    let assignedTo = document.getElementById('assigned_to');
-                    assignedTo.innerHTML = ``;
-                    response.data.forEach(function(item) {
-                        assignedTo.innerHTML +=
-                            `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
-                    });
-                })
-                .catch(function(error) {
-                    console.error(error);
-                });
         }
 
         document.getElementById('leaveForm').addEventListener('submit', function(event) {
@@ -637,5 +489,66 @@
                 });
 
         });
+
+        function calculateTimeDifference() {
+            var startTimeValue = document.getElementById('startTime').value.trim();
+            var endTimeValue = document.getElementById('endTime').value.trim();
+
+            if (startTimeValue !== '' && endTimeValue !== '') {
+                var startTime = new Date('1970-01-01T' + startTimeValue + ':00Z').getTime();
+                var endTime = new Date('1970-01-01T' + endTimeValue + ':00Z').getTime();
+                if (endTime < startTime) {
+                    document.getElementById('timeDifference').innerHTML =
+                        `<p class="text-danger">End time cannot be earlier than start time</p>`;
+                    return;
+                }
+                var timeDifferenceInMilliseconds = Math.abs(endTime - startTime);
+                var hours = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60));
+                var minutes = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+
+                document.getElementById('timeDifference').innerHTML =
+                    `<p class="text-success">${hours} hours and ${minutes} minutes</p>
+             <input type="hidden" name="vacation_day" value="${hours}:${minutes}">`;
+            }
+        }
+
+        $(document).ready(function() {
+            let departamentRole = document.getElementById('departamentRole');
+            axios.get('{{ route('user.staffRequests.ajax.getRoles') }}')
+                .then(function(response) {
+                    response.data.forEach(function(item) {
+                        departamentRole.innerHTML +=
+                            `<option value="${item.name}">${item.name}</option>`;
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        });
+
+        function getRelateUserWithRole() {
+            let assigned_user = document.getElementById('assigned_user');
+            assigned_user.innerHTML = `<div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+            </div>`;
+            let data = {
+                role_name: departamentRole.value
+            }
+            axios.post('{{ route('user.staffRequests.ajax.getUserWithRole') }}', data)
+                .then(function(response) {
+                    assigned_user.innerHTML = `
+                    <select class="form-control" name="assigned_to" id="assigned_to" required>
+                    </select>`;
+                    let assignedTo = document.getElementById('assigned_to');
+                    assignedTo.innerHTML = ``;
+                    response.data.forEach(function(item) {
+                        assignedTo.innerHTML +=
+                            `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
     </script>
 @endsection

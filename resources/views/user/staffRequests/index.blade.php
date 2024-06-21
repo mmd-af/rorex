@@ -21,7 +21,7 @@
     </ol>
     @include('user.layouts.partial.errors')
     <div class="row">
-        <div class="col-xl-3 col-md-6">
+        {{-- <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
                 <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#LeaveRequest"
                     data-info="Modal 1 Content" onclick="LeaveRequestForRest()">
@@ -44,12 +44,12 @@
                     Hourly leave Request <i class="fa-solid fa-square-arrow-up-right"></i>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
                 <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#LeaveRequest"
                     data-info="Modal 1 Content" onclick="CustomRequest()">
-                    Other Request <i class="fa-solid fa-square-arrow-up-right"></i>
+                    Send New Request <i class="fa-solid fa-square-arrow-up-right"></i>
                 </div>
             </div>
         </div>
@@ -185,83 +185,83 @@
 
 @section('script')
     <script>
-        function LeaveRequestForRest() {
-            let datesForLeave = document.getElementById('datesForLeave');
-            datesForLeave.innerHTML = `
-                                <div class="col-md-6">
-                                    <label for="startDate" class="form-label">Start Date:</label>
-                                    <input type="date" name="start_date" class="form-control" id="startDate"
-                                           onchange="calculateDateDifference(1)" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="endDate" class="form-label">End Date:</label>
-                                    <input type="date" name="end_date" class="form-control" id="endDate"
-                                           onchange="calculateDateDifference(1)" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <h6 id="dateDifference"></h6>
-                                </div>`;
-            let modalSubject = document.getElementById('modalSubject');
-            modalSubject.innerHTML = `
-<input type="hidden" name="kind" value="Rest">
-<input type="hidden" name="subject" value="Leave Request">
-                        <input type="hidden" name="description" value="">`;
-        }
+        // function LeaveRequestForRest() {
+        //     let datesForLeave = document.getElementById('datesForLeave');
+        //     datesForLeave.innerHTML = `
+        //                         <div class="col-md-6">
+        //                             <label for="startDate" class="form-label">Start Date:</label>
+        //                             <input type="date" name="start_date" class="form-control" id="startDate"
+        //                                    onchange="calculateDateDifference(1)" required>
+        //                         </div>
+        //                         <div class="col-md-6">
+        //                             <label for="endDate" class="form-label">End Date:</label>
+        //                             <input type="date" name="end_date" class="form-control" id="endDate"
+        //                                    onchange="calculateDateDifference(1)" required>
+        //                         </div>
+        //                         <div class="col-md-6">
+        //                             <h6 id="dateDifference"></h6>
+        //                         </div>`;
+        //     let modalSubject = document.getElementById('modalSubject');
+        //     modalSubject.innerHTML = `
+        //     <input type="hidden" name="kind" value="Rest">
+        //     <input type="hidden" name="subject" value="Leave Request">
+        //                 <input type="hidden" name="description" value="">`;
+        // }
 
-        function LeaveRequestForSpecialEvents() {
-            let datesForLeave = document.getElementById('datesForLeave');
-            datesForLeave.innerHTML = `
-                                <div class="col-md-6">
-                                    <label for="startDate" class="form-label">Start Date:</label>
-                                    <input type="date" name="start_date" class="form-control" id="startDate"
-                                           onchange="calculateDateDifference(2)" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="endDate" class="form-label">End Date:</label>
-                                    <input type="date" name="end_date" class="form-control" id="endDate"
-                                           onchange="calculateDateDifference(2)" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <h6 id="dateDifference"></h6>
-                                </div>`;
-            let modalSubject = document.getElementById('modalSubject');
-            modalSubject.innerHTML =
-                `
-                                <input type="hidden" name="kind" value="SpecialEvents">
-                                <input type="hidden" name="subject" value="leave for special events">
-                                <label for="description">explain:</label>
-                                <input type="text" class="form-control" name="description" id="description" value="" required>`;
-            const descriptionInput = document.getElementById('description');
-            let isTextAdded = false;
-            descriptionInput.addEventListener('change', function(event) {
-                if (!isTextAdded) {
-                    this.value = event.target.value + " and I will send the document.";
-                    isTextAdded = true;
-                    this.readOnly = true;
-                }
-            });
-        }
+        // function LeaveRequestForSpecialEvents() {
+        //     let datesForLeave = document.getElementById('datesForLeave');
+        //     datesForLeave.innerHTML = `
+        //                         <div class="col-md-6">
+        //                             <label for="startDate" class="form-label">Start Date:</label>
+        //                             <input type="date" name="start_date" class="form-control" id="startDate"
+        //                                    onchange="calculateDateDifference(2)" required>
+        //                         </div>
+        //                         <div class="col-md-6">
+        //                             <label for="endDate" class="form-label">End Date:</label>
+        //                             <input type="date" name="end_date" class="form-control" id="endDate"
+        //                                    onchange="calculateDateDifference(2)" required>
+        //                         </div>
+        //                         <div class="col-md-6">
+        //                             <h6 id="dateDifference"></h6>
+        //                         </div>`;
+        //     let modalSubject = document.getElementById('modalSubject');
+        //     modalSubject.innerHTML =
+        //         `
+        //                         <input type="hidden" name="kind" value="SpecialEvents">
+        //                         <input type="hidden" name="subject" value="leave for special events">
+        //                         <label for="description">explain:</label>
+        //                         <input type="text" class="form-control" name="description" id="description" value="" required>`;
+        //     const descriptionInput = document.getElementById('description');
+        //     let isTextAdded = false;
+        //     descriptionInput.addEventListener('change', function(event) {
+        //         if (!isTextAdded) {
+        //             this.value = event.target.value + " and I will send the document.";
+        //             isTextAdded = true;
+        //             this.readOnly = true;
+        //         }
+        //     });
+        // }
 
-        function LeaveRequestForHour() {
+        // function LeaveRequestForHour() {
             let datesForLeave = document.getElementById('datesForLeave');
             datesForLeave.innerHTML = `
-     <div class="row">
+                <div class="row">
            <div class="col-md-6">
               <label for="startDate" class="form-label">Date:</label>
               <input type="date" name="start_date" class="form-control" id="startDate" required>
            </div>
-    </div>
-    <div class="col-md-6">
-        <label for="startTime" class="form-label">Start Time:</label>
-        <input type="time" name="start_time" class="form-control" id="startTime" onchange="calculateTimeDifference()" required>
-    </div>
-    <div class="col-md-6">
-        <label for="endTime" class="form-label">End Time:</label>
-        <input type="time" name="end_time" class="form-control" id="endTime" onchange="calculateTimeDifference()" required>
-    </div>
-    <div class="col-md-6">
-        <h6 id="timeDifference"></h6>
-    </div>`;
+                </div>
+                <div class="col-md-6">
+                    <label for="startTime" class="form-label">Start Time:</label>
+                 <input type="time" name="start_time" class="form-control" id="startTime" onchange="calculateTimeDifference()" required>
+             </div>
+             <div class="col-md-6">
+                 <label for="endTime" class="form-label">End Time:</label>
+                   <input type="time" name="end_time" class="form-control" id="endTime" onchange="calculateTimeDifference()" required>
+              </div>
+               <div class="col-md-6">
+                   <h6 id="timeDifference"></h6>
+             </div>`;
             let modalSubject = document.getElementById('modalSubject');
             modalSubject.innerHTML = `
                         <input type="hidden" name="kind" value="Hour">
@@ -302,18 +302,18 @@
             let modalSubject = document.getElementById('modalSubject');
             let start_date = new Date();
             modalSubject.innerHTML = `
-<input type="hidden" name="kind" value="CustomRequest">
-<input type="hidden" class="form-control" name="vacation_day" value="0">
-<input type="hidden" class="form-control" name="start_date" value="${start_date.toISOString().split('T')[0]}">
-<label for="subject">Subject:</label>
-<input type="text" class="form-control" name="subject" id="subject" value="Request for Mission" readonly>
-<label for="description">Description:</label>
-<textarea name="description" class="form-control" id="description" required>
-    please consider mission on these days:
-    ${start_date.toISOString().split('T')[0]}
-    from --:-- to --:-- hour
+            <input type="hidden" name="kind" value="CustomRequest">
+            <input type="hidden" class="form-control" name="vacation_day" value="0">
+            <input type="hidden" class="form-control" name="start_date" value="${start_date.toISOString().split('T')[0]}">
+            <label for="subject">Subject:</label>
+            <input type="text" class="form-control" name="subject" id="subject" value="Request for Mission" readonly>
+            <label for="description">Description:</label>
+            <textarea name="description" class="form-control" id="description" required>
+              please consider mission on these days:
+               ${start_date.toISOString().split('T')[0]}
+              from --:-- to --:-- hour
     
-    </textarea>`;
+             </textarea>`;
         }
 
         function handelRequestWithSubject() {
@@ -424,79 +424,79 @@
             });
         });
 
-        function calculateDateDifference(x) {
-            var startDateValue = document.getElementById('startDate').value.trim();
-            var endDateValue = document.getElementById('endDate').value.trim();
-            let leave_balance = "{{ Auth::user()->leave_balance }}";
-            if (startDateValue !== '' && endDateValue !== '') {
-                var startDate = new Date(startDateValue);
-                var endDate = new Date(endDateValue);
-                if (endDate < startDate) {
-                    document.getElementById('dateDifference').innerHTML =
-                        `<p class="text-danger">The second date cannot be before the first date</p>`;
-                    return;
-                }
-                var timeDifference = Math.abs(endDate - startDate + 1);
-                var dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-                let numberOfExcludingHolidays;
-                do {
-                    numberOfExcludingHolidays = prompt('How many days EXCLUDING Holidays? (Just enter the number)');
-                } while (numberOfExcludingHolidays === null || numberOfExcludingHolidays.trim() === '' || isNaN(
-                        numberOfExcludingHolidays) || !Number.isInteger(parseFloat(numberOfExcludingHolidays)));
-                numberOfExcludingHolidays = parseInt(numberOfExcludingHolidays, 10);
-                let showInformation = document.getElementById('dateDifference');
-                if (x === 1) {
-                    showInformation.innerHTML =
-                        `<div class="mt-2">
-                        <p class="text-primary">Totally= ${dayDifference} days</p>
-                        <p class="text-warning">Allowed leave= ${leave_balance} days</p>
-                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
-                        <input type="hidden" name="totally" value="${dayDifference}">
-                        <input type="hidden" name="leave_balance" value="${leave_balance}">
-                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}" required>
-                    </div>`;
-                    if (leave_balance < numberOfExcludingHolidays) {
-                        let daysWithoutPay = numberOfExcludingHolidays - leave_balance;
-                        daysWithoutPay = Math.ceil(daysWithoutPay);
-                        showInformation.innerHTML += `<div>
-                             <p class="text-danger">Number of unpaid leave= ${daysWithoutPay}</p>
-                        <input type="hidden" name="daysWithoutPay" value="${daysWithoutPay}">
-                           </div>`;
-                    }
-                }
-                if (x === 2) {
-                    showInformation.innerHTML =
-                        `<div class="mt-3">
-                        <p class="text-primary">Totally= ${dayDifference} days</p>
-                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
-                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}">
-                        <input type="hidden" name="totally" value="${dayDifference}">
-                    </div>`;
-                }
-            }
-        }
+        // function calculateDateDifference(x) {
+        //     var startDateValue = document.getElementById('startDate').value.trim();
+        //     var endDateValue = document.getElementById('endDate').value.trim();
+        //     let leave_balance = "{{ Auth::user()->leave_balance }}";
+        //     if (startDateValue !== '' && endDateValue !== '') {
+        //         var startDate = new Date(startDateValue);
+        //         var endDate = new Date(endDateValue);
+        //         if (endDate < startDate) {
+        //             document.getElementById('dateDifference').innerHTML =
+        //                 `<p class="text-danger">The second date cannot be before the first date</p>`;
+        //             return;
+        //         }
+        //         var timeDifference = Math.abs(endDate - startDate + 1);
+        //         var dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+        //         let numberOfExcludingHolidays;
+        //         do {
+        //             numberOfExcludingHolidays = prompt('How many days EXCLUDING Holidays? (Just enter the number)');
+        //         } while (numberOfExcludingHolidays === null || numberOfExcludingHolidays.trim() === '' || isNaN(
+        //                 numberOfExcludingHolidays) || !Number.isInteger(parseFloat(numberOfExcludingHolidays)));
+        //         numberOfExcludingHolidays = parseInt(numberOfExcludingHolidays, 10);
+        //         let showInformation = document.getElementById('dateDifference');
+        //         if (x === 1) {
+        //             showInformation.innerHTML =
+        //                 `<div class="mt-2">
+        //                 <p class="text-primary">Totally= ${dayDifference} days</p>
+        //                 <p class="text-warning">Allowed leave= ${leave_balance} days</p>
+        //                 <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
+        //                 <input type="hidden" name="totally" value="${dayDifference}">
+        //                 <input type="hidden" name="leave_balance" value="${leave_balance}">
+        //                 <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}" required>
+        //             </div>`;
+        //             if (leave_balance < numberOfExcludingHolidays) {
+        //                 let daysWithoutPay = numberOfExcludingHolidays - leave_balance;
+        //                 daysWithoutPay = Math.ceil(daysWithoutPay);
+        //                 showInformation.innerHTML += `<div>
+        //                      <p class="text-danger">Number of unpaid leave= ${daysWithoutPay}</p>
+        //                 <input type="hidden" name="daysWithoutPay" value="${daysWithoutPay}">
+        //                    </div>`;
+        //             }
+        //         }
+        //         if (x === 2) {
+        //             showInformation.innerHTML =
+        //                 `<div class="mt-3">
+        //                 <p class="text-primary">Totally= ${dayDifference} days</p>
+        //                 <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
+        //                 <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}">
+        //                 <input type="hidden" name="totally" value="${dayDifference}">
+        //             </div>`;
+        //         }
+        //     }
+        // }
 
-        function calculateTimeDifference() {
-            var startTimeValue = document.getElementById('startTime').value.trim();
-            var endTimeValue = document.getElementById('endTime').value.trim();
+        // function calculateTimeDifference() {
+        //     var startTimeValue = document.getElementById('startTime').value.trim();
+        //     var endTimeValue = document.getElementById('endTime').value.trim();
 
-            if (startTimeValue !== '' && endTimeValue !== '') {
-                var startTime = new Date('1970-01-01T' + startTimeValue + ':00Z').getTime();
-                var endTime = new Date('1970-01-01T' + endTimeValue + ':00Z').getTime();
-                if (endTime < startTime) {
-                    document.getElementById('timeDifference').innerHTML =
-                        `<p class="text-danger">End time cannot be earlier than start time</p>`;
-                    return;
-                }
-                var timeDifferenceInMilliseconds = Math.abs(endTime - startTime);
-                var hours = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60));
-                var minutes = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+        //     if (startTimeValue !== '' && endTimeValue !== '') {
+        //         var startTime = new Date('1970-01-01T' + startTimeValue + ':00Z').getTime();
+        //         var endTime = new Date('1970-01-01T' + endTimeValue + ':00Z').getTime();
+        //         if (endTime < startTime) {
+        //             document.getElementById('timeDifference').innerHTML =
+        //                 `<p class="text-danger">End time cannot be earlier than start time</p>`;
+        //             return;
+        //         }
+        //         var timeDifferenceInMilliseconds = Math.abs(endTime - startTime);
+        //         var hours = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60));
+        //         var minutes = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
 
-                document.getElementById('timeDifference').innerHTML =
-                    `<p class="text-success">${hours} hours and ${minutes} minutes</p>
-             <input type="hidden" name="vacation_day" value="${hours}:${minutes}">`;
-            }
-        }
+        //         document.getElementById('timeDifference').innerHTML =
+        //             `<p class="text-success">${hours} hours and ${minutes} minutes</p>
+        //      <input type="hidden" name="vacation_day" value="${hours}:${minutes}">`;
+        //     }
+        // }
 
         $(document).ready(function() {
             let departamentRole = document.getElementById('departamentRole');
