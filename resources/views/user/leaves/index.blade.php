@@ -287,7 +287,7 @@
                 if (x === 1) {
                     if (leave_balance < numberOfExcludingHolidays) {
                         showInformation.innerHTML +=
-                            `<div>
+                            `<div class="m-3">
                              <h4 class="text-danger">The number of days you request is more than the total number of days you are allowed</h4>
                              <h6 class="text-info">You can use the without paid option</h6>
                              <input type="hidden" name="vacation_day" value="" required>
@@ -400,6 +400,67 @@
             }
         }
 
+        function calculateTimeDifference() {
+            var startTimeValue = document.getElementById('startTime').value.trim();
+            var endTimeValue = document.getElementById('endTime').value.trim();
+
+            if (startTimeValue !== '' && endTimeValue !== '') {
+                var startTime = new Date('1970-01-01T' + startTimeValue + ':00Z').getTime();
+                var endTime = new Date('1970-01-01T' + endTimeValue + ':00Z').getTime();
+                if (endTime < startTime) {
+                    document.getElementById('timeDifference').innerHTML =
+                        `<p class="text-danger">End time cannot be earlier than start time</p>`;
+                    return;
+                }
+                var timeDifferenceInMilliseconds = Math.abs(endTime - startTime);
+                var hours = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60));
+                var minutes = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+
+                document.getElementById('timeDifference').innerHTML =
+                    `<p class="text-success">${hours} hours and ${minutes} minutes</p>
+             <input type="hidden" name="vacation_day" value="${hours}:${minutes}">`;
+            }
+        }
+
+        $(document).ready(function() {
+            let departamentRole = document.getElementById('departamentRole');
+            axios.get('{{ route('user.staffRequests.ajax.getRoles') }}')
+                .then(function(response) {
+                    response.data.forEach(function(item) {
+                        departamentRole.innerHTML +=
+                            `<option value="${item.name}">${item.name}</option>`;
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        });
+
+        function getRelateUserWithRole() {
+            let assigned_user = document.getElementById('assigned_user');
+            assigned_user.innerHTML = `<div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+            </div>`;
+            let data = {
+                role_name: departamentRole.value
+            }
+            axios.post('{{ route('user.staffRequests.ajax.getUserWithRole') }}', data)
+                .then(function(response) {
+                    assigned_user.innerHTML = `
+                    <select class="form-control" name="assigned_to" id="assigned_to" required>
+                    </select>`;
+                    let assignedTo = document.getElementById('assigned_to');
+                    assignedTo.innerHTML = ``;
+                    response.data.forEach(function(item) {
+                        assignedTo.innerHTML +=
+                            `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
+
         document.getElementById('leaveForm').addEventListener('submit', function(event) {
             event.preventDefault();
             var form = event.target;
@@ -477,7 +538,7 @@
             performAction.innerHTML = `
              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       Loading...`;
-            axios.post('{{ route('user.staffRequests.ajax.store') }}', data)
+            axios.post('{{ route('user.leaves.ajax.store') }}', data)
                 .then(function(response) {
                     location.reload();
                 })
@@ -489,66 +550,5 @@
                 });
 
         });
-
-        function calculateTimeDifference() {
-            var startTimeValue = document.getElementById('startTime').value.trim();
-            var endTimeValue = document.getElementById('endTime').value.trim();
-
-            if (startTimeValue !== '' && endTimeValue !== '') {
-                var startTime = new Date('1970-01-01T' + startTimeValue + ':00Z').getTime();
-                var endTime = new Date('1970-01-01T' + endTimeValue + ':00Z').getTime();
-                if (endTime < startTime) {
-                    document.getElementById('timeDifference').innerHTML =
-                        `<p class="text-danger">End time cannot be earlier than start time</p>`;
-                    return;
-                }
-                var timeDifferenceInMilliseconds = Math.abs(endTime - startTime);
-                var hours = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60));
-                var minutes = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
-
-                document.getElementById('timeDifference').innerHTML =
-                    `<p class="text-success">${hours} hours and ${minutes} minutes</p>
-             <input type="hidden" name="vacation_day" value="${hours}:${minutes}">`;
-            }
-        }
-
-        $(document).ready(function() {
-            let departamentRole = document.getElementById('departamentRole');
-            axios.get('{{ route('user.staffRequests.ajax.getRoles') }}')
-                .then(function(response) {
-                    response.data.forEach(function(item) {
-                        departamentRole.innerHTML +=
-                            `<option value="${item.name}">${item.name}</option>`;
-                    });
-                })
-                .catch(function(error) {
-                    console.error(error);
-                });
-        });
-
-        function getRelateUserWithRole() {
-            let assigned_user = document.getElementById('assigned_user');
-            assigned_user.innerHTML = `<div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-            </div>`;
-            let data = {
-                role_name: departamentRole.value
-            }
-            axios.post('{{ route('user.staffRequests.ajax.getUserWithRole') }}', data)
-                .then(function(response) {
-                    assigned_user.innerHTML = `
-                    <select class="form-control" name="assigned_to" id="assigned_to" required>
-                    </select>`;
-                    let assignedTo = document.getElementById('assigned_to');
-                    assignedTo.innerHTML = ``;
-                    response.data.forEach(function(item) {
-                        assignedTo.innerHTML +=
-                            `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
-                    });
-                })
-                .catch(function(error) {
-                    console.error(error);
-                });
-        }
     </script>
 @endsection

@@ -10,15 +10,15 @@ Route::group(['middleware' => ['permission:employees'], 'namespace' => 'App\Http
                 'as' => 'index',
                 'uses' => 'LeaveController@index'
             ]);
-            Route::post('/store', [
-                'as' => 'store',
-                'uses' => 'LeaveController@store'
-            ]);
         });
         Route::group(['prefix' => 'leaves-ajax', 'as' => 'leaves.ajax.'], function () {
             Route::get('/getDataTable', [
                 'as' => 'getDataTable',
                 'uses' => 'LeaveAjaxController@getDataTable'
+            ]);
+            Route::post('/store', [
+                'as' => 'store',
+                'uses' => 'LeaveAjaxController@store'
             ]);
         });
     });

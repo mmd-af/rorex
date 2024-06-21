@@ -103,7 +103,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="LeaveRequestLabel">Leave Request</h1>
+                    <h1 class="modal-title fs-5" id="LeaveRequestLabel">create a new Request</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -123,14 +123,14 @@
                                 <text class="text-primary"> {{ Auth::user()->first_name }} </text>
                                 <input type="hidden" name="first_name" value="{{ Auth::user()->first_name }}">
                             @endif
-                            with Code Staff:
+                            Code Staff:
                             @if (empty(Auth::user()->cod_staff))
                                 <input type="text" class="form-control" name="cod_staff" id="cod_staff" value="">
                             @else
                                 <text class="text-primary">{{ Auth::user()->cod_staff }}</text>
                                 <input type="hidden" name="cod_staff" value="{{ Auth::user()->cod_staff }}">
                             @endif
-                            as an employee of S.C. ROREX PIPE S.R.L. in the Departament of
+                            Departament:
                             @if (empty(Auth::user()->departament))
                                 <input type="text" class="form-control" name="departament" id="departament"
                                     value="">
@@ -138,9 +138,6 @@
                                 <text class="text-primary">{{ Auth::user()->departament }}</text>
                                 <input type="hidden" name="departament" value="{{ Auth::user()->departament }}">
                             @endif
-                            <div class="row">
-                                <p class="small text-success"> Allowed leave= {{ Auth::user()->leave_balance }} days</p>
-                            </div>
                             <div class="row mt-4" id="datesForLeave">
                             </div>
                             <div class="row mt-4 p-5" id="modalSubject">
@@ -149,8 +146,8 @@
                         <div class="mb-3">
                             <label for="email" class="col-form-label">Your Email:</label>
                             @if (empty(Auth::user()->email))
-                                <input type="email" class="form-control" name="email" id="email"
-                                    value="" required>
+                                <input type="email" class="form-control" name="email" id="email" value=""
+                                    required>
                             @else
                                 <p class="text-primary">{{ Auth::user()->email }}</p>
                                 <input type="hidden" name="email" value="{{ Auth::user()->email }}" required>
@@ -188,49 +185,49 @@
         // function LeaveRequestForRest() {
         //     let datesForLeave = document.getElementById('datesForLeave');
         //     datesForLeave.innerHTML = `
-        //                         <div class="col-md-6">
-        //                             <label for="startDate" class="form-label">Start Date:</label>
-        //                             <input type="date" name="start_date" class="form-control" id="startDate"
-        //                                    onchange="calculateDateDifference(1)" required>
-        //                         </div>
-        //                         <div class="col-md-6">
-        //                             <label for="endDate" class="form-label">End Date:</label>
-        //                             <input type="date" name="end_date" class="form-control" id="endDate"
-        //                                    onchange="calculateDateDifference(1)" required>
-        //                         </div>
-        //                         <div class="col-md-6">
-        //                             <h6 id="dateDifference"></h6>
-        //                         </div>`;
+    //                         <div class="col-md-6">
+    //                             <label for="startDate" class="form-label">Start Date:</label>
+    //                             <input type="date" name="start_date" class="form-control" id="startDate"
+    //                                    onchange="calculateDateDifference(1)" required>
+    //                         </div>
+    //                         <div class="col-md-6">
+    //                             <label for="endDate" class="form-label">End Date:</label>
+    //                             <input type="date" name="end_date" class="form-control" id="endDate"
+    //                                    onchange="calculateDateDifference(1)" required>
+    //                         </div>
+    //                         <div class="col-md-6">
+    //                             <h6 id="dateDifference"></h6>
+    //                         </div>`;
         //     let modalSubject = document.getElementById('modalSubject');
         //     modalSubject.innerHTML = `
-        //     <input type="hidden" name="kind" value="Rest">
-        //     <input type="hidden" name="subject" value="Leave Request">
-        //                 <input type="hidden" name="description" value="">`;
+    //     <input type="hidden" name="kind" value="Rest">
+    //     <input type="hidden" name="subject" value="Leave Request">
+    //                 <input type="hidden" name="description" value="">`;
         // }
 
         // function LeaveRequestForSpecialEvents() {
         //     let datesForLeave = document.getElementById('datesForLeave');
         //     datesForLeave.innerHTML = `
-        //                         <div class="col-md-6">
-        //                             <label for="startDate" class="form-label">Start Date:</label>
-        //                             <input type="date" name="start_date" class="form-control" id="startDate"
-        //                                    onchange="calculateDateDifference(2)" required>
-        //                         </div>
-        //                         <div class="col-md-6">
-        //                             <label for="endDate" class="form-label">End Date:</label>
-        //                             <input type="date" name="end_date" class="form-control" id="endDate"
-        //                                    onchange="calculateDateDifference(2)" required>
-        //                         </div>
-        //                         <div class="col-md-6">
-        //                             <h6 id="dateDifference"></h6>
-        //                         </div>`;
+    //                         <div class="col-md-6">
+    //                             <label for="startDate" class="form-label">Start Date:</label>
+    //                             <input type="date" name="start_date" class="form-control" id="startDate"
+    //                                    onchange="calculateDateDifference(2)" required>
+    //                         </div>
+    //                         <div class="col-md-6">
+    //                             <label for="endDate" class="form-label">End Date:</label>
+    //                             <input type="date" name="end_date" class="form-control" id="endDate"
+    //                                    onchange="calculateDateDifference(2)" required>
+    //                         </div>
+    //                         <div class="col-md-6">
+    //                             <h6 id="dateDifference"></h6>
+    //                         </div>`;
         //     let modalSubject = document.getElementById('modalSubject');
         //     modalSubject.innerHTML =
         //         `
-        //                         <input type="hidden" name="kind" value="SpecialEvents">
-        //                         <input type="hidden" name="subject" value="leave for special events">
-        //                         <label for="description">explain:</label>
-        //                         <input type="text" class="form-control" name="description" id="description" value="" required>`;
+    //                         <input type="hidden" name="kind" value="SpecialEvents">
+    //                         <input type="hidden" name="subject" value="leave for special events">
+    //                         <label for="description">explain:</label>
+    //                         <input type="text" class="form-control" name="description" id="description" value="" required>`;
         //     const descriptionInput = document.getElementById('description');
         //     let isTextAdded = false;
         //     descriptionInput.addEventListener('change', function(event) {
@@ -243,8 +240,8 @@
         // }
 
         // function LeaveRequestForHour() {
-            let datesForLeave = document.getElementById('datesForLeave');
-            datesForLeave.innerHTML = `
+        let datesForLeave = document.getElementById('datesForLeave');
+        datesForLeave.innerHTML = `
                 <div class="row">
            <div class="col-md-6">
               <label for="startDate" class="form-label">Date:</label>
@@ -262,12 +259,12 @@
                <div class="col-md-6">
                    <h6 id="timeDifference"></h6>
              </div>`;
-            let modalSubject = document.getElementById('modalSubject');
-            modalSubject.innerHTML = `
+        let modalSubject = document.getElementById('modalSubject');
+        modalSubject.innerHTML = `
                         <input type="hidden" name="kind" value="Hour">
                         <input type="hidden" name="subject" value="Hourly Leave Request">
                         <input type="hidden" name="description" value="hour">`;
-        }
+        // }
 
         function CustomRequest() {
             let datesForLeave = document.getElementById('datesForLeave');
@@ -448,30 +445,30 @@
         //         if (x === 1) {
         //             showInformation.innerHTML =
         //                 `<div class="mt-2">
-        //                 <p class="text-primary">Totally= ${dayDifference} days</p>
-        //                 <p class="text-warning">Allowed leave= ${leave_balance} days</p>
-        //                 <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
-        //                 <input type="hidden" name="totally" value="${dayDifference}">
-        //                 <input type="hidden" name="leave_balance" value="${leave_balance}">
-        //                 <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}" required>
-        //             </div>`;
+    //                 <p class="text-primary">Totally= ${dayDifference} days</p>
+    //                 <p class="text-warning">Allowed leave= ${leave_balance} days</p>
+    //                 <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
+    //                 <input type="hidden" name="totally" value="${dayDifference}">
+    //                 <input type="hidden" name="leave_balance" value="${leave_balance}">
+    //                 <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}" required>
+    //             </div>`;
         //             if (leave_balance < numberOfExcludingHolidays) {
         //                 let daysWithoutPay = numberOfExcludingHolidays - leave_balance;
         //                 daysWithoutPay = Math.ceil(daysWithoutPay);
         //                 showInformation.innerHTML += `<div>
-        //                      <p class="text-danger">Number of unpaid leave= ${daysWithoutPay}</p>
-        //                 <input type="hidden" name="daysWithoutPay" value="${daysWithoutPay}">
-        //                    </div>`;
+    //                      <p class="text-danger">Number of unpaid leave= ${daysWithoutPay}</p>
+    //                 <input type="hidden" name="daysWithoutPay" value="${daysWithoutPay}">
+    //                    </div>`;
         //             }
         //         }
         //         if (x === 2) {
         //             showInformation.innerHTML =
         //                 `<div class="mt-3">
-        //                 <p class="text-primary">Totally= ${dayDifference} days</p>
-        //                 <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
-        //                 <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}">
-        //                 <input type="hidden" name="totally" value="${dayDifference}">
-        //             </div>`;
+    //                 <p class="text-primary">Totally= ${dayDifference} days</p>
+    //                 <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
+    //                 <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}">
+    //                 <input type="hidden" name="totally" value="${dayDifference}">
+    //             </div>`;
         //         }
         //     }
         // }
@@ -494,7 +491,7 @@
 
         //         document.getElementById('timeDifference').innerHTML =
         //             `<p class="text-success">${hours} hours and ${minutes} minutes</p>
-        //      <input type="hidden" name="vacation_day" value="${hours}:${minutes}">`;
+    //      <input type="hidden" name="vacation_day" value="${hours}:${minutes}">`;
         //     }
         // }
 
