@@ -13,6 +13,12 @@
         #alignCenter {
             text-align: center;
         }
+
+        .errorMessage {
+            color: red;
+            font-weight: bold;
+            margin: 20px;
+        }
     </style>
 @endsection
 @section('content')
@@ -24,15 +30,15 @@
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
                 <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#LeaveRequest"
-                    data-info="Modal 1 Content" onclick="LeaveRequestForRest()">
-                    send new Request <i class="fa-solid fa-square-arrow-up-right"></i>
+                    data-info="Modal 1 Content">
+                    Send New Request <i class="fa-solid fa-square-arrow-up-right"></i>
                 </div>
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-between">
-        <div></div>
-        <div>
+    <div class="row">
+        <div class="col-xl-3 col-md-6 border p-3 m-2">
+            <h6 class="text-success"> Remainder of allow leave= {{ Auth::user()->leave_balance }} days</h6>
         </div>
     </div>
     <div class="card mb-4">
@@ -41,14 +47,20 @@
                 <thead>
                     <tr>
                         <th>Tracking Number</th>
-                        <th>Description</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Type</th>
+                        <th>Hour</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
                         <th>Tracking Number</th>
-                        <th>Description</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Type</th>
+                        <th>Hour</th>
                         <th>Status</th>
                     </tr>
                 </tfoot>
@@ -68,37 +80,41 @@
                 <div class="modal-body">
                     <form id="leaveForm">
                         <div class="mb-3 lh-lg h5">
-                            LastName:
                             @if (empty(Auth::user()->name))
+                                LastName:
                                 <input type="text" class="form-control" name="name" id="name" value="">
                             @else
-                                <text class="text-primary"> {{ Auth::user()->name }}</text>
                                 <input type="hidden" name="name" value="{{ Auth::user()->name }}">
                             @endif
-                            FirstName:
                             @if (empty(Auth::user()->first_name))
+                                FirstName:
                                 <input type="text" class="form-control" name="first_name" id="first_name" value="">
                             @else
-                                <text class="text-primary"> {{ Auth::user()->first_name }} </text>
                                 <input type="hidden" name="first_name" value="{{ Auth::user()->first_name }}">
                             @endif
-                            with Code Staff:
                             @if (empty(Auth::user()->cod_staff))
+                                Code Staff:
                                 <input type="text" class="form-control" name="cod_staff" id="cod_staff" value="">
                             @else
-                                <text class="text-primary">{{ Auth::user()->cod_staff }}</text>
                                 <input type="hidden" name="cod_staff" value="{{ Auth::user()->cod_staff }}">
                             @endif
-                            as an employee of S.C. ROREX PIPE S.R.L. in the Departament of
                             @if (empty(Auth::user()->departament))
+                                Departament:
                                 <input type="text" class="form-control" name="departament" id="departament"
                                     value="">
                             @else
-                                <text class="text-primary">{{ Auth::user()->departament }}</text>
                                 <input type="hidden" name="departament" value="{{ Auth::user()->departament }}">
                             @endif
-                            <div class="row">
-                                <p class="small text-success"> Allowed leave= {{ Auth::user()->leave_balance }} days</p>
+                            <div class="col-md-6">
+                                <label for="type">Type:</label>
+                                <select class="form-select" name="type" id="type"
+                                    onchange="actionForSelectType(event)" required>
+                                    <option selected>-- Select one --</option>
+                                    <option value="Allowed Leave">Allowed Leave</option>
+                                    <option value="Speacial Event">Speacial Event</option>
+                                    <option value="Hourly">Hourly</option>
+                                    <option value="Without Paid">Without Paid</option>
+                                </select>
                             </div>
                             <div class="row mt-4" id="datesForLeave">
                             </div>
@@ -144,10 +160,7 @@
 
 @section('script')
     <script>
-
-
-
-$(document).ready(function() {
+        $(document).ready(function() {
             $('#staffRequestTable').DataTable({
                 processing: true,
                 serverSide: true,
@@ -159,8 +172,20 @@ $(document).ready(function() {
                         width: '10%'
                     },
                     {
-                        data: 'description',
-                        name: 'description'
+                        data: 'start_date',
+                        name: 'start_date'
+                    },
+                    {
+                        data: 'end_date',
+                        name: 'end_date'
+                    },
+                    {
+                        data: 'type',
+                        name: 'type'
+                    },
+                    {
+                        data: 'hour',
+                        name: 'hour'
                     },
                     {
                         data: 'status',
@@ -194,11 +219,7 @@ $(document).ready(function() {
             });
         });
 
-
-
-// ...................................................................................
-        function LeaveRequestForRest() {
-            let datesForLeave = document.getElementById('datesForLeave');
+        function LeaveRequestForRest(datesForLeave) {
             datesForLeave.innerHTML = `
                                 <div class="col-md-6">
                                     <label for="startDate" class="form-label">Start Date:</label>
@@ -215,10 +236,86 @@ $(document).ready(function() {
                                 </div>`;
             let modalSubject = document.getElementById('modalSubject');
             modalSubject.innerHTML = `
-                        <input type="hidden" name="kind" value="Rest">
-                        <input type="hidden" name="subject" value="Leave Request">
-                        <input type="hidden" name="description" value="">`;
+                    <input type="hidden" name="kind" value="Rest">
+                    <input type="hidden" name="subject" value="Leave Request">
+                    <input type="hidden" name="description" value="">`;
         }
+
+        function calculateDateDifference(x) {
+            var startDateValue = document.getElementById('startDate').value.trim();
+            var endDateValue = document.getElementById('endDate').value.trim();
+            let leave_balance = "{{ Auth::user()->leave_balance }}";
+            if (startDateValue !== '' && endDateValue !== '') {
+                var startDate = new Date(startDateValue);
+                var endDate = new Date(endDateValue);
+                if (endDate < startDate) {
+                    document.getElementById('dateDifference').innerHTML =
+                        `<p class="text-danger">The second date cannot be before the first date</p>`;
+                    return;
+                }
+                var timeDifference = Math.abs(endDate - startDate + 1);
+                var dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+                let numberOfExcludingHolidays;
+                do {
+                    numberOfExcludingHolidays = prompt('How many days EXCLUDING Holidays? (Just enter the number)');
+                } while (numberOfExcludingHolidays === null || numberOfExcludingHolidays.trim() === '' || isNaN(
+                        numberOfExcludingHolidays) || !Number.isInteger(parseFloat(numberOfExcludingHolidays)));
+                numberOfExcludingHolidays = parseInt(numberOfExcludingHolidays, 10);
+                let showInformation = document.getElementById('dateDifference');
+                if (x === 1) {
+                    if (leave_balance < numberOfExcludingHolidays) {
+                        showInformation.innerHTML +=
+                            `<div>
+                             <h4 class="text-danger">The number of days you request is more than the total number of days you are allowed</h4>
+                             <h6 class="text-info">You can use the without paid option</h6>
+                             <input type="hidden" name="vacation_day" value="" required>
+                          </div>`;
+                    } else {
+                        showInformation.innerHTML =
+                            `<div class="mt-2">
+                        <p class="text-primary">Total requested days= ${dayDifference} days</p>
+                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
+                        <input type="hidden" name="totally" value="${dayDifference}">
+                        <input type="hidden" name="leave_balance" value="${leave_balance}">
+                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}" required>
+                    </div>`;
+                    }
+                }
+                if (x === 2) {
+                    // TODO add input for file
+                    showInformation.innerHTML =
+                        `<div class="mt-3">
+                        <p class="text-primary">Totally= ${dayDifference} days</p>
+                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
+                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}">
+                        <input type="hidden" name="totally" value="${dayDifference}">
+                    </div>`;
+                }
+            }
+        }
+
+
+        function actionForSelectType(event) {
+            console.log(event.target.value);
+            let datesForLeave = document.getElementById('datesForLeave');
+            datesForLeave.innerHTML = ``;
+            if (event.target.value === "Allowed Leave") {
+                LeaveRequestForRest(datesForLeave)
+            }
+            if (event.target.value === "Speacial Event") {
+
+            }
+            if (event.target.value === "Hourly") {
+
+            }
+            if (event.target.value === "Without Paid") {
+
+            }
+        }
+
+        // ...................................................................................
+
+
 
         function LeaveRequestForSpecialEvents() {
             let datesForLeave = document.getElementById('datesForLeave');
@@ -236,16 +333,16 @@ $(document).ready(function() {
                                 <div class="col-md-6">
                                     <h6 id="dateDifference"></h6>
                                 </div>`;
-                let modalSubject = document.getElementById('modalSubject');
-                modalSubject.innerHTML =
+            let modalSubject = document.getElementById('modalSubject');
+            modalSubject.innerHTML =
                 `
                                 <input type="hidden" name="kind" value="SpecialEvents">
                                 <input type="hidden" name="subject" value="leave for special events">
                                 <label for="description">explain:</label>
                                 <input type="text" class="form-control" name="description" id="description" value="" required>`;
-                const descriptionInput = document.getElementById('description');
-                let isTextAdded = false;
-                descriptionInput.addEventListener('change', function(event) {
+            const descriptionInput = document.getElementById('description');
+            let isTextAdded = false;
+            descriptionInput.addEventListener('change', function(event) {
                 if (!isTextAdded) {
                     this.value = event.target.value + " and I will send the document.";
                     isTextAdded = true;
@@ -257,28 +354,28 @@ $(document).ready(function() {
         function LeaveRequestForHour() {
             let datesForLeave = document.getElementById('datesForLeave');
             datesForLeave.innerHTML = `
-                 <div class="row">
-                   <div class="col-md-6">
-                      <label for="startDate" class="form-label">Date:</label>
-                      <input type="date" name="start_date" class="form-control" id="startDate" required>
-                   </div>
-                </div>
+            <div class="row">
                 <div class="col-md-6">
+                    <label for="startDate" class="form-label">Date:</label>
+                    <input type="date" name="start_date" class="form-control" id="startDate" required>
+                </div>
+            </div>
+            <div class="col-md-6">
                 <label for="startTime" class="form-label">Start Time:</label>
                 <input type="time" name="start_time" class="form-control" id="startTime" onchange="calculateTimeDifference()" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="endTime" class="form-label">End Time:</label>
-                    <input type="time" name="end_time" class="form-control" id="endTime" onchange="calculateTimeDifference()" required>
-                </div>
-                <div class="col-md-6">
-                    <h6 id="timeDifference"></h6>
-                </div>`;
+            </div>
+            <div class="col-md-6">
+                <label for="endTime" class="form-label">End Time:</label>
+                <input type="time" name="end_time" class="form-control" id="endTime" onchange="calculateTimeDifference()" required>
+            </div>
+            <div class="col-md-6">
+                <h6 id="timeDifference"></h6>
+            </div>`;
             let modalSubject = document.getElementById('modalSubject');
             modalSubject.innerHTML = `
-                        <input type="hidden" name="kind" value="Hour">
-                        <input type="hidden" name="subject" value="Hourly Leave Request">
-                        <input type="hidden" name="description" value="hour">`;
+                                <input type="hidden" name="kind" value="Hour">
+                                <input type="hidden" name="subject" value="Hourly Leave Request">
+                                <input type="hidden" name="description" value="hour">`;
         }
 
         function CustomRequest() {
@@ -387,58 +484,6 @@ $(document).ready(function() {
                <input type="text" class="form-control" id="check_date_other_request" name="check_date_other_request" value="Below for Change Shift" readonly required>
                 <label for="description" class="col-form-label">Message:</label>
                             <textarea class="form-control" name="description" id="description" required>I request to change my shift from dd/mm/yyyy to dd/mm/yyyy from ........... to .........</textarea>`;
-            }
-        }
-
-        function calculateDateDifference(x) {
-            var startDateValue = document.getElementById('startDate').value.trim();
-            var endDateValue = document.getElementById('endDate').value.trim();
-            let leave_balance = "{{ Auth::user()->leave_balance }}";
-            if (startDateValue !== '' && endDateValue !== '') {
-                var startDate = new Date(startDateValue);
-                var endDate = new Date(endDateValue);
-                if (endDate < startDate) {
-                    document.getElementById('dateDifference').innerHTML =
-                        `<p class="text-danger">The second date cannot be before the first date</p>`;
-                    return;
-                }
-                var timeDifference = Math.abs(endDate - startDate + 1);
-                var dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-                let numberOfExcludingHolidays;
-                do {
-                    numberOfExcludingHolidays = prompt('How many days EXCLUDING Holidays? (Just enter the number)');
-                } while (numberOfExcludingHolidays === null || numberOfExcludingHolidays.trim() === '' || isNaN(
-                        numberOfExcludingHolidays) || !Number.isInteger(parseFloat(numberOfExcludingHolidays)));
-                numberOfExcludingHolidays = parseInt(numberOfExcludingHolidays, 10);
-                let showInformation = document.getElementById('dateDifference');
-                if (x === 1) {
-                    showInformation.innerHTML =
-                        `<div class="mt-2">
-                        <p class="text-primary">Totally= ${dayDifference} days</p>
-                        <p class="text-warning">Allowed leave= ${leave_balance} days</p>
-                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
-                        <input type="hidden" name="totally" value="${dayDifference}">
-                        <input type="hidden" name="leave_balance" value="${leave_balance}">
-                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}" required>
-                    </div>`;
-                    if (leave_balance < numberOfExcludingHolidays) {
-                        let daysWithoutPay = numberOfExcludingHolidays - leave_balance;
-                        daysWithoutPay = Math.ceil(daysWithoutPay);
-                        showInformation.innerHTML += `<div>
-                             <p class="text-danger">Number of unpaid leave= ${daysWithoutPay}</p>
-                        <input type="hidden" name="daysWithoutPay" value="${daysWithoutPay}">
-                           </div>`;
-                    }
-                }
-                if (x === 2) {
-                    showInformation.innerHTML =
-                        `<div class="mt-3">
-                        <p class="text-primary">Totally= ${dayDifference} days</p>
-                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
-                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}">
-                        <input type="hidden" name="totally" value="${dayDifference}">
-                    </div>`;
-                }
             }
         }
 
@@ -575,18 +620,22 @@ $(document).ready(function() {
                 departamentRole: departamentRole,
                 assigned_to: assigned_to
             }
-            axios.post('{{ route('user.staffRequests.ajax.store') }}', data)
-                .then(function(response) {
-                    location.reload();
-                })
-                .catch(function(error) {
-                    alert(error.request.response)
-                });
             let performAction = document.getElementById('performAction');
             performAction.disabled = true;
             performAction.innerHTML = `
              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       Loading...`;
+            axios.post('{{ route('user.staffRequests.ajax.store') }}', data)
+                .then(function(response) {
+                    location.reload();
+                })
+                .catch(function(error) {
+                    var response = JSON.parse(error.request.response);
+                    alert(response.message);
+                    performAction.disabled = false;
+                    performAction.innerHTML = `Send`;
+                });
+
         });
     </script>
 @endsection
