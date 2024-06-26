@@ -51,6 +51,7 @@
                         <th>End Date</th>
                         <th>Type</th>
                         <th>Hour</th>
+                        <th>File</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -61,6 +62,7 @@
                         <th>End Date</th>
                         <th>Type</th>
                         <th>Hour</th>
+                        <th>File</th>
                         <th>Status</th>
                     </tr>
                 </tfoot>
@@ -187,6 +189,11 @@
                     {
                         data: 'hour',
                         name: 'hour'
+                    },
+                    {
+                        data: 'file',
+                        name: 'file',
+                        width: '5%'
                     },
                     {
                         data: 'status',

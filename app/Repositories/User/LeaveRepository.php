@@ -40,11 +40,35 @@ class LeaveRepository extends BaseRepository
 
         if ($request->ajax()) {
             return Datatables::of($data)
-                ->addColumn('start_date', function ($row) {
-                    $originalDate = Carbon::parse($row->start_date);
-                    return $originalDate->format('Y-m-d');
+                ->addColumn('file', function ($row) {
+                    if ($row->file) {
+                        return '<a href="'.asset($row->file).'"><i class="fas fa-download"></i></a>';
+                    }else{
+                        return '';
+                    }
                 })
-                ->rawColumns(['start_date'])
+                ->addColumn('status', function ($row) {
+                    $row = $row->requests;
+                    $status = '';
+                    foreach ($row->assignments as $assignment) {
+                        $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
+                        if ($assignment->description && ($assignment->status === "Accepted" || $assignment->status === "Rejected")) {
+                            $description = Str::limit($assignment->description, 45);
+                            $description = $assignment->description != $description ? '<div class="bg-info rounded-3">' . $description . '<details>
+                                        <summary>Show Full Message</summary>' . $assignment->description . '</div>
+                                    </details>' : '<div class="bg-info rounded-3">' . $assignment->description . '</div>';
+                        } else {
+                            $description = '';
+                        }
+                        $condition = $assignment->status;
+                        if ($assignment->status == 'Rejected') {
+                            $condition = '<div class="bg-danger rounded-3 text-light">' . $assignment->status . '</div>';
+                        }
+                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $condition . $description . '<hr>';
+                    }
+                    return $status;
+                })
+                ->rawColumns(['status'])
                 ->make(true);
         }
         return false;
