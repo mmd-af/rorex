@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('request_id');
             $table->foreign('request_id')->references('id')->on('staff_requests')->onDelete('cascade');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->timestamp('start_date');
+            $table->timestamp('end_date')->nullable();
             $table->string('type');
             $table->string('file')->nullable();
             $table->string('hour');

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Jobs\User\LeaveRequestJob;
+use Illuminate\Support\Str;
 
 class LeaveRepository extends BaseRepository
 {
@@ -51,14 +52,20 @@ class LeaveRepository extends BaseRepository
     public function store($request)
     {
         $userId = Auth::id();
-        $hour = null; // TODO calculate here
+        $hour = "8"; // TODO calculate here
+        $file = null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('specialEvents'), $filename);
+        }
         $data = [
             'cod_staff' => $request->input('cod_staff'),
             'userId' => $userId,
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),
             'type' => $request->input('type'),
-            'file' => $request->input('file'),
+            'file' =>  '/specialEvents/' . $filename,
             'hour' => $hour,
             'name' => $request->input('name'),
             'subject' => (int)$request->input('subject'),

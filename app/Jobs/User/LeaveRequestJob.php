@@ -30,7 +30,6 @@ class LeaveRequestJob implements ShouldQueue
     public function handle(): void
     {
         try {
-
             $staffRequest = new StaffRequest();
             $staffRequest->name = $this->data['name'];
             $staffRequest->user_id = $this->data['userId'];

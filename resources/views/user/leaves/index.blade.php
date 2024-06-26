@@ -78,7 +78,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="leaveForm" enctype="multipart/form-data">
+                    <form id="leaveForm" method="POST" enctype="multipart/form-data">
+                        @csrf
                         <div class="mb-3 lh-lg h5">
                             @if (empty(Auth::user()->name))
                                 LastName:
@@ -469,6 +470,8 @@
             var first_name = formData.get('first_name');
             var cod_staff = formData.get('cod_staff');
             var departament = formData.get('departament');
+            var type = formData.get('type');
+            var file = formData.get('file');
             var startDay = formData.get('start_date');
             var endDay = formData.get('end_date');
             var totally = formData.get('totally');
@@ -525,6 +528,8 @@
                 cod_staff: cod_staff,
                 departament: departament,
                 subject: subject,
+                type: type,
+                file: file,
                 description: newDescription,
                 start_date: startDay,
                 end_date: endDay,
@@ -538,7 +543,11 @@
             performAction.innerHTML = `
              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       Loading...`;
-            axios.post('{{ route('user.leaves.ajax.store') }}', data)
+            axios.post(`{{ route('user.leaves.ajax.store') }}`, data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
                 .then(function(response) {
                     location.reload();
                 })

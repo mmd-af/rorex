@@ -8,6 +8,7 @@
 /public/cmrs
 /public/invoices
 /public/files
+/public/specialEvents
 /storage/*.key
 /vendor
 .env
