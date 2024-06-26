@@ -70,8 +70,13 @@ class LeaveRepository extends BaseRepository
             'name' => $request->input('name'),
             'subject' => (int)$request->input('subject'),
             'description' => $request->input('description'),
+            'email' => $request->input('email'),
             'departamentRole' => (int)$request->input('departamentRole'),
-            'assigned_to' => (int)$request->input('assigned_to')
+            'assigned_to' => (int)$request->input('assigned_to'),
+            'mobile_phone' => $request->input('mobile_phone'),
+            'organization' => $request->input('organization'),
+            'vacation_day' => $request->input('vacation_day'),
+            'remaining' => $request->input('remaining')
         ];
         LeaveRequestJob::dispatch($data);
         Session::flash('message', 'Your request has been submitted');
