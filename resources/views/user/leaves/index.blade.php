@@ -312,8 +312,9 @@
                         `<div class="mt-3">
                         <p class="text-primary">Totally= ${dayDifference} days</p>
                         <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
-                        <input type="hidden" name="leave_time" value="${numberOfExcludingHolidays}">
+                        <input type="hidden" name="leave_days" value="${numberOfExcludingHolidays}">
                         <input type="hidden" name="totally" value="${dayDifference}">
+                        <input type="hidden" name="leave_balance" value="${leave_balance}">
                     </div>`;
                 }
                 if (x === 3) {
@@ -350,10 +351,12 @@
             modalSubject.innerHTML =
                 `
                                 <input type="hidden" name="subject" value="leave for special events">
+                                <div class="mb-3">
                                 <label for="description">explain:</label>
                                 <input type="text" class="form-control" name="description" id="description" value="" required>
-                                   <div class="mb-3">
-                                   <label for="file" class="form-label">file:</label>
+                                </div> 
+                                <div class="mb-3">
+                                   <label for="file">file:</label>
                                    <input type="file" class="form-control" name="file" id="file" required/>
                                   <small id="file" class="form-text text-muted">The attached file is required for Special Events leave</small>
                                   </div>

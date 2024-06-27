@@ -41,6 +41,22 @@ class LeaveRepository extends BaseRepository
 
         if ($request->ajax()) {
             return Datatables::of($data)
+                ->addColumn('start_date', function ($row) {
+                    if ($row->leave_days) {
+                        $originalDate = Carbon::parse($row->start_date);
+                        return $originalDate->format('Y-m-d');
+                    } else {
+                        return $row->start_date;
+                    }
+                })
+                ->addColumn('end_date', function ($row) {
+                    if ($row->leave_days) {
+                        $originalDate = Carbon::parse($row->end_date);
+                        return $originalDate->format('Y-m-d');
+                    } else {
+                        return $row->end_date;
+                    }
+                })
                 ->addColumn('value', function ($row) {
                     if ($row->leave_time) {
                         return $row->leave_time . " hour";
@@ -90,7 +106,7 @@ class LeaveRepository extends BaseRepository
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('specialEvents'), $filename);
+            $file->move(public_path('specialEvents'), '/specialEvents/' . $filename);
         }
         $data = [
             'cod_staff' => $request->input('cod_staff'),
@@ -98,7 +114,7 @@ class LeaveRepository extends BaseRepository
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),
             'type' => $request->input('type'),
-            'file' =>  '/specialEvents/' . $filename,
+            'file' =>  $filename,
             'leave_time' => $request->input('leave_time'),
             'leave_days' => $request->input('leave_days'),
             'name' => $request->input('name'),
