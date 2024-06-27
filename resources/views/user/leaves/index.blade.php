@@ -121,7 +121,7 @@
                             </div>
                             <div class="row mt-4" id="datesForLeave">
                             </div>
-                            <div class="row mt-4 p-5" id="modalSubject">
+                            <div class="row mt-4" id="modalSubject">
                             </div>
                         </div>
                         <div class="mb-3">
@@ -244,9 +244,7 @@
                                 </div>`;
             let modalSubject = document.getElementById('modalSubject');
             modalSubject.innerHTML = `
-                    <input type="hidden" name="kind" value="Rest">
-                    <input type="hidden" name="subject" value="Leave Request">
-                    <input type="hidden" name="description" value="">`;
+                    <input type="hidden" name="subject" value="Allowed Leave">`;
         }
 
         function LeaveRequestWithoutPaid(datesForLeave) {
@@ -266,9 +264,7 @@
                                 </div>`;
             let modalSubject = document.getElementById('modalSubject');
             modalSubject.innerHTML = `
-                    <input type="hidden" name="kind" value="Rest">
-                    <input type="hidden" name="subject" value="Without Paid Leave">
-                    <input type="hidden" name="description" value="">`;
+                    <input type="hidden" name="subject" value="Without Paid Leave">`;
         }
 
         function calculateDateDifference(x) {
@@ -316,7 +312,7 @@
                         `<div class="mt-3">
                         <p class="text-primary">Totally= ${dayDifference} days</p>
                         <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
-                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}">
+                        <input type="hidden" name="leave_time" value="${numberOfExcludingHolidays}">
                         <input type="hidden" name="totally" value="${dayDifference}">
                     </div>`;
                 }
@@ -328,7 +324,7 @@
                         <p class="text-danger">unpaid leave</p>
                         <input type="hidden" name="totally" value="${dayDifference}">
                         <input type="hidden" name="leave_balance" value="${leave_balance}">
-                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}" required>
+                        <input type="hidden" name="leave_days" value="${numberOfExcludingHolidays}" required>
                         <input type="hidden" name="daysWithoutPay" value="${numberOfExcludingHolidays}">
                     </div>`;
                 }
@@ -353,7 +349,6 @@
             let modalSubject = document.getElementById('modalSubject');
             modalSubject.innerHTML =
                 `
-                                <input type="hidden" name="kind" value="SpecialEvents">
                                 <input type="hidden" name="subject" value="leave for special events">
                                 <label for="description">explain:</label>
                                 <input type="text" class="form-control" name="description" id="description" value="" required>
@@ -386,9 +381,7 @@
             </div>`;
             let modalSubject = document.getElementById('modalSubject');
             modalSubject.innerHTML = `
-                                <input type="hidden" name="kind" value="Hour">
-                                <input type="hidden" name="subject" value="Hourly Leave">
-                                <input type="hidden" name="description" value="hour">`;
+                                <input type="hidden" name="subject" value="Hourly Leave">`;
         }
 
         function actionForSelectType(event) {
@@ -493,7 +486,6 @@
             var end_time = formData.get('end_time');
             var daysWithoutPay = formData.get('daysWithoutPay');
             var leave_balance = formData.get('leave_balance');
-            var kind = formData.get('kind');
             var check_date_other_request = formData.get('check_date_other_request');
             var dateOfRequest = moment().format('YYYY/MM/DD');
             if (type === "Allowed Leave" || type === "Speacial Event Leave" || type === "Without Paid Leave") {
@@ -505,9 +497,9 @@
                     '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
                     ' </b>until:<b> ' + endDay +
                     '</b><br>Total days: ' + totally +
-                    '<br>Allowed leave: ' + leave_balance + '<br>EXCLUDING Holidays: ' + vacation_day +
+                    '<br>Allowed leave: ' + leave_balance + '<br>EXCLUDING Holidays: ' + leave_days +
                     '<br>Days without Pay: ' +
-                    daysWithoutPay + '<br><small>' + description + '</small><br>Email: ' + email + '<hr>';
+                    daysWithoutPay + '<br>' + description + '<br>Email: ' + email + '<hr>';
             }
             if (type === "Hourly Leave") {
                 var newDescription = 'Date: ' + dateOfRequest +
@@ -517,7 +509,7 @@
                     '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
                     '<br>requests for hour leave on:<br><b>' + startDay +
                     '</b><br>between:<b> ' + start_time + ' </b>until: <b>' + end_time + ' </b><br>' +
-                    vacation_day + description +
+                    leave_time +
                     '<br>Email: ' + email + '<hr>';
             }
             let data = {

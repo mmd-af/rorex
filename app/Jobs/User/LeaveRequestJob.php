@@ -39,7 +39,7 @@ class LeaveRequestJob implements ShouldQueue
             $staffRequest->description = $this->data['description'];
             $staffRequest->organization = $this->data['organization'];
             $staffRequest->cod_staff = $this->data['cod_staff'];
-            $staffRequest->vacation_day = $this->data['vacation_day'];
+            $staffRequest->vacation_day = $this->data['leave_days'] ?: $this->data['leave_time'];
             $staffRequest->save();
             $staffRequestId = $staffRequest->id;
 
@@ -55,7 +55,8 @@ class LeaveRequestJob implements ShouldQueue
             $leave->end_date = $this->data['end_date'];
             $leave->type = $this->data['type'];
             $leave->file = $this->data['file'];
-            $leave->hour = $this->data['hour'];
+            $leave->leave_time = $this->data['leave_time'];
+            $leave->leave_days = $this->data['leave_days'];
             $leave->description = $this->data['description'];
             $leave->remaining = $this->data['remaining'];
             $leave->save();

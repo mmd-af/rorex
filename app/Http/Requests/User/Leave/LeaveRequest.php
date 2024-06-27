@@ -26,14 +26,12 @@ class LeaveRequest extends FormRequest
         $rules = [
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date'],
-            'type' => ['required'],
-            'vacation_day' => ['required'],
+            'type' => ['required'],           
             'file' => ['nullable'],
-            'hour' => ['nullable'],
             'description' => ['nullable'],
             'remaining' => ['nullable']
         ];
-        if ($this->input('type') === 'Hourly') {
+        if ($this->input('type') === 'Hourly Leave') {
             $rules['end_date'] = ['nullable', 'date'];
         }
 
@@ -43,7 +41,7 @@ class LeaveRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if ($this->input('type') !== 'Hourly' && $this->input('end_date') && $this->input('start_date')) {
+            if ($this->input('type') !== 'Hourly Leave' && $this->input('end_date') && $this->input('start_date')) {
                 if (strtotime($this->input('end_date')) <= strtotime($this->input('start_date'))) {
                     $validator->errors()->add('end_date', 'End date must be greater than start date.');
                 }

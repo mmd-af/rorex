@@ -85,8 +85,8 @@ class LeaveRepository extends BaseRepository
     public function store($request)
     {
         $userId = Auth::id();
-        $hour = "8"; // TODO calculate here
         $file = null;
+        $filename = null;
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
@@ -99,7 +99,8 @@ class LeaveRepository extends BaseRepository
             'end_date' => $request->input('end_date'),
             'type' => $request->input('type'),
             'file' =>  '/specialEvents/' . $filename,
-            'hour' => $hour,
+            'leave_time' => $request->input('leave_time'),
+            'leave_days' => $request->input('leave_days'),
             'name' => $request->input('name'),
             'subject' => (int)$request->input('subject'),
             'description' => $request->input('description'),
