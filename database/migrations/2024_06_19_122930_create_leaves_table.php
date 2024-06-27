@@ -22,7 +22,8 @@ return new class extends Migration
             $table->timestamp('end_date')->nullable();
             $table->string('type');
             $table->string('file')->nullable();
-            $table->string('hour');
+            $table->time('leave_time')->nullable();
+            $table->unsignedTinyInteger('leave_days')->nullable();
             $table->text('description')->nullable();
             $table->string('remaining')->nullable();
             $table->timestamps();       

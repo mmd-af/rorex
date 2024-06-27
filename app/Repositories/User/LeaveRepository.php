@@ -30,7 +30,8 @@ class LeaveRepository extends BaseRepository
                 'end_date',
                 'type',
                 'file',
-                'hour',
+                'leave_time',
+                'leave_days',
                 'description',
                 'remaining'
             ])
@@ -40,6 +41,14 @@ class LeaveRepository extends BaseRepository
 
         if ($request->ajax()) {
             return Datatables::of($data)
+                ->addColumn('value', function ($row) {
+                    if ($row->leave_time) {
+                        return $row->leave_time . " hour";
+                    }
+                    if ($row->leave_days) {
+                        return $row->leave_days . " days";
+                    }
+                })
                 ->addColumn('file', function ($row) {
                     if ($row->file) {
                         return '<a href="' . asset($row->file) . '" target="_blank"><i class="fas fa-download fa-lg"></i></a>';
@@ -68,7 +77,7 @@ class LeaveRepository extends BaseRepository
                     }
                     return $status;
                 })
-                ->rawColumns(['file', 'status'])
+                ->rawColumns(['value', 'file', 'status'])
                 ->make(true);
         }
         return false;

@@ -50,7 +50,7 @@
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Type</th>
-                        <th>Hour</th>
+                        <th>Value</th>
                         <th>File</th>
                         <th>Status</th>
                     </tr>
@@ -61,7 +61,7 @@
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Type</th>
-                        <th>Hour</th>
+                        <th>Value</th>
                         <th>File</th>
                         <th>Status</th>
                     </tr>
@@ -187,8 +187,8 @@
                         name: 'type'
                     },
                     {
-                        data: 'hour',
-                        name: 'hour'
+                        data: 'value',
+                        name: 'value'
                     },
                     {
                         data: 'file',
@@ -298,7 +298,7 @@
                             `<div class="m-3">
                              <h4 class="text-danger">The number of days you request is more than the total number of days you are allowed</h4>
                              <h6 class="text-info">You can use the without paid Leave option</h6>
-                             <input type="hidden" name="vacation_day" value="" required>
+                             <input type="hidden" name="leave_days" value="" required>
                           </div>`;
                     } else {
                         showInformation.innerHTML =
@@ -307,7 +307,7 @@
                         <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
                         <input type="hidden" name="totally" value="${dayDifference}">
                         <input type="hidden" name="leave_balance" value="${leave_balance}">
-                        <input type="hidden" name="vacation_day" value="${numberOfExcludingHolidays}" required>
+                        <input type="hidden" name="leave_days" value="${numberOfExcludingHolidays}" required>
                     </div>`;
                     }
                 }
@@ -426,7 +426,7 @@
 
                 document.getElementById('timeDifference').innerHTML =
                     `<p class="text-success">${hours} hours and ${minutes} minutes</p>
-             <input type="hidden" name="vacation_day" value="${hours}:${minutes}">`;
+             <input type="hidden" name="leave_time" value="${hours}:${minutes}">`;
             }
         }
 
@@ -482,7 +482,8 @@
             var startDay = formData.get('start_date');
             var endDay = formData.get('end_date');
             var totally = formData.get('totally');
-            var vacation_day = formData.get('vacation_day');
+            var leave_time = formData.get('leave_time');
+            var leave_days = formData.get('leave_days');
             var email = formData.get('email');
             var departamentRole = formData.get('departamentRole');
             var subject = formData.get('subject');
@@ -495,20 +496,20 @@
             var kind = formData.get('kind');
             var check_date_other_request = formData.get('check_date_other_request');
             var dateOfRequest = moment().format('YYYY/MM/DD');
-            if (kind === "Rest" || kind === "SpecialEvents") {
+            if (type === "Allowed Leave" || type === "Speacial Event Leave" || type === "Without Paid Leave") {
                 var newDescription = 'Date: ' + dateOfRequest +
                     '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
                     'Code Staff: ' + cod_staff + '</div><br>' +
                     '<div id="alignCenter"><b>' + subject +
                     '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
-                    '<br>Requests <b>' + vacation_day + ' days</b> during the period:<br><b>' + startDay +
+                    '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
                     ' </b>until:<b> ' + endDay +
                     '</b><br>Total days: ' + totally +
                     '<br>Allowed leave: ' + leave_balance + '<br>EXCLUDING Holidays: ' + vacation_day +
                     '<br>Days without Pay: ' +
                     daysWithoutPay + '<br><small>' + description + '</small><br>Email: ' + email + '<hr>';
             }
-            if (kind === "Hour") {
+            if (type === "Hourly Leave") {
                 var newDescription = 'Date: ' + dateOfRequest +
                     '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
                     'Code Staff: ' + cod_staff + '</div><br>' +
@@ -518,16 +519,6 @@
                     '</b><br>between:<b> ' + start_time + ' </b>until: <b>' + end_time + ' </b><br>' +
                     vacation_day + description +
                     '<br>Email: ' + email + '<hr>';
-            }
-            if (kind === "CustomRequest") {
-                var newDescription = 'Date: ' + dateOfRequest +
-                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
-                    'Code Staff: ' + cod_staff + '</div><br>' +
-                    '<div id="alignCenter"><b>' + subject +
-                    '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
-                    '<br>' +
-                    '<b>Check for date: ' + check_date_other_request + ' </b>' +
-                    '<br>' + description + '<br>Email: ' + email + '<hr><small>request type: other request</small>';
             }
             let data = {
                 first_name: first_name,
@@ -540,7 +531,8 @@
                 description: newDescription,
                 start_date: startDay,
                 end_date: endDay,
-                vacation_day: vacation_day,
+                leave_time: leave_time,
+                leave_days: leave_days,
                 email: email,
                 departamentRole: departamentRole,
                 assigned_to: assigned_to
