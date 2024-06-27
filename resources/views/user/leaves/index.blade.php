@@ -114,9 +114,9 @@
                                     onchange="actionForSelectType(event)" required>
                                     <option selected>-- Select one --</option>
                                     <option value="Allowed Leave">Allowed Leave</option>
-                                    <option value="Speacial Event">Speacial Event</option>
-                                    <option value="Hourly">Hourly</option>
-                                    <option value="Without Paid">Without Paid</option>
+                                    <option value="Speacial Event Leave">Speacial Event Leave</option>
+                                    <option value="Hourly Leave">Hourly Leave</option>
+                                    <option value="Without Paid Leave">Without Paid Leave</option>
                                 </select>
                             </div>
                             <div class="row mt-4" id="datesForLeave">
@@ -172,7 +172,7 @@
                 columns: [{
                         data: 'id',
                         name: 'id',
-                        width: '10%'
+                        width: '5%'
                     },
                     {
                         data: 'start_date',
@@ -267,7 +267,7 @@
             let modalSubject = document.getElementById('modalSubject');
             modalSubject.innerHTML = `
                     <input type="hidden" name="kind" value="Rest">
-                    <input type="hidden" name="subject" value="Leave Request Without Paid">
+                    <input type="hidden" name="subject" value="Without Paid Leave">
                     <input type="hidden" name="description" value="">`;
         }
 
@@ -297,7 +297,7 @@
                         showInformation.innerHTML +=
                             `<div class="m-3">
                              <h4 class="text-danger">The number of days you request is more than the total number of days you are allowed</h4>
-                             <h6 class="text-info">You can use the without paid option</h6>
+                             <h6 class="text-info">You can use the without paid Leave option</h6>
                              <input type="hidden" name="vacation_day" value="" required>
                           </div>`;
                     } else {
@@ -387,7 +387,7 @@
             let modalSubject = document.getElementById('modalSubject');
             modalSubject.innerHTML = `
                                 <input type="hidden" name="kind" value="Hour">
-                                <input type="hidden" name="subject" value="Hourly Leave Request">
+                                <input type="hidden" name="subject" value="Hourly Leave">
                                 <input type="hidden" name="description" value="hour">`;
         }
 
@@ -397,13 +397,13 @@
             if (event.target.value === "Allowed Leave") {
                 LeaveRequestForRest(datesForLeave)
             }
-            if (event.target.value === "Speacial Event") {
+            if (event.target.value === "Speacial Event Leave") {
                 LeaveRequestForSpecialEvents(datesForLeave)
             }
-            if (event.target.value === "Hourly") {
+            if (event.target.value === "Hourly Leave") {
                 LeaveRequestForHour(datesForLeave)
             }
-            if (event.target.value === "Without Paid") {
+            if (event.target.value === "Without Paid Leave") {
                 LeaveRequestWithoutPaid(datesForLeave)
             }
         }

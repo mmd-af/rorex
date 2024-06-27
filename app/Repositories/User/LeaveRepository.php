@@ -42,8 +42,8 @@ class LeaveRepository extends BaseRepository
             return Datatables::of($data)
                 ->addColumn('file', function ($row) {
                     if ($row->file) {
-                        return '<a href="'.asset($row->file).'"><i class="fas fa-download"></i></a>';
-                    }else{
+                        return '<a href="' . asset($row->file) . '" target="_blank"><i class="fas fa-download fa-lg"></i></a>';
+                    } else {
                         return '';
                     }
                 })
@@ -68,7 +68,7 @@ class LeaveRepository extends BaseRepository
                     }
                     return $status;
                 })
-                ->rawColumns(['status'])
+                ->rawColumns(['file', 'status'])
                 ->make(true);
         }
         return false;
