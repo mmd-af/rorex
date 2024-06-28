@@ -180,6 +180,6 @@ class LeaveRepository extends BaseRepository
                 $user->notify(new RequestRegisteredNotification("Error on user send leave request", $e->getMessage()));
             }
         }
-        LeaveRequestJob::dispatch($data['assigned_to']);
+        LeaveRequestJob::dispatch($data);
     }
 }
