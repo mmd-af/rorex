@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 use App\Jobs\User\LeaveRequestJob;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
+use App\Models\LetterAssignment\LetterAssignment;
+use App\Models\StaffRequest\StaffRequest;
+use App\Models\User\User;
+use App\Notifications\RequestRegisteredNotification;
 
 class LeaveRepository extends BaseRepository
 {
@@ -42,24 +47,25 @@ class LeaveRepository extends BaseRepository
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addColumn('start_date', function ($row) {
+                    $originalDate = Carbon::parse($row->start_date);
                     if ($row->leave_days) {
-                        $originalDate = Carbon::parse($row->start_date);
                         return $originalDate->format('Y-m-d');
                     } else {
-                        return $row->start_date;
+                        return $originalDate->format('Y-m-d H:i');
                     }
                 })
                 ->addColumn('end_date', function ($row) {
+                    $originalDate = Carbon::parse($row->end_date);
                     if ($row->leave_days) {
-                        $originalDate = Carbon::parse($row->end_date);
                         return $originalDate->format('Y-m-d');
                     } else {
-                        return $row->end_date;
+                        return $originalDate->format('Y-m-d H:i');
                     }
                 })
                 ->addColumn('value', function ($row) {
                     if ($row->leave_time) {
-                        return $row->leave_time . " hour";
+                        $originalDate = Carbon::parse($row->leave_time)->format('H:i');
+                        return $originalDate . " hour";
                     }
                     if ($row->leave_days) {
                         return $row->leave_days . " days";
@@ -125,10 +131,55 @@ class LeaveRepository extends BaseRepository
             'assigned_to' => (int)$request->input('assigned_to'),
             'mobile_phone' => $request->input('mobile_phone'),
             'organization' => $request->input('organization'),
-            'vacation_day' => $request->input('vacation_day'),
             'remaining' => $request->input('remaining')
         ];
-        LeaveRequestJob::dispatch($data);
-        Session::flash('message', 'Your request has been submitted');
+        try {
+            $staffRequest = new StaffRequest();
+            $staffRequest->name = $data['name'];
+            $staffRequest->user_id = $data['userId'];
+            $staffRequest->email = $data['email'];
+            $staffRequest->mobile_phone = $data['mobile_phone'];
+            $staffRequest->subject = $data['subject'];
+            $staffRequest->description = $data['description'];
+            $staffRequest->organization = $data['organization'];
+            $staffRequest->cod_staff = $data['cod_staff'];
+            $staffRequest->vacation_day = isset($data['vacation_day']) ? $data['vacation_day'] : 0;
+            $staffRequest->save();
+            $staffRequestId = $staffRequest->id;
+
+            $role = Role::query()
+                ->select(['id', 'name'])
+                ->where('name', $data['departamentRole'])
+                ->first();
+
+            $leave = new Leave();
+            $leave->user_id = $data['userId'];
+            $leave->request_id = $staffRequestId;
+            $leave->start_date = $data['start_date'];
+            $leave->end_date = $data['end_date'];
+            $leave->type = $data['type'];
+            $leave->file = $data['file'];
+            $leave->leave_time = $data['leave_time'];
+            $leave->leave_days = $data['leave_days'];
+            $leave->description = $data['description'];
+            $leave->remaining = $data['remaining'];
+            $leave->save();
+
+            $assignment = new LetterAssignment();
+            $assignment->user_id = $data['userId'];
+            $assignment->request_id = $staffRequestId;
+            $assignment->role_id = $role->id;
+            $assignment->assigned_to = $data['assigned_to'];
+            $assignment->status = "waiting";
+            $assignment->save();
+            Session::flash('message', 'Your request has been submitted');
+        } catch (\Exception $e) {
+            Session::flash('error', 'Your request has not submitted');
+            $users = User::role('support')->get();
+            foreach ($users as $user) {
+                $user->notify(new RequestRegisteredNotification("Error on user send leave request", $e->getMessage()));
+            }
+        }
+        LeaveRequestJob::dispatch($data['assigned_to']);
     }
 }

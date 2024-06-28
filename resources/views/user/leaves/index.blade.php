@@ -475,8 +475,8 @@
             var departament = formData.get('departament');
             var type = formData.get('type');
             var file = formData.get('file');
-            var startDay = formData.get('start_date');
-            var endDay = formData.get('end_date');
+            let startDay = formData.get('start_date');
+            let endDay = formData.get('end_date');
             var totally = formData.get('totally');
             var leave_time = formData.get('leave_time');
             var leave_days = formData.get('leave_days');
@@ -514,6 +514,10 @@
                     '</b><br>between:<b> ' + start_time + ' </b>until: <b>' + end_time + ' </b><br>' +
                     leave_time +
                     '<br>Email: ' + email + '<hr>';
+
+                let startHourDate = startDay;
+                startDay = `${startHourDate} ${start_time}:00`;
+                endDay = `${startHourDate} ${end_time}:00`;
             }
             let data = {
                 first_name: first_name,
