@@ -37,7 +37,7 @@ class LeaveRepository extends BaseRepository
             ])
             ->where('user_id', $userId)
             ->with(['users', 'requests'])
-            ->get();
+            ->latest();
 
         if ($request->ajax()) {
             return Datatables::of($data)
@@ -118,7 +118,7 @@ class LeaveRepository extends BaseRepository
             'leave_time' => $request->input('leave_time'),
             'leave_days' => $request->input('leave_days'),
             'name' => $request->input('name'),
-            'subject' => (int)$request->input('subject'),
+            'subject' => $request->input('subject'),
             'description' => $request->input('description'),
             'email' => $request->input('email'),
             'departamentRole' => (int)$request->input('departamentRole'),
