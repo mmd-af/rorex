@@ -129,12 +129,12 @@
                                 <option value="">-- select subject --</option>
                                 <option value="Forgot Punch">Forgot Punch</option>
                                 <option value="Forgot Bring My Cart">Forgot Bring My Cart</option>
-                                <option value="Consider as allow Leave">Consider as allowed Leave</option>
+                                {{-- <option value="Consider as allow Leave">Consider as allowed Leave</option> --}}
                                 <option value="Consider OverTime">Consider OverTime</option>
                                 <option value="Work at Home (Remote)">Work at Home (Remote)</option>
                                 <option value="Mission">Mission</option>
                                 <option value="Change Shift">Change Shift</option>
-                                <option value="other">other</option>
+                                {{-- <option value="other">other</option> --}}
                             </select>
                         </div>
                         <div class="mb-4" id="descriptionData">
