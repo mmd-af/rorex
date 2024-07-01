@@ -33,6 +33,7 @@
                 <thead>
                     <tr>
                         <th>Requests</th>
+                        <th>File</th>
                         <th>Status</th>
                         <th>Sign</th>
                         <th>Action</th>
@@ -41,6 +42,7 @@
                 <tfoot>
                     <tr>
                         <th>Requests</th>
+                        <th>File</th>
                         <th>Status</th>
                         <th>Sign</th>
                         <th>Action</th>
@@ -108,7 +110,12 @@
                 columns: [{
                         data: 'requests',
                         name: 'requests',
-                        width: '50%'
+                        width: '45%'
+                    },
+                    {
+                        data: 'file',
+                        name: 'file',
+                        width: '5%'
                     },
                     {
                         data: 'progress',

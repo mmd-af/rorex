@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Admin;
 
-use App\Mail\RequestMail;
 use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
 use App\Models\User\User;
@@ -38,12 +37,17 @@ class ManageRequestRepository extends BaseRepository
             ])
             ->where('is_archive', 0)
             ->where('assigned_to', $userId)
-            ->with(['request'])
+            ->with(['request', 'request.leave'])
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addColumn('requests', function ($row) {
                     return "<p class=\"h5 bg-secondary text-light\">Tracking Number= " . $row->request->id . "</p><br>" . $row->request->description;
+                })
+                ->addColumn('file', function ($row) {
+                    if (!empty($row->request->leave->file)) {
+                        return '<a href="' . asset($row->request->leave->file) . '" target="_blank"><i class="fas fa-download fa-lg"></i></a>';
+                    }
                 })
                 ->addColumn('progress', function ($row) {
                     $status = '';
@@ -65,8 +69,8 @@ class ManageRequestRepository extends BaseRepository
                 })
                 ->addColumn('sign', function ($row) {
                     return '
-                    <div class="form-switch">
-                    <input onclick="handleSign(event, ' . $row->id . ')" class="form-check-input" type="checkbox" role="switch" id="signed_by" name="signed_by" value="' . $row->signed_by . '" ' . ($row->signed_by ? 'checked disabled' : '') . '>
+                    <div class="form-switch bg-secondary rounded-3">
+                    <input role="button" onclick="handleSign(event, ' . $row->id . ')" class="form-check-input" type="checkbox" role="switch" id="signed_by" name="signed_by" value="' . $row->signed_by . '" ' . ($row->signed_by ? 'checked disabled' : '') . '>
                     </div>';
                 })
                 ->addColumn('action', function ($row) {
@@ -96,7 +100,7 @@ class ManageRequestRepository extends BaseRepository
                             </button>
                             ');
                 })
-                ->rawColumns(['requests', 'progress', 'sign', 'action'])
+                ->rawColumns(['requests', 'file', 'progress', 'sign', 'action'])
                 ->make(true);
         }
         return false;
@@ -329,6 +333,11 @@ class ManageRequestRepository extends BaseRepository
                 ->addColumn('requests', function ($row) {
                     return "<p class=\"h5 bg-secondary text-light\">Tracking Number= " . $row->request->id . "</p><br>" . $row->request->description;
                 })
+                ->addColumn('file', function ($row) {
+                    if (!empty($row->request->leave->file)) {
+                        return '<a href="' . asset($row->request->leave->file) . '" target="_blank"><i class="fas fa-download fa-lg"></i></a>';
+                    }
+                })
                 ->addColumn('progress', function ($row) {
                     $status = '';
                     $allRelatedRequest = $this->query()->where('request_id', $row->request_id)->get();
@@ -361,7 +370,7 @@ class ManageRequestRepository extends BaseRepository
                             </button>
                     </form>';
                 })
-                ->rawColumns(['requests', 'progress', 'action'])
+                ->rawColumns(['requests', 'file', 'progress', 'action'])
                 ->make(true);
         }
         return false;
