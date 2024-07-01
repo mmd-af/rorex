@@ -111,8 +111,8 @@ class LeaveRepository extends BaseRepository
         $filename = null;
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('specialEvents'), '/specialEvents/' . $filename);
+            $filename =  '/specialEvents/' . Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('specialEvents'), $filename);
         }
         $data = [
             'cod_staff' => $request->input('cod_staff'),

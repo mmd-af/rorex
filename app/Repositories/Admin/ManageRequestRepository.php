@@ -233,17 +233,32 @@ class ManageRequestRepository extends BaseRepository
             $staffRequest = StaffRequest::find($letterAssignment->request_id);
             $staffRequest->is_archive = 1;
             $staffRequest->save();
-            $user = User::find($staffRequest->user->id);
-            $leaveBalance = $user->leave_balance;
-            $vacationDays = $staffRequest->vacation_day;
-            $leaveBalanceFloor = $leaveBalance - floor($leaveBalance);
-            if ($vacationDays <= $leaveBalance) {
-                $newLeaveBalance = ($leaveBalance - $vacationDays) + $leaveBalanceFloor;
-            } else {
-                $newLeaveBalance = $leaveBalanceFloor;
+            $user = User::find($staffRequest->cod_staff);
+            $leave = $staffRequest->leave;
+            if ($leave->type === "Allowed Leave") {
+                $leaveBalance = $user->leave_balance;
+                $vacationDays =  $leave->leave_days;
+                if ($vacationDays <= floor($leaveBalance)) {
+                    $user->leave_balance =  $leaveBalance - $vacationDays;
+                    $user->save();
+                } else {
+                    DB::rollBack();
+                    Session::flash('error', "The applicant's leave balance has changed and is less than the requested leaves.");
+                    return false;
+                }
             }
-            $user->leave_balance = $newLeaveBalance;
-            $user->save();
+            // if ($leave->type === "Hourly Leave") {
+            //     $leaveBalance = $user->leave_balance;
+            //     $vacationDays =  $leave->leave_time;
+            //     if ($vacationDays <= floor($leaveBalance)) {
+            //         $user->leave_balance =  $leaveBalance - $vacationDays;
+            //         $user->save();
+            //     } else {
+            //         DB::rollBack();
+            //         Session::flash('error', "The applicant's leave balance has changed and is less than the requested leaves.");
+            //         return false;
+            //     }
+            // }
             if ($user->email_verified_at !== null && $user->receive_notifications) {
                 $meesage = $request->confirmationMessage ? "Your Request Acceptet with a Message" : "Your Request Acceptet";
                 $user->notify(new RequestRegisteredNotification($meesage, $request->confirmationMessage));
