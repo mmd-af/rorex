@@ -114,6 +114,7 @@
                                     onchange="actionForSelectType(event)" required>
                                     <option selected>-- Select one --</option>
                                     <option value="Allowed Leave">Allowed Leave</option>
+                                    <option value="Medical Leave">Medical Leave</option>
                                     <option value="Speacial Event Leave">Speacial Event Leave</option>
                                     <option value="Hourly Leave">Hourly Leave</option>
                                     <option value="Without Paid Leave">Without Paid Leave</option>
@@ -332,6 +333,36 @@
             }
         }
 
+        function LeaveRequestForMedicalLeave(datesForLeave) {
+            datesForLeave.innerHTML = `
+                                <div class="col-md-6">
+                                    <label for="startDate" class="form-label">Start Date:</label>
+                                    <input type="date" name="start_date" class="form-control" id="startDate"
+                                           onchange="calculateDateDifference(2)" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="endDate" class="form-label">End Date:</label>
+                                    <input type="date" name="end_date" class="form-control" id="endDate"
+                                           onchange="calculateDateDifference(2)" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 id="dateDifference"></h6>
+                                </div>`;
+            let modalSubject = document.getElementById('modalSubject');
+            modalSubject.innerHTML =
+                `
+                                <input type="hidden" name="subject" value="Medical Leave">
+                                <div class="mb-3">
+                                <label for="description">explain:</label>
+                                <input type="text" class="form-control" name="description" id="description" value="" required>
+                                </div> 
+                                <div class="mb-3">
+                                   <label for="file">file:</label>
+                                   <input type="file" class="form-control" name="file" id="file" required/>
+                                  <small id="file" class="form-text text-muted">The attached file is required for Medical leave</small>
+                                  </div>`;
+        }
+
         function LeaveRequestForSpecialEvents(datesForLeave) {
             datesForLeave.innerHTML = `
                                 <div class="col-md-6">
@@ -359,8 +390,7 @@
                                    <label for="file">file:</label>
                                    <input type="file" class="form-control" name="file" id="file" required/>
                                   <small id="file" class="form-text text-muted">The attached file is required for Special Events leave</small>
-                                  </div>
-`;
+                                  </div>`;
         }
 
         function LeaveRequestForHour(datesForLeave) {
@@ -392,6 +422,9 @@
             datesForLeave.innerHTML = ``;
             if (event.target.value === "Allowed Leave") {
                 LeaveRequestForRest(datesForLeave)
+            }
+            if (event.target.value === "Medical Leave") {
+                LeaveRequestForMedicalLeave(datesForLeave)
             }
             if (event.target.value === "Speacial Event Leave") {
                 LeaveRequestForSpecialEvents(datesForLeave)
@@ -491,14 +524,15 @@
             var leave_balance = formData.get('leave_balance');
             var check_date_other_request = formData.get('check_date_other_request');
             var dateOfRequest = moment().format('YYYY/MM/DD');
-            if (type === "Allowed Leave" || type === "Speacial Event Leave" || type === "Without Paid Leave") {
+            if (type === "Allowed Leave" || type === "Medical Leave" || type === "Speacial Event Leave" ||
+                type === "Without Paid Leave") {
                 var newDescription = 'Date: ' + dateOfRequest +
                     '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
                     'Code Staff: ' + cod_staff + '</div><br>' +
                     '<div id="alignCenter"><b>' + subject +
                     '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
                     '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
-                    ' </b>until:<b> ' + endDay +
+                    '</b>until:<b> ' + endDay +
                     '</b><br>Total days: ' + totally +
                     '<br>Allowed leave: ' + leave_balance + '<br>EXCLUDING Holidays: ' + leave_days +
                     '<br>Days without Pay: ' +
