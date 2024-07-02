@@ -295,7 +295,7 @@
                             `<div class="m-3">
                              <h4 class="text-danger">The number of days you request is more than the total number of days you are allowed</h4>
                              <h6 class="text-info">You can use the without paid Leave option</h6>
-                             <input type="hidden" name="leave_days" value="" required>
+                             <input type="hidden" name="leave_days" value="${numberOfExcludingHolidays}" required>
                           </div>`;
                     } else {
                         showInformation.innerHTML =

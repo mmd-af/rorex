@@ -26,10 +26,11 @@ class LeaveRequest extends FormRequest
         $rules = [
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date'],
-            'type' => ['required'],           
+            'type' => ['required'],
             'file' => ['nullable'],
             'description' => ['nullable'],
-            'remaining' => ['nullable']
+            'remaining' => ['nullable'],
+            'leave_days' => ['nullable', 'integer']
         ];
         if ($this->input('type') === 'Hourly Leave') {
             $rules['end_date'] = ['nullable', 'date'];
@@ -42,8 +43,21 @@ class LeaveRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             if ($this->input('type') !== 'Hourly Leave' && $this->input('end_date') && $this->input('start_date')) {
-                if (strtotime($this->input('end_date')) <= strtotime($this->input('start_date'))) {
-                    $validator->errors()->add('end_date', 'End date must be greater than start date.');
+                if (strtotime($this->input('end_date')) < strtotime($this->input('start_date'))) {
+                    $validator->errors()->add('end_date', 'End date must be greater than or equal to start date.');
+                }
+            }
+
+            if ($this->input('type') === 'Allowed Leave') {
+                $leaveDays = (int) $this->input('leave_days');
+                $leaveBalance = auth()->user()->leave_balance;
+
+                if ($leaveDays > $leaveBalance) {
+                    $validator->errors()->add('leave_days', 'Leave days must not exceed your leave balance.');
+                }
+
+                if ($leaveDays <= 0) {
+                    $validator->errors()->add('leave_days', 'Leave days must be greater than zero.');
                 }
             }
         });
