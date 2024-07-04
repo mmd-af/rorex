@@ -16,6 +16,10 @@ Route::group(['middleware' => ['permission:employees'], 'namespace' => 'App\Http
                 'as' => 'getDataTable',
                 'uses' => 'LeaveAjaxController@getDataTable'
             ]);
+            Route::post('/getLeavedDays', [
+                'as' => 'getLeavedDays',
+                'uses' => 'LeaveAjaxController@getLeavedDays'
+            ]);
             Route::post('/store', [
                 'as' => 'store',
                 'uses' => 'LeaveAjaxController@store'

@@ -104,6 +104,20 @@ class LeaveRepository extends BaseRepository
         }
         return false;
     }
+
+    public function getLeavedDays($request)
+    {
+        $year = $request->input('year');
+        $userId = Auth::id();
+        $totalLeaveDays = $this->query()
+            ->where('user_id', $userId)
+            ->whereYear('start_date', $year)
+            ->where('type', 'Allowed Leave')
+            ->sum('leave_days');
+            
+        return response()->json(['total_leave_days' => $totalLeaveDays]);
+    }
+
     public function store($request)
     {
         $userId = Auth::id();

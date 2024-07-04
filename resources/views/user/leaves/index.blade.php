@@ -40,6 +40,21 @@
         <div class="col-xl-3 col-md-6 border p-3 m-2">
             <h6 class="text-success"> Remainder of allow leave= {{ Auth::user()->leave_balance }} days</h6>
         </div>
+        <div class="col-xl-3 col-md-6 border p-3 m-2">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-success">Leaved Days</h6>
+                    <div class="mb-3">
+                        <select id="year" name="year" class="form-select" onchange="getLeaveDays(event)">
+                            <option value="">-- select year --</option>
+                            <option value="2024">2024</option>
+                        </select>
+                    </div>
+                    <div id="result"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <div class="card mb-4">
         <div class="card-body table-responsive">
@@ -604,5 +619,19 @@
                 });
 
         });
+
+        function getLeaveDays(event) {
+            axios.post(`{{ route('user.leaves.ajax.getLeavedDays') }}`, {
+                    year: event.target.value
+                })
+                .then(response => {
+                    console.log(response);
+                    document.getElementById('result').innerText = 'total leaved days ' + response.data
+                        .total_leave_days;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
     </script>
 @endsection

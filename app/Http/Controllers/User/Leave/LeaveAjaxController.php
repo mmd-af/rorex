@@ -20,6 +20,12 @@ class LeaveAjaxController extends Controller
     {
         return $this->leaveRepository->getDataTable($request);
     }
+
+    public function getLeavedDays(Request $request)
+    {
+        return $this->leaveRepository->getLeavedDays($request);
+    }
+    
     public function store(LeaveRequest $request)
     {
         $this->leaveRepository->store($request);
