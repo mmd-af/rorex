@@ -627,7 +627,8 @@
                 })
                 .then(response => {
                     document.getElementById('result').innerHTML =
-                        '<h6>Total leaved days </h6><h4 class="d-flex justify-content-center text-success">' + response.data.total_leave_days +
+                        '<h6>Total leaved days </h6><h4 class="d-flex justify-content-center text-success">' + response
+                        .data.total_leave_days +
                         '</h4>';
                 })
                 .catch(error => {
