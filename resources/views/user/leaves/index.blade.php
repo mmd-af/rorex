@@ -626,7 +626,6 @@
                     year: event.target.value
                 })
                 .then(response => {
-                    console.log(response);
                     document.getElementById('result').innerHTML =
                         '<h6>Total leaved days </h6><h4 class="d-flex justify-content-center text-success">' + response.data.total_leave_days +
                         '</h4>';
