@@ -290,13 +290,26 @@
                 numberOfExcludingHolidays = parseInt(numberOfExcludingHolidays, 10);
                 let showInformation = document.getElementById('dateDifference');
                 if (x === 1) {
+                    // TODO whenever HR take the remain days off from all staff, active the command codes and remove extra.
+                    // Don't forget to recommand from FORM REQUEST
                     if (leave_balance < numberOfExcludingHolidays) {
-                        showInformation.innerHTML +=
-                            `<div class="m-3">
-                             <h4 class="text-danger">The number of days you request is more than the total number of days you are allowed</h4>
-                             <h6 class="text-info">You can use the without paid Leave option</h6>
-                             <input type="hidden" name="leave_days" value="${numberOfExcludingHolidays}" required>
-                          </div>`;
+                        // showInformation.innerHTML +=
+                        //     `<div class="m-3">
+                    //      <h4 class="text-danger">The number of days you request is more than the total number of days you are allowed</h4>
+                    //      <h6 class="text-info">You can use the without paid Leave option</h6>
+                    //      <input type="hidden" name="leave_days" value="${numberOfExcludingHolidays}" required>
+                    //   </div>`;
+
+                        showInformation.innerHTML =
+                            `<div class="mt-2">
+                        <p class="text-primary">Total requested days= ${dayDifference} days</p>
+                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
+                        <input type="hidden" name="totally" value="${dayDifference}">
+                        <input type="hidden" name="leave_balance" value="${leave_balance}">
+                        <input type="hidden" name="leave_days" value="${numberOfExcludingHolidays}" required>
+                        <h4 class="text-danger">If the requested number of days is more than your leave balance, it will be applied without pay</h4>
+                    </div>`;
+
                     } else {
                         showInformation.innerHTML =
                             `<div class="mt-2">

@@ -239,18 +239,21 @@ class ManageRequestRepository extends BaseRepository
             $staffRequest->save();
             $user = User::find($staffRequest->cod_staff);
             $leave = $staffRequest->leave;
-            if ($leave->type === "Allowed Leave") {
-                $leaveBalance = $user->leave_balance;
-                $vacationDays =  $leave->leave_days;
-                if ($vacationDays <= floor($leaveBalance)) {
-                    $user->leave_balance =  $leaveBalance - $vacationDays;
-                    $user->save();
-                } else {
-                    DB::rollBack();
-                    Session::flash('error', "The applicant's leave balance has changed and is less than the requested leaves.");
-                    return false;
-                }
-            }
+            // TODO if you want to reduce leave_balance automatic uncomment this section
+            // if ($leave->type === "Allowed Leave") {
+            //     $leaveBalance = $user->leave_balance;
+            //     $vacationDays =  $leave->leave_days;
+            //     if ($vacationDays <= floor($leaveBalance)) {
+            //         $user->leave_balance =  $leaveBalance - $vacationDays;
+            //         $user->save();
+            //     } else {
+            //         DB::rollBack();
+            //         Session::flash('error', "The applicant's leave balance has changed and is less than the requested leaves.");
+            //         return false;
+            //     }
+            // }
+
+            
             // if ($leave->type === "Hourly Leave") {
             //     $leaveBalance = $user->leave_balance;
             //     $vacationDays =  $leave->leave_time;
