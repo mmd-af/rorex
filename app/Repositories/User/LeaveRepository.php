@@ -113,8 +113,13 @@ class LeaveRepository extends BaseRepository
             ->where('user_id', $userId)
             ->whereYear('start_date', $year)
             ->where('type', 'Allowed Leave')
+            ->with('requests.assignments')
+            ->whereHas('requests.assignments', function ($query) {
+                $query->where('status', 'Accepted')
+                    ->orderBy('created_at', 'desc')
+                    ->take(1);
+            })
             ->sum('leave_days');
-            
         return response()->json(['total_leave_days' => $totalLeaveDays]);
     }
 

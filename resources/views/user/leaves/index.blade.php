@@ -51,6 +51,7 @@
                         </select>
                     </div>
                     <div id="result"></div>
+                    <p class="text-warning">Note that this statistic is from 01/07/2024</p>
                 </div>
             </div>
         </div>
@@ -626,8 +627,9 @@
                 })
                 .then(response => {
                     console.log(response);
-                    document.getElementById('result').innerText = 'total leaved days ' + response.data
-                        .total_leave_days;
+                    document.getElementById('result').innerHTML =
+                        '<h6>Total leaved days </h6><h4 class="d-flex justify-content-center text-success">' + response.data.total_leave_days +
+                        '</h4>';
                 })
                 .catch(error => {
                     console.error(error);
