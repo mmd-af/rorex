@@ -146,11 +146,9 @@ class LeaveRepository extends BaseRepository
                 $totalSeconds += $time->hour * 3600 + $time->minute * 60 + $time->second;
             }
         }
-
         $hours = floor($totalSeconds / 3600);
         $minutes = floor(($totalSeconds % 3600) / 60);
-        $seconds = $totalSeconds % 60;
-        $totalLeaveTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+        $totalLeaveTime = sprintf('%02d:%02d', $hours, $minutes);
         return response()->json(['total_hour_leave' => $totalLeaveTime]);
     }
 
