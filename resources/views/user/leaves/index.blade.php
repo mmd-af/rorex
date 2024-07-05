@@ -655,7 +655,6 @@
                     year: event.target.value
                 })
                 .then(response => {
-                    console.log(response);
                     document.getElementById('resultHourlyLeave').innerHTML =
                         '<h6>Total Hourly leaved</h6><h4 class="d-flex justify-content-center text-success">' + response
                         .data.total_hour_leave +
