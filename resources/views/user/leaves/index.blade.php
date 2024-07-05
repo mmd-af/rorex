@@ -43,19 +43,33 @@
         <div class="col-xl-3 col-md-6 border p-3 m-2">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title text-success">Leaved Days</h6>
+                    <h6 class="card-title text-success">Leaved Days statistics</h6>
                     <div class="mb-3">
                         <select id="year" name="year" class="form-select" onchange="getLeaveDays(event)">
                             <option value="">-- select year --</option>
                             <option value="2024">2024</option>
                         </select>
                     </div>
-                    <div id="result"></div>
+                    <div id="resultLeaveDays"></div>
                     <p class="text-warning">Note that this statistic is from 01/07/2024</p>
                 </div>
             </div>
         </div>
-
+        <div class="col-xl-3 col-md-6 border p-3 m-2">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-success">Hourly Leaved statistics</h6>
+                    <div class="mb-3">
+                        <select id="year" name="year" class="form-select" onchange="getHourlyLeave(event)">
+                            <option value="">-- select year --</option>
+                            <option value="2024">2024</option>
+                        </select>
+                    </div>
+                    <div id="resultHourlyLeave"></div>
+                    <p class="text-warning">Note that this statistic is from 01/07/2024</p>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="card mb-4">
         <div class="card-body table-responsive">
@@ -626,9 +640,25 @@
                     year: event.target.value
                 })
                 .then(response => {
-                    document.getElementById('result').innerHTML =
+                    document.getElementById('resultLeaveDays').innerHTML =
                         '<h6>Total leaved days </h6><h4 class="d-flex justify-content-center text-success">' + response
                         .data.total_leave_days +
+                        '</h4>';
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+        function getHourlyLeave(event) {
+            axios.post(`{{ route('user.leaves.ajax.getHourlyLeaved') }}`, {
+                    year: event.target.value
+                })
+                .then(response => {
+                    console.log(response);
+                    document.getElementById('resultHourlyLeave').innerHTML =
+                        '<h6>Total Hourly leaved</h6><h4 class="d-flex justify-content-center text-success">' + response
+                        .data.total_hour_leave +
                         '</h4>';
                 })
                 .catch(error => {

@@ -25,7 +25,12 @@ class LeaveAjaxController extends Controller
     {
         return $this->leaveRepository->getLeavedDays($request);
     }
-    
+
+    public function getHourlyLeaved(Request $request)
+    {
+        return $this->leaveRepository->getHourlyLeaved($request);
+    }
+
     public function store(LeaveRequest $request)
     {
         $this->leaveRepository->store($request);

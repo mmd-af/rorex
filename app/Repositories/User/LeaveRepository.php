@@ -123,6 +123,37 @@ class LeaveRepository extends BaseRepository
         return response()->json(['total_leave_days' => $totalLeaveDays]);
     }
 
+    public function getHourlyLeaved($request)
+    {
+        $year = $request->input('year');
+        $userId = Auth::id();
+        $leaveTimes = $this->query()
+            ->where('user_id', $userId)
+            ->whereYear('start_date', $year)
+            ->where('type', 'Hourly Leave')
+            ->with('requests.assignments')
+            ->whereHas('requests.assignments', function ($query) {
+                $query->where('status', 'Accepted')
+                    ->orderBy('created_at', 'desc')
+                    ->take(1);
+            })
+            ->pluck('leave_time');
+
+        $totalSeconds = 0;
+        foreach ($leaveTimes as $leaveTime) {
+            if ($leaveTime) {
+                $time = Carbon::parse($leaveTime);
+                $totalSeconds += $time->hour * 3600 + $time->minute * 60 + $time->second;
+            }
+        }
+
+        $hours = floor($totalSeconds / 3600);
+        $minutes = floor(($totalSeconds % 3600) / 60);
+        $seconds = $totalSeconds % 60;
+        $totalLeaveTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+        return response()->json(['total_hour_leave' => $totalLeaveTime]);
+    }
+
     public function store($request)
     {
         $userId = Auth::id();

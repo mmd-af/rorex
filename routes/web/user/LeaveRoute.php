@@ -20,6 +20,10 @@ Route::group(['middleware' => ['permission:employees'], 'namespace' => 'App\Http
                 'as' => 'getLeavedDays',
                 'uses' => 'LeaveAjaxController@getLeavedDays'
             ]);
+            Route::post('/getHourlyLeaved', [
+                'as' => 'getHourlyLeaved',
+                'uses' => 'LeaveAjaxController@getHourlyLeaved'
+            ]);
             Route::post('/store', [
                 'as' => 'store',
                 'uses' => 'LeaveAjaxController@store'
