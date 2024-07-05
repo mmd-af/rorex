@@ -22,6 +22,7 @@
                 <thead>
                     <tr>
                         <th>Requests</th>
+                        <th>File</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -29,6 +30,7 @@
                 <tfoot>
                     <tr>
                         <th>Requests</th>
+                        <th>File</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -55,7 +57,12 @@
                 columns: [{
                         data: 'requests',
                         name: 'requests',
-                        width: '60%'
+                        width: '55%'
+                    },
+                    {
+                        data: 'file',
+                        name: 'file',
+                        width: '5%'
                     },
                     {
                         data: 'progress',

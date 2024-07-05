@@ -115,7 +115,7 @@ class ManageRequestRepository extends BaseRepository
                 'assigned_to',
                 'status'
             ])
-            ->with(['request'])
+            ->with(['request', 'request.leave'])
             ->whereIn('id', function ($query) {
                 $query->selectRaw('MAX(id)')
                     ->from('letter_assignments')
@@ -126,6 +126,11 @@ class ManageRequestRepository extends BaseRepository
             return Datatables::of($data)
                 ->addColumn('requests', function ($row) {
                     return "<p class=\"h5 bg-secondary text-light\">Tracking Number= " . $row->request->id . "</p><br>" . $row->request->description;
+                })
+                ->addColumn('file', function ($row) {
+                    if (!empty($row->request->leave->file)) {
+                        return '<a href="' . asset($row->request->leave->file) . '" target="_blank"><i class="fas fa-download fa-lg"></i></a>';
+                    }
                 })
                 ->addColumn('progress', function ($row) {
                     $status = '';
@@ -162,7 +167,7 @@ class ManageRequestRepository extends BaseRepository
                     </form>';
                     }
                 )
-                ->rawColumns(['requests', 'progress', 'action'])
+                ->rawColumns(['requests', 'file', 'progress', 'action'])
                 ->make(true);
         }
         return false;
@@ -253,7 +258,7 @@ class ManageRequestRepository extends BaseRepository
             //     }
             // }
 
-            
+
             // if ($leave->type === "Hourly Leave") {
             //     $leaveBalance = $user->leave_balance;
             //     $vacationDays =  $leave->leave_time;
