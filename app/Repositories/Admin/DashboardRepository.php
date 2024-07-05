@@ -34,17 +34,17 @@ class DashboardRepository extends BaseRepository
             ->where('assigned_to', Auth::id())
             ->with('request')
             ->get();
-        $supports = Support::query()
-            ->select([
-                'id',
-                'subject'
-            ])
-            ->where('organization', auth()->user()->getRoleNames())
-            ->where('read_at', null)
-            ->get();
+        // $supports = Support::query()
+        //     ->select([
+        //         'id',
+        //         'subject'
+        //     ])
+        //     ->where('organization', auth()->user()->getRoleNames())
+        //     ->where('read_at', null)
+        //     ->get();
         $qty = count($letter_assignments);
-        $SupportQty = count($supports);
-        return response()->json(['qty' => $qty + $SupportQty]);
+        // $SupportQty = count($supports);
+        return response()->json(['qty' => $qty]);
     }
 
     public function getNewNotifications($request)
@@ -60,14 +60,14 @@ class DashboardRepository extends BaseRepository
             ->with('request')
             ->get();
 
-        $supports = Support::query()
-            ->select([
-                'id',
-                'subject'
-            ])
-            ->where('organization', auth()->user()->getRoleNames())
-            ->where('read_at', null)
-            ->get();
-        return response()->json(['letter_assignments' => $letter_assignments, 'supports' => $supports]);
+        // $supports = Support::query()
+        //     ->select([
+        //         'id',
+        //         'subject'
+        //     ])
+        //     ->where('organization', auth()->user()->getRoleNames())
+        //     ->where('read_at', null)
+        //     ->get();
+        return response()->json(['letter_assignments' => $letter_assignments]);
     }
 }

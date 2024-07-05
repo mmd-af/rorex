@@ -74,12 +74,12 @@
                                             </div></a>`;
                     });
 
-                    response.data.supports.forEach(function(item) {
-                        setMessage.innerHTML += `<a href="${supportUrl}">
-                                                <div class="alert alert-primary" role="alert">
-                                                ${item.subject}
-                                            </div></a>`;
-                    });
+               //     response.data.supports.forEach(function(item) {
+               //         setMessage.innerHTML += `<a href="${supportUrl}">
+               //                                 <div class="alert alert-primary" role="alert">
+               //                                 ${item.subject}
+               //                             </div></a>`;
+                //    });
                 })
                 .catch(function(error) {
                     console.error(error);

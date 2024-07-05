@@ -21,7 +21,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin\ManageRequest'], functi
             Route::get('/fullLetters', [
                 'as' => 'fullLetters',
                 'uses' => 'ManageRequestController@fullLetters'
-            ])->middleware('role:Support');
+            ])->middleware('permission:supports');
             Route::post('/exportPDF', [
                 'as' => 'exportPDF',
                 'uses' => 'ManageRequestController@exportPDF'
@@ -35,7 +35,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin\ManageRequest'], functi
             Route::get('/getFullDataTable', [
                 'as' => 'getFullDataTable',
                 'uses' => 'ManageRequestAjaxController@getFullDataTable'
-            ])->middleware('role:Support');
+            ])->middleware('permission:supports');
             Route::post('/sign', [
                 'as' => 'sign',
                 'uses' => 'ManageRequestAjaxController@sign'

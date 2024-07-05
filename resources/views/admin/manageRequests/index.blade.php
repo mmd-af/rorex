@@ -18,9 +18,9 @@
     @include('admin.layouts.partial.errors')
     <div class="d-flex justify-content-between">
         <div>
-            @role('Support')
+            @can('supports')
                 <a class="btn btn-outline-info my-2" href="{{ route('admin.manageRequests.fullLetters') }}">Full Letters</a>
-            @endrole
+            @endcan
         </div>
         <div>
             <a class="btn btn-outline-warning my-2 text-warning"
