@@ -40,6 +40,7 @@
             <table id="userTable" class="table table-bordered table-striped text-center">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Cod Staff</th>
                         <th>First Name</th>
                         <th>Last Name</th>
@@ -52,6 +53,7 @@
                 </thead>
                 <tfoot>
                     <tr>
+                        <th>ID</th>
                         <th>Cod Staff</th>
                         <th>First Name</th>
                         <th>Last Name</th>
@@ -123,6 +125,10 @@
                 pageLength: 25,
                 ajax: "{{ route('admin.users.ajax.getDataTable') }}",
                 columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
                         data: 'cod_staff',
                         name: 'cod_staff'
                     },
@@ -171,7 +177,7 @@
 
                         var input = $(
                                 '<input type="text" class="form-control form-control-sm" placeholder="Search...">'
-                                )
+                            )
                             .appendTo($('<th></th>').appendTo(filterRow))
                             .on('keyup change', function() {
                                 if (column.search() !== this.value) {
