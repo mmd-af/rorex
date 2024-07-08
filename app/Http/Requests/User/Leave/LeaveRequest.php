@@ -27,7 +27,7 @@ class LeaveRequest extends FormRequest
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date'],
             'type' => ['required'],
-            'file' => ['nullable'],
+            'file' => ['nullable', 'file', 'mimes:jpg,jpeg,png,doc,docx,pdf'],
             'description' => ['nullable'],
             'remaining' => ['nullable'],
             'leave_days' => ['nullable', 'integer']
