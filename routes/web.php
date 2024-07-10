@@ -38,17 +38,10 @@ Route::get('/change-password/{user}', function (User $user) {
 Route::get('/addBalance', function () {
     $users = User::all();
     foreach ($users as $user) {
-        $user->leave_balance = $user->leave_balance + 1.75;
+        $user->leave_balance = $user->leave_balance + 8;
         $user->save();
     }
-});
-Route::get('/convert-balance', function () {
-    $users = User::all();
-    foreach ($users as $user) {
-        $user->leave_balance = $user->leave_balance * 8;
-        $user->save();
-    }
-});
+})->middleware(['web', 'auth', 'super.admin']);
 Route::get('/migrate', function () {
     Artisan::call('migrate');
     return Artisan::output();
