@@ -131,6 +131,7 @@
                                 <option value="Daily-Reduce">Daily-Reduce</option>
                                 <option value="OverTime">OverTime</option>
                                 <option value="Leave">Leave</option>
+                                <option value="Without Paid Leave">Without Paid Leave</option>
                                 <option value="Odihna">Odihna</option>
                                 <option value="Tura implicita">Tura implicita</option>
                                 <option value="No Join">No Join</option>
@@ -292,6 +293,11 @@
                                 name="concediu_ore" value="">
                         </div>
                         <div class="mb-3">
+                            <label for="withoutpaidleave" class="form-label">Without Paid Leave</label>
+                            <input type="number" min="0" step="any" class="form-control" id="withoutpaidleave"
+                                name="withoutpaidleave" value="">
+                        </div>
+                        <div class="mb-3">
                             <label for="remarca" class="form-label">Report</label>
                             <input type="text" class="form-control" id="remarca" name="remarca" value="">
                         </div>
@@ -422,6 +428,7 @@
         let devreme_minute = document.getElementById('devreme_minute');
         let lipsa_ceas_timpi = document.getElementById('lipsa_ceas_timpi');
         let concediu_ore = document.getElementById('concediu_ore');
+        let withoutpaidleave = document.getElementById('withoutpaidleave');
         let remarca = document.getElementById('remarca');
         let sumWork1 = document.getElementById('sumWork1');
         let sumWork2 = document.getElementById('sumWork2');
@@ -484,6 +491,7 @@
                     devreme_minute.value = response.data.data.devreme_minute;
                     lipsa_ceas_timpi.value = response.data.data.lipsa_ceas_timpi;
                     concediu_ore.value = response.data.data.concediu_ore;
+                    withoutpaidleave.value = response.data.data.withoutpaidleave;
                     remarca.value = response.data.data.remarca;
                     editFrom.style.visibility = 'visible';
                     handleTimeFieldChange();
@@ -696,13 +704,16 @@
         }
 
         function changeNumeSchimb(event) {
-            console.log(event.target.value);
             if (event.target.value === "Leave") {
                 absenta_zile.value = 0;
                 lipsa_ceas_timpi.value = 0;
                 concediu_ore.value = 8;
             }
-
+            if (event.target.value === "Without Paid Leave") {
+                absenta_zile.value = 0;
+                lipsa_ceas_timpi.value = 0;
+                withoutpaidleave.value = 8;
+            }
         }
 
         editFrom.addEventListener('submit', function(event) {
