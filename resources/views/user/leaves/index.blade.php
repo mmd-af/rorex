@@ -38,7 +38,7 @@
     </div>
     <div class="row">
         <div class="col-xl-3 col-md-6 border p-3 m-2">
-            <h6 class="text-success"> Remaining allowable leave= {{ Auth::user()->leave_balance / 8 }} days
+            <h6 class="text-success"> Remaining allowable leave= {{ number_format(Auth::user()->leave_balance / 8, 2) }} days
                 ({{ Auth::user()->leave_balance }} hours)</h6>
         </div>
         <div class="col-xl-3 col-md-6 border p-3 m-2">
