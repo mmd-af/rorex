@@ -47,15 +47,12 @@ class LeaveRequest extends FormRequest
                     $validator->errors()->add('end_date', 'End date must be greater than or equal to start date.');
                 }
             }
-            // TODO whenever HR take the remain days off from all staff, active the command codes.
             if ($this->input('type') === 'Allowed Leave') {
                 $leaveDays = (int) $this->input('leave_days');
-                // $leaveBalance = auth()->user()->leave_balance;
-
-                // if ($leaveDays > $leaveBalance) {
-                //     $validator->errors()->add('leave_days', 'Leave days must not exceed your leave balance.');
-                // }
-
+                $leaveBalance = auth()->user()->leave_balance;
+                if ($leaveDays > ($leaveBalance / 8)) {
+                    $validator->errors()->add('leave_days', 'Leave days must not exceed your leave balance.');
+                }
                 if ($leaveDays <= 0) {
                     $validator->errors()->add('leave_days', 'Leave days must be greater than zero.');
                 }

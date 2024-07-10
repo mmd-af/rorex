@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', function () {
     // return redirect()->route('login');
-       return view('welcome');
+    return view('welcome');
 });
 
 Route::middleware('auth')->group(function () {
@@ -42,7 +42,13 @@ Route::get('/addBalance', function () {
         $user->save();
     }
 });
-
+Route::get('/convert-balance', function () {
+    $users = User::all();
+    foreach ($users as $user) {
+        $user->leave_balance = $user->leave_balance * 8;
+        $user->save();
+    }
+});
 Route::get('/migrate', function () {
     Artisan::call('migrate');
     return Artisan::output();
