@@ -311,10 +311,14 @@
                             <th class="bg-danger">${response.data.dailyAbsence}</th>
                             <th>per day</th>
                         </tr>
-
                         <tr>
                             <th>Concediu ore</th>
                             <th class="bg-warning">${response.data.concediu_ore}</th>
+                            <th>per hour</th>
+                        </tr>
+                        <tr>
+                            <th>Without Paid Leave</th>
+                            <th class="bg-warning">${response.data.without_paid_leave}</th>
                             <th>per hour</th>
                         </tr>
                         <tr>
