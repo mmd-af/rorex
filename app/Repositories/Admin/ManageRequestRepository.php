@@ -246,7 +246,7 @@ class ManageRequestRepository extends BaseRepository
             $staffRequest->save();
             $user = User::find($staffRequest->cod_staff);
             $leave = $staffRequest->leave;
-            if ($leave->type === "Allowed Leave") {
+            if ($leave !== null && $leave->type === "Allowed Leave") {
                 $leaveBalance = ($user->leave_balance / 8);
                 $vacationDays =  $leave->leave_days;
                 if ($vacationDays <= floor($leaveBalance)) {
@@ -258,7 +258,7 @@ class ManageRequestRepository extends BaseRepository
                     return false;
                 }
             }
-            if ($leave->type === "Hourly Leave") {
+            if ($leave !== null && $leave->type === "Hourly Leave") {
                 $leaveBalance = $user->leave_balance;
                 list($hours, $minutes) = explode(':', $leave->leave_time);
                 $decimalTime = $hours + ($minutes / 60);
