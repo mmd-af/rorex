@@ -28,7 +28,8 @@ class MonthlyReportRepository extends BaseRepository
                 'tarziu_minute',
                 'devreme_minute',
                 'lipsa_ceas_timpi',
-                'concediu_ore'
+                'concediu_ore',
+                'without_paid_leave'
             ])
             ->where('data', 'LIKE', "$monthDate%")
             ->where('cod_staff', $staffCode)
@@ -44,6 +45,7 @@ class MonthlyReportRepository extends BaseRepository
         $plus_holiday_day = 0;
         $plus_holiday_night = 0;
         $concediu_ore = 0;
+        $without_paid_leave = 0;
         $hourUnknown = 0;
         $dailyAbsence = 0;
         $delayWork = 0;
@@ -73,6 +75,7 @@ class MonthlyReportRepository extends BaseRepository
             $plus_holiday_day += $dailyReport->plus_holiday_day;
             $plus_holiday_night += $dailyReport->plus_holiday_night;
             $concediu_ore += $dailyReport->concediu_ore;
+            $without_paid_leave += $dailyReport->without_paid_leave;
             $dailyAbsence += $dailyReport->absenta_zile;
             $delayWork += $dailyReport->tarziu_minute;
             $earlyExit += $dailyReport->devreme_minute;
@@ -94,6 +97,7 @@ class MonthlyReportRepository extends BaseRepository
             'earlyExit' => number_format($earlyExit / 60, 1),
             'dailyAbsence' => number_format($dailyAbsence, 1),
             'concediu_ore' => number_format($concediu_ore, 1),
+            'without_paid_leave' => number_format($without_paid_leave, 1),
             'totalHours' => number_format($totalHours, 1),
             'hourUnknown' => $hourUnknown,
             'turaImplicita' => $turaImplicita,
@@ -121,7 +125,8 @@ class MonthlyReportRepository extends BaseRepository
                 'tarziu_minute',
                 'devreme_minute',
                 'lipsa_ceas_timpi',
-                'concediu_ore'
+                'concediu_ore',
+                'without_paid_leave'
             ])
             ->where('data', 'LIKE', "$monthDate%")
             ->where('cod_staff', $staffCode)
@@ -137,6 +142,7 @@ class MonthlyReportRepository extends BaseRepository
         $plus_holiday_day = 0;
         $plus_holiday_night = 0;
         $concediu_ore = 0;
+        $without_paid_leave = 0;
         $hourUnknown = 0;
         $dailyAbsence = 0;
         $delayWork = 0;
@@ -167,6 +173,7 @@ class MonthlyReportRepository extends BaseRepository
             $plus_holiday_day += $dailyReport->plus_holiday_day;
             $plus_holiday_night += $dailyReport->plus_holiday_night;
             $concediu_ore += $dailyReport->concediu_ore;
+            $without_paid_leave += $dailyReport->without_paid_leave;
             $dailyAbsence += $dailyReport->absenta_zile;
             $delayWork += $dailyReport->tarziu_minute;
             $earlyExit += $dailyReport->devreme_minute;
@@ -189,6 +196,7 @@ class MonthlyReportRepository extends BaseRepository
             'earlyExit' => number_format($earlyExit / 60, 1),
             'dailyAbsence' => number_format($dailyAbsence, 1),
             'concediu_ore' => number_format($concediu_ore, 1),
+            'without_paid_leave' => number_format($without_paid_leave, 1),
             'totalHours' => number_format($totalHours, 1),
             'hourUnknown' => $hourUnknown,
             'turaImplicita' => $turaImplicita,

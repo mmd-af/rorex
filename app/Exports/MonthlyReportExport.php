@@ -38,6 +38,7 @@ class MonthlyReportExport implements FromArray, WithHeadings, WithStyles
             'Early Exit (Hour)',
             'Daily Absence (Day)',
             'concediu_ore',
+            'without_paid_leave',
             'Total (Hours)',
             'Unknown',
             'Default Shift (Hour)',

@@ -37,6 +37,7 @@ class FullMonthlyReportExport implements FromArray, WithHeadings, WithStyles
             'total minus work(Hour)',
             'Daily Absence (Day)',
             'concediu_ore',
+            'without_paid_leave',
             'Total (Hours)'
         ];
     }
