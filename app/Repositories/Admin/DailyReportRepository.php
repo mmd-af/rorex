@@ -89,6 +89,7 @@ class DailyReportRepository extends BaseRepository
                 'devreme_minute',
                 'lipsa_ceas_timpi',
                 'concediu_ore',
+                'without_paid_leave',
                 'remarca'
             ])
             ->where('id', $request->id)
@@ -185,6 +186,7 @@ class DailyReportRepository extends BaseRepository
             $dailyID->devreme_minute = $request->devreme_minute;
             $dailyID->lipsa_ceas_timpi = $request->lipsa_ceas_timpi;
             $dailyID->concediu_ore = $request->concediu_ore;
+            $dailyID->without_paid_leave = $request->without_paid_leave;
             $dailyID->remarca = $request->remarca;
             $dailyID->edit_by = $userId;
             $dailyID->save();
@@ -214,7 +216,7 @@ class DailyReportRepository extends BaseRepository
             return 0;
         }
     }
-    function renderTimeForm($request)
+    public function renderTimeForm($request)
     {
         $sumWork1 = $this->sumHourWork($request->on_work1, $request->off_work1);
         $sumWork2 = $this->sumHourWork($request->on_work2, $request->off_work2);
@@ -222,7 +224,7 @@ class DailyReportRepository extends BaseRepository
         return response()->json(['sumWork1' => $sumWork1, 'sumWork2' => $sumWork2, 'sumWork3' => $sumWork3]);
     }
 
-    function importSingleReport($request)
+    public function importSingleReport($request)
     {
         $files = $request->file('file');
         $files = Excel::toArray(new DailyReportExcel, $files);
@@ -281,7 +283,7 @@ class DailyReportRepository extends BaseRepository
         }
     }
 
-    function updateDailyReport($date, $staffCode, $onWorkTime, $offWorkTime)
+    public function updateDailyReport($date, $staffCode, $onWorkTime, $offWorkTime)
     {
         $date = Carbon::parse($date)->toDateString();
         $record = $this->query()

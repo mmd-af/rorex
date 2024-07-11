@@ -293,9 +293,9 @@
                                 name="concediu_ore" value="">
                         </div>
                         <div class="mb-3">
-                            <label for="withoutpaidleave" class="form-label">Without Paid Leave</label>
-                            <input type="number" min="0" step="any" class="form-control" id="withoutpaidleave"
-                                name="withoutpaidleave" value="">
+                            <label for="without_paid_leave" class="form-label">Without Paid Leave</label>
+                            <input type="number" min="0" step="any" class="form-control" id="without_paid_leave"
+                                name="without_paid_leave" value="">
                         </div>
                         <div class="mb-3">
                             <label for="remarca" class="form-label">Report</label>
@@ -428,7 +428,7 @@
         let devreme_minute = document.getElementById('devreme_minute');
         let lipsa_ceas_timpi = document.getElementById('lipsa_ceas_timpi');
         let concediu_ore = document.getElementById('concediu_ore');
-        let withoutpaidleave = document.getElementById('withoutpaidleave');
+        let without_paid_leave = document.getElementById('without_paid_leave');
         let remarca = document.getElementById('remarca');
         let sumWork1 = document.getElementById('sumWork1');
         let sumWork2 = document.getElementById('sumWork2');
@@ -491,7 +491,7 @@
                     devreme_minute.value = response.data.data.devreme_minute;
                     lipsa_ceas_timpi.value = response.data.data.lipsa_ceas_timpi;
                     concediu_ore.value = response.data.data.concediu_ore;
-                    withoutpaidleave.value = response.data.data.withoutpaidleave;
+                    without_paid_leave.value = response.data.data.without_paid_leave;
                     remarca.value = response.data.data.remarca;
                     editFrom.style.visibility = 'visible';
                     handleTimeFieldChange();
@@ -712,7 +712,7 @@
             if (event.target.value === "Without Paid Leave") {
                 absenta_zile.value = 0;
                 lipsa_ceas_timpi.value = 0;
-                withoutpaidleave.value = 8;
+                without_paid_leave.value = 8;
             }
         }
 
