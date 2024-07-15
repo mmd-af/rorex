@@ -7,7 +7,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use App\Models\User\User;
 
 class LoginRequest extends FormRequest
 {
@@ -29,12 +31,21 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
         $credentials = $this->only('email', 'password');
-        if (filter_var($credentials['email'], FILTER_VALIDATE_INT)) {
-            $credentials['cod_staff'] = $credentials['email'];
-            unset($credentials['email']);
+        $field = filter_var($credentials['email'], FILTER_VALIDATE_INT) ? 'employees.staff_code' : 'users.email';
+
+        $userQuery = User::query();
+
+        if ($field === 'employees.staff_code') {
+            $userQuery->select('users.*')
+                ->join('employees', 'users.id', '=', 'employees.user_id')
+                ->where('employees.staff_code', $credentials['email']);
+        } else {
+            $userQuery->where('email', $credentials['email']);
         }
 
-        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
+        $user = $userQuery->first();
+
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -42,6 +53,7 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        Auth::login($user, $this->boolean('remember'));
         RateLimiter::clear($this->throttleKey());
     }
 
@@ -73,6 +85,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->input('email')) . '|' . $this->ip());
     }
 }

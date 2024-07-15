@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Employee\Employee;
 
 class User extends Authenticatable
 {
@@ -30,9 +31,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-//    public function getIsActiveAttribute($is_active)
-//    {
-//        return $is_active ? 'Active' : 'Deactivate';
-//    }
+    //    public function getIsActiveAttribute($is_active)
+    //    {
+    //        return $is_active ? 'Active' : 'Deactivate';
+    //    }
 
+    public function employee()
+    {
+        return $this->hasOne(Employee::class);
+    }
 }

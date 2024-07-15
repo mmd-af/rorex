@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class CheckUserDep
 {
@@ -15,9 +16,18 @@ class CheckUserDep
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && auth()->user()->hasDirectPermission('companies')) {
-            return redirect()->route('company.dashboard.index');
+        if (Auth::check()) {
+            if (auth()->user()->hasDirectPermission('companies')) {
+                return redirect()->route('company.dashboard.index');
+            }
+            if (auth()->user()->hasDirectPermission('employees')) {
+                return $next($request);
+            }
+            if (Auth::user()->rolles == 'admin') {
+                return $next($request);
+            }
+            return redirect()->route('inactive');
         }
-        return $next($request);
+        return redirect()->route('login');
     }
 }
