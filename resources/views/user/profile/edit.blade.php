@@ -3,6 +3,7 @@
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">Profile</li>
     </ol>
+    @include('user.layouts.partial.errors')
     <div class="card mb-4">
         <div class="card-body">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">

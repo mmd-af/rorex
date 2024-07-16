@@ -16,17 +16,18 @@
         <div class="mt-3">
             <label for="first_name">First Name</label>
             <input id="first_name" name="first_name" type="text" class="form-control"
-                value="{{ old('first_name', $user->first_name) }}" required autofocus autocomplete="first_name"
-                disabled />
+                value="{{ old('first_name', $user->employee->first_name) }}" required autofocus
+                autocomplete="first_name" disabled />
         </div>
         <div class="mt-3">
-            <label for="name">Last Name</label>
-            <input id="name" type="text" class="form-control" value="{{ old('name', $user->name) }}" required
-                autofocus autocomplete="name" disabled />
-            <input type="hidden" name="name" value="{{ old('name', $user->name) }}">
+            <label for="last_name">Last Name</label>
+            <input id="last_name" type="text" class="form-control"
+                value="{{ old('last_name', $user->employee->last_name) }}" required autofocus autocomplete="last_name"
+                disabled />
+            <input type="hidden" name="last_name" value="{{ old('last_name', $user->employee->last_name) }}">
         </div>
-        @if ($errors->has('name'))
-            <p class="mt-2 text-danger"> {{ $errors->first('name') }}</p>
+        @if ($errors->has('last_name'))
+            <p class="mt-2 text-danger"> {{ $errors->first('last_name') }}</p>
         @endif
         <div class="mt-3">
             <label for="email">{{ __('Email') }}</label>
@@ -70,7 +71,7 @@
         <div class="flex items-center gap-4">
             <button type="submit" class="btn btn-success mt-3">{{ __('Save') }}</button>
             @if (session('status') === 'profile-updated')
-                <p class="text-sm text-success">{{ __('Saved.') }}</p>
+                <div class="alert alert-success my-2">{{ __('Saved.') }}</div>
             @endif
         </div>
     </form>
