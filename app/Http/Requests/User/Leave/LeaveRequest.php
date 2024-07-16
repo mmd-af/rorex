@@ -52,7 +52,7 @@ class LeaveRequest extends FormRequest
             }
             if ($this->input('type') === 'Allowed Leave') {
                 $leaveDays = (int) $this->input('leave_days');
-                $leaveBalance = auth()->user()->leave_balance;
+                $leaveBalance = auth()->user()->employee->leave_balance;
                 if ($leaveDays > ($leaveBalance / 8)) {
                     $validator->errors()->add('leave_days', 'Leave days must not exceed your leave balance.');
                 }

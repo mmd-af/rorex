@@ -38,8 +38,9 @@
     </div>
     <div class="row">
         <div class="col-xl-3 col-md-6 border p-3 m-2">
-            <h6 class="text-success"> Remaining allowable leave= {{ number_format(Auth::user()->leave_balance / 8, 2) }} days
-                ({{ Auth::user()->leave_balance }} hours)</h6>
+            <h6 class="text-success"> Remaining allowable leave= {{ number_format(Auth::user()->employee->leave_balance / 8, 2) }}
+                days
+                ({{ Auth::user()->employee->leave_balance }} hours)</h6>
         </div>
         <div class="col-xl-3 col-md-6 border p-3 m-2">
             <div class="card">
@@ -114,30 +115,30 @@
                     <form id="leaveForm" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3 lh-lg h5">
-                            @if (empty(Auth::user()->name))
-                                LastName:
-                                <input type="text" class="form-control" name="name" id="name" value="">
+                            @if (empty(Auth::user()->employee->last_name))
+                                Last Name:
+                                <input type="text" class="form-control" name="last_name" id="last_name" value="">
                             @else
-                                <input type="hidden" name="name" value="{{ Auth::user()->name }}">
+                                <input type="hidden" name="last_name" value="{{ Auth::user()->employee->last_name }}">
                             @endif
-                            @if (empty(Auth::user()->first_name))
-                                FirstName:
+                            @if (empty(Auth::user()->employee->first_name))
+                                First Name:
                                 <input type="text" class="form-control" name="first_name" id="first_name" value="">
                             @else
-                                <input type="hidden" name="first_name" value="{{ Auth::user()->first_name }}">
+                                <input type="hidden" name="first_name" value="{{ Auth::user()->employee->first_name }}">
                             @endif
-                            @if (empty(Auth::user()->cod_staff))
-                                Code Staff:
-                                <input type="text" class="form-control" name="cod_staff" id="cod_staff" value="">
+                            @if (empty(Auth::user()->employee->staff_code))
+                                Staff Code:
+                                <input type="text" class="form-control" name="staff_code" id="staff_code" value="">
                             @else
-                                <input type="hidden" name="cod_staff" value="{{ Auth::user()->cod_staff }}">
+                                <input type="hidden" name="staff_code" value="{{ Auth::user()->employee->staff_code }}">
                             @endif
-                            @if (empty(Auth::user()->departament))
-                                Departament:
-                                <input type="text" class="form-control" name="departament" id="departament"
+                            @if (empty(Auth::user()->employee->department))
+                                Department:
+                                <input type="text" class="form-control" name="department" id="department"
                                     value="">
                             @else
-                                <input type="hidden" name="departament" value="{{ Auth::user()->departament }}">
+                                <input type="hidden" name="department" value="{{ Auth::user()->employee->department }}">
                             @endif
                             <div class="col-md-6">
                                 <label for="type">Type:</label>
@@ -302,7 +303,7 @@
         function calculateDateDifference(x) {
             var startDateValue = document.getElementById('startDate').value.trim();
             var endDateValue = document.getElementById('endDate').value.trim();
-            let leave_balance = "{{ Auth::user()->leave_balance }}";
+            let leave_balance = "{{ Auth::user()->employee->leave_balance }}";
             if (startDateValue !== '' && endDateValue !== '') {
                 var startDate = new Date(startDateValue);
                 var endDate = new Date(endDateValue);
@@ -521,7 +522,7 @@
                     assignedTo.innerHTML = ``;
                     response.data.forEach(function(item) {
                         assignedTo.innerHTML +=
-                            `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
+                            `<option value="${item.id}">${item.employee.last_name} ${item.employee.first_name}</option>`;
                     });
                 })
                 .catch(function(error) {
@@ -533,10 +534,10 @@
             event.preventDefault();
             var form = event.target;
             var formData = new FormData(form);
-            var name = formData.get('name');
+            var name = formData.get('last_name');
             var first_name = formData.get('first_name');
-            var cod_staff = formData.get('cod_staff');
-            var departament = formData.get('departament');
+            var cod_staff = formData.get('code_staff');
+            var departament = formData.get('department');
             var type = formData.get('type');
             var file = formData.get('file');
             let startDay = formData.get('start_date');

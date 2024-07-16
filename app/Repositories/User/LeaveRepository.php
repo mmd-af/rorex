@@ -95,7 +95,7 @@ class LeaveRepository extends BaseRepository
                         if ($assignment->status == 'Rejected') {
                             $condition = '<div class="bg-danger rounded-3 text-light">' . $assignment->status . '</div>';
                         }
-                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $condition . $description . '<hr>';
+                        $status .= $assignment->assignedTo->employee->last_name . ' ' . $assignment->assignedTo->employee->first_name . $signedStatus . $condition . $description . '<hr>';
                     }
                     return $status;
                 })
