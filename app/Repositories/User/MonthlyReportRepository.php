@@ -12,7 +12,7 @@ class MonthlyReportRepository extends BaseRepository
     public function monthlyReportWithDate($request)
     {
         $monthDate = $request->date;
-        $staffCode = Auth::user()->cod_staff;
+        $staffCode = Auth::user()->employee->staff_code;
         $dailyReports = DailyReport::query()
             ->select([
                 'cod_staff',
@@ -177,7 +177,7 @@ class MonthlyReportRepository extends BaseRepository
             $dailyAbsence += $dailyReport->absenta_zile;
             $delayWork += $dailyReport->tarziu_minute;
             $earlyExit += $dailyReport->devreme_minute;
-            $userName = $dailyReport->users->name . " " . $dailyReport->users->prenumele_tatalui;
+            $userName = $dailyReport->users->employee->last_name . " " . $dailyReport->users->employee->first_name;
         }
         $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily;
         $data[] = [
