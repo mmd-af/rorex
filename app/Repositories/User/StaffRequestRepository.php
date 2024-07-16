@@ -105,20 +105,9 @@ class StaffRequestRepository extends BaseRepository
     public function store($request)
     {
         $userId = Auth::id();
-        if ($request->subject === 'Leave Request') {
-            $checkAssignment = LetterAssignment::query()
-                ->where('user_id', $userId)
-                ->where('status', 'waiting')
-                ->first();
-            if (!is_null($checkAssignment)) {
-                Session::flash('error', 'You have a pending request');
-                return false;
-            }
-        }
-
         $data = [
             'userId' => $userId,
-            'name' => $request->input('name'),
+            'name' => $request->input('last_name'),
             'email' => $request->input('email'),
             'mobile_phone' => $request->input('mobile_phone'),
             'subject' => $request->input('subject'),

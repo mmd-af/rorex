@@ -24,7 +24,8 @@ class StaffRequestRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required'],
+            'first_name' => ['required'],
+            'last_name' => ['required'],
             'cod_staff' => ['required'],
             'subject' => ['required'],
             'description' => ['required'],

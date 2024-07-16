@@ -30,7 +30,7 @@ class DailyReportSendRequestJob implements ShouldQueue
     {
         try {
             $staffRequest = new StaffRequest();
-            $staffRequest->name = $this->data['name'];
+            $staffRequest->name = $this->data['name'] . ' ' . $this->data['first_name'];
             $staffRequest->user_id = $this->data['userId'];
             $staffRequest->email = $this->data['email'];
             $staffRequest->mobile_phone = $this->data['mobile_phone'];
