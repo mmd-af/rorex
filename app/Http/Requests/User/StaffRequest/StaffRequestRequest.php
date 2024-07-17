@@ -32,7 +32,7 @@ class StaffRequestRequest extends FormRequest
             'email' => ['required'],
             'start_date' => ['required'],
             'vacation_day' => ['required'],
-            'departamentRole' => ['required'],
+            'departmentRole' => ['required'],
             'assigned_to' => ['required']
         ];
     }

@@ -108,12 +108,13 @@ class StaffRequestRepository extends BaseRepository
         $data = [
             'userId' => $userId,
             'name' => $request->input('last_name'),
+            'first_name' => $request->input('first_name'),
             'email' => $request->input('email'),
             'mobile_phone' => $request->input('mobile_phone'),
             'subject' => $request->input('subject'),
             'description' => $request->description,
-            'organization' => $request->input('departament'),
-            'departamentRole' => $request->input('departamentRole'),
+            'organization' => $request->input('department'),
+            'departmentRole' => $request->input('departmentRole'),
             'cod_staff' => (int)$request->input('cod_staff'),
             'vacation_day' => (int)$request->input('vacation_day'),
             'assigned_to' => (int)$request->input('assigned_to')

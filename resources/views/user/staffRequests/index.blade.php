@@ -124,8 +124,8 @@
                         <div class="mb-3">
                             <div class="row">
                                 <div class="col-sm-12 col-lg-6">
-                                    <label for="departamentRole" class="col-form-label">Referred to:</label>
-                                    <select class="form-control" name="departamentRole" id="departamentRole"
+                                    <label for="departmentRole" class="col-form-label">Referred to:</label>
+                                    <select class="form-control" name="departmentRole" id="departmentRole"
                                         onchange="getRelateUserWithRole()" required>
                                         <option value="">SELECT DEPARTMENT</option>
                                     </select>
@@ -306,11 +306,11 @@
         });
 
         $(document).ready(function() {
-            let departamentRole = document.getElementById('departamentRole');
+            let departmentRole = document.getElementById('departmentRole');
             axios.get('{{ route('user.staffRequests.ajax.getRoles') }}')
                 .then(function(response) {
                     response.data.forEach(function(item) {
-                        departamentRole.innerHTML +=
+                        departmentRole.innerHTML +=
                             `<option value="${item.name}">${item.name}</option>`;
                     });
                 })
@@ -325,7 +325,7 @@
             <span class="visually-hidden">Loading...</span>
             </div>`;
             let data = {
-                role_name: departamentRole.value
+                role_name: departmentRole.value
             }
             axios.post('{{ route('user.staffRequests.ajax.getUserWithRole') }}', data)
                 .then(function(response) {
@@ -351,13 +351,12 @@
             var last_name = formData.get('last_name');
             var first_name = formData.get('first_name');
             var cod_staff = formData.get('staff_code');
-            var departament = formData.get('department');
+            var department = formData.get('department');
             var startDay = formData.get('start_date');
             var endDay = formData.get('end_date');
-            var totally = formData.get('totally');
             var vacation_day = formData.get('vacation_day');
             var email = formData.get('email');
-            var departamentRole = formData.get('departamentRole');
+            var departmentRole = formData.get('departmentRole');
             var subject = formData.get('subject');
             var assigned_to = formData.get('assigned_to');
             var description = formData.get('description');
@@ -368,52 +367,28 @@
             var kind = formData.get('kind');
             var check_date_other_request = formData.get('check_date_other_request');
             var dateOfRequest = moment().format('YYYY/MM/DD');
-            if (kind === "Rest" || kind === "SpecialEvents") {
-                var newDescription = 'Date: ' + dateOfRequest +
-                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
-                    'Code Staff: ' + cod_staff + '</div><br>' +
-                    '<div id="alignCenter"><b>' + subject +
-                    '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
-                    '<br>Requests <b>' + vacation_day + ' days</b> during the period:<br><b>' + startDay +
-                    ' </b>until:<b> ' + endDay +
-                    '</b><br>Total days: ' + totally +
-                    '<br>Allowed leave: ' + leave_balance + '<br>EXCLUDING Holidays: ' + vacation_day +
-                    '<br>Days without Pay: ' +
-                    daysWithoutPay + '<br><small>' + description + '</small><br>Email: ' + email + '<hr>';
-            }
-            if (kind === "Hour") {
-                var newDescription = 'Date: ' + dateOfRequest +
-                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
-                    'Code Staff: ' + cod_staff + '</div><br>' +
-                    '<div id="alignCenter"><b>' + subject +
-                    '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
-                    '<br>requests for hour leave on:<br><b>' + startDay +
-                    '</b><br>between:<b> ' + start_time + ' </b>until: <b>' + end_time + ' </b><br>' +
-                    vacation_day + description +
-                    '<br>Email: ' + email + '<hr>';
-            }
             if (kind === "CustomRequest") {
                 var newDescription = 'Date: ' + dateOfRequest +
-                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
+                    '<br><div id="box">Name: ' + last_name + ' ' + first_name + '<br>' +
                     'Code Staff: ' + cod_staff + '</div><br>' +
                     '<div id="alignCenter"><b>' + subject +
-                    '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
+                    '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + department +
                     '<br>' +
                     '<b>Check for date: ' + check_date_other_request + ' </b>' +
-                    '<br>' + description + '<br>Email: ' + email + '<hr><small>request type: other request</small>';
+                    '<br>' + description + '<br>Email: ' + email + '<hr><small>request from: dashboard/Other Requests</small>';
             }
             let data = {
                 first_name: first_name,
                 last_name: last_name,
                 cod_staff: cod_staff,
-                departament: departament,
+                department: department,
                 subject: subject,
                 description: newDescription,
                 start_date: startDay,
                 end_date: endDay,
                 vacation_day: vacation_day,
                 email: email,
-                departamentRole: departamentRole,
+                departmentRole: departmentRole,
                 assigned_to: assigned_to
             }
             axios.post('{{ route('user.staffRequests.ajax.store') }}', data)

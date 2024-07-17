@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use App\Models\StaffRequest\StaffRequest;
 use App\Models\User\User;
 use Spatie\Permission\Models\Role;
@@ -20,41 +21,55 @@ class DailyReportSendRequestJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    protected $data;
-    public function __construct($data)
+
+    public function __construct(protected $data)
     {
-        $this->data = $data;
     }
 
     public function handle(): void
     {
         try {
-            $staffRequest = new StaffRequest();
-            $staffRequest->name = $this->data['name'] . ' ' . $this->data['first_name'];
-            $staffRequest->user_id = $this->data['userId'];
-            $staffRequest->email = $this->data['email'];
-            $staffRequest->mobile_phone = $this->data['mobile_phone'];
-            $staffRequest->subject = $this->data['subject'];
-            $staffRequest->description = $this->data['description'];
-            $staffRequest->organization = $this->data['organization'];
-            $staffRequest->cod_staff = $this->data['cod_staff'];
-            $staffRequest->vacation_day = $this->data['vacation_day'];
-            $staffRequest->save();
-            $role = Role::query()
-                ->select(['id', 'name'])
-                ->where('name', $this->data['departamentRole'])
-                ->first();
-            $assignment = new LetterAssignment();
-            $assignment->user_id = $this->data['userId'];
-            $assignment->request_id = $staffRequest->id;
-            $assignment->role_id = $role->id;
-            $assignment->assigned_to = $this->data['assigned_to'];
-            $assignment->status = "waiting";
-            $assignment->save();
-            $user = User::find($this->data['assigned_to']);
-            if ($user->email_verified_at !== null && $user->receive_notifications) {
-                $user->notify(new RequestRegisteredNotification("New Request", $this->data['description']));
-            }
+            DB::transaction(function () {
+                $requiredKeys = ['name', 'first_name', 'userId', 'email', 'mobile_phone', 'subject', 'description', 'organization', 'cod_staff', 'vacation_day', 'departmentRole', 'assigned_to'];
+                foreach ($requiredKeys as $key) {
+                    if (!array_key_exists($key, $this->data)) {
+                        throw new \Exception("Undefined array key \"$key\"");
+                    }
+                }
+
+                $staffRequest = new StaffRequest();
+                $staffRequest->name = $this->data['name'] . ' ' . $this->data['first_name'];
+                $staffRequest->user_id = $this->data['userId'];
+                $staffRequest->email = $this->data['email'];
+                $staffRequest->mobile_phone = $this->data['mobile_phone'];
+                $staffRequest->subject = $this->data['subject'];
+                $staffRequest->description = $this->data['description'];
+                $staffRequest->organization = $this->data['organization'];
+                $staffRequest->cod_staff = $this->data['cod_staff'];
+                $staffRequest->vacation_day = $this->data['vacation_day'];
+                $staffRequest->save();
+
+                $role = Role::query()
+                    ->select(['id', 'name'])
+                    ->where('name', $this->data['departmentRole'])
+                    ->firstOrFail(); // Use firstOrFail to throw an exception if not found
+                
+                $assignment = new LetterAssignment();
+                $assignment->user_id = $this->data['userId'];
+                $assignment->request_id = $staffRequest->id;
+                $assignment->role_id = $role->id;
+                $assignment->assigned_to = $this->data['assigned_to'];
+                $assignment->status = "waiting";
+                $assignment->save();
+
+                $user = User::whereHas('employee', function ($query) {
+                    $query->where('staff_code', $this->data['assigned_to']);
+                })->firstOrFail();
+                // $user = User::findOrFail($this->data['assigned_to']);
+                if ($user->email_verified_at !== null && $user->receive_notifications) {
+                    $user->notify(new RequestRegisteredNotification("New Request", $this->data['description']));
+                }
+            });
         } catch (\Exception $e) {
             $users = User::role('support')->get();
             foreach ($users as $user) {
