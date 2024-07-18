@@ -244,34 +244,44 @@ class ManageRequestRepository extends BaseRepository
             $staffRequest = StaffRequest::find($letterAssignment->request_id);
             $staffRequest->is_archive = 1;
             $staffRequest->save();
-            $user = User::find($staffRequest->cod_staff);
+            $staffCode = $staffRequest->cod_staff;
+            $user = User::whereHas('employee', function ($query) use ($staffCode) {
+                $query->where('staff_code', $staffCode);
+            })->with('employee')->first();
             $leave = $staffRequest->leave;
-            if ($leave !== null && $leave->type === "Allowed Leave") {
-                $leaveBalance = ($user->leave_balance / 8);
-                $vacationDays =  $leave->leave_days;
-                if ($vacationDays <= floor($leaveBalance)) {
-                    $user->leave_balance = ($leaveBalance * 8) - ($vacationDays * 8);
-                    $user->save();
-                } else {
-                    DB::rollBack();
-                    Session::flash('error', "The applicant's leave balance has changed and is less than the requested leaves.");
-                    return false;
+            if ($leave !== null) {
+                $employee = $user->employee;
+                $leaveBalance = $employee->leave_balance;
+
+                if ($leave->type === "Allowed Leave") {
+                    $leaveBalanceDays = $leaveBalance / 8;
+                    $vacationDays = $leave->leave_days;
+
+                    if ($vacationDays <= floor($leaveBalanceDays)) {
+                        $employee->leave_balance = ($leaveBalanceDays * 8) - ($vacationDays * 8);
+                        $employee->save();
+                    } else {
+                        DB::rollBack();
+                        Session::flash('error', "The applicant's leave balance has changed and is less than the requested leaves.");
+                        return false;
+                    }
+                }
+                if ($leave->type === "Hourly Leave") {
+                    list($hours, $minutes) = explode(':', $leave->leave_time);
+                    $decimalTime = $hours + ($minutes / 60);
+                    $vacationHours = number_format($decimalTime, 2);
+
+                    if ($vacationHours <= $leaveBalance) {
+                        $employee->leave_balance = $leaveBalance - $vacationHours;
+                        $employee->save();
+                    } else {
+                        DB::rollBack();
+                        Session::flash('error', "The applicant's leave balance has changed and is less than the requested leaves.");
+                        return false;
+                    }
                 }
             }
-            if ($leave !== null && $leave->type === "Hourly Leave") {
-                $leaveBalance = $user->leave_balance;
-                list($hours, $minutes) = explode(':', $leave->leave_time);
-                $decimalTime = $hours + ($minutes / 60);
-                $vacationDays = number_format($decimalTime, 2);
-                if ($vacationDays <= $leaveBalance) {
-                    $user->leave_balance =  $leaveBalance - $vacationDays;
-                    $user->save();
-                } else {
-                    DB::rollBack();
-                    Session::flash('error', "The applicant's leave balance has changed and is less than the requested leaves.");
-                    return false;
-                }
-            }
+
             if ($user->email_verified_at !== null && $user->receive_notifications) {
                 $meesage = $request->confirmationMessage ? "Your Request Acceptet with a Message" : "Your Request Acceptet";
                 $user->notify(new RequestRegisteredNotification($meesage, $request->confirmationMessage));
