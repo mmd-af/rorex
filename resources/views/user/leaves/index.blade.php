@@ -38,7 +38,8 @@
     </div>
     <div class="row">
         <div class="col-xl-3 col-md-6 border p-3 m-2">
-            <h6 class="text-success"> Remaining allowable leave= {{ number_format(Auth::user()->employee->leave_balance / 8, 2) }}
+            <h6 class="text-success"> Remaining allowable leave=
+                {{ number_format(Auth::user()->employee->leave_balance / 8, 2) }}
                 days
                 ({{ Auth::user()->employee->leave_balance }} hours)</h6>
         </div>
@@ -135,8 +136,7 @@
                             @endif
                             @if (empty(Auth::user()->employee->department))
                                 Department:
-                                <input type="text" class="form-control" name="department" id="department"
-                                    value="">
+                                <input type="text" class="form-control" name="department" id="department" value="">
                             @else
                                 <input type="hidden" name="department" value="{{ Auth::user()->employee->department }}">
                             @endif
@@ -556,8 +556,7 @@
             var leave_balance = formData.get('leave_balance');
             var check_date_other_request = formData.get('check_date_other_request');
             var dateOfRequest = moment().format('YYYY/MM/DD');
-            if (type === "Allowed Leave" || type === "Medical Leave" || type === "Speacial Event Leave" ||
-                type === "Without Paid Leave") {
+            if (type === "Medical Leave" || type === "Speacial Event Leave") {
                 var newDescription = 'Date: ' + dateOfRequest +
                     '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
                     'Code Staff: ' + cod_staff + '</div><br>' +
@@ -566,9 +565,37 @@
                     '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
                     '</b>until:<b> ' + endDay +
                     '</b><br>Total days: ' + totally +
-                    '<br>Allowed leave: ' + leave_balance + '<br>EXCLUDING Holidays: ' + leave_days +
+                    '<br>EXCLUDING Holidays: ' + leave_days +
+                    '<br><b>' + description + '</b><br>Email: ' + email +
+                    '<hr><small>request from: dashboard/Leave Requests</small>';
+            }
+            if (type === "Allowed Leave") {
+                var newDescription = 'Date: ' + dateOfRequest +
+                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
+                    'Code Staff: ' + cod_staff + '</div><br>' +
+                    '<div id="alignCenter"><b>' + subject +
+                    '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
+                    '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
+                    '</b>until:<b> ' + endDay +
+                    '</b><br>Total days: ' + totally +
+                    '<br>Allowed leave: ' + leave_balance / 8 + ' days (' + leave_balance +
+                    ' Hour)<br>EXCLUDING Holidays: ' + leave_days +
+                    '<br>Email: ' + email + '<hr><small>request from: dashboard/Leave Requests</small>';
+            }
+            if (type === "Without Paid Leave") {
+                var newDescription = 'Date: ' + dateOfRequest +
+                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
+                    'Code Staff: ' + cod_staff + '</div><br>' +
+                    '<div id="alignCenter"><b>' + subject +
+                    '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
+                    '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
+                    '</b>until:<b> ' + endDay +
+                    '</b><br>Total days: ' + totally +
+                    '<br>Allowed leave: ' + leave_balance / 8 + ' days (' + leave_balance +
+                    ' Hour)<br>EXCLUDING Holidays: ' + leave_days +
                     '<br>Days without Pay: ' +
-                    daysWithoutPay + '<br>' + description + '<br>Email: ' + email + '<hr>';
+                    daysWithoutPay + '<br>Email: ' + email +
+                    '<hr><small>request from: dashboard/Leave Requests</small>';
             }
             if (type === "Hourly Leave") {
                 var newDescription = 'Date: ' + dateOfRequest +
@@ -578,8 +605,8 @@
                     '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
                     '<br>requests for hour leave on:<br><b>' + startDay +
                     '</b><br>between:<b> ' + start_time + ' </b>until: <b>' + end_time + ' </b><br>' +
-                    leave_time +
-                    '<br>Email: ' + email + '<hr>';
+                    leave_time + ' Hour' +
+                    '<br>Email: ' + email + '<hr><small>request from: dashboard/Leave Requests</small>';
 
                 let startHourDate = startDay;
                 startDay = `${startHourDate} ${start_time}:00`;
