@@ -107,7 +107,7 @@ class StaffRequestRepository extends BaseRepository
         $userId = Auth::id();
         $data = [
             'userId' => $userId,
-            'name' => $request->input('last_name'),
+            'last_name' => $request->input('last_name'),
             'first_name' => $request->input('first_name'),
             'email' => $request->input('email'),
             'mobile_phone' => $request->input('mobile_phone'),
@@ -115,7 +115,7 @@ class StaffRequestRepository extends BaseRepository
             'description' => $request->description,
             'organization' => $request->input('department'),
             'departmentRole' => $request->input('departmentRole'),
-            'cod_staff' => (int)$request->input('cod_staff'),
+            'staff_code' => (int)$request->input('staff_code'),
             'vacation_day' => (int)$request->input('vacation_day'),
             'assigned_to' => (int)$request->input('assigned_to')
         ];

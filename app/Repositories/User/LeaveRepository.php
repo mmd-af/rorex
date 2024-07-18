@@ -163,7 +163,7 @@ class LeaveRepository extends BaseRepository
             $file->move(public_path('specialEvents'), $filename);
         }
         $data = [
-            'cod_staff' => $request->input('cod_staff'),
+            'staff_code' => $request->input('staff_code'),
             'userId' => $userId,
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),
@@ -171,36 +171,40 @@ class LeaveRepository extends BaseRepository
             'file' =>  $filename,
             'leave_time' => $request->input('leave_time'),
             'leave_days' => $request->input('leave_days'),
-            'name' => $request->input('name'),
+            'last_name' => $request->input('last_name'),
+            'first_name' => $request->input('first_name'),
             'subject' => $request->input('subject'),
             'description' => $request->input('description'),
             'email' => $request->input('email'),
-            'departamentRole' => (int)$request->input('departamentRole'),
+            'departmentRole' => (int)$request->input('departmentRole'),
             'assigned_to' => (int)$request->input('assigned_to'),
             'mobile_phone' => $request->input('mobile_phone'),
             'organization' => $request->input('organization'),
+            'vacation_day' => (int)$request->input('vacation_day'),
             'remaining' => $request->input('remaining')
         ];
+
         try {
             $staffRequest = new StaffRequest();
-            $staffRequest->name = $data['name'];
+            $staffRequest->name = $data['last_name'] . ' ' . $data['first_name'];
             $staffRequest->user_id = $data['userId'];
             $staffRequest->email = $data['email'];
             $staffRequest->mobile_phone = $data['mobile_phone'];
             $staffRequest->subject = $data['subject'];
             $staffRequest->description = $data['description'];
             $staffRequest->organization = $data['organization'];
-            $staffRequest->cod_staff = $data['cod_staff'];
+            $staffRequest->cod_staff = $data['staff_code'];
             $staffRequest->vacation_day = isset($data['vacation_day']) ? $data['vacation_day'] : 0;
             $staffRequest->save();
             $staffRequestId = $staffRequest->id;
 
             $role = Role::query()
                 ->select(['id', 'name'])
-                ->where('name', $data['departamentRole'])
+                ->where('name', $data['departmentRole'])
                 ->first();
 
             $leave = new Leave();
+            $leave->cod_staff = $data['staff_code'];
             $leave->user_id = $data['userId'];
             $leave->request_id = $staffRequestId;
             $leave->start_date = $data['start_date'];
@@ -220,6 +224,13 @@ class LeaveRepository extends BaseRepository
             $assignment->assigned_to = $data['assigned_to'];
             $assignment->status = "waiting";
             $assignment->save();
+
+            $user = User::whereHas('employee', function ($query) use ($data) {
+                $query->where('staff_code', $data['assigned_to']);
+            })->firstOrFail();
+            if ($user->email_verified_at && $user->receive_notifications) {
+                $user->notify(new RequestRegisteredNotification("New Request", $data['description']));
+            }
             Session::flash('message', 'Your request has been submitted');
         } catch (\Exception $e) {
             Session::flash('error', 'Your request has not submitted');
@@ -228,6 +239,5 @@ class LeaveRepository extends BaseRepository
                 $user->notify(new RequestRegisteredNotification("Error on user send leave request", $e->getMessage()));
             }
         }
-        LeaveRequestJob::dispatch($data);
     }
 }

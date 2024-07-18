@@ -30,7 +30,7 @@ class DailyReportSendRequestJob implements ShouldQueue
     {
         try {
             DB::transaction(function () {
-                $requiredKeys = ['name', 'first_name', 'userId', 'email', 'mobile_phone', 'subject', 'description', 'organization', 'cod_staff', 'vacation_day', 'departmentRole', 'assigned_to'];
+                $requiredKeys = ['last_name', 'first_name', 'userId', 'email', 'mobile_phone', 'subject', 'description', 'organization', 'cod_staff', 'vacation_day', 'departmentRole', 'assigned_to'];
                 foreach ($requiredKeys as $key) {
                     if (!array_key_exists($key, $this->data)) {
                         throw new \Exception("Undefined array key \"$key\"");
@@ -38,7 +38,7 @@ class DailyReportSendRequestJob implements ShouldQueue
                 }
 
                 $staffRequest = new StaffRequest();
-                $staffRequest->name = $this->data['name'] . ' ' . $this->data['first_name'];
+                $staffRequest->name = $this->data['last_name'] . ' ' . $this->data['first_name'];
                 $staffRequest->user_id = $this->data['userId'];
                 $staffRequest->email = $this->data['email'];
                 $staffRequest->mobile_phone = $this->data['mobile_phone'];

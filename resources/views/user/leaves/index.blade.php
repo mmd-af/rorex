@@ -170,8 +170,8 @@
                         <div class="mb-3">
                             <div class="row">
                                 <div class="col-sm-12 col-lg-6">
-                                    <label for="departamentRole" class="col-form-label">Referred to:</label>
-                                    <select class="form-control" name="departamentRole" id="departamentRole"
+                                    <label for="departmentRole" class="col-form-label">Referred to:</label>
+                                    <select class="form-control" name="departmentRole" id="departmentRole"
                                         onchange="getRelateUserWithRole()" required>
                                         <option value="">SELECT DEPARTMENT</option>
                                     </select>
@@ -492,11 +492,11 @@
         }
 
         $(document).ready(function() {
-            let departamentRole = document.getElementById('departamentRole');
+            let departmentRole = document.getElementById('departmentRole');
             axios.get('{{ route('user.staffRequests.ajax.getRoles') }}')
                 .then(function(response) {
                     response.data.forEach(function(item) {
-                        departamentRole.innerHTML +=
+                        departmentRole.innerHTML +=
                             `<option value="${item.name}">${item.name}</option>`;
                     });
                 })
@@ -511,7 +511,7 @@
             <span class="visually-hidden">Loading...</span>
             </div>`;
             let data = {
-                role_name: departamentRole.value
+                role_name: departmentRole.value
             }
             axios.post('{{ route('user.staffRequests.ajax.getUserWithRole') }}', data)
                 .then(function(response) {
@@ -534,9 +534,9 @@
             event.preventDefault();
             var form = event.target;
             var formData = new FormData(form);
-            var name = formData.get('last_name');
+            var last_name = formData.get('last_name');
             var first_name = formData.get('first_name');
-            var cod_staff = formData.get('code_staff');
+            var staff_code = formData.get('staff_code');
             var departament = formData.get('department');
             var type = formData.get('type');
             var file = formData.get('file');
@@ -546,7 +546,7 @@
             var leave_time = formData.get('leave_time');
             var leave_days = formData.get('leave_days');
             var email = formData.get('email');
-            var departamentRole = formData.get('departamentRole');
+            var departmentRole = formData.get('departmentRole');
             var subject = formData.get('subject');
             var assigned_to = formData.get('assigned_to');
             var description = formData.get('description');
@@ -558,8 +558,8 @@
             var dateOfRequest = moment().format('YYYY/MM/DD');
             if (type === "Medical Leave" || type === "Speacial Event Leave") {
                 var newDescription = 'Date: ' + dateOfRequest +
-                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
-                    'Code Staff: ' + cod_staff + '</div><br>' +
+                    '<br><div id="box">Name: ' + last_name + ' ' + first_name + '<br>' +
+                    'Code Staff: ' + staff_code + '</div><br>' +
                     '<div id="alignCenter"><b>' + subject +
                     '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
                     '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
@@ -571,8 +571,8 @@
             }
             if (type === "Allowed Leave") {
                 var newDescription = 'Date: ' + dateOfRequest +
-                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
-                    'Code Staff: ' + cod_staff + '</div><br>' +
+                    '<br><div id="box">Name: ' + last_name + ' ' + first_name + '<br>' +
+                    'Code Staff: ' + staff_code + '</div><br>' +
                     '<div id="alignCenter"><b>' + subject +
                     '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
                     '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
@@ -584,8 +584,8 @@
             }
             if (type === "Without Paid Leave") {
                 var newDescription = 'Date: ' + dateOfRequest +
-                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
-                    'Code Staff: ' + cod_staff + '</div><br>' +
+                    '<br><div id="box">Name: ' + last_name + ' ' + first_name + '<br>' +
+                    'Code Staff: ' + staff_code + '</div><br>' +
                     '<div id="alignCenter"><b>' + subject +
                     '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
                     '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
@@ -599,8 +599,8 @@
             }
             if (type === "Hourly Leave") {
                 var newDescription = 'Date: ' + dateOfRequest +
-                    '<br><div id="box">Name: ' + name + ' ' + first_name + '<br>' +
-                    'Code Staff: ' + cod_staff + '</div><br>' +
+                    '<br><div id="box">Name: ' + last_name + ' ' + first_name + '<br>' +
+                    'Code Staff: ' + staff_code + '</div><br>' +
                     '<div id="alignCenter"><b>' + subject +
                     '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + departament +
                     '<br>requests for hour leave on:<br><b>' + startDay +
@@ -614,8 +614,8 @@
             }
             let data = {
                 first_name: first_name,
-                name: name,
-                cod_staff: cod_staff,
+                last_name: last_name,
+                staff_code: staff_code,
                 departament: departament,
                 subject: subject,
                 type: type,
@@ -626,7 +626,7 @@
                 leave_time: leave_time,
                 leave_days: leave_days,
                 email: email,
-                departamentRole: departamentRole,
+                departmentRole: departmentRole,
                 assigned_to: assigned_to
             }
             let performAction = document.getElementById('performAction');
