@@ -18,7 +18,7 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                        <label for="file">Update Users <small>support: xlsx,xls</small></label>
+                        <label for="file">Update Users <small>support: xlsx,xls, csv</small></label>
                         <input type="file" name="file" id="file" class="form-control">
                     </div>
                     <button type="submit" class="btn btn-sm btn-primary mt-2">Import</button>
@@ -41,26 +41,20 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Cod Staff</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Departament</th>
-                        <th>Card Number</th>
+                        <th>Name</th>
                         <th>Email</th>
-                        <th>action</th>
+                        <th>Type</th>
+                        <th>Action</th>
                         <th>is_active</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
                         <th>ID</th>
-                        <th>Cod Staff</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Departament</th>
-                        <th>Card Number</th>
+                        <th>Name</th>
                         <th>Email</th>
-                        <th>action</th>
+                        <th>Type</th>
+                        <th>Action</th>
                         <th>is_active</th>
                     </tr>
                 </tfoot>
@@ -129,32 +123,20 @@
                         name: 'id'
                     },
                     {
-                        data: 'cod_staff',
-                        name: 'cod_staff'
-                    },
-                    {
-                        data: 'first_name',
-                        name: 'first_name'
-                    },
-                    {
                         data: 'name',
                         name: 'name'
-                    },
-                    {
-                        data: 'departament',
-                        name: 'departament'
-                    },
-                    {
-                        data: 'numar_card',
-                        name: 'numar_card'
                     },
                     {
                         data: 'email',
                         name: 'email'
                     },
                     {
-                        data: 'show',
-                        name: 'show'
+                        data: 'type',
+                        name: 'type'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
                     },
                     {
                         data: 'is_active',

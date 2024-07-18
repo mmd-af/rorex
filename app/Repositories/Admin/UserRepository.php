@@ -25,19 +25,23 @@ class UserRepository extends BaseRepository
         $data = $this->query()
             ->select([
                 'id',
-                'cod_staff',
                 'name',
-                'first_name',
-                'departament',
-                'numar_card',
                 'email',
                 'is_active'
             ])
-
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
-                ->addColumn('show', function ($row) {
+                ->addColumn('type', function ($row) {
+                    if ($row->employee) {
+                        return "Employee";
+                    } elseif ($row->compony) {
+                        return "Compony";
+                    } else {
+                        return "Other";
+                    }
+                })
+                ->addColumn('action', function ($row) {
                     return '<button onclick="show(' . $row->id . ')" type="button"
                                     class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#show">
@@ -53,7 +57,7 @@ class UserRepository extends BaseRepository
                     <input onclick="handleActive(event, ' . $row->id . ')" class="form-check-input" type="checkbox" role="switch" id="signed_by" name="signed_by" value="' . $row->is_active . '" ' . ($row->is_active ? 'checked' : '') . '>
                     </div>';
                 })
-                ->rawColumns(['show', 'status', 'is_active'])
+                ->rawColumns(['action', 'status', 'is_active'])
                 ->make(true);
         }
         return false;
