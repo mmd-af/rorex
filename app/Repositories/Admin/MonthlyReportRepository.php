@@ -5,6 +5,7 @@ namespace App\Repositories\Admin;
 use App\Exports\MonthlyReportExport;
 use App\Exports\FullMonthlyReportExport;
 use App\Models\DailyReport\DailyReport;
+use App\Models\Employee\Employee;
 use App\Models\User\User;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -14,18 +15,18 @@ class MonthlyReportRepository extends BaseRepository
 {
     public function getUserTable($request)
     {
-        $data = User::query()
+        $data = Employee::query()
             ->select([
                 'id',
-                'cod_staff',
-                'name',
-                'first_name'
+                'staff_code',
+                'first_name',
+                'last_name'
             ])
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addColumn('button', function ($row) {
-                    return '<button class="btn btn-info btn-sm" onclick="showReportModal(' . $row->id . ')"><i class="fa-solid fa-newspaper"></i></button>';
+                    return '<button class="btn btn-info btn-sm" onclick="showReportModal(' . $row->staff_code . ')"><i class="fa-solid fa-newspaper"></i></button>';
                 })
                 ->rawColumns(['button'])
                 ->make(true);

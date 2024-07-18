@@ -26,8 +26,7 @@
             <table id="monthlyReportTable" class="table table-bordered table-striped text-center">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>cod_staff</th>
+                        <th>Staff Code</th>
                         <th>Last Name</th>
                         <th>First Name</th>
                         <th>Action</th>
@@ -35,8 +34,7 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>ID</th>
-                        <th>cod_staff</th>
+                        <th>Staff Code</th>
                         <th>Last Name</th>
                         <th>First Name</th>
                         <th>Action</th>
@@ -77,7 +75,7 @@
                             }
                             ?>
                         </select>
-                        <input type="hidden" name="cod_staff" id="cod_staff" value="">
+                        <input type="hidden" name="staff_code" id="staff_code" value="">
                         <button type="button" class="btn btn-primary mt-3" onclick="monthlyReportWithDate()">Show
                         </button>
                     </form>
@@ -139,16 +137,12 @@
                 responsive: true,
                 ajax: "{{ route('admin.monthlyReports.ajax.getUserTable') }}",
                 columns: [{
-                        data: 'id',
-                        name: 'id'
+                        data: 'staff_code',
+                        name: 'staff_code'
                     },
                     {
-                        data: 'cod_staff',
-                        name: 'cod_staff'
-                    },
-                    {
-                        data: 'name',
-                        name: 'name'
+                        data: 'last_name',
+                        name: 'last_name'
                     },
                     {
                         data: 'first_name',
@@ -191,15 +185,15 @@
             });
         });
 
-        function showReportModal(id) {
+        function showReportModal(staff_code) {
             $('#reportModal').modal('show');
-            let cod_staff = document.getElementById('cod_staff');
-            cod_staff.value = id;
+            let staff_code_element = document.getElementById('staff_code');
+            staff_code_element.value = staff_code;
         }
 
         function monthlyReportWithDate() {
             let showResult = document.getElementById('showResult');
-            var codStaff = document.getElementById('cod_staff').value;
+            var codStaff = document.getElementById('staff_code').value;
             var date = document.getElementById('date').value;
             showResult.innerHTML = `
                     <div class="row justify-content-center">
@@ -233,7 +227,7 @@
                    <div class="col">
                         <form method="POST" action="${url}">
                              @csrf
-                            <input type="hidden" name="cod_staff" value="${codeStaff}">
+                            <input type="hidden" name="staff_code" value="${codeStaff}">
                             <input type="hidden" name="date" value="${monthDate}">
                              <button type="submit" class="btn btn-outline-success float-end">
                                 <i class="fa-solid fa-file-csv fa-xl"></i>
