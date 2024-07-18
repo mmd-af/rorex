@@ -71,6 +71,7 @@
             <table class="table table-striped table-bordered table-sm">
                 <thead>
                     <tr>
+                        <th scope="col">User ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Roles</th>
@@ -79,9 +80,14 @@
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
-                        <tr class="">
-                            <td scope="row">{{ $user->name }} {{ $user->first_name }}</td>
-                            <td scope="row">{{ $user->email }}</td>
+                        <tr>
+                            <td>{{ $user->id }}</td>
+                            <td>
+                                @if ($user->employee)
+                                    {{ $user->employee->last_name }} {{ $user->employee->first_name }}
+                                @endif
+                            </td>
+                            <td>{{ $user->email }}</td>
                             <td>{{ implode(', ', $user->getRoleNames()->toArray()) }}</td>
                             <td>{{ implode(', ', $user->getPermissionNames()->toArray()) }}</td>
                         </tr>

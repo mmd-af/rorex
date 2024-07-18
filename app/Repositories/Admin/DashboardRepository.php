@@ -4,7 +4,7 @@ namespace App\Repositories\Admin;
 
 use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\User\User;
-use App\Models\Support\Support;
+// use App\Models\Support\Support;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardRepository extends BaseRepository
@@ -14,11 +14,9 @@ class DashboardRepository extends BaseRepository
         return User::query()
             ->select([
                 'id',
-                'name',
-                'first_name',
                 'email'
             ])
-            ->with('roles', 'permissions')
+            ->with('employee', 'roles', 'permissions')
             ->get();
     }
 
