@@ -52,7 +52,7 @@ class DailyReportSendRequestJob implements ShouldQueue
                 $role = Role::query()
                     ->select(['id', 'name'])
                     ->where('name', $this->data['departmentRole'])
-                    ->firstOrFail(); // Use firstOrFail to throw an exception if not found
+                    ->firstOrFail();
                 
                 $assignment = new LetterAssignment();
                 $assignment->user_id = $this->data['userId'];
@@ -65,8 +65,7 @@ class DailyReportSendRequestJob implements ShouldQueue
                 $user = User::whereHas('employee', function ($query) {
                     $query->where('staff_code', $this->data['assigned_to']);
                 })->firstOrFail();
-                // $user = User::findOrFail($this->data['assigned_to']);
-                if ($user->email_verified_at !== null && $user->receive_notifications) {
+                if ($user->email_verified_at && $user->receive_notifications) {
                     $user->notify(new RequestRegisteredNotification("New Request", $this->data['description']));
                 }
             });
