@@ -34,13 +34,13 @@ class DailyReportRepository extends BaseRepository
                 'remarca'
             ])
             ->where('data', 'LIKE', "$request->date%")
-            ->with(['users', 'editBy'])
+            ->with(['users.employee', 'editBy.employee'])
             ->orderByDesc('data')
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addColumn('first_name', function ($row) {
-                    return $row->users->first_name;
+                    return $row->users->employee->first_name;
                 })
                 ->addColumn('edit', function ($row) {
                     return '<button
@@ -55,7 +55,7 @@ class DailyReportRepository extends BaseRepository
                 })
                 ->addColumn('edit_by', function ($row) {
                     if ($row->editBy !== null) {
-                        return $row->editBy->first_name . " " . $row->editBy->name;
+                        return $row->editBy->employee->first_name . " " . $row->editBy->employee->last_name;
                     } else {
                         return "";
                     }
