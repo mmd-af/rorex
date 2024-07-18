@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\ManageStaffLeave;
 
 use App\Http\Controllers\Controller;
-use App\Models\User\User;
+use App\Models\Employee\Employee;
 use App\Repositories\Admin\ManageStaffLeaveRepository;
 use Illuminate\Http\Request;
 
@@ -21,9 +21,9 @@ class ManageStaffLeaveController extends Controller
         return view('admin.manageStaffLeaves.index');
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, Employee $employee)
     {
-        $this->manageStaffLeaveRepository->update($request, $user);
+        $this->manageStaffLeaveRepository->update($request, $employee);
         return redirect()->route('admin.manageStaffLeaves.index');
     }
 }

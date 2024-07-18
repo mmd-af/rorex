@@ -9,13 +9,9 @@ Route::group(['middleware' => ['permission:manage_leaves'], 'namespace' => 'App\
                 'as' => 'index',
                 'uses' => 'ManageStaffLeaveController@index'
             ]);
-            Route::put('{user}/update', [
+            Route::put('{employee}/update', [
                 'as' => 'update',
                 'uses' => 'ManageStaffLeaveController@update'
-            ]);
-            Route::put('{user}/updateLeaveBalance', [
-                'as' => 'updateLeaveBalance',
-                'uses' => 'ManageStaffLeaveController@updateLeaveBalance'
             ]);
         });
         Route::group(['prefix' => 'manageStaffLeaves-ajax', 'as' => 'manageStaffLeaves.ajax.'], function () {

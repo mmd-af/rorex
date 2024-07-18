@@ -2,19 +2,15 @@
 
 namespace App\Repositories\Admin;
 
-use App\Imports\DailyReportExcel;
-use App\Models\User\User;
+use App\Models\Employee\Employee;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class ManageStaffLeaveRepository extends BaseRepository
 {
-    public function __construct(User $model)
+    public function __construct(Employee $model)
     {
         $this->setModel($model);
     }
@@ -24,8 +20,8 @@ class ManageStaffLeaveRepository extends BaseRepository
         $data = $this->query()
             ->select([
                 'id',
-                'cod_staff',
-                'name',
+                'staff_code',
+                'last_name',
                 'first_name',
                 'leave_balance'
             ])
@@ -39,10 +35,9 @@ class ManageStaffLeaveRepository extends BaseRepository
                     return '<form class="d-flex justify-content-between" action="' . $url . '" method="POST">
                 ' . $csrf . '
                 ' . $method . '
-                <input type="hidden" name="leave_balance" value="' . $row->leave_balance . '">
-                <input type="text" class="form-control form-control-sm" name="leave_balance_new" id="leave_balance_new" value="' . $row->leave_balance . '">
-                <button type="submit" class="btn btn-success"><i class="fa-solid fa-square-check"></i></button>
-            </form>';
+                <input type="text" class="form-control form-control-sm mx-2" name="leave_balance" id="leave_balance" value="' . $row->leave_balance . '"> (Hour) 
+                <button type="submit" class="btn btn-success mx-2"><i class="fa-solid fa-square-check"></i></button>
+               </form>';
                 })
                 ->rawColumns(['leave_balance'])
                 ->make(true);
@@ -50,12 +45,12 @@ class ManageStaffLeaveRepository extends BaseRepository
         return false;
     }
 
-    public function update($request, $user)
+    public function update($request, $employee)
     {
         DB::beginTransaction();
         try {
-            $user->leave_balance = $request->leave_balance_new;
-            $user->save();
+            $employee->leave_balance = $request->leave_balance;
+            $employee->save();
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
         } catch (Exception $e) {
