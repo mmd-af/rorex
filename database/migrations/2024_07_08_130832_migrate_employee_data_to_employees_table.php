@@ -23,7 +23,7 @@ return new class extends Migration
                         'last_name' => $user->name,
                         'department' => $user->departament,
                         'position' => $user->pozitie,
-                        'card_number' => $user->numar_card,
+                        'cart_number' => $user->numar_card,
                         'password' => $user->parola,
                         'joining_date' => $user->data_aderarii,
                         'gender' => $user->sex,

@@ -36,10 +36,10 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                 Manage Requests
             </a>
-            <a class="nav-link" href="{{ route('admin.supports.index') }}">
+            {{-- <a class="nav-link" href="{{ route('admin.supports.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                 Support
-            </a>
+            </a> --}}
             @if (Auth::user()->rolles == 'admin')
                 <div class="sb-sidenav-menu-heading">Department</div>
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
@@ -58,6 +58,12 @@
                     </nav>
                 </div>
             @endif
+            @can('employees_control')
+                <a class="nav-link" href="{{ route('admin.employees.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                    Employee
+                </a>
+            @endcan
             @canany(['transportations_control', 'companies_control', 'trucks_control'])
                 <div class="sb-sidenav-menu-heading">Transportations</div>
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"

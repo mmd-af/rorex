@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('last_name')->nullable();
             $table->string('department')->nullable();
             $table->string('position')->nullable();
-            $table->string('card_number')->unique()->nullable();
+            $table->string('cart_number')->unique()->nullable();
             $table->string('password')->nullable();
             $table->date('joining_date')->nullable();
             $table->string('gender')->nullable();
