@@ -29,14 +29,15 @@ class UserRepository extends BaseRepository
                 'email',
                 'is_active'
             ])
+            ->with(['employee','company'])
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
                 ->addColumn('type', function ($row) {
                     if ($row->employee) {
                         return "Employee";
-                    } elseif ($row->compony) {
-                        return "Compony";
+                    } elseif ($row->company) {
+                        return "Company";
                     } else {
                         return "Other";
                     }

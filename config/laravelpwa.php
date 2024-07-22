@@ -60,7 +60,7 @@ return [
         'shortcuts' => [
             [
                 'name' => 'ROREX PIPE',
-                'description' => 'rorex pipe is a compony in Romania',
+                'description' => 'ROREX Pipe is a Company in Romania',
                 'url' => '/login',
                 'icons' => [
                     "src" => "/pwa-img/rorex-72-72.png",

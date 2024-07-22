@@ -65,45 +65,50 @@
         </div>
     </div>
     <div class="modal fade" id="show" tabindex="-1" aria-labelledby="ShowLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="showLabel">User</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form id="editForm" action="" method="post">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" disabled>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="email" name="email" disabled>
-                            </div>
-                            <div class="form-input mt-4 p-1 bg-secondary-subtle" id="is_active">
-                            </div>
-                            <div class="form-input mt-4">
-                                <label for="name">Role:</label>
-                                <hr>
-                                <div class="row p-2" id="roles">
+                <div class="modal-body p-5">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12 bg-light">
+                            <h3>Users Table</h3>
+                            <form id="editForm" action="" method="post">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" disabled>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email address</label>
+                                        <input type="email" class="form-control" id="email" name="email" disabled>
+                                    </div>
+                                    <div class="form-input mt-4 p-1 bg-secondary-subtle" id="is_active">
+                                    </div>
+                                    <div class="form-input mt-4">
+                                        <label for="name">Role:</label>
+                                        <hr>
+                                        <div class="row p-2" id="roles">
+                                        </div>
+                                    </div>
+                                    <div class="form-input mt-4">
+                                        <label for="name">Permission:</label>
+                                        <hr>
+                                        <div class="row p-2" id="permissions">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-input mt-4">
-                                <label for="name">Permission:</label>
-                                <hr>
-                                <div class="row p-2" id="permissions">
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -188,13 +193,12 @@
             }
             axios.post("{{ route('admin.users.ajax.show') }}", data)
                 .then(response => {
-                    console.log(response.data)
                     name.value = response.data.user.name;
                     email.value = response.data.user.email;
                     is_active.innerHTML =
                         `
-                    <label for="is_active">Is Active:</label>
-                    <input class="form-check-input mx-3" type="checkbox" role="switch" id="is_active" name="is_active" ${response.data.user.is_active ? 'checked' : ''}>`;
+                      <label for="is_active">Is Active:</label>
+                      <input class="form-check-input mx-3" type="checkbox" role="switch" id="is_active" name="is_active" ${response.data.user.is_active ? 'checked' : ''}>`;
                     roles.innerHTML = '';
                     permissions.innerHTML = '';
                     response.data.roles.forEach(function(item) {
@@ -202,18 +206,18 @@
                             return userRole.id === item.id;
                         });
                         roles.innerHTML += `<div class="form-check form-switch col-md-12 mt-2">
-            <input class="form-check-input" type="checkbox" role="switch" id="role_${item.id}" name="roles[]" value="${item.name}" ${isChecked ? 'checked' : ''}>
-            <label class="form-check-label mr-3 h6" for="role_${item.id}">${item.name}</label>
-        </div>`;
+                      <input class="form-check-input" type="checkbox" role="switch" id="role_${item.id}" name="roles[]" value="${item.name}" ${isChecked ? 'checked' : ''}>
+                      <label class="form-check-label mr-3 h6" for="role_${item.id}">${item.name}</label>
+                      </div>`;
                     });
                     response.data.permissions.forEach(function(item) {
                         var isChecked = response.data.user.permissions.some(function(userPermission) {
                             return userPermission.id === item.id;
                         });
                         permissions.innerHTML += `<div class="form-check form-switch col-md-12 mt-2">
-            <input class="form-check-input" type="checkbox" role="switch" id="permission_${item.id}" name="permissions[]" value="${item.name}" ${isChecked ? 'checked' : ''}>
-            <label class="form-check-label mr-3 h6" for="permission_${item.id}">${item.name}</label>
-        </div>`;
+                      <input class="form-check-input" type="checkbox" role="switch" id="permission_${item.id}" name="permissions[]" value="${item.name}" ${isChecked ? 'checked' : ''}>
+                      <label class="form-check-label mr-3 h6" for="permission_${item.id}">${item.name}</label>
+                      </div>`;
                     });
                 })
                 .catch(error => {

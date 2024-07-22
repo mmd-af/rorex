@@ -42,7 +42,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(Employee::class);
     }
-    public function compony()
+    public function company()
     {
         return $this->hasOne(Company::class);
     }
