@@ -29,7 +29,7 @@ class UserRepository extends BaseRepository
                 'email',
                 'is_active'
             ])
-            ->with(['employee','company'])
+            ->with(['employee', 'company'])
             ->get();
         if ($request->ajax()) {
             return Datatables::of($data)
@@ -113,55 +113,57 @@ class UserRepository extends BaseRepository
         }
         DB::beginTransaction();
         try {
-            $password = Hash::make('12345678');
             foreach ($files[0] as $key => $item) {
                 if ($key === 0) {
                     continue;
                 }
                 $dataAderarii = date('Y-m-d', strtotime($item[7]));
                 $dataNasterii = date('Y-m-d', strtotime($item[10]));
-                $dataAbsolvirii = date('Y-m-d', strtotime($item[21]));
                 $dataPlecarii = date('Y-m-d', strtotime($item[24]));
                 $codStaff = (int)$item[0];
-                $cod_staff = (int)$item[1];
-                $data = [
-                    'id' => $codStaff,
-                    'cod_staff' => $cod_staff,
-                    'name' => $item[2],
-                    'first_name' => $item[22],
-                    'departament' => $item[3],
-                    'pozitie' => $item[4],
-                    'numar_card' => $item[5],
-                    'parola' => $item[6],
-                    'data_aderarii' => $dataAderarii,
-                    'sex' => $item[8],
-                    'starea_civila' => $item[9],
-                    'data_nasterii' => $dataNasterii,
-                    'telefon' => $item[11],
-                    'card_de_identitate' => $item[13],
-                    'functie' => $item[14],
-                    'tip_personal' => $item[15],
-                    'cod_postal' => $item[16],
-                    'status_politic' => $item[17],
-                    'rezidenta' => $item[18],
-                    'nationalitate' => $item[19],
-                    'educatie' => $item[20],
-                    'data_absolvirii' => $dataAbsolvirii,
-                    'scoala' => $item[22],
-                    'profesie' => $item[23],
-                    'data_plecarii' => $dataPlecarii,
-                    'prenumele_tatalui' => $item[25],
-                    'adresa' => $item[26]
+                $employeeData = [
+                    'staff_code' => $codStaff,
+                    'first_name' => (!empty($item[25]) ? $item[25] : $item[22]),
+                    'last_name' => $item[2],
+                    'department' => $item[3],
+                    'position' => $item[4],
+                    'cart_number' => $item[5],
+                    'password' => $item[6],
+                    'joining_date' => $dataAderarii,
+                    'gender' => $item[8],
+                    'marital_status' => $item[9],
+                    'birth_date' => $dataNasterii,
+                    'phone' => $item[11],
+                    'identity_card' => $item[13],
+                    'postal_code' => $item[16],
+                    'nationality' => $item[19],
+                    'education' => $item[20],
+                    'profession' => $item[23],
+                    'departure_date' => $dataPlecarii,
+                    'father_first_name' => $item[25],
+                    'address' => $item[26]
                 ];
-                $condition = [
-                    'cod_staff' => $codStaff
-                ];
-                $existingUser = DB::table('users')->where($condition)->first();
-                if (!$existingUser) {
-                    $data['email'] = $item[12];
-                    $data['password'] = $password;
+
+                $existingEmployee = DB::table('employees')->where('staff_code', $codStaff)->first();
+                if ($existingEmployee) {
+                    DB::table('employees')->where('id', $existingEmployee->id)->update($employeeData);
+                } else {
+                    $user = new User();
+                    $user->name = !empty($item[2]) ? $item[2] : (!empty($item[25]) ? $item[25] : $item[22]);
+                    $user->email = $item[12];
+                    $user->password = Hash::make('12345678');
+                    $user->save();
+                    $employeeData['user_id'] = $user->id;
+                    DB::table('employees')->insert($employeeData);
+                    $permission = Permission::where('name', 'employees')->first();
+                    if (!$permission) {
+                        $permission = new Permission();
+                        $permission->name = "employees";
+                        $permission->guard_name = "web";
+                        $permission->save();
+                    }
+                    $user->givePermissionTo($permission);
                 }
-                DB::table('users')->updateOrInsert($condition, $data);
             }
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
@@ -170,6 +172,7 @@ class UserRepository extends BaseRepository
             Session::flash('error', $e->getMessage());
         }
     }
+
 
     public function show($request)
     {
