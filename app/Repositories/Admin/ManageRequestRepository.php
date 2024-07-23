@@ -51,9 +51,8 @@ class ManageRequestRepository extends BaseRepository
                 })
                 ->addColumn('progress', function ($row) {
                     $status = '';
-                    $allRelatedRequest = $this->query()->where('request_id', $row->request_id)->get();
+                    $allRelatedRequest = $this->query()->where('request_id', $row->request_id)->with(['assignedTo', 'assignedTo.employee'])->get();
                     foreach ($allRelatedRequest as $assignment) {
-                        // TODO 
                         $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
                         if ($assignment->description) {
                             $description = Str::limit($assignment->description, 45);
@@ -64,7 +63,7 @@ class ManageRequestRepository extends BaseRepository
                             $description = '';
                         }
 
-                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $assignment->status . $description . '<br><small class="text-info">last update: ' . $assignment->updated_at . '</small><hr>';
+                        $status .= $assignment->assignedTo->employee->last_name . ' ' . $assignment->assignedTo->employee->first_name . $signedStatus . $assignment->status . $description . '<br><small class="text-info">last update: ' . $assignment->updated_at . '</small><hr>';
                     }
                     return $status;
                 })
@@ -135,7 +134,7 @@ class ManageRequestRepository extends BaseRepository
                 })
                 ->addColumn('progress', function ($row) {
                     $status = '';
-                    $allRelatedRequest = $this->query()->where('request_id', $row->request_id)->get();
+                    $allRelatedRequest = $this->query()->where('request_id', $row->request_id)->with(['assignedTo', 'assignedTo.employee'])->get();
                     foreach ($allRelatedRequest as $assignment) {
                         $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
                         if ($assignment->description) {
@@ -150,7 +149,7 @@ class ManageRequestRepository extends BaseRepository
                         if ($assignment->status == 'Rejected') {
                             $condition = '<div class="bg-danger rounded-3 text-light">' . $assignment->status . '</div>';
                         }
-                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $condition . $description . '<br><small class="text-info">last update: ' . $assignment->updated_at . '</small><hr>';
+                        $status .= $assignment->assignedTo->employee->last_name . ' ' . $assignment->assignedTo->employee->first_name . $signedStatus . $condition . $description . '<br><small class="text-info">last update: ' . $assignment->updated_at . '</small><hr>';
                     }
                     return $status;
                 })
@@ -361,7 +360,7 @@ class ManageRequestRepository extends BaseRepository
                 })
                 ->addColumn('progress', function ($row) {
                     $status = '';
-                    $allRelatedRequest = $this->query()->where('request_id', $row->request_id)->get();
+                    $allRelatedRequest = $this->query()->where('request_id', $row->request_id)->with(['assignedTo', 'assignedTo.employee'])->get();
                     foreach ($allRelatedRequest as $assignment) {
                         $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
                         if ($assignment->description) {
@@ -376,7 +375,7 @@ class ManageRequestRepository extends BaseRepository
                         if ($assignment->status == 'Rejected') {
                             $condition = '<div class="bg-danger rounded-3 text-light">' . $assignment->status . '</div>';
                         }
-                        $status .= $assignment->assignedTo->name . ' ' . $assignment->assignedTo->first_name . $signedStatus . $condition . $description . '<br><small class="text-info">last update: ' . $assignment->updated_at . '</small><hr>';
+                        $status .= $assignment->assignedTo->employee->last_name . ' ' . $assignment->assignedTo->employee->first_name . $signedStatus . $condition . $description . '<br><small class="text-info">last update: ' . $assignment->updated_at . '</small><hr>';
                     }
                     return $status;
                 })
