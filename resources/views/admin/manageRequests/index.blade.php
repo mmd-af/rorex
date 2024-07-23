@@ -207,7 +207,7 @@
                     assignedTo.innerHTML = ``;
                     response.data.forEach(function(item) {
                         assignedTo.innerHTML +=
-                            `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
+                            `<option value="${item.id}">${item.employee.last_name} ${item.employee.first_name}</option>`;
                     });
                 })
                 .catch(function(error) {
