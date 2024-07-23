@@ -215,11 +215,13 @@ class ManageRequestRepository extends BaseRepository
                 ->select([
                     'id',
                     'email',
-                    'email_verified_at'
+                    'email_verified_at',
+                    'receive_notifications'
                 ])
                 ->where('id', $letterAssignment->assigned_to)
                 ->first();
-            if ($assignedTo->email_verified_at !== null) {
+
+            if ($assignedTo->email_verified_at !== null &&  $assignedTo->receive_notifications) {
                 $assignedTo->notify(new RequestRegisteredNotification($letterAssignment->request->subject, $letterAssignment->request->description));
             }
 
