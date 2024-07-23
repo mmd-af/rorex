@@ -151,6 +151,7 @@ class UserRepository extends BaseRepository
                     $user = new User();
                     $user->name = !empty($item[2]) ? $item[2] : (!empty($item[25]) ? $item[25] : $item[22]);
                     $user->email = $item[12];
+                    $user->receive_notifications = 1;
                     $user->password = Hash::make('12345678');
                     $user->save();
                     $employeeData['user_id'] = $user->id;
