@@ -46,7 +46,7 @@ class StaffRequestRepository extends BaseRepository
                     $status = '';
                     foreach ($row->assignments as $assignment) {
                         $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
-                        $status .= $assignment->assignedTo->employee->last_name . $assignment->assignedTo->employee->first_name . $signedStatus . $assignment->status . '<hr>';
+                        $status .= $assignment->assignedTo->employee->last_name .' '. $assignment->assignedTo->employee->first_name . $signedStatus . $assignment->status . '<hr>';
                     }
                     return $status;
                 })
@@ -92,7 +92,7 @@ class StaffRequestRepository extends BaseRepository
                         if ($assignment->status == 'Rejected') {
                             $condition = '<div class="bg-danger rounded-3 text-light">' . $assignment->status . '</div>';
                         }
-                        $status .= $assignment->assignedTo->employee->name . ' ' . $assignment->assignedTo->employee->first_name . $signedStatus . $condition . $description . '<hr>';
+                        $status .= $assignment->assignedTo->employee->last_name . ' ' . $assignment->assignedTo->employee->first_name . $signedStatus . $condition . $description . '<hr>';
                     }
                     return $status;
                 })
