@@ -597,7 +597,7 @@
                     '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
                     '</b>until:<b> ' + endDay +
                     '</b><br>Total days: ' + totally +
-                    '<br>EXCLUDING Holidays: ' + leave_days +
+                    '<br>Total work days (EXCLUDING Holidays): ' + leave_days +
                     '<br><b>' + description + '</b><br>Email: ' + email +
                     '<hr><small>request from: dashboard/Leave Requests</small>';
             }
@@ -610,8 +610,9 @@
                     '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
                     '</b>until:<b> ' + endDay +
                     '</b><br>Total days: ' + totally +
-                    '<br>Allowed leave: ' + leave_balance / 8 + ' days (' + leave_balance +
-                    ' Hour)<br>EXCLUDING Holidays: ' + leave_days +
+                    '<br>Allowed leave when the user send this request: ' + leave_balance / 8 + ' days (' +
+                    leave_balance +
+                    ' Hour)<br>Total work days (EXCLUDING Holidays): ' + leave_days +
                     '<br>Email: ' + email + '<hr><small>request from: dashboard/Leave Requests</small>';
             }
             if (type === "Without Paid Leave") {
@@ -624,7 +625,7 @@
                     '</b>until:<b> ' + endDay +
                     '</b><br>Total days: ' + totally +
                     '<br>Allowed leave: ' + leave_balance / 8 + ' days (' + leave_balance +
-                    ' Hour)<br>EXCLUDING Holidays: ' + leave_days +
+                    ' Hour)<br>Total work days (EXCLUDING Holidays): ' + leave_days +
                     '<br>Days without Pay: ' +
                     daysWithoutPay + '<br>Email: ' + email +
                     '<hr><small>request from: dashboard/Leave Requests</small>';
@@ -638,6 +639,8 @@
                     '<br>requests for hour leave on:<br><b>' + startDay +
                     '</b><br>between:<b> ' + start_time + ' </b>until: <b>' + end_time + ' </b><br>' +
                     leave_time + ' Hour' +
+                    '<br>Allowed leave when the user send this request: ' + leave_balance / 8 + ' days (' +
+                    leave_balance + ' Hour' +
                     '<br>Email: ' + email + '<hr><small>request from: dashboard/Leave Requests</small>';
 
                 let startHourDate = startDay;
