@@ -20,6 +20,13 @@
             margin: 20px;
         }
     </style>
+    <style>
+        .custom-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+    </style>
 @endsection
 @section('content')
     <ol class="breadcrumb mb-4">
@@ -150,6 +157,7 @@
                                     <option value="Speacial Event Leave">Speacial Event Leave</option>
                                     <option value="Hourly Leave">Hourly Leave</option>
                                     <option value="Without Paid Leave">Without Paid Leave</option>
+                                    <option value="Without Paid Hourly Leave">Without Paid Hourly Leave</option>
                                 </select>
                             </div>
                             <div class="row mt-4" id="datesForLeave">
@@ -304,6 +312,8 @@
             var startDateValue = document.getElementById('startDate').value.trim();
             var endDateValue = document.getElementById('endDate').value.trim();
             let leave_balance = "{{ Auth::user()->employee->leave_balance }}";
+
+
             if (startDateValue !== '' && endDateValue !== '') {
                 var startDate = new Date(startDateValue);
                 var endDate = new Date(endDateValue);
@@ -444,27 +454,25 @@
             <div class="col-md-6">
                 <h6 id="timeDifference"></h6>
             </div>`;
-            let modalSubject = document.getElementById('modalSubject');
-            modalSubject.innerHTML = `
-                                <input type="hidden" name="subject" value="Hourly Leave">`;
         }
 
         function actionForSelectType(event) {
             let datesForLeave = document.getElementById('datesForLeave');
+            let targetValue = event.target.value;
             datesForLeave.innerHTML = ``;
-            if (event.target.value === "Allowed Leave") {
+            if (targetValue === "Allowed Leave") {
                 LeaveRequestForRest(datesForLeave)
             }
-            if (event.target.value === "Medical Leave") {
+            if (targetValue === "Medical Leave") {
                 LeaveRequestForMedicalLeave(datesForLeave)
             }
-            if (event.target.value === "Speacial Event Leave") {
+            if (targetValue === "Speacial Event Leave") {
                 LeaveRequestForSpecialEvents(datesForLeave)
             }
-            if (event.target.value === "Hourly Leave") {
+            if (targetValue === "Hourly Leave" || targetValue === "Without Paid Hourly Leave") {
                 LeaveRequestForHour(datesForLeave)
             }
-            if (event.target.value === "Without Paid Leave") {
+            if (targetValue === "Without Paid Leave") {
                 LeaveRequestWithoutPaid(datesForLeave)
             }
         }
@@ -472,7 +480,7 @@
         function calculateTimeDifference() {
             var startTimeValue = document.getElementById('startTime').value.trim();
             var endTimeValue = document.getElementById('endTime').value.trim();
-
+            let leave_balance = "{{ Auth::user()->employee->leave_balance }}";
             if (startTimeValue !== '' && endTimeValue !== '') {
                 var startTime = new Date('1970-01-01T' + startTimeValue + ':00Z').getTime();
                 var endTime = new Date('1970-01-01T' + endTimeValue + ':00Z').getTime();
@@ -481,13 +489,36 @@
                         `<p class="text-danger">End time cannot be earlier than start time</p>`;
                     return;
                 }
+                let modalSubject = document.getElementById('modalSubject');
                 var timeDifferenceInMilliseconds = Math.abs(endTime - startTime);
                 var hours = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60));
                 var minutes = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
-
                 document.getElementById('timeDifference').innerHTML =
                     `<p class="text-success">${hours} hours and ${minutes} minutes</p>
              <input type="hidden" name="leave_time" value="${hours}:${minutes}">`;
+                if (leave_balance < (hours + (minutes / 60))) {
+                    modalSubject.innerHTML = `
+                    <input type="hidden" name="subject" value="Without Paid Hourly Leave">`;
+                    document.getElementById('timeDifference').innerHTML +=
+                        `<p class="text-danger">You don't have remaining allowable leave</p>
+                         <div class="custom-checkbox p-3 border shadow-lg">
+                         <input onClick="changeTypeValueHourlyLeave(event)" class="" type="checkbox" id="consider_as_without_paid_leave" name="consider_as_without_paid_leave" value="true">
+                         <label class="text-warning mx-2" for="consider_as_without_paid_leave">Consider as without paid leave</label>
+                         </div>`;
+
+                } else {
+                    modalSubject.innerHTML = `
+                    <input type="hidden" name="subject" value="Hourly Leave">`;
+                }
+            }
+        }
+
+        function changeTypeValueHourlyLeave(event) {
+            let changeType = document.getElementById('type');
+            if (event.target.checked) {
+                changeType.value = "Without Paid Hourly Leave";
+            } else {
+                changeType.value = "Hourly Leave";
             }
         }
 
@@ -552,6 +583,7 @@
             var description = formData.get('description');
             var start_time = formData.get('start_time');
             var end_time = formData.get('end_time');
+            var consider_as_without_paid_leave = formData.get('consider_as_without_paid_leave');
             var daysWithoutPay = formData.get('daysWithoutPay');
             var leave_balance = formData.get('leave_balance');
             var check_date_other_request = formData.get('check_date_other_request');
@@ -597,7 +629,7 @@
                     daysWithoutPay + '<br>Email: ' + email +
                     '<hr><small>request from: dashboard/Leave Requests</small>';
             }
-            if (type === "Hourly Leave") {
+            if (type === "Hourly Leave" || type === "Without Paid Hourly Leave") {
                 var newDescription = 'Date: ' + dateOfRequest +
                     '<br><div id="box">Name: ' + last_name + ' ' + first_name + '<br>' +
                     'Code Staff: ' + staff_code + '</div><br>' +
@@ -623,6 +655,7 @@
                 description: newDescription,
                 start_date: startDay,
                 end_date: endDay,
+                consider_as_without_paid_leave: consider_as_without_paid_leave,
                 leave_time: leave_time,
                 leave_days: leave_days,
                 email: email,

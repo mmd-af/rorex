@@ -24,15 +24,23 @@ class LeaveRequest extends FormRequest
     public function rules()
     {
         $rules = [
+            'first_name' => ['required'],
+            'last_name' => ['required'],
+            'staff_code' => ['required'],
+            'email' => ['required'],
+            'departmentRole' => ['required'],
+            'assigned_to' => ['required'],
+            'subject' => ['required'],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date'],
             'type' => ['required'],
             'file' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:3072'],
-            'description' => ['nullable'],
+            'description' => ['required'],
             'remaining' => ['nullable'],
-            'leave_days' => ['nullable', 'integer']
+            'leave_days' => ['nullable', 'integer'],
+            'leave_time' => ['nullable']
         ];
-        if ($this->input('type') === 'Hourly Leave') {
+        if ($this->input('type') === 'Hourly Leave' || $this->input('type') === 'Without Paid Hourly Leave') {
             $rules['leave_time'] = ['required'];
             $rules['end_date'] = ['nullable', 'date'];
         }
@@ -58,6 +66,15 @@ class LeaveRequest extends FormRequest
                 }
                 if ($leaveDays <= 0) {
                     $validator->errors()->add('leave_days', 'Leave days must be greater than zero.');
+                }
+            }
+            if ($this->input('type') === 'Hourly Leave' || $this->input('type') === 'Without Paid Hourly Leave') {
+                $leaveTime = $this->input('leave_time');
+                list($hours, $minutes) = explode(':', $leaveTime);
+                $leaveHours = $hours + ($minutes / 60);
+                $leaveBalance = auth()->user()->employee->leave_balance;
+                if ($leaveHours > $leaveBalance && !$this->input('consider_as_without_paid_leave')) {
+                    $validator->errors()->add('consider_as_without_paid_leave', 'You must check the consider_as_without_paid_leave checkbox when selecting Without Paid Hourly Leave.');
                 }
             }
         });
