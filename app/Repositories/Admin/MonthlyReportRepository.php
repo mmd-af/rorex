@@ -6,7 +6,6 @@ use App\Exports\MonthlyReportExport;
 use App\Exports\FullMonthlyReportExport;
 use App\Models\DailyReport\DailyReport;
 use App\Models\Employee\Employee;
-use App\Models\User\User;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -109,21 +108,21 @@ class MonthlyReportRepository extends BaseRepository
         $result = [
             'codeStaff' => $staffCode,
             'monthDate' => $monthDate,
-            'hourNight' => number_format($hourNight, 1),
-            'hourMorning' => number_format($hourMorning, 1),
-            'hourAfternoon' => number_format($hourAfternoon, 1),
-            'hourDaily' => number_format($hourDaily, 1),
-            'ot_ore' => number_format($ot_ore, 1),
-            'plus_week_day' => number_format($plus_week_day, 1),
-            'plus_week_night' => number_format($plus_week_night, 1),
-            'plus_holiday_day' => number_format($plus_holiday_day, 1),
-            'plus_holiday_night' => number_format($plus_holiday_night, 1),
-            'delayWork' => number_format($delayWork / 60, 1),
-            'earlyExit' => number_format($earlyExit / 60, 1),
-            'dailyAbsence' => number_format($dailyAbsence, 1),
-            'concediu_ore' => number_format($concediu_ore, 1),
-            'without_paid_leave' => number_format($without_paid_leave, 1),
-            'totalHours' => number_format($totalHours, 1),
+            'hourNight' => sprintf("%.2f", floor($hourNight * 100) / 100),
+            'hourMorning' => sprintf("%.2f", floor($hourMorning * 100) / 100),
+            'hourAfternoon' => sprintf("%.2f", floor($hourAfternoon * 100) / 100),
+            'hourDaily' => sprintf("%.2f", floor($hourDaily * 100) / 100),
+            'ot_ore' => sprintf("%.2f", floor($ot_ore * 100) / 100),
+            'plus_week_day' => sprintf("%.2f", floor($plus_week_day * 100) / 100),
+            'plus_week_night' => sprintf("%.2f", floor($plus_week_night * 100) / 100),
+            'plus_holiday_day' => sprintf("%.2f", floor($plus_holiday_day * 100) / 100),
+            'plus_holiday_night' => sprintf("%.2f", floor($plus_holiday_night * 100) / 100),
+            'delayWork' => sprintf("%.2f", floor($delayWork / 60 * 100) / 100),
+            'earlyExit' => sprintf("%.2f", floor($earlyExit / 60 * 100) / 100),
+            'dailyAbsence' => sprintf("%.2f", floor($dailyAbsence * 100) / 100),
+            'concediu_ore' => sprintf("%.2f", floor($concediu_ore * 100) / 100),
+            'without_paid_leave' => sprintf("%.2f", floor($without_paid_leave * 100) / 100),
+            'totalHours' => sprintf("%.2f", floor($totalHours * 100) / 100),
             'hourUnknown' => $hourUnknown,
             'turaImplicita' => $turaImplicita,
             'forgotPunch' => $lipsaCeasTimpi
@@ -155,6 +154,7 @@ class MonthlyReportRepository extends BaseRepository
             ])
             ->where('data', 'LIKE', "$monthDate%")
             ->where('cod_staff', $staffCode)
+            ->with('users.employee')
             ->with('users')
             ->get();
         $hourNight = 0;
@@ -202,27 +202,27 @@ class MonthlyReportRepository extends BaseRepository
             $dailyAbsence += $dailyReport->absenta_zile;
             $delayWork += $dailyReport->tarziu_minute;
             $earlyExit += $dailyReport->devreme_minute;
-            $userName = $dailyReport->users->name . " " . $dailyReport->users->first_name;
+            $userName = $dailyReport->users->employee->last_name . " " . $dailyReport->users->employee->first_name;
         }
         $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily;
         $data[] = [
             'codeStaff' => $staffCode,
             'Name' => $userName,
-            'hourNight' => number_format($hourNight, 1),
-            'hourMorning' => number_format($hourMorning, 1),
-            'hourAfternoon' => number_format($hourAfternoon, 1),
-            'hourDaily' => number_format($hourDaily, 1),
-            'ot_ore' => number_format($ot_ore, 1),
-            'plus_week_day' => number_format($plus_week_day, 1),
-            'plus_week_night' => number_format($plus_week_night, 1),
-            'plus_holiday_day' => number_format($plus_holiday_day, 1),
-            'plus_holiday_night' => number_format($plus_holiday_night, 1),
-            'delayWork' => number_format($delayWork / 60, 1),
-            'earlyExit' => number_format($earlyExit / 60, 1),
-            'dailyAbsence' => number_format($dailyAbsence, 1),
-            'concediu_ore' => number_format($concediu_ore, 1),
-            '$without_paid_leave' => number_format($without_paid_leave, 1),
-            'totalHours' => number_format($totalHours, 1),
+            'hourNight' => sprintf("%.2f", floor($hourNight * 100) / 100),
+            'hourMorning' => sprintf("%.2f", floor($hourMorning * 100) / 100),
+            'hourAfternoon' => sprintf("%.2f", floor($hourAfternoon * 100) / 100),
+            'hourDaily' => sprintf("%.2f", floor($hourDaily * 100) / 100),
+            'ot_ore' => sprintf("%.2f", floor($ot_ore * 100) / 100),
+            'plus_week_day' => sprintf("%.2f", floor($plus_week_day * 100) / 100),
+            'plus_week_night' => sprintf("%.2f", floor($plus_week_night * 100) / 100),
+            'plus_holiday_day' => sprintf("%.2f", floor($plus_holiday_day * 100) / 100),
+            'plus_holiday_night' => sprintf("%.2f", floor($plus_holiday_night * 100) / 100),
+            'delayWork' => sprintf("%.2f", floor(($delayWork / 60) * 100) / 100),
+            'earlyExit' => sprintf("%.2f", floor(($earlyExit / 60) * 100) / 100),
+            'dailyAbsence' => sprintf("%.2f", floor($dailyAbsence * 100) / 100),
+            'concediu_ore' => sprintf("%.2f", floor($concediu_ore * 100) / 100),
+            '$without_paid_leave' => sprintf("%.2f", floor($without_paid_leave * 100) / 100),
+            'totalHours' => sprintf("%.2f", floor($totalHours * 100) / 100),
             'hourUnknown' => $hourUnknown,
             'turaImplicita' => $turaImplicita,
             'forgotPunch' => $lipsaCeasTimpi,
@@ -260,7 +260,7 @@ class MonthlyReportRepository extends BaseRepository
                 ])
                 ->where('data', 'LIKE', "$request->dateOfExport%")
                 ->where('cod_staff', $staffCode)
-                ->with('users')
+                ->with('users.employee')
                 ->get();
             if ($dailyReports->isEmpty()) {
                 continue;
@@ -309,26 +309,26 @@ class MonthlyReportRepository extends BaseRepository
                 $dailyAbsence += $dailyReport->absenta_zile;
                 $delayWork += $dailyReport->tarziu_minute;
                 $earlyExit += $dailyReport->devreme_minute;
-                $userName = $dailyReport->users->name . " " . $dailyReport->users->first_name;
+                $userName = $dailyReport->users->employee->last_name . " " . $dailyReport->users->employee->first_name;
             }
             $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily;
             $data[] = [
                 'codeStaff' => $staffCode,
                 'Name' => $userName,
-                'hourNight' => number_format($hourNight, 1),
-                'hourMorning' => number_format($hourMorning, 1),
-                'hourAfternoon' => number_format($hourAfternoon, 1),
-                'hourDaily' => number_format($hourDaily, 1),
-                'ot_ore' => number_format($ot_ore, 1),
-                'plus_week_day' => number_format($plus_week_day, 1),
-                'plus_week_night' => number_format($plus_week_night, 1),
-                'plus_holiday_day' => number_format($plus_holiday_day, 1),
-                'plus_holiday_night' => number_format($plus_holiday_night, 1),
-                'total minus work(Hour)' => number_format(($delayWork + $earlyExit) / 60, 1),
-                'dailyAbsence' => number_format($dailyAbsence, 1),
-                'concediu_ore' => number_format($concediu_ore, 1),
-                'without_paid_leave' => number_format($without_paid_leave, 1),
-                'totalHours' => number_format($totalHours, 1)
+                'hourNight' => sprintf("%.2f", floor($hourNight * 100) / 100),
+                'hourMorning' => sprintf("%.2f", floor($hourMorning * 100) / 100),
+                'hourAfternoon' => sprintf("%.2f", floor($hourAfternoon * 100) / 100),
+                'hourDaily' => sprintf("%.2f", floor($hourDaily * 100) / 100),
+                'ot_ore' => sprintf("%.2f", floor($ot_ore * 100) / 100),
+                'plus_week_day' => sprintf("%.2f", floor($plus_week_day * 100) / 100),
+                'plus_week_night' => sprintf("%.2f", floor($plus_week_night * 100) / 100),
+                'plus_holiday_day' => sprintf("%.2f", floor($plus_holiday_day * 100) / 100),
+                'plus_holiday_night' => sprintf("%.2f", floor($plus_holiday_night * 100) / 100),
+                'total minus work(Hour)' => sprintf("%.2f", floor((($delayWork + $earlyExit) / 60) * 100) / 100),
+                'dailyAbsence' => sprintf("%.2f", floor($dailyAbsence * 100) / 100),
+                'concediu_ore' => sprintf("%.2f", floor($concediu_ore * 100) / 100),
+                'without_paid_leave' => sprintf("%.2f", floor($without_paid_leave * 100) / 100),
+                'totalHours' => sprintf("%.2f", floor($totalHours * 100) / 100)
             ];
         }
         return Excel::download(new FullMonthlyReportExport($data), "full-monthly-reports-" . $request->dateOfExport . ".xlsx");
