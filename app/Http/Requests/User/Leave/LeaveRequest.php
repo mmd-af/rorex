@@ -40,7 +40,12 @@ class LeaveRequest extends FormRequest
             'leave_days' => ['nullable', 'integer'],
             'leave_time' => ['nullable']
         ];
-        if ($this->input('type') === 'Hourly Leave' || $this->input('type') === 'Without Paid Hourly Leave') {
+        if ($this->input('type') === 'Hourly Leave') {
+            $rules['leave_time'] = ['required'];
+            $rules['end_date'] = ['nullable', 'date'];
+        }
+        if ($this->input('type') === 'Without Paid Hourly Leave') {
+            $rules['consider_as_without_paid_leave'] = ['required'];
             $rules['leave_time'] = ['required'];
             $rules['end_date'] = ['nullable', 'date'];
         }

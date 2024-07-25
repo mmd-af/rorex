@@ -435,7 +435,7 @@
                                   </div>`;
         }
 
-        function LeaveRequestForHour(datesForLeave) {
+        function LeaveRequestForHour(datesForLeave, targetValue) {
             datesForLeave.innerHTML = `
             <div class="row">
                 <div class="col-md-6">
@@ -445,16 +445,17 @@
             </div>
             <div class="col-md-6">
                 <label for="startTime" class="form-label">Start Time:</label>
-                <input type="time" name="start_time" class="form-control" id="startTime" onchange="calculateTimeDifference()" required>
+                <input type="time" name="start_time" class="form-control" id="startTime" onchange="calculateTimeDifference('${targetValue}')" required>
             </div>
             <div class="col-md-6">
                 <label for="endTime" class="form-label">End Time:</label>
-                <input type="time" name="end_time" class="form-control" id="endTime" onchange="calculateTimeDifference()" required>
+                <input type="time" name="end_time" class="form-control" id="endTime" onchange="calculateTimeDifference('${targetValue}')" required>
             </div>
             <div class="col-md-6">
                 <h6 id="timeDifference"></h6>
             </div>`;
         }
+
 
         function actionForSelectType(event) {
             let datesForLeave = document.getElementById('datesForLeave');
@@ -470,14 +471,14 @@
                 LeaveRequestForSpecialEvents(datesForLeave)
             }
             if (targetValue === "Hourly Leave" || targetValue === "Without Paid Hourly Leave") {
-                LeaveRequestForHour(datesForLeave)
+                LeaveRequestForHour(datesForLeave, targetValue)
             }
             if (targetValue === "Without Paid Leave") {
                 LeaveRequestWithoutPaid(datesForLeave)
             }
         }
 
-        function calculateTimeDifference() {
+        function calculateTimeDifference(targetValue) {
             var startTimeValue = document.getElementById('startTime').value.trim();
             var endTimeValue = document.getElementById('endTime').value.trim();
             let leave_balance = "{{ Auth::user()->employee->leave_balance }}";
@@ -507,6 +508,16 @@
                          <label class="text-warning mx-2" for="consider_as_without_paid_leave">Consider as without paid leave</label>
                          </div>`;
 
+                }
+                if (targetValue === "Without Paid Hourly Leave") {
+                    modalSubject.innerHTML = `
+                    <input type="hidden" name="subject" value="Without Paid Hourly Leave">`;
+                    document.getElementById('timeDifference').innerHTML +=
+                        `<p class="text-danger">Although you have remaining paid leave, you are requesting unpaid leave.</p>
+                         <div class="custom-checkbox p-3 border shadow-lg">
+                         <input onClick="changeTypeValueHourlyLeave(event)" class="" type="checkbox" id="consider_as_without_paid_leave" name="consider_as_without_paid_leave" value="true">
+                         <label class="text-warning mx-2" for="consider_as_without_paid_leave">I accept</label>
+                         </div>`;
                 } else {
                     modalSubject.innerHTML = `
                     <input type="hidden" name="subject" value="Hourly Leave">`;
