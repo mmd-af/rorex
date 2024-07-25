@@ -495,7 +495,8 @@
                 var minutes = Math.floor((timeDifferenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
                 document.getElementById('timeDifference').innerHTML =
                     `<p class="text-success">${hours} hours and ${minutes} minutes</p>
-             <input type="hidden" name="leave_time" value="${hours}:${minutes}">`;
+             <input type="hidden" name="leave_time" value="${hours}:${minutes}">
+             <input type="hidden" name="leave_balance" value="${leave_balance}">`;
                 if (leave_balance < (hours + (minutes / 60))) {
                     modalSubject.innerHTML = `
                     <input type="hidden" name="subject" value="Without Paid Hourly Leave">`;
@@ -640,7 +641,7 @@
                     '</b><br>between:<b> ' + start_time + ' </b>until: <b>' + end_time + ' </b><br>' +
                     leave_time + ' Hour' +
                     '<br>Allowed leave when the user send this request: ' + leave_balance / 8 + ' days (' +
-                    leave_balance + ' Hour' +
+                    leave_balance + ' Hour )' +
                     '<br>Email: ' + email + '<hr><small>request from: dashboard/Leave Requests</small>';
 
                 let startHourDate = startDay;
