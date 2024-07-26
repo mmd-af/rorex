@@ -12,7 +12,6 @@
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">Daily Reports</li>
     </ol>
-    <!-- <div class="alert alert-primary" id="last_update"></div> -->
     @include('user.layouts.partial.errors')
     <div class="card mb-4">
         <div class="card-body table-responsive">
@@ -123,12 +122,10 @@
                                 <option value="">-- select subject --</option>
                                 <option value="Forgot Punch">Forgot Punch</option>
                                 <option value="Forgot Bring My Cart">Forgot Bring My Cart</option>
-                                {{-- <option value="Consider as allow Leave">Consider as allowed Leave</option> --}}
                                 <option value="Consider OverTime">Consider OverTime</option>
                                 <option value="Work at Home (Remote)">Work at Home (Remote)</option>
                                 <option value="Mission">Mission</option>
                                 <option value="Change Shift">Change Shift</option>
-                                {{-- <option value="other">other</option> --}}
                             </select>
                         </div>
                         <div class="mb-4" id="descriptionData">
@@ -270,10 +267,9 @@
                             <input type="time" class="form-control" name="description" id="description" required>`;
             }
             if (subject === "Forgot Bring My Cart") {
-                descriptionData.innerHTML = `<label for="description" class="col-form-label">Start Work:</label>
-                            <input type="time" class="form-control" name="description[]" id="description" required>
-                            <label for="description" class="col-form-label">End Work:</label>
-                            <input type="time" class="form-control" name="description[]" id="description" required>`;
+                descriptionData.innerHTML =
+                    `<label for="description" class="col-form-label">Message:</label>
+                     <textarea class="form-control" name="description" id="description" required>I forgot to bring my card. enter and exit time: --:-- to --:--</textarea>`;
             }
             if (subject === "Consider as allow Leave") {
                 descriptionData.innerHTML =
@@ -282,8 +278,8 @@
             }
             if (subject === "Consider OverTime") {
                 descriptionData.innerHTML =
-                    `<label for="description" class="col-form-label">how many hour?</label>
-                            <input type="number" min="0" step="any" class="form-control" name="description" id="description" required>`;
+                    `<label for="description" class="col-form-label">please describe it:</label>
+                            <textarea class="form-control" name="description" id="description" required></textarea>`;
             }
             if (subject === "Work at Home (Remote)") {
                 descriptionData.innerHTML =

@@ -98,7 +98,7 @@ class DailyReportRepository extends BaseRepository
         if (is_array($request->description)) {
             $description = $request->description[0] . ' between ' . $request->description[1];
         } else {
-            $description = $request->description . " hour";
+            $description = $request->description;
         }
         $userId = Auth::id();
         $dateOfRequest = Carbon::now()->format('Y/m/d');
