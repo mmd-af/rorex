@@ -26,7 +26,7 @@ class StaffRequestRequest extends FormRequest
         return [
             'first_name' => ['required'],
             'last_name' => ['required'],
-            'cod_staff' => ['required'],
+            'staff_code' => ['required'],
             'subject' => ['required'],
             'description' => ['required'],
             'email' => ['required'],

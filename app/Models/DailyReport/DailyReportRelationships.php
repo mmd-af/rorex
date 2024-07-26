@@ -8,7 +8,7 @@ trait DailyReportRelationships
 {
     public function users()
     {
-        return $this->belongsTo(User::class, 'cod_staff');
+        return $this->belongsTo(User::class, 'user_id');
     }
     public function editBy()
     {

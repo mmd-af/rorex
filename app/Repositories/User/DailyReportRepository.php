@@ -3,11 +3,10 @@
 namespace App\Repositories\User;
 
 use App\Jobs\User\DailyReportSendRequestJob;
-use App\Mail\RequestMail;
 use App\Models\DailyReport\DailyReport;
+use App\Models\Employee\Employee;
 use App\Models\User\User;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
@@ -54,19 +53,18 @@ class DailyReportRepository extends BaseRepository
         return false;
     }
 
-
     public function getData($request)
     {
-        return User::query()
+        return Employee::query()
             ->select([
                 'id',
-                'cod_staff',
-                'name',
+                'staff_code',
+                'last_name',
                 'first_name',
-                'departament',
-                'email',
+                'department'
             ])
-            ->where('cod_staff', $request->id)
+            ->where('staff_code', $request->id)
+            ->with('users')
             ->first();
     }
 
@@ -125,12 +123,4 @@ class DailyReportRepository extends BaseRepository
         DailyReportSendRequestJob::dispatch($data);
         Session::flash('message', 'Your request has been submitted');
     }
-
-    // public function getLastUpdate($request)
-    // {
-    //     return $this->query()
-    //         ->select(['updated_at'])
-    //         ->orderBy('updated_at', 'desc')
-    //         ->first();
-    // }
 }

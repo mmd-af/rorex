@@ -350,7 +350,7 @@
             var formData = new FormData(form);
             var last_name = formData.get('last_name');
             var first_name = formData.get('first_name');
-            var cod_staff = formData.get('staff_code');
+            var staff_code = formData.get('staff_code');
             var department = formData.get('department');
             var startDay = formData.get('start_date');
             var endDay = formData.get('end_date');
@@ -370,7 +370,7 @@
             if (kind === "CustomRequest") {
                 var newDescription = 'Date: ' + dateOfRequest +
                     '<br><div id="box">Name: ' + last_name + ' ' + first_name + '<br>' +
-                    'Code Staff: ' + cod_staff + '</div><br>' +
+                    'Code Staff: ' + staff_code + '</div><br>' +
                     '<div id="alignCenter"><b>' + subject +
                     '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + department +
                     '<br>' +
@@ -380,7 +380,7 @@
             let data = {
                 first_name: first_name,
                 last_name: last_name,
-                cod_staff: cod_staff,
+                staff_code: staff_code,
                 department: department,
                 subject: subject,
                 description: newDescription,

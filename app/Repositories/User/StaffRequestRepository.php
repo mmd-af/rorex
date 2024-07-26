@@ -2,7 +2,6 @@
 
 namespace App\Repositories\User;
 
-use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
 use App\Models\User\User;
 use Carbon\Carbon;
@@ -11,7 +10,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
-use App\Jobs\User\DailyReportSendRequestJob;
+use Illuminate\Support\Facades\DB;
+use App\Models\LetterAssignment\LetterAssignment;
+use App\Notifications\RequestRegisteredNotification;
 
 class StaffRequestRepository extends BaseRepository
 {
@@ -46,7 +47,7 @@ class StaffRequestRepository extends BaseRepository
                     $status = '';
                     foreach ($row->assignments as $assignment) {
                         $signedStatus = $assignment->signed_by ? '<div class="bg-success rounded-3 text-light">Signed</div>' : '<div class="bg-warning rounded-3">Not signed</div>';
-                        $status .= $assignment->assignedTo->employee->last_name .' '. $assignment->assignedTo->employee->first_name . $signedStatus . $assignment->status . '<hr>';
+                        $status .= $assignment->assignedTo->employee->last_name . ' ' . $assignment->assignedTo->employee->first_name . $signedStatus . $assignment->status . '<hr>';
                     }
                     return $status;
                 })
@@ -114,13 +115,55 @@ class StaffRequestRepository extends BaseRepository
             'subject' => $request->input('subject'),
             'description' => $request->description,
             'organization' => $request->input('department'),
-            'departmentRole' => $request->input('departmentRole'),
             'staff_code' => (int)$request->input('staff_code'),
             'vacation_day' => (int)$request->input('vacation_day'),
+            'departmentRole' => $request->input('departmentRole'),
             'assigned_to' => (int)$request->input('assigned_to')
         ];
-        DailyReportSendRequestJob::dispatch($data);
-        Session::flash('message', 'Your request has been submitted');
+
+        DB::beginTransaction();
+        try {
+            $staffRequest = new StaffRequest();
+            $staffRequest->user_id = $data['userId'];
+            $staffRequest->name = $data['last_name'] . ' ' . $data['first_name'];
+            $staffRequest->email = $data['email'];
+            $staffRequest->mobile_phone = $data['mobile_phone'];
+            $staffRequest->subject = $data['subject'];
+            $staffRequest->description = $data['description'];
+            $staffRequest->organization = $data['organization'];
+            $staffRequest->cod_staff = $data['staff_code'];
+            $staffRequest->vacation_day = $data['vacation_day'];
+            $staffRequest->save();
+
+            $role = Role::query()
+                ->select(['id', 'name'])
+                ->where('name', $data['departmentRole'])
+                ->firstOrFail();
+
+            $assignment = new LetterAssignment();
+            $assignment->user_id = $data['userId'];
+            $assignment->request_id = $staffRequest->id;
+            $assignment->role_id = $role->id;
+            $assignment->assigned_to = $data['assigned_to'];
+            $assignment->status = "waiting";
+            $assignment->save();
+
+            $user = User::whereHas('employee', function ($query) use ($data) {
+                $query->where('staff_code', $data['assigned_to']);
+            })->firstOrFail();
+            if ($user->email_verified_at && $user->receive_notifications) {
+                $user->notify(new RequestRegisteredNotification("New Request", $data['description']));
+            }
+            DB::commit();
+            Session::flash('message', 'Your request has been submitted');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $users = User::role('support')->get();
+            foreach ($users as $user) {
+                $user->notify(new RequestRegisteredNotification("Error on user send request", $e->getMessage()));
+            }
+            Session::flash('error', 'There is a problem. Your request was not registered. Submit again');
+        }
     }
 
     public function getRoles($request)
