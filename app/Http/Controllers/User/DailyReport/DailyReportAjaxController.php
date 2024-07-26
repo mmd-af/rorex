@@ -27,9 +27,9 @@ class DailyReportAjaxController extends Controller
         ]);
     }
 
-    public function getRoles(Request $request)
+    public function getRoles()
     {
-        return $this->dailyReportRepository->getRoles($request);
+        return $this->dailyReportRepository->getRoles();
     }
 
     public function getUserWithRole(Request $request)

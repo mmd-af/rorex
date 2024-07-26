@@ -31,10 +31,6 @@ Route::group(['middleware' => ['permission:employees'], 'namespace' => 'App\Http
                 'as' => 'getUserWithRole',
                 'uses' => 'DailyReportAjaxController@getUserWithRole'
             ]);
-            // Route::post('/getLastUpdate', [
-            //     'as' => 'getLastUpdate',
-            //     'uses' => 'DailyReportAjaxController@getLastUpdate'
-            // ]);
         });
     });
 });

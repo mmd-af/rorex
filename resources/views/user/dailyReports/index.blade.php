@@ -46,7 +46,7 @@
             <table id="dailyReportTable" class="table table-bordered table-striped text-center">
                 <thead>
                     <tr>
-                        <th>cod_staff</th>
+                        <th>Staff Code</th>
                         <th>Name</th>
                         <th>Date</th>
                         <th>Weeks</th>
@@ -59,7 +59,7 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>cod_staff</th>
+                        <th>Staff Code</th>
                         <th>Name</th>
                         <th>Date</th>
                         <th>Weeks</th>
@@ -105,17 +105,11 @@
 
                     <form action="{{ route('user.dailyReports.checkRequest') }}" method="post">
                         @csrf
-                        <div class="mb-4">
-                            <label for="cod_staff" class="col-form-label">Staff:
-                                <div class="text-info" id="name_show"></div>
-                                <div class="text-info" id="cod_staff_show"></div>
-                            </label>
-                            <input type="hidden" id="first_name" name="first_name" value="">
-                            <input type="hidden" id="name" name="name" value="">
-                            <input type="hidden" id="departament" name="departament" value="">
-                            <input type="hidden" id="email" name="email" value="">
-                            <input type="hidden" id="cod_staff" name="cod_staff" value="">
-                        </div>
+                        <input type="hidden" id="first_name" name="first_name" value="">
+                        <input type="hidden" id="last_name" name="last_name" value="">
+                        <input type="hidden" id="department" name="department" value="">
+                        <input type="hidden" id="email" name="email" value="">
+                        <input type="hidden" id="staff_code" name="staff_code" value="">
                         <div class="mb-4">
                             <label for="date" class="col-form-label">Check for Date:
                                 <div class="text-info" id="date_show"></div>
@@ -140,8 +134,8 @@
                         <div class="mb-4" id="descriptionData">
                         </div>
                         <div class="mb-4">
-                            <label for="departamentRole" class="col-form-label">Referred to:</label>
-                            <select class="form-control" name="departamentRole" id="departamentRole"
+                            <label for="departmentRole" class="col-form-label">Referred to:</label>
+                            <select class="form-control" name="departmentRole" id="departmentRole"
                                 onchange="getRelateUserWithRole()" required>
                                 <option value="">SELECT DEPARTMENT</option>
                             </select>
@@ -253,11 +247,11 @@
         }
 
         $(document).ready(function() {
-            let departamentRole = document.getElementById('departamentRole');
+            let departmentRole = document.getElementById('departmentRole');
             axios.get("{{ route('user.dailyReports.ajax.getRoles') }}")
                 .then(function(response) {
                     response.data.forEach(function(item) {
-                        departamentRole.innerHTML +=
+                        departmentRole.innerHTML +=
                             `<option value="${item.name}">${item.name}</option>`;
                     });
                 })
@@ -317,7 +311,7 @@
             <span class="visually-hidden">Loading...</span>
             </div>`;
             let data = {
-                role_name: departamentRole.value
+                role_name: departmentRole.value
             }
             axios.post("{{ route('user.dailyReports.ajax.getUserWithRole') }}", data)
                 .then(function(response) {
@@ -328,7 +322,7 @@
                     assignedTo.innerHTML = ``;
                     response.data.forEach(function(item) {
                         assignedTo.innerHTML +=
-                            `<option value="${item.id}">${item.name} ${item.first_name}</option>`;
+                            `<option value="${item.id}">${item.employee.last_name} ${item.employee.first_name}</option>`;
                     });
                 })
                 .catch(function(error) {
@@ -338,15 +332,13 @@
 
         function requestForm(id, data) {
             let alert = document.getElementById('alert');
-            let name = document.getElementById('name');
+            let last_name = document.getElementById('last_name');
             let first_name = document.getElementById('first_name');
-            let departament = document.getElementById('departament');
+            let department = document.getElementById('department');
             let email = document.getElementById('email');
-            let name_show = document.getElementById('name_show');
-            let cod_staff = document.getElementById('cod_staff');
-            let cod_staff_show = document.getElementById('cod_staff_show');
-            let check_date = document.getElementById('check_date');
+            let staff_code = document.getElementById('staff_code');
             let date_show = document.getElementById('date_show');
+            let check_date = document.getElementById('check_date');
             check_date.value = data;
             date_show.innerHTML = data;
             let configInformation = {
@@ -355,33 +347,15 @@
             axios.post("{{ route('user.dailyReports.ajax.getData') }}", configInformation)
                 .then(function(response) {
                     alert.innerHTML = ``;
-                    name.value = response.data.data.name;
+                    last_name.value = response.data.data.last_name;
                     first_name.value = response.data.data.first_name;
-                    departament.value = response.data.data.departament;
-                    email.value = response.data.data.email;
-                    name_show.innerHTML = response.data.data.name;
-                    cod_staff.value = response.data.data.cod_staff;
-                    cod_staff_show.innerHTML = response.data.data.cod_staff;
+                    department.value = response.data.data.department;
+                    email.value = response.data.data.users.email;
+                    staff_code.value = response.data.data.staff_code;
                 })
                 .catch(function(error) {
                     console.error(error);
                 });
         }
-
-        // $(document).ready(function() {
-        //     let last_update = document.getElementById('last_update');
-        //     last_update.innerHTML = `<div class="spinner-border" role="status">
-    //     <span class="visually-hidden">Loading...</span>
-    //     </div>`;
-        // route('user.dailyReports.ajax.getLastUpdate')
-        //     axios.post()
-        //         .then(function(response) {
-        //             const formattedDateTime = moment(response.data.updated_at).format('YYYY-MM-DD HH:mm:ss');
-        //             last_update.innerHTML = `Last Update: ${formattedDateTime}`;
-        //         })
-        //         .catch(function(error) {
-        //             console.error(error);
-        //         });
-        // });
     </script>
 @endsection

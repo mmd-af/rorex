@@ -24,10 +24,11 @@ class CheckRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required'],
+            'staff_code' => ['required'],
+            'last_name' => ['required'],
             'subject' => ['required'],
             'description' => ['required'],
-            'departamentRole' => ['required'],
+            'departmentRole' => ['required'],
             'assigned_to' => ['required']
         ];
     }
