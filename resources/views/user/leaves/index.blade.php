@@ -311,7 +311,7 @@
         function calculateDateDifference(x) {
             var startDateValue = document.getElementById('startDate').value.trim();
             var endDateValue = document.getElementById('endDate').value.trim();
-            let leave_balance = "{{ Auth::user()->employee->leave_balance }}";
+            let leave_balance = "{{ number_format(Auth::user()->employee->leave_balance, 2) }}";
 
 
             if (startDateValue !== '' && endDateValue !== '') {
@@ -481,7 +481,7 @@
         function calculateTimeDifference(targetValue) {
             var startTimeValue = document.getElementById('startTime').value.trim();
             var endTimeValue = document.getElementById('endTime').value.trim();
-            let leave_balance = "{{ Auth::user()->employee->leave_balance }}";
+            let leave_balance = "{{ number_format(Auth::user()->employee->leave_balance, 2) }}";
             if (startTimeValue !== '' && endTimeValue !== '') {
                 var startTime = new Date('1970-01-01T' + startTimeValue + ':00Z').getTime();
                 var endTime = new Date('1970-01-01T' + endTimeValue + ':00Z').getTime();
@@ -622,7 +622,8 @@
                     '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
                     '</b>until:<b> ' + endDay +
                     '</b><br>Total days: ' + totally +
-                    '<br>Allowed leave when the user send this request: ' + leave_balance / 8 + ' days (' +
+                    '<br>Allowed leave when the user send this request: ' + formatNumber(leave_balance / 8) +
+                    ' days (' +
                     leave_balance +
                     ' Hour)<br>Total work days (EXCLUDING Holidays): ' + leave_days +
                     '<br>Email: ' + email + '<hr><small>request from: dashboard/Leave Requests</small>';
@@ -636,7 +637,7 @@
                     '<br>Requests <b>' + leave_days + ' days</b> during the period:<br><b>' + startDay +
                     '</b>until:<b> ' + endDay +
                     '</b><br>Total days: ' + totally +
-                    '<br>Allowed leave: ' + leave_balance / 8 + ' days (' + leave_balance +
+                    '<br>Allowed leave: ' + formatNumber(leave_balance / 8) + ' days (' + leave_balance +
                     ' Hour)<br>Total work days (EXCLUDING Holidays): ' + leave_days +
                     '<br>Days without Pay: ' +
                     daysWithoutPay + '<br>Email: ' + email +
@@ -651,7 +652,8 @@
                     '<br>requests for hour leave on:<br><b>' + startDay +
                     '</b><br>between:<b> ' + start_time + ' </b>until: <b>' + end_time + ' </b><br>' +
                     leave_time + ' Hour' +
-                    '<br>Allowed leave when the user send this request: ' + leave_balance / 8 + ' days (' +
+                    '<br>Allowed leave when the user send this request: ' + formatNumber(leave_balance / 8) +
+                    ' days (' +
                     leave_balance + ' Hour )' +
                     '<br>Email: ' + email + '<hr><small>request from: dashboard/Leave Requests</small>';
 
@@ -727,6 +729,11 @@
                 .catch(error => {
                     console.error(error);
                 });
+        }
+
+        function formatNumber(number, decimals = 2) {
+            var factor = Math.pow(10, decimals);
+            return (Math.ceil(number * factor) / factor).toFixed(decimals);
         }
     </script>
 @endsection
