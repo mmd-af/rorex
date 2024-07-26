@@ -6,6 +6,7 @@ use App\Models\LetterAssignment\LetterAssignment;
 use App\Models\StaffRequest\StaffRequest;
 use App\Models\User\User;
 use Exception;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -242,14 +243,18 @@ class ManageRequestRepository extends BaseRepository
             $letterAssignment->status = "Accepted";
             $letterAssignment->is_archive = 1;
             $letterAssignment->save();
+
             $staffRequest = StaffRequest::find($letterAssignment->request_id);
             $staffRequest->is_archive = 1;
             $staffRequest->save();
+
             $staffCode = $staffRequest->cod_staff;
             $user = User::whereHas('employee', function ($query) use ($staffCode) {
                 $query->where('staff_code', $staffCode);
             })->with('employee')->first();
+
             $leave = $staffRequest->leave;
+
             if ($leave !== null) {
                 $employee = $user->employee;
                 $leaveBalance = $employee->leave_balance;
@@ -259,7 +264,7 @@ class ManageRequestRepository extends BaseRepository
                     $vacationDays = $leave->leave_days;
 
                     if ($vacationDays <= floor($leaveBalanceDays)) {
-                        $employee->leave_balance = ($leaveBalanceDays * 8) - ($vacationDays * 8);
+                        $employee->leave_balance = ($leaveBalanceDays - $vacationDays) * 8;
                         $employee->save();
                     } else {
                         DB::rollBack();
@@ -281,6 +286,10 @@ class ManageRequestRepository extends BaseRepository
                         return false;
                     }
                 }
+                $staffRequest->description = $staffRequest->description . "<hr>Remaining allowable leave after accepted= " .
+                    number_format(Auth::user()->employee->leave_balance / 8, 2) . " days (" . Auth::user()->employee->leave_balance . " hours)".
+                    "<hr>Accept time: ". Carbon::now();
+                $staffRequest->save();
             }
 
             if ($user->email_verified_at !== null && $user->receive_notifications) {
