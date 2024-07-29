@@ -46,6 +46,13 @@ class LeaveRepository extends BaseRepository
 
         if ($request->ajax()) {
             return Datatables::of($data)
+                ->addColumn('id', function ($row) {
+                    if ($row->requests) {
+                        return $row->id . "/" . $row->requests->id;
+                    } else {
+                        return $row->id;
+                    }
+                })
                 ->addColumn('start_date', function ($row) {
                     $originalDate = Carbon::parse($row->start_date);
                     if ($row->leave_days) {
