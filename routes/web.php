@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Artisan;
 Route::get('/', function () {
     // return redirect()->route('login');
     return view('welcome');
-});
+})->name('welcome');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -64,3 +64,15 @@ Route::get('/public/{path}', function ($path) {
 Route::get('/inactive', function () {
     return view('inactive');
 })->name('inactive');
+
+Route::get('/up', function () {
+    Artisan::call('up');
+    return Artisan::output();
+})->name('up');
+
+Route::get('/down/{code}', function ($code) {
+    Artisan::call('down', [
+        '--secret' => $code
+    ]);
+    return Artisan::output();
+});
