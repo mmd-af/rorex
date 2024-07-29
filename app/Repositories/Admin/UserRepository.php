@@ -64,37 +64,6 @@ class UserRepository extends BaseRepository
         return false;
     }
 
-    //    public function getLeaveBalanceData($request)
-    //    {
-    //        $data = $this->query()
-    //            ->select([
-    //                'id',
-    //                'cod_staff',
-    //                'first_name',
-    //                'name',
-    //                'leave_balance'
-    //            ])
-    //            ->get();
-    //        if ($request->ajax()) {
-    //            return Datatables::of($data)
-    //                ->addColumn('leave_balance', function ($row) {
-    //                    $url = route('admin.users.updateLeaveBalance', $row->id);
-    //                    $csrf = csrf_field();
-    //                    $method = method_field('PUT');
-    //                    return '<form class="d-flex justify-content-between" action="' . $url . '" method="POST">
-    //                ' . $csrf . '
-    //                ' . $method . '
-    //                <input type="hidden" name="leave_balance" value="' . $row->leave_balance . '">
-    //                <input type="text" class="form-control form-control-sm" name="leave_balance_new" id="leave_balance_new" value="' . $row->leave_balance . '">
-    //                <button type="submit" class="btn btn-success"><i class="fa-solid fa-square-check"></i></button>
-    //            </form>';
-    //                })
-    //                ->rawColumns(['leave_balance'])
-    //                ->make(true);
-    //        }
-    //        return false;
-    //    }
-
     public function import($request)
     {
         $files = $request->file('file');
@@ -201,6 +170,7 @@ class UserRepository extends BaseRepository
     {
         DB::beginTransaction();
         try {
+            $user->name = $request->name;
             $user->is_active = $request->has('is_active') ? 1 : 0;
             $user->save();
             $user->syncRoles($request->roles);
