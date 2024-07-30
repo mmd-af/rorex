@@ -118,6 +118,7 @@ class UserRepository extends BaseRepository
                     DB::table('employees')->where('id', $existingEmployee->id)->update($employeeData);
                 } else {
                     $user = new User();
+                    $user->id = $codStaff;
                     $user->name = !empty($item[2]) ? $item[2] : (!empty($item[25]) ? $item[25] : $item[22]);
                     $user->email = $item[12];
                     $user->receive_notifications = 1;
