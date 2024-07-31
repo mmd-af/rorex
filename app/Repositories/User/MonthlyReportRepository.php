@@ -199,8 +199,8 @@ class MonthlyReportRepository extends BaseRepository
             'without_paid_leave' => sprintf("%.2f", floor($without_paid_leave * 100) / 100),
             'totalHours' => sprintf("%.2f", floor($totalHours * 100) / 100),
             'hourUnknown' => $hourUnknown,
-            'turaImplicita' => $turaImplicita,
-            'forgotPunch' => $lipsaCeasTimpi
+            'turaImplicita' => $turaImplicita
+            // 'forgotPunch' => $lipsaCeasTimpi
         ];
         $fileName = $userName . "-reports-" . $monthDate . ".xlsx";
         return Excel::download(new MonthlyReportExport($data), $fileName);

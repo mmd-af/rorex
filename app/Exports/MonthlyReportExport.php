@@ -41,8 +41,7 @@ class MonthlyReportExport implements FromArray, WithHeadings, WithStyles
             'without_paid_leave',
             'Total (Hours)',
             'Unknown',
-            'Default Shift (Hour)',
-            'forgotPunch'
+            'Default Shift (Hour)'
         ];
     }
 
