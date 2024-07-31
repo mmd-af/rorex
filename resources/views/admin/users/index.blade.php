@@ -227,7 +227,7 @@
 
         function handleActive(event, id) {
             event.preventDefault();
-            axios.post("{{ route('admin.companies.ajax.active') }}", {
+            axios.post("{{ route('admin.users.ajax.active') }}", {
                     id: id
                 })
                 .then(response => {

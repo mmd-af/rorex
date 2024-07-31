@@ -88,6 +88,7 @@ class CompanyRepository extends BaseRepository
             $user->save();
             if ($user->is_active == "true") {
                 event(new CompanyActivedEvent($user));
+                
             }
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
