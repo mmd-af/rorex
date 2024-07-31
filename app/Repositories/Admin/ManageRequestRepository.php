@@ -286,15 +286,18 @@ class ManageRequestRepository extends BaseRepository
                         return false;
                     }
                 }
+                $remainingLeaveHours = $employee->leave_balance;
+                $remainingLeaveDays = number_format($remainingLeaveHours / 8, 2);
+
                 $staffRequest->description = $staffRequest->description . "<hr>Remaining allowable leave after accepted= " .
-                    number_format(Auth::user()->employee->leave_balance / 8, 2) . " days (" . Auth::user()->employee->leave_balance . " hours)".
-                    "<hr>Accept time: ". Carbon::now();
+                    $remainingLeaveDays . " days (" . $remainingLeaveHours . " hours)" .
+                    "<hr>Accept time: " . Carbon::now();
                 $staffRequest->save();
             }
 
             if ($user->email_verified_at !== null && $user->receive_notifications) {
-                $meesage = $request->confirmationMessage ? "Your Request Acceptet with a Message" : "Your Request Acceptet";
-                $user->notify(new RequestRegisteredNotification($meesage, $request->confirmationMessage));
+                $message = $request->confirmationMessage ? "Your Request Accepted with a Message" : "Your Request Accepted";
+                $user->notify(new RequestRegisteredNotification($message, $request->confirmationMessage));
             }
             DB::commit();
             Session::flash('message', 'The Update Operation was Completed Successfully');
