@@ -4,6 +4,7 @@ namespace App\Repositories\Admin;
 
 use App\Imports\DailyReportExcel;
 use App\Models\DailyReport\DailyReport;
+use App\Models\StaffRequest\StaffRequest;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -49,8 +50,25 @@ class DailyReportRepository extends BaseRepository
                         return $row->users->employee->last_name;
                     } else return null;
                 })
-                ->addColumn('edit', function ($row) {
-                    return '<button
+                ->addColumn('edit_by', function ($row) {
+                    if ($row->editBy !== null) {
+                        return $row->editBy->employee->first_name . " " . $row->editBy->employee->last_name;
+                    } else {
+                        return "";
+                    }
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                    <button
+                                onclick="checkRelatedLetter(' . $row->id . ', \'' . $row->cod_staff . '\', \'' . $row->data . '\')"
+                                id="openCheckRelatedLetterModal"
+                                type="button"
+                                class="btn btn-primary btn-sm mx-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#checkRelatedLetterModal">
+                                <i class="fa-solid fa-envelope-open"></i>
+                            </button>
+                    <button
                                 onclick="openEditFormModal(' . $row->id . ')"
                                 id="openEditFormModal"
                                 type="button"
@@ -60,15 +78,7 @@ class DailyReportRepository extends BaseRepository
                                  <i class="fa-solid fa-pen-to-square"></i>
                             </button>';
                 })
-                ->addColumn('edit_by', function ($row) {
-                    if ($row->editBy !== null) {
-                        return $row->editBy->employee->first_name . " " . $row->editBy->employee->last_name;
-                    } else {
-                        return "";
-                    }
-                })
-
-                ->rawColumns(['first_name', 'edit', 'edit_by'])
+                ->rawColumns(['first_name', 'edit_by', 'action'])
                 ->make(true);
         }
         return false;
@@ -229,6 +239,22 @@ class DailyReportRepository extends BaseRepository
         $sumWork2 = $this->sumHourWork($request->on_work2, $request->off_work2);
         $sumWork3 = $this->sumHourWork($request->on_work3, $request->off_work3);
         return response()->json(['sumWork1' => $sumWork1, 'sumWork2' => $sumWork2, 'sumWork3' => $sumWork3]);
+    }
+    public function checkRelatedLetter($request)
+    {
+        $formattedDate = Carbon::parse($request->thisDay)->format('Y-m-d');
+        $staffRequest = StaffRequest::query()
+            ->select([
+                'id',
+                'user_id',
+                'cod_staff',
+                'description'
+            ])
+            ->where('cod_staff', $request->staffCode)
+            ->where('description', 'LIKE', "%$formattedDate%")
+            ->with('assignments')
+            ->get();
+        return $staffRequest;
     }
 
     public function importSingleReport($request)

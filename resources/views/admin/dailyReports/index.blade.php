@@ -107,6 +107,43 @@
         </div>
     </div>
 
+    <div class="modal fade" id="checkRelatedLetterModal" tabindex="-1" aria-labelledby="checkRelatedLetterModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkRelatedLetterModal">Edit Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="checkRelatedLetterAlert">
+                        <div class="row justify-content-center my-3">
+                            <div class="spinner-grow text-primary mx-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="spinner-grow text-secondary mx-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center my-3">
+                            <div class="spinner-grow text-secondary mx-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="spinner-grow text-primary mx-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="editFormModal" tabindex="-1" aria-labelledby="editFormModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -294,8 +331,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="without_paid_leave" class="form-label">Without Paid Leave</label>
-                            <input type="number" min="0" step="any" class="form-control" id="without_paid_leave"
-                                name="without_paid_leave" value="">
+                            <input type="number" min="0" step="any" class="form-control"
+                                id="without_paid_leave" name="without_paid_leave" value="">
                         </div>
                         <div class="mb-3">
                             <label for="remarca" class="form-label">Report</label>
@@ -373,7 +410,7 @@
                         name: 'edit_by'
                     },
                     {
-                        data: 'edit',
+                        data: 'action',
                         name: 'action'
                     }
                 ],
@@ -750,8 +787,43 @@
                 });
         });
 
+        function checkRelatedLetter(id, staffCode, thisDay) {
+            let checkRelatedLetterAlert = document.getElementById('checkRelatedLetterAlert');
+            checkRelatedLetterAlert.innerHTML = `
+             <div class="row justify-content-center my-3">
+                   <div class="spinner-grow text-primary mx-3" role="status">
+                       <span class="visually-hidden">Loading...</span>
+                  </div>
+                   <div class="spinner-grow text-secondary mx-3" role="status">
+                       <span class="visually-hidden">Loading...</span>
+                   </div>
+               </div>
+               <div class="row justify-content-center my-3">
+                   <div class="spinner-grow text-secondary mx-3" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-primary mx-3" role="status">
+                       <span class="visually-hidden">Loading...</span>
+                   </div>
+               </div>`;
+            let data = {
+                id: id,
+                staffCode: staffCode,
+                thisDay: thisDay
+            }           
+            axios.post("{{ route('admin.dailyReports.ajax.checkRelatedLetter') }}", data)
+                .then(function(response) {
+                    checkRelatedLetterAlert.innerHTML = ``;
+                    console.log(response.data.data);
+                    response.data.data.forEach(function(item){
+                        checkRelatedLetterAlert.innerHTML +=`${item.description}<hr>`;
+                    })
 
-
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
         // $('#editFormModal').on('hidden.bs.modal', function() {
         // location.reload();
         // });

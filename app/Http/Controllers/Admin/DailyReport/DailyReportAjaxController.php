@@ -20,18 +20,28 @@ class DailyReportAjaxController extends Controller
     {
         return $this->dailyReportRepository->getDataTable($request);
     }
+
     public function getData(Request $request)
     {
         return response()->json([
             'data' => $this->dailyReportRepository->getData($request)
         ]);
     }
+
     public function renderTimeForm(Request $request)
     {
         return response()->json([
             'data' => $this->dailyReportRepository->renderTimeForm($request)
         ]);
     }
+
+    public function checkRelatedLetter(Request $request)
+    {
+        return response()->json([
+            'data' => $this->dailyReportRepository->checkRelatedLetter($request)
+        ]);
+    }
+
     function update(Request $request, DailyReport $dailyID)
     {
         return response()->json([

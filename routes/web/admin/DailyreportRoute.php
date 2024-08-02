@@ -38,7 +38,10 @@ Route::group(['middleware' => ['permission:daily_reports'], 'namespace' => 'App\
                 'as' => 'renderTimeForm',
                 'uses' => 'DailyReportAjaxController@renderTimeForm'
             ]);
-
+            Route::post('/checkRelatedLetter', [
+                'as' => 'checkRelatedLetter',
+                'uses' => 'DailyReportAjaxController@checkRelatedLetter'
+            ]);            
             Route::post('{dailyID}/update', [
                 'as' => 'update',
                 'uses' => 'DailyReportAjaxController@update'
