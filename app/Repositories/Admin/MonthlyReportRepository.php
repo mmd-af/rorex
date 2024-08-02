@@ -104,7 +104,8 @@ class MonthlyReportRepository extends BaseRepository
             $delayWork += $dailyReport->tarziu_minute;
             $earlyExit += $dailyReport->devreme_minute;
         }
-        $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily;
+        $remainNotAllowedPlusWork = $this->remainNotAllowedPlusWork($ot_ore, $plus_week_day, $plus_week_night, $plus_holiday_day, $plus_holiday_night);
+        $totalHours = $this->calcualteExactTotalWorkTime($hourNight, $hourMorning, $hourAfternoon, $hourDaily, $remainNotAllowedPlusWork, $delayWork, $earlyExit);
         $result = [
             'codeStaff' => $staffCode,
             'monthDate' => $monthDate,
@@ -204,7 +205,8 @@ class MonthlyReportRepository extends BaseRepository
             $earlyExit += $dailyReport->devreme_minute;
             $userName = $dailyReport->users->employee->last_name . " " . $dailyReport->users->employee->first_name;
         }
-        $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily;
+        $remainNotAllowedPlusWork = $this->remainNotAllowedPlusWork($ot_ore, $plus_week_day, $plus_week_night, $plus_holiday_day, $plus_holiday_night);
+        $totalHours = $this->calcualteExactTotalWorkTime($hourNight, $hourMorning, $hourAfternoon, $hourDaily, $remainNotAllowedPlusWork, $delayWork, $earlyExit);
         $data[] = [
             'codeStaff' => $staffCode,
             'Name' => $userName,
@@ -311,7 +313,8 @@ class MonthlyReportRepository extends BaseRepository
                 $earlyExit += $dailyReport->devreme_minute;
                 $userName = $dailyReport->users->employee->last_name . " " . $dailyReport->users->employee->first_name;
             }
-            $totalHours = $hourNight + $hourMorning + $hourAfternoon + $hourDaily;
+            $remainNotAllowedPlusWork = $this->remainNotAllowedPlusWork($ot_ore, $plus_week_day, $plus_week_night, $plus_holiday_day, $plus_holiday_night);
+            $totalHours = $this->calcualteExactTotalWorkTime($hourNight, $hourMorning, $hourAfternoon, $hourDaily, $remainNotAllowedPlusWork, $delayWork, $earlyExit);    
             $data[] = [
                 'codeStaff' => $staffCode,
                 'Name' => $userName,
@@ -332,5 +335,20 @@ class MonthlyReportRepository extends BaseRepository
             ];
         }
         return Excel::download(new FullMonthlyReportExport($data), "full-monthly-reports-" . $request->dateOfExport . ".xlsx");
+    }
+    private function remainNotAllowedPlusWork($ot_ore, $plus_week_day, $plus_week_night, $plus_holiday_day, $plus_holiday_night)
+    {
+        return $ot_ore - ($plus_week_day + $plus_week_night + $plus_holiday_day + $plus_holiday_night);
+    }
+
+    private function calcualteExactTotalWorkTime($hourNight, $hourMorning, $hourAfternoon, $hourDaily, $remainNotAllowedPlusWork, $delayWork, $earlyExit)
+    {
+        $totalWorkTime = $hourNight + $hourMorning + $hourAfternoon + $hourDaily;
+        $totalDelay = ($delayWork / 60) + ($earlyExit / 60);
+        $totalWorkDeduction = $remainNotAllowedPlusWork - $totalDelay;
+        if ($totalWorkDeduction < 0) {
+            $totalWorkTime += $totalWorkDeduction;
+        }
+        return $totalWorkTime;
     }
 }
