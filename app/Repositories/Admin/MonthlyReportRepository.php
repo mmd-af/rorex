@@ -134,7 +134,7 @@ class MonthlyReportRepository extends BaseRepository
     public function userMonthlyReportExport($request)
     {
         $monthDate = $request->date;
-        $staffCode = $request->cod_staff;
+        $staffCode = $request->staff_code;
         $dailyReports = DailyReport::query()
             ->select([
                 'cod_staff',
@@ -155,8 +155,7 @@ class MonthlyReportRepository extends BaseRepository
             ])
             ->where('data', 'LIKE', "$monthDate%")
             ->where('cod_staff', $staffCode)
-            ->with('users.employee')
-            ->with('users')
+            ->with(['employee'])
             ->get();
         $hourNight = 0;
         $hourMorning = 0;
@@ -175,6 +174,7 @@ class MonthlyReportRepository extends BaseRepository
         $earlyExit = 0;
         $turaImplicita = 0;
         $lipsaCeasTimpi = 0;
+        $userName = null;
         $data = [];
         foreach ($dailyReports as $dailyReport) {
             if ($dailyReport->nume_schimb == 'Night') {
@@ -203,7 +203,7 @@ class MonthlyReportRepository extends BaseRepository
             $dailyAbsence += $dailyReport->absenta_zile;
             $delayWork += $dailyReport->tarziu_minute;
             $earlyExit += $dailyReport->devreme_minute;
-            $userName = $dailyReport->users->employee->last_name . " " . $dailyReport->users->employee->first_name;
+            $userName = $dailyReport->employee->last_name . " " . $dailyReport->employee->first_name;
         }
         $remainNotAllowedPlusWork = $this->remainNotAllowedPlusWork($ot_ore, $plus_week_day, $plus_week_night, $plus_holiday_day, $plus_holiday_night);
         $totalHours = $this->calcualteExactTotalWorkTime($hourNight, $hourMorning, $hourAfternoon, $hourDaily, $remainNotAllowedPlusWork, $delayWork, $earlyExit);
@@ -314,7 +314,7 @@ class MonthlyReportRepository extends BaseRepository
                 $userName = $dailyReport->users->employee->last_name . " " . $dailyReport->users->employee->first_name;
             }
             $remainNotAllowedPlusWork = $this->remainNotAllowedPlusWork($ot_ore, $plus_week_day, $plus_week_night, $plus_holiday_day, $plus_holiday_night);
-            $totalHours = $this->calcualteExactTotalWorkTime($hourNight, $hourMorning, $hourAfternoon, $hourDaily, $remainNotAllowedPlusWork, $delayWork, $earlyExit);    
+            $totalHours = $this->calcualteExactTotalWorkTime($hourNight, $hourMorning, $hourAfternoon, $hourDaily, $remainNotAllowedPlusWork, $delayWork, $earlyExit);
             $data[] = [
                 'codeStaff' => $staffCode,
                 'Name' => $userName,
