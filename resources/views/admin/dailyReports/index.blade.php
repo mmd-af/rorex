@@ -135,8 +135,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Update</button>
+                <div class="modal-footer justify-content-between">
+                    <p class="text-danger">
+                        *** This section searches based on the specified date in the letters and displays the results
+                    </p>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
                 </form>
@@ -810,19 +812,68 @@
                 id: id,
                 staffCode: staffCode,
                 thisDay: thisDay
-            }           
+            }
             axios.post("{{ route('admin.dailyReports.ajax.checkRelatedLetter') }}", data)
                 .then(function(response) {
                     checkRelatedLetterAlert.innerHTML = ``;
-                    console.log(response.data.data);
-                    response.data.data.forEach(function(item){
-                        checkRelatedLetterAlert.innerHTML +=`${item.description}<hr>`;
+                    response.data.data.forEach(function(item) {
+                        let assignments = item.assignments;
+                        let statusHtml = generateStatus(assignments);
+                        checkRelatedLetterAlert.innerHTML += `
+                             <div class="row">
+                             <div class="col-sm-12 col-md-6">
+                             <hr style="height=5px"><p class="bg-secondary text-white px-2 h5">${item.id}<p><hr>${item.description}<hr>   
+                             </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <p>${statusHtml}</p>
+                                 <p>(Soon you can control your letter here)</p>
+                                </div>
+                         </div>`;
                     })
-
                 })
                 .catch(function(error) {
                     console.error(error);
                 });
+
+            function limitText(text, limit) {
+                if (text.length > limit) {
+                    return text.substring(0, limit) + '...';
+                } else {
+                    return text;
+                }
+            }
+
+            function generateStatus(assignments) {
+                let status = '';
+                assignments.forEach(assignment => {                    
+                    let signedStatus = assignment.signed_by ?
+                        '<div class="bg-success rounded-3 text-light px-2">Signed</div>' :
+                        '<div class="bg-warning rounded-3 px-2">Not signed</div>';
+                    let description = '';
+
+                    if (assignment.description) {
+                        let limitedDescription = limitText(assignment.description, 45);
+                        if (assignment.description !== limitedDescription) {
+                            description = '<div class="bg-info rounded-3">' + limitedDescription + '<details>' +
+                                '<summary>Show Full Message</summary>' + assignment.description +
+                                '</details></div>';
+                        } else {
+                            description = '<div class="bg-info rounded-3">' + assignment.description + '</div>';
+                        }
+                    }
+                    let employeeName = '';
+                    if (assignment.assigned_to.employee.last_name && assignment.assigned_to.employee.first_name) {
+                        employeeName = assignment.assigned_to.employee.last_name + ' ' + assignment.assigned_to.employee.first_name;
+                    } else {
+                        employeeName = 'Unknown Name';
+                    }
+                    status += employeeName + signedStatus + assignment.status + description +
+                        '<br><small class="text-info">last update: ' + new Date(assignment.updated_at)
+                        .toLocaleString() + '</small><hr>';
+                });
+
+                return status;
+            }
         }
         // $('#editFormModal').on('hidden.bs.modal', function() {
         // location.reload();

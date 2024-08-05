@@ -252,7 +252,7 @@ class DailyReportRepository extends BaseRepository
             ])
             ->where('cod_staff', $request->staffCode)
             ->where('description', 'LIKE', "%$formattedDate%")
-            ->with('assignments')
+            ->with(['assignments', 'assignments.assignedTo.employee'])
             ->get();
         return $staffRequest;
     }
