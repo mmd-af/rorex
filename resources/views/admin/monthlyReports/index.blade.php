@@ -60,18 +60,18 @@
                         <label for="date">Select Date:</label>
                         <select id="date" name="date" class="form-control">
                             <?php
-                            $selectMonths = 4;
+                            $startMonth = 3;
+                            $startYear = 2024;
                             $currentMonth = date('n');
                             $currentYear = date('Y');
-                            for ($i = 0; $i < 12; $i++) {
-                                $monthValue = (($currentMonth - $i + 12) % 12) + 1;
-                                $yearValue = $currentYear + floor(($currentMonth - $i - 1) / 12);
-                                if ($monthValue <= $currentMonth && $i < $selectMonths) {
-                                    $formattedMonth = sprintf('%02d', $monthValue);
-                                    $dateOutput = "$yearValue-$formattedMonth";
-                                    $monthName = date('F', mktime(0, 0, 0, $monthValue, 1, $yearValue));
-                                    echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
-                                }
+                            $totalMonths = ($currentYear - $startYear) * 12 + ($currentMonth - $startMonth + 1);
+                            for ($i = $totalMonths - 1; $i >= 0; $i--) {
+                                $monthValue = (($startMonth + $i - 1) % 12) + 1;
+                                $yearValue = $startYear + floor(($startMonth + $i - 1) / 12);
+                                $formattedMonth = sprintf('%02d', $monthValue);
+                                $dateOutput = "$yearValue-$formattedMonth";
+                                $monthName = date('F', mktime(0, 0, 0, $monthValue, 1, $yearValue));
+                                echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
                             }
                             ?>
                         </select>
@@ -100,21 +100,22 @@
                         <label for="dateOfExport">Select Date:</label>
                         <select id="dateOfExport" name="dateOfExport" class="form-control">
                             <?php
-                            $selectMonths = 4;
+                            $startMonth = 3;
+                            $startYear = 2024;
                             $currentMonth = date('n');
                             $currentYear = date('Y');
-                            for ($i = 0; $i < 12; $i++) {
-                                $monthValue = (($currentMonth - $i + 12) % 12) + 1;
-                                $yearValue = $currentYear + floor(($currentMonth - $i - 1) / 12);
-                                if ($monthValue <= $currentMonth && $i < $selectMonths) {
-                                    $formattedMonth = sprintf('%02d', $monthValue);
-                                    $dateOutput = "$yearValue-$formattedMonth";
-                                    $monthName = date('F', mktime(0, 0, 0, $monthValue, 1, $yearValue));
-                                    echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
-                                }
+                            $totalMonths = ($currentYear - $startYear) * 12 + ($currentMonth - $startMonth + 1);
+                            for ($i = $totalMonths - 1; $i >= 0; $i--) {
+                                $monthValue = (($startMonth + $i - 1) % 12) + 1;
+                                $yearValue = $startYear + floor(($startMonth + $i - 1) / 12);
+                                $formattedMonth = sprintf('%02d', $monthValue);
+                                $dateOutput = "$yearValue-$formattedMonth";
+                                $monthName = date('F', mktime(0, 0, 0, $monthValue, 1, $yearValue));
+                                echo "<option value=\"$dateOutput\">$monthName $yearValue</option>";
                             }
                             ?>
                         </select>
+
                         <button type="submit" class="btn btn-primary mt-3">Export
                         </button>
                     </form>
