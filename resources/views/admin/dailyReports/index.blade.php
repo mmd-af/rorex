@@ -822,7 +822,8 @@
                         checkRelatedLetterAlert.innerHTML += `
                              <div class="row">
                              <div class="col-sm-12 col-md-6">
-                             <hr style="height=5px"><p class="bg-secondary text-white px-2 h5">${item.id}<p><hr>${item.description}<hr>   
+                                <h5 class="bg-secondary text-white px-2">${item.id}</h5>
+                                   ${item.description}   
                              </div>
                                 <div class="col-sm-12 col-md-6">
                                     <p>${statusHtml}</p>
