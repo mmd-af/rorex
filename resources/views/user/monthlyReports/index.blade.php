@@ -23,10 +23,10 @@
                     $startMonth = 3;
                     $startYear = 2024;
                     $currentMonth = date('n');
-                    $currentYear = date('Y');                
+                    $currentYear = date('Y');
                     $totalMonths = ($currentYear - $startYear) * 12 + ($currentMonth - $startMonth + 1);
                     for ($i = $totalMonths - 1; $i >= 0; $i--) {
-                        $monthValue = ($startMonth + $i - 1) % 12 + 1;
+                        $monthValue = (($startMonth + $i - 1) % 12) + 1;
                         $yearValue = $startYear + floor(($startMonth + $i - 1) / 12);
                         $formattedMonth = sprintf('%02d', $monthValue);
                         $dateOutput = "$yearValue-$formattedMonth";
@@ -88,7 +88,7 @@
                 </div>
                 </div>
                  <div class="row justify-content-center mt-5">
-                                    <table class="table table-striped border text-center table-responsive p-5">
+                                    <table class="table table-striped border text-center table-responsive p-5 rounded-3">
                                         <thead>
                                         <tr>
                                             <th scope="col">Total</th>
@@ -118,11 +118,6 @@
                             <td>per hour</td>
                         </tr>
                         <tr>
-                            <td>Total Overtime Work</td>
-                            <td class="bg-info text-light">${response.data.ot_ore}</td>
-                            <td>per hour</td>
-                        </tr>
-                        <tr>
                             <td>plus_week_day</td>
                             <td class="bg-success text-light">${response.data.plus_week_day}</td>
                             <td>per hour</td>
@@ -143,13 +138,11 @@
                             <td>per hour</td>
                         </tr>
                         <tr>
-                            <td>Delay Work</td>
-                            <td class="bg-warning">${response.data.delayWork}</td>
-                            <td>per hour</td>
-                        </tr>
-                        <tr>
-                            <td>Early Exit</td>
-                            <td class="bg-warning">${response.data.earlyExit}</td>
+                            <td>Compensation</td>
+                            <td class="bg-warning">
+                                <b>${response.data.compensation}</b><hr>
+                                <small>If this number is negative, it will be automatically deducted from your working hours</small>
+                                </td>
                             <td>per hour</td>
                         </tr>
                         <tr>
@@ -158,18 +151,18 @@
                             <th>per day</th>
                         </tr>
                         <tr>
-                            <th>Concediu ore</th>
-                            <th class="bg-warning">${response.data.concediu_ore}</th>
+                            <th>Allowed Leave</th>
+                            <th class="bg-info">${response.data.concediu_ore}</th>
                             <th>per hour</th>
                         </tr>
                         <tr>
                             <th>Without Paid Leave</th>
-                            <th class="bg-warning">${response.data.without_paid_leave}</th>
+                            <th class="bg-info">${response.data.without_paid_leave}</th>
                             <th>per hour</th>
                         </tr>
                         <tr>
                             <th>Total working hours</th>
-                            <th>${response.data.totalHours}</th>
+                            <th><h4 class="shadow bg-white rounded-3"><strong>${response.data.totalHours}</strong></h4></th>
                             <th>per hour</th>
                         </tr>
                         <tr>
@@ -189,6 +182,19 @@
                 .catch(function(error) {
                     console.error(error);
                 });
+        }
+
+        function calculateTotalNotAllowed(data) {
+            const ot_ore = Number(data.ot_ore) || 0;
+            const plus_week_day = Number(data.plus_week_day) || 0;
+            const plus_week_night = Number(data.plus_week_night) || 0;
+            const plus_holiday_day = Number(data.plus_holiday_day) || 0;
+            const plus_holiday_night = Number(data.plus_holiday_night) || 0;
+            const delayWork = Number(data.delayWork) || 0;
+            const earlyExit = Number(data.earlyExit) || 0;
+            const result = ot_ore - (plus_week_day + plus_week_night + plus_holiday_day + plus_holiday_night) - (delayWork +
+                earlyExit);
+            return result.toFixed(2);
         }
     </script>
 @endsection
