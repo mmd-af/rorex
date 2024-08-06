@@ -427,7 +427,7 @@ class ManageRequestRepository extends BaseRepository
             return response()->json(['message' => 'Data not found'], 404);
         }
         $description = $data[0]->request->description;
-        $pdf = Pdf::loadView('pdf.template', compact(['data', 'description']))->setPaper('a6')->setWarnings(false);
+        $pdf = Pdf::loadView('pdf.template', compact(['data', 'description']))->setPaper('a5', 'portrait')->setWarnings(false);
         return $pdf->download($data[0]->request->user->name . '-' . $data[0]->request->user->first_name . '-' . $data[0]->request_id . '.pdf');
     }
 }
