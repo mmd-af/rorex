@@ -48,10 +48,10 @@
                     $startMonth = 3;
                     $startYear = 2024;
                     $currentMonth = date('n');
-                    $currentYear = date('Y');                
+                    $currentYear = date('Y');
                     $totalMonths = ($currentYear - $startYear) * 12 + ($currentMonth - $startMonth + 1);
                     for ($i = $totalMonths - 1; $i >= 0; $i--) {
-                        $monthValue = ($startMonth + $i - 1) % 12 + 1;
+                        $monthValue = (($startMonth + $i - 1) % 12) + 1;
                         $yearValue = $startYear + floor(($startMonth + $i - 1) / 12);
                         $formattedMonth = sprintf('%02d', $monthValue);
                         $dateOutput = "$yearValue-$formattedMonth";
@@ -846,7 +846,7 @@
 
             function generateStatus(assignments) {
                 let status = '';
-                assignments.forEach(assignment => {                    
+                assignments.forEach(assignment => {
                     let signedStatus = assignment.signed_by ?
                         '<div class="bg-success rounded-3 text-light px-2">Signed</div>' :
                         '<div class="bg-warning rounded-3 px-2">Not signed</div>';
@@ -864,11 +864,19 @@
                     }
                     let employeeName = '';
                     if (assignment.assigned_to.employee.last_name && assignment.assigned_to.employee.first_name) {
-                        employeeName = assignment.assigned_to.employee.last_name + ' ' + assignment.assigned_to.employee.first_name;
+                        employeeName = assignment.assigned_to.employee.last_name + ' ' + assignment.assigned_to
+                            .employee.first_name;
                     } else {
                         employeeName = 'Unknown Name';
                     }
-                    status += employeeName + signedStatus + assignment.status + description +
+
+                    let statusCondition = assignment.status;
+                    if (assignment.status === 'Rejected') {
+                        statusCondition = '<div class="bg-danger rounded-3 text-light px-2">' + assignment.status +
+                            '</div>';
+                    }
+
+                    status += employeeName + signedStatus + statusCondition + description +
                         '<br><small class="text-info">last update: ' + new Date(assignment.updated_at)
                         .toLocaleString() + '</small><hr>';
                 });

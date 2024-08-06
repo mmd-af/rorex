@@ -183,18 +183,5 @@
                     console.error(error);
                 });
         }
-
-        function calculateTotalNotAllowed(data) {
-            const ot_ore = Number(data.ot_ore) || 0;
-            const plus_week_day = Number(data.plus_week_day) || 0;
-            const plus_week_night = Number(data.plus_week_night) || 0;
-            const plus_holiday_day = Number(data.plus_holiday_day) || 0;
-            const plus_holiday_night = Number(data.plus_holiday_night) || 0;
-            const delayWork = Number(data.delayWork) || 0;
-            const earlyExit = Number(data.earlyExit) || 0;
-            const result = ot_ore - (plus_week_day + plus_week_night + plus_holiday_day + plus_holiday_night) - (delayWork +
-                earlyExit);
-            return result.toFixed(2);
-        }
     </script>
 @endsection
