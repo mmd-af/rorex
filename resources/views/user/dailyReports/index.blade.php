@@ -1,7 +1,7 @@
 @extends('user.layouts.index')
 
 @section('title')
-    Daily Reports
+    {{ __('general.daily_reports') }}
 @endsection
 @section('style')
     <style>
@@ -10,23 +10,23 @@
 @endsection
 @section('content')
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Daily Reports</li>
+        <li class="breadcrumb-item active">{{ __('general.daily_reports') }}</li>
     </ol>
     @include('user.layouts.partial.errors')
     <div class="card mb-4">
         <div class="card-body table-responsive">
             <form class="form-control px-5">
                 @csrf
-                <label for="date">Select Date:</label>
+                <label for="date">{{ __('general.select_date') }}:</label>
                 <select id="date" name="date" class="form-control">
                     <?php
                     $startMonth = 3;
                     $startYear = 2024;
                     $currentMonth = date('n');
-                    $currentYear = date('Y');                
+                    $currentYear = date('Y');
                     $totalMonths = ($currentYear - $startYear) * 12 + ($currentMonth - $startMonth + 1);
                     for ($i = $totalMonths - 1; $i >= 0; $i--) {
-                        $monthValue = ($startMonth + $i - 1) % 12 + 1;
+                        $monthValue = (($startMonth + $i - 1) % 12) + 1;
                         $yearValue = $startYear + floor(($startMonth + $i - 1) / 12);
                         $formattedMonth = sprintf('%02d', $monthValue);
                         $dateOutput = "$yearValue-$formattedMonth";
@@ -45,28 +45,28 @@
             <table id="dailyReportTable" class="table table-bordered table-striped text-center">
                 <thead>
                     <tr>
-                        <th>Staff Code</th>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Weeks</th>
-                        <th>Shift</th>
-                        <th>on_work1</th>
-                        <th>off_work2</th>
-                        <th>remarca</th>
-                        <th>Action</th>
+                        <th>{{ __('general.staff_code') }}</th>
+                        <th>{{ __('general.name') }}</th>
+                        <th>{{ __('general.date') }}</th>
+                        <th>{{ __('general.weeks') }}</th>
+                        <th>{{ __('general.shift') }}</th>
+                        <th>{{ __('general.on_work1') }}</th>
+                        <th>{{ __('general.off_work2') }}</th>
+                        <th>{{ __('general.remark') }}</th>
+                        <th>{{ __('general.action') }}</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Staff Code</th>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Weeks</th>
-                        <th>Shift</th>
-                        <th>on_work1</th>
-                        <th>off_work2</th>
-                        <th>remarca</th>
-                        <th>Action</th>
+                        <th>{{ __('general.staff_code') }}</th>
+                        <th>{{ __('general.name') }}</th>
+                        <th>{{ __('general.date') }}</th>
+                        <th>{{ __('general.weeks') }}</th>
+                        <th>{{ __('general.shift') }}</th>
+                        <th>{{ __('general.on_work1') }}</th>
+                        <th>{{ __('general.off_work2') }}</th>
+                        <th>{{ __('general.remark') }}</th>
+                        <th>{{ __('general.action') }}</th>
                     </tr>
                 </tfoot>
 
@@ -79,25 +79,25 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="forgetRequestLabel">Request</h1>
+                    <h1 class="modal-title fs-5" id="forgetRequestLabel">{{ __('general.request') }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div id="alert">
                         <div class="row justify-content-center my-3">
                             <div class="spinner-grow text-primary mx-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                                <span class="visually-hidden">{{ __('general.loading') }}...</span>
                             </div>
                             <div class="spinner-grow text-secondary mx-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                                <span class="visually-hidden">{{ __('general.loading') }}...</span>
                             </div>
                         </div>
                         <div class="row justify-content-center my-3">
                             <div class="spinner-grow text-secondary mx-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                                <span class="visually-hidden">{{ __('general.loading') }}...</span>
                             </div>
                             <div class="spinner-grow text-primary mx-3" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                                <span class="visually-hidden">{{ __('general.loading') }}...</span>
                             </div>
                         </div>
                     </div>
@@ -110,42 +110,42 @@
                         <input type="hidden" id="email" name="email" value="">
                         <input type="hidden" id="staff_code" name="staff_code" value="">
                         <div class="mb-4">
-                            <label for="date" class="col-form-label">Check for Date:
+                            <label for="date" class="col-form-label">{{ __('general.check_date') }}:
                                 <div class="text-info" id="date_show"></div>
                             </label>
                             <input type="hidden" id="check_date" name="check_date" value="">
                         </div>
                         <div class="mb-4">
-                            <label for="subject" class="col-form-label">Subject:</label>
-                            <select class="form-control" name="subject" id="subject" onchange="handelRequestWithSubject()"
+                            <label for="subject" class="col-form-label">{{ __('general.subject') }}:</label>
+                            <select class="form-select" name="subject" id="subject" onchange="handelRequestWithSubject()"
                                 required>
-                                <option value="">-- select subject --</option>
-                                <option value="Forgot Punch">Forgot Punch</option>
-                                <option value="Forgot Bring My Cart">Forgot Bring My Cart</option>
-                                <option value="Consider OverTime">Consider OverTime</option>
-                                <option value="Work at Home (Remote)">Work at Home (Remote)</option>
-                                <option value="Mission">Mission</option>
-                                <option value="Change Shift">Change Shift</option>
+                                <option value="">-- {{ __('general.subject') }} --</option>
+                                <option value="Forgot Punch">{{ __('general.forgot_punch') }}</option>
+                                <option value="Forgot Bring My Cart">{{ __('general.forgot_bring_my_cart') }}</option>
+                                <option value="Consider OverTime">{{ __('general.consider_overTime') }}</option>
+                                <option value="Work at Home (Remote)">{{ __('general.work_home') }}</option>
+                                <option value="Mission">{{ __('general.mission') }}</option>
+                                <option value="Change Shift">{{ __('general.change_shift') }}</option>
                             </select>
                         </div>
                         <div class="mb-4" id="descriptionData">
                         </div>
                         <div class="mb-4">
-                            <label for="departmentRole" class="col-form-label">Referred to:</label>
-                            <select class="form-control" name="departmentRole" id="departmentRole"
+                            <label for="departmentRole" class="col-form-label">{{ __('general.referred_to') }}:</label>
+                            <select class="form-select" name="departmentRole" id="departmentRole"
                                 onchange="getRelateUserWithRole()" required>
-                                <option value="">SELECT DEPARTMENT</option>
+                                <option value="">{{ __('general.select_department') }}</option>
                             </select>
                         </div>
                         <div class="mb-4">
-                            User:
-                            <label for="assigned_to" class="col-form-label">Referred to:</label>
+                            <label for="assigned_to" class="col-form-label">{{ __('general.assigned_to') }}:</label>
                             <div id="assigned_user">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Send message</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">{{ __('general.send_message') }}</button>
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">{{ __('general.close') }}</button>
                         </div>
                     </form>
                 </div>
@@ -155,6 +155,26 @@
 @endsection
 
 @section('script')
+    <script>
+        var translations = {
+            send_message: "{{ __('general.send_message') }}",
+            forgot_punch: "{{ __('general.forgot_punch') }}",
+            forgot_bring_my_cart: "{{ __('general.forgot_bring_my_cart') }}",
+            forgot_bring_my_cart_des: "{{ __('general.forgot_bring_my_cart_des') }}",
+            consider_as_allow_leave: "{{ __('general.consider_as_allow_leave') }}",
+            consider_overtime: "{{ __('general.consider_overtime') }}",
+            work_at_home: "{{ __('general.work_at_home') }}",
+            mission: "{{ __('general.mission') }}",
+            other: "{{ __('general.other') }}",
+            change_shift: "{{ __('general.change_shift') }}",
+            at_what_time: "{{ __('general.at_what_time') }}",
+            message: "{{ __('general.message') }}",
+            how_many_hour: "{{ __('general.how_many_hour') }}",
+            please_describe_it: "{{ __('general.please_describe_it') }}",
+            start_work: "{{ __('general.start_work') }}"
+        };
+    </script>
+
     <script>
         function monthlyReportWithDate() {
             let date = document.getElementById('date').value;
@@ -262,43 +282,46 @@
             let descriptionData = document.getElementById('descriptionData');
             descriptionData.innerHTML = ``;
             subject = subject.value;
-            if (subject === "Forgot Punch") {
-                descriptionData.innerHTML = `<label for="description" class="col-form-label">At what time?</label>
-                            <input type="time" class="form-control" name="description" id="description" required>`;
+            if (subject === translations.forgot_punch) {
+                descriptionData.innerHTML = `<label for="description" class="col-form-label">${translations.at_what_time}</label>
+                          <input type="time" class="form-control" name="description" id="description" required>`;
             }
-            if (subject === "Forgot Bring My Cart") {
+            if (subject === translations.forgot_bring_my_cart) {
                 descriptionData.innerHTML =
-                    `<label for="description" class="col-form-label">Message:</label>
-                     <textarea class="form-control" name="description" id="description" required>I forgot to bring my card. enter and exit time: --:-- to --:--</textarea>`;
+                    `<label for="description" class="col-form-label">${translations.message}</label>
+                           <textarea class="form-control" name="description" id="description" required>${translations.forgot_bring_my_cart_des}</textarea>`;
             }
-            if (subject === "Consider as allow Leave") {
+            if (subject === translations.consider_as_allow_leave) {
                 descriptionData.innerHTML =
-                    `<label for="description" class="col-form-label">how many hour?</label>
+                    `<label for="description" class="col-form-label">${translations.how_many_hour}</label>
                             <input type="number" min="0" step="any" class="form-control" name="description" id="description" required>`;
             }
-            if (subject === "Consider OverTime") {
+            if (subject === translations.consider_overtime) {
                 descriptionData.innerHTML =
-                    `<label for="description" class="col-form-label">please describe it:</label>
+                    `<label for="description" class="col-form-label">${translations.please_describe_it}</label>
                             <textarea class="form-control" name="description" id="description" required></textarea>`;
             }
-            if (subject === "Work at Home (Remote)") {
+            if (subject === translations.work_at_home) {
                 descriptionData.innerHTML =
-                    `<label for="description" class="col-form-label">Start Work:</label>
-                    <textarea class="form-control" name="description" id="description" required>I worked at home from .......... to ......... hour</textarea>`;
+                    `<label for="description" class="col-form-label">${translations.start_work}</label>
+                            <textarea class="form-control" name="description" id="description" required>${translations.work_at_home}</textarea>`;
             }
-            if (subject === "Mission") {
-                descriptionData.innerHTML = `<label for="description" class="col-form-label">please describe it:</label>
+            if (subject === translations.mission) {
+                descriptionData.innerHTML =
+                    `<label for="description" class="col-form-label">${translations.please_describe_it}</label>
                             <textarea class="form-control" name="description" id="description" required></textarea>`;
             }
-            if (subject === "other") {
-                descriptionData.innerHTML = `<label for="description" class="col-form-label">Message:</label>
+            if (subject === translations.other) {
+                descriptionData.innerHTML =
+                    `<label for="description" class="col-form-label">${translations.message}</label>
                             <textarea class="form-control" name="description" id="description" required></textarea>`;
             }
-            if (subject === "Change Shift") {
+            if (subject === translations.change_shift) {
                 descriptionData.innerHTML =
-                    `<label for="description" class="col-form-label">Message:</label>
-                            <textarea class="form-control" name="description" id="description" required>I request to change my shift to .........</textarea>`;
+                    `<label for="description" class="col-form-label">${translations.message}</label>
+                           <textarea class="form-control" name="description" id="description" required>${translations.change_shift}</textarea>`;
             }
+
         }
 
         function getRelateUserWithRole() {

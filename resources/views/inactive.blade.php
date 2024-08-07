@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Rorex Pipe</title>
+    <title>{{__('general.app_name')}}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -21,7 +21,7 @@
                 <div class="row text-center">
                     @auth
                         <div class="col-12">
-                            <h3 class="text-danger">Your account is under review</h3>
+                            <h3 class="text-danger">{{__('general.account_under_review')}}</h3>
                         </div>
 
                         @if (session('status') == 'verification-link-sent')
