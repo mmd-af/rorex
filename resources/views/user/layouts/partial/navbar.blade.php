@@ -2,7 +2,7 @@
     <button class="btn btn-link btn-sm bg-white text-dark" id="sidebarToggle" href="#!">
         <i class="fas fa-bars"></i>
     </button>
-    <a class="navbar-brand ps-3" href="{{ url('/') }}">rorex.ro</a>
+    <a class="navbar-brand ps-3" href="{{ url('/') }}">{{ __('layouts.rorex_ro') }}</a>
     <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
         <div class="input-group">
@@ -21,7 +21,7 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
                 @if (!empty(auth()->user()->getRoleNames()->toArray()) || Auth::user()->rolles == 'admin')
-                    <li><a class="dropdown-item" href="{{ route('admin.dashboard.index') }}">Admin Panel</a></li>
+                    <li><a class="dropdown-item" href="{{ route('admin.dashboard.index') }}">{{ __('layouts.admin_panel') }}</a></li>
                 @endif
                 <li>
                     <hr class="dropdown-divider" />

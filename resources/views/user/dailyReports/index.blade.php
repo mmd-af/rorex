@@ -1,7 +1,7 @@
 @extends('user.layouts.index')
 
 @section('title')
-    {{ __('general.daily_reports') }}
+    {{ __('dailyReport.daily_reports') }}
 @endsection
 @section('style')
     <style>
@@ -10,14 +10,14 @@
 @endsection
 @section('content')
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">{{ __('general.daily_reports') }}</li>
+        <li class="breadcrumb-item active">{{ __('dailyReport.daily_reports') }}</li>
     </ol>
     @include('user.layouts.partial.errors')
     <div class="card mb-4">
         <div class="card-body table-responsive">
             <form class="form-control px-5">
                 @csrf
-                <label for="date">{{ __('general.select_date') }}:</label>
+                <label for="date">{{ __('dailyReport.select_date') }}:</label>
                 <select id="date" name="date" class="form-control">
                     <?php
                     $startMonth = 3;
@@ -35,7 +35,8 @@
                     }
                     ?>
                 </select>
-                <button type="button" class="btn btn-primary mt-3" onclick="monthlyReportWithDate()">Show
+                <button type="button" class="btn btn-primary mt-3"
+                    onclick="monthlyReportWithDate()">{{ __('dailyReport.show') }}
                 </button>
             </form>
         </div>
@@ -45,28 +46,28 @@
             <table id="dailyReportTable" class="table table-bordered table-striped text-center">
                 <thead>
                     <tr>
-                        <th>{{ __('general.staff_code') }}</th>
-                        <th>{{ __('general.name') }}</th>
-                        <th>{{ __('general.date') }}</th>
-                        <th>{{ __('general.weeks') }}</th>
-                        <th>{{ __('general.shift') }}</th>
-                        <th>{{ __('general.on_work1') }}</th>
-                        <th>{{ __('general.off_work2') }}</th>
-                        <th>{{ __('general.remark') }}</th>
-                        <th>{{ __('general.action') }}</th>
+                        <th>{{ __('dailyReport.staff_code') }}</th>
+                        <th>{{ __('dailyReport.name') }}</th>
+                        <th>{{ __('dailyReport.date') }}</th>
+                        <th>{{ __('dailyReport.weeks') }}</th>
+                        <th>{{ __('dailyReport.shift') }}</th>
+                        <th>{{ __('dailyReport.on_work1') }}</th>
+                        <th>{{ __('dailyReport.off_work2') }}</th>
+                        <th>{{ __('dailyReport.remark') }}</th>
+                        <th>{{ __('dailyReport.action') }}</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>{{ __('general.staff_code') }}</th>
-                        <th>{{ __('general.name') }}</th>
-                        <th>{{ __('general.date') }}</th>
-                        <th>{{ __('general.weeks') }}</th>
-                        <th>{{ __('general.shift') }}</th>
-                        <th>{{ __('general.on_work1') }}</th>
-                        <th>{{ __('general.off_work2') }}</th>
-                        <th>{{ __('general.remark') }}</th>
-                        <th>{{ __('general.action') }}</th>
+                        <th>{{ __('dailyReport.staff_code') }}</th>
+                        <th>{{ __('dailyReport.name') }}</th>
+                        <th>{{ __('dailyReport.date') }}</th>
+                        <th>{{ __('dailyReport.weeks') }}</th>
+                        <th>{{ __('dailyReport.shift') }}</th>
+                        <th>{{ __('dailyReport.on_work1') }}</th>
+                        <th>{{ __('dailyReport.off_work2') }}</th>
+                        <th>{{ __('dailyReport.remark') }}</th>
+                        <th>{{ __('dailyReport.action') }}</th>
                     </tr>
                 </tfoot>
 
@@ -79,25 +80,25 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="forgetRequestLabel">{{ __('general.request') }}</h1>
+                    <h1 class="modal-title fs-5" id="forgetRequestLabel">{{ __('dailyReport.request') }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div id="alert">
                         <div class="row justify-content-center my-3">
                             <div class="spinner-grow text-primary mx-3" role="status">
-                                <span class="visually-hidden">{{ __('general.loading') }}...</span>
+                                <span class="visually-hidden">{{ __('dailyReport.loading') }}...</span>
                             </div>
                             <div class="spinner-grow text-secondary mx-3" role="status">
-                                <span class="visually-hidden">{{ __('general.loading') }}...</span>
+                                <span class="visually-hidden">{{ __('dailyReport.loading') }}...</span>
                             </div>
                         </div>
                         <div class="row justify-content-center my-3">
                             <div class="spinner-grow text-secondary mx-3" role="status">
-                                <span class="visually-hidden">{{ __('general.loading') }}...</span>
+                                <span class="visually-hidden">{{ __('dailyReport.loading') }}...</span>
                             </div>
                             <div class="spinner-grow text-primary mx-3" role="status">
-                                <span class="visually-hidden">{{ __('general.loading') }}...</span>
+                                <span class="visually-hidden">{{ __('dailyReport.loading') }}...</span>
                             </div>
                         </div>
                     </div>
@@ -110,42 +111,42 @@
                         <input type="hidden" id="email" name="email" value="">
                         <input type="hidden" id="staff_code" name="staff_code" value="">
                         <div class="mb-4">
-                            <label for="date" class="col-form-label">{{ __('general.check_date') }}:
+                            <label for="date" class="col-form-label">{{ __('dailyReport.check_date') }}:
                                 <div class="text-info" id="date_show"></div>
                             </label>
                             <input type="hidden" id="check_date" name="check_date" value="">
                         </div>
                         <div class="mb-4">
-                            <label for="subject" class="col-form-label">{{ __('general.subject') }}:</label>
+                            <label for="subject" class="col-form-label">{{ __('dailyReport.subject') }}:</label>
                             <select class="form-select" name="subject" id="subject" onchange="handelRequestWithSubject()"
                                 required>
-                                <option value="">-- {{ __('general.subject') }} --</option>
-                                <option value="Forgot Punch">{{ __('general.forgot_punch') }}</option>
-                                <option value="Forgot Bring My Cart">{{ __('general.forgot_bring_my_cart') }}</option>
-                                <option value="Consider OverTime">{{ __('general.consider_overTime') }}</option>
-                                <option value="Work at Home (Remote)">{{ __('general.work_home') }}</option>
-                                <option value="Mission">{{ __('general.mission') }}</option>
-                                <option value="Change Shift">{{ __('general.change_shift') }}</option>
+                                <option value="">-- {{ __('dailyReport.subject') }} --</option>
+                                <option value="Forgot Punch">{{ __('dailyReport.forgot_punch') }}</option>
+                                <option value="Forgot Bring My Cart">{{ __('dailyReport.forgot_bring_my_cart') }}</option>
+                                <option value="Consider OverTime">{{ __('dailyReport.consider_overTime') }}</option>
+                                <option value="Work at Home (Remote)">{{ __('dailyReport.work_home') }}</option>
+                                <option value="Mission">{{ __('dailyReport.mission') }}</option>
+                                <option value="Change Shift">{{ __('dailyReport.change_shift') }}</option>
                             </select>
                         </div>
                         <div class="mb-4" id="descriptionData">
                         </div>
                         <div class="mb-4">
-                            <label for="departmentRole" class="col-form-label">{{ __('general.referred_to') }}:</label>
+                            <label for="departmentRole" class="col-form-label">{{ __('dailyReport.referred_to') }}:</label>
                             <select class="form-select" name="departmentRole" id="departmentRole"
                                 onchange="getRelateUserWithRole()" required>
-                                <option value="">{{ __('general.select_department') }}</option>
+                                <option value="">{{ __('dailyReport.select_department') }}</option>
                             </select>
                         </div>
                         <div class="mb-4">
-                            <label for="assigned_to" class="col-form-label">{{ __('general.assigned_to') }}:</label>
+                            <label for="assigned_to" class="col-form-label">{{ __('dailyReport.assigned_to') }}:</label>
                             <div id="assigned_user">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">{{ __('general.send_message') }}</button>
+                            <button type="submit" class="btn btn-success">{{ __('dailyReport.send_message') }}</button>
                             <button type="button" class="btn btn-secondary"
-                                data-bs-dismiss="modal">{{ __('general.close') }}</button>
+                                data-bs-dismiss="modal">{{ __('dailyReport.close') }}</button>
                         </div>
                     </form>
                 </div>
@@ -157,21 +158,21 @@
 @section('script')
     <script>
         var translations = {
-            send_message: "{{ __('general.send_message') }}",
-            forgot_punch: "{{ __('general.forgot_punch') }}",
-            forgot_bring_my_cart: "{{ __('general.forgot_bring_my_cart') }}",
-            forgot_bring_my_cart_des: "{{ __('general.forgot_bring_my_cart_des') }}",
-            consider_as_allow_leave: "{{ __('general.consider_as_allow_leave') }}",
-            consider_overtime: "{{ __('general.consider_overtime') }}",
-            work_at_home: "{{ __('general.work_at_home') }}",
-            mission: "{{ __('general.mission') }}",
-            other: "{{ __('general.other') }}",
-            change_shift: "{{ __('general.change_shift') }}",
-            at_what_time: "{{ __('general.at_what_time') }}",
-            message: "{{ __('general.message') }}",
-            how_many_hour: "{{ __('general.how_many_hour') }}",
-            please_describe_it: "{{ __('general.please_describe_it') }}",
-            start_work: "{{ __('general.start_work') }}"
+            send_message: "{{ __('dailyReport.send_message') }}",
+            forgot_punch: "{{ __('dailyReport.forgot_punch') }}",
+            forgot_bring_my_cart: "{{ __('dailyReport.forgot_bring_my_cart') }}",
+            forgot_bring_my_cart_des: "{{ __('dailyReport.forgot_bring_my_cart_des') }}",
+            consider_as_allow_leave: "{{ __('dailyReport.consider_as_allow_leave') }}",
+            consider_overtime: "{{ __('dailyReport.consider_overtime') }}",
+            work_at_home: "{{ __('dailyReport.work_at_home') }}",
+            mission: "{{ __('dailyReport.mission') }}",
+            other: "{{ __('dailyReport.other') }}",
+            change_shift: "{{ __('dailyReport.change_shift') }}",
+            at_what_time: "{{ __('dailyReport.at_what_time') }}",
+            message: "{{ __('dailyReport.message') }}",
+            how_many_hour: "{{ __('dailyReport.how_many_hour') }}",
+            please_describe_it: "{{ __('dailyReport.please_describe_it') }}",
+            start_work: "{{ __('dailyReport.start_work') }}"
         };
     </script>
 

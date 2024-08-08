@@ -1,12 +1,12 @@
 @extends('user.layouts.index')
 
 @section('title')
-    Dashboard
+    {{__('dashboard.dashboard')}}
 @endsection
 
 @section('content')
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">User Dashboard</li>
+        <li class="breadcrumb-item active">{{__('dashboard.user_dashboard')}}</li>
     </ol>
 
     @if (session('status') == 'verification-link-sent')
@@ -16,19 +16,19 @@
     @endif
 
     @if(empty(auth()->user()->email))
-        To receive notifications and access certain features, register your email in the system.
+        {{__('dashboard.register_your_email')}}
         <form method="post" action="{{ route('profile.update') }}" class="mt-6 col-md-6">
             @csrf
             @method('patch')
             <div class="mt-3">
-                <label for="first_name">First Name</label>
+                <label for="first_name">{{__('dashboard.first_name')}}</label>
                 <input id="first_name" name="first_name" type="text" class="form-control"
                        value="{{old('first_name', auth()->user()->first_name)}}"
                        required
                        autofocus autocomplete="first_name" disabled/>
             </div>
             <div class="mt-3">
-                <label for="name">Last Name</label>
+                <label for="name">{{__('dashboard.last_name')}}</label>
                 <input id="name" type="text" class="form-control" value="{{old('name', auth()->user()->name)}}"
                        required
                        autofocus autocomplete="name" disabled/>
