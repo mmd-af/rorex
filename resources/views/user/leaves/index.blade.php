@@ -1,7 +1,7 @@
 @extends('user.layouts.index')
 
 @section('title')
-    Staff Requests
+    {{ __('leaves.staff_requests') }}
 @endsection
 @section('style')
     <style id="printStyle">
@@ -30,7 +30,7 @@
 @endsection
 @section('content')
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Staff Requests</li>
+        <li class="breadcrumb-item active">{{ __('leaves.staff_requests') }}</li>
     </ol>
     @include('user.layouts.partial.errors')
     <div class="row">
@@ -38,45 +38,47 @@
             <div class="card bg-primary text-white mb-4">
                 <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#LeaveRequest"
                     data-info="Modal 1 Content">
-                    Send New Request <i class="fa-solid fa-square-arrow-up-right"></i>
+                    {{ __('leaves.send_new_request') }} <i class="fa-solid fa-square-arrow-up-right"></i>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-xl-3 col-md-6 border p-3 m-2">
-            <h6 class="text-success"> Remaining allowable leave=
+            <h6 class="text-success"> {{ __('leaves.remaining_allowable_leave') }}
                 {{ number_format(Auth::user()->employee->leave_balance / 8, 2) }}
-                days
-                ({{ Auth::user()->employee->leave_balance }} hours)</h6>
+                {{ __('leaves.days') }}
+                ({{ Auth::user()->employee->leave_balance }} {{ __('leaves.hour') }})</h6>
         </div>
         <div class="col-xl-3 col-md-6 border p-3 m-2">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title text-success">Leaved Days statistics</h6>
+                    <h6 class="card-title text-success">{{ __('leaves.leaved_days_statistics') }}</h6>
                     <div class="mb-3">
                         <select id="year" name="year" class="form-select" onchange="getLeaveDays(event)">
-                            <option value="">-- select year --</option>
+                            <option value="">-- {{ __('leaves.select_year') }} --</option>
                             <option value="2024">2024</option>
                         </select>
                     </div>
                     <div id="resultLeaveDays"></div>
-                    <p class="text-warning">Note that this statistic is from 01/07/2024</p>
+                    <p class="text-warning">
+                        {{ __('leaves.note_statistic_from') }}
+                    </p>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6 border p-3 m-2">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title text-success">Hourly Leaved statistics</h6>
+                    <h6 class="card-title text-success">{{ __('leaves.hourly_Leaved_statistics') }}</h6>
                     <div class="mb-3">
                         <select id="year" name="year" class="form-select" onchange="getHourlyLeave(event)">
-                            <option value="">-- select year --</option>
+                            <option value="">-- {{ __('leaves.select_year') }} --</option>
                             <option value="2024">2024</option>
                         </select>
                     </div>
                     <div id="resultHourlyLeave"></div>
-                    <p class="text-warning">Note that this statistic is from 01/07/2024</p>
+                    <p class="text-warning">{{ __('leaves.note_statistic_from') }}</p>
                 </div>
             </div>
         </div>
@@ -86,24 +88,24 @@
             <table id="staffRequestTable" class="table table-bordered table-striped text-center">
                 <thead>
                     <tr>
-                        <th>Tracking Number</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Type</th>
-                        <th>Value</th>
-                        <th>File</th>
-                        <th>Status</th>
+                        <th>{{ __('leaves.tracking_number') }}</th>
+                        <th>{{ __('leaves.start_date') }}</th>
+                        <th>{{ __('leaves.end_date') }}</th>
+                        <th>{{ __('leaves.type') }}</th>
+                        <th>{{ __('leaves.value') }}</th>
+                        <th>{{ __('leaves.file') }}</th>
+                        <th>{{ __('leaves.status') }}</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Tracking Number</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Type</th>
-                        <th>Value</th>
-                        <th>File</th>
-                        <th>Status</th>
+                        <th>{{ __('leaves.tracking_number') }}</th>
+                        <th>{{ __('leaves.start_date') }}</th>
+                        <th>{{ __('leaves.end_date') }}</th>
+                        <th>{{ __('leaves.type') }}</th>
+                        <th>{{ __('leaves.value') }}</th>
+                        <th>{{ __('leaves.file') }}</th>
+                        <th>{{ __('leaves.status') }}</th>
                     </tr>
                 </tfoot>
 
@@ -116,7 +118,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="LeaveRequestLabel">Leave Request</h1>
+                    <h1 class="modal-title fs-5" id="LeaveRequestLabel">{{ __('leaves.leave_request') }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -124,40 +126,40 @@
                         @csrf
                         <div class="mb-3 lh-lg h5">
                             @if (empty(Auth::user()->employee->last_name))
-                                Last Name:
+                            {{ __('leaves.last_name') }}
                                 <input type="text" class="form-control" name="last_name" id="last_name" value="">
                             @else
                                 <input type="hidden" name="last_name" value="{{ Auth::user()->employee->last_name }}">
                             @endif
                             @if (empty(Auth::user()->employee->first_name))
-                                First Name:
+                            {{ __('leaves.first_name') }}
                                 <input type="text" class="form-control" name="first_name" id="first_name" value="">
                             @else
                                 <input type="hidden" name="first_name" value="{{ Auth::user()->employee->first_name }}">
                             @endif
                             @if (empty(Auth::user()->employee->staff_code))
-                                Staff Code:
+                            {{ __('leaves.staff_code') }}
                                 <input type="text" class="form-control" name="staff_code" id="staff_code" value="">
                             @else
                                 <input type="hidden" name="staff_code" value="{{ Auth::user()->employee->staff_code }}">
                             @endif
                             @if (empty(Auth::user()->employee->department))
-                                Department:
+                            {{ __('leaves.department') }}
                                 <input type="text" class="form-control" name="department" id="department" value="">
                             @else
                                 <input type="hidden" name="department" value="{{ Auth::user()->employee->department }}">
                             @endif
                             <div class="col-md-6">
-                                <label for="type">Type:</label>
+                                <label for="type">{{ __('leaves.type') }}:</label>
                                 <select class="form-select" name="type" id="type"
                                     onchange="actionForSelectType(event)" required>
-                                    <option selected>-- Select one --</option>
-                                    <option value="Allowed Leave">Allowed Leave</option>
-                                    <option value="Medical Leave">Medical Leave</option>
-                                    <option value="Speacial Event Leave">Speacial Event Leave</option>
-                                    <option value="Hourly Leave">Hourly Leave</option>
-                                    <option value="Without Paid Leave">Without Paid Leave</option>
-                                    <option value="Without Paid Hourly Leave">Without Paid Hourly Leave</option>
+                                    <option selected>-- {{ __('leaves.select_type') }} --</option>
+                                    <option value="Allowed Leave">{{ __('leaves.allowed_leave') }}</option>
+                                    <option value="Medical Leave">{{ __('leaves.medical_leave') }}</option>
+                                    <option value="Speacial Event Leave">{{ __('leaves.speacial_event_leave') }}</option>
+                                    <option value="Hourly Leave">{{ __('leaves.hourly_leave') }}</option>
+                                    <option value="Without Paid Leave">{{ __('leaves.without_paid_leave') }}</option>
+                                    <option value="Without Paid Hourly Leave">{{ __('leaves.without_paid_hourly_leave') }}</option>
                                 </select>
                             </div>
                             <div class="row mt-4" id="datesForLeave">
@@ -166,7 +168,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="col-form-label">Your Email:</label>
+                            <label for="email" class="col-form-label">{{ __('leaves.your_email') }}</label>
                             @if (empty(Auth::user()->email))
                                 <input type="email" class="form-control" name="email" id="email" value=""
                                     required>
@@ -178,23 +180,23 @@
                         <div class="mb-3">
                             <div class="row">
                                 <div class="col-sm-12 col-lg-6">
-                                    <label for="departmentRole" class="col-form-label">Referred to:</label>
-                                    <select class="form-control" name="departmentRole" id="departmentRole"
+                                    <label for="departmentRole" class="col-form-label">{{ __('leaves.referred_to') }}</label>
+                                    <select class="form-select" name="departmentRole" id="departmentRole"
                                         onchange="getRelateUserWithRole()" required>
-                                        <option value="">SELECT DEPARTMENT</option>
+                                        <option value="">{{ __('leaves.select_department') }}</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-lg-6">
-                                    <label for="assigned_to" class="col-form-label">Referred to:</label>
+                                    <label for="assigned_to" class="col-form-label">{{ __('leaves.assigned_to') }}</label>
                                     <div id="assigned_user">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success mt-3" id="performAction">Send</button>
+                        <button type="submit" class="btn btn-success mt-3" id="performAction">{{ __('leaves.send') }}</button>
                     </form>
                     <div class="modal-footer mt-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('leaves.close') }}</button>
                     </div>
                 </div>
             </div>
@@ -559,7 +561,7 @@
             axios.post('{{ route('user.staffRequests.ajax.getUserWithRole') }}', data)
                 .then(function(response) {
                     assigned_user.innerHTML = `
-                    <select class="form-control" name="assigned_to" id="assigned_to" required>
+                    <select class="form-select" name="assigned_to" id="assigned_to" required>
                     </select>`;
                     let assignedTo = document.getElementById('assigned_to');
                     assignedTo.innerHTML = ``;
