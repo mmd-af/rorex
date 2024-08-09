@@ -1,23 +1,22 @@
 @extends('user.layouts.index')
 
 @section('title')
-    Monthly Reports
+    {{ __('monthlyReport.monthly_report') }}
 @endsection
-@section('style')
-    <style>
 
-    </style>
+@section('style')
 @endsection
+
 @section('content')
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Monthly Reports</li>
+        <li class="breadcrumb-item active">{{ __('monthlyReport.monthly_report') }}</li>
     </ol>
     @include('user.layouts.partial.errors')
     <div class="card mb-4">
         <div class="card-body table-responsive">
             <form class="form-control px-5">
                 @csrf
-                <label for="date">Select Date:</label>
+                <label for="date">{{ __('monthlyReport.select_date') }}</label>
                 <select id="date" name="date" class="form-control">
                     <?php
                     $startMonth = 3;
@@ -35,7 +34,8 @@
                     }
                     ?>
                 </select>
-                <button type="button" class="btn btn-primary mt-3" onclick="monthlyReportWithDate()">Show
+                <button type="button" class="btn btn-primary mt-3"
+                    onclick="monthlyReportWithDate()">{{ __('monthlyReport.show') }}
                 </button>
             </form>
             <div id="showResult"></div>
@@ -45,24 +45,50 @@
 
 @section('script')
     <script>
+        var translations = {
+            loading: "{{ __('monthlyReport.loading') }}",
+            total: "{{ __('monthlyReport.total') }}",
+            value: "{{ __('monthlyReport.value') }}",
+            unit: "{{ __('monthlyReport.unit') }}",
+            per_hour: "{{ __('monthlyReport.per_hour') }}",
+            per_day: "{{ __('monthlyReport.per_day') }}",
+            night: "{{ __('monthlyReport.night') }}",
+            morning: "{{ __('monthlyReport.morning') }}",
+            afternoon: "{{ __('monthlyReport.afternoon') }}",
+            daily: "{{ __('monthlyReport.daily') }}",
+            plus_week_day: "{{ __('monthlyReport.plus_week_day') }}",
+            plus_week_night: "{{ __('monthlyReport.plus_week_night') }}",
+            plus_holiday_day: "{{ __('monthlyReport.plus_holiday_day') }}",
+            plus_holiday_night: "{{ __('monthlyReport.plus_holiday_night') }}",
+            compensation: "{{ __('monthlyReport.compensation') }}",
+            text_of_compensation: "{{ __('monthlyReport.text_of_compensation') }}",
+            daily_absence: "{{ __('monthlyReport.daily_absence') }}",
+            allowed_leave: "{{ __('monthlyReport.allowed_leave') }}",
+            without_paid_leave: "{{ __('monthlyReport.without_paid_leave') }}",
+            total_working_hours: "{{ __('monthlyReport.total_working_hours') }}",
+            unknown: "{{ __('monthlyReport.unknown') }}",
+            default_shift: "{{ __('monthlyReport.default_shift') }}",
+        };
+
+
         function monthlyReportWithDate() {
             let showResult = document.getElementById('showResult');
             var date = document.getElementById('date').value;
             showResult.innerHTML = `
                     <div class="row justify-content-center">
                         <div class="spinner-grow text-primary m-3 p-3" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                            <span class="visually-hidden">${translations.message}</span>
                         </div>
                         <div class="spinner-grow text-secondary m-3 p-3" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                            <span class="visually-hidden">${translations.message}</span>
                         </div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="spinner-grow text-secondary m-3 p-3" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                            <span class="visually-hidden">${translations.message}</span>
                         </div>
                         <div class="spinner-grow text-primary m-3 p-3" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                            <span class="visually-hidden">${translations.message}</span>
                         </div>
                     </div>`;
             formData = {
@@ -88,94 +114,94 @@
                 </div>
                 </div>
                  <div class="row justify-content-center mt-5">
-                                    <table class="table table-striped border text-center table-responsive p-5 rounded-3">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col">Total</th>
-                                            <th scope="col">value</th>
-                                            <th scope="col">unit</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>Night</td>
-                                            <td>${response.data.hourNight}</td>
-                            <td>per hour</td>
+                    <table class="table table-striped border text-center table-responsive p-5 rounded-3">
+                      <thead>
+                        <tr>
+                            <th scope="col">${translations.total}</th>
+                            <th scope="col">${translations.value}</th>
+                            <th scope="col">${translations.unit}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                            <td>${translations.night}</td>
+                            <td>${response.data.hourNight}</td>
+                            <td>${translations.per_hour}</td>
                         </tr>
                         <tr>
-                            <td>Morning</td>
+                            <td>${translations.morning}</td>
                             <td>${response.data.hourMorning}</td>
-                            <td>per hour</td>
+                            <td>${translations.per_hour}</td>
                         </tr>
                         <tr>
-                            <td>Afternoon</td>
+                            <td>${translations.afternoon}</td>
                             <td>${response.data.hourAfternoon}</td>
-                            <td>per hour</td>
+                            <td>${translations.per_hour}</td>
                         </tr>
                         <tr>
-                            <td>Daily</td>
+                            <td>${translations.daily}</td>
                             <td>${response.data.hourDaily}</td>
-                            <td>per hour</td>
+                            <td>${translations.per_hour}</td>
                         </tr>
                         <tr>
-                            <td>plus_week_day</td>
+                            <td>${translations.plus_week_day}</td>
                             <td class="bg-success text-light">${response.data.plus_week_day}</td>
-                            <td>per hour</td>
+                            <td>${translations.per_hour}</td>
                         </tr>
                         <tr>
-                            <td>plus_week_night</td>
+                            <td>${translations.plus_week_night}</td>
                             <td class="bg-success text-light">${response.data.plus_week_night}</td>
-                            <td>per hour</td>
+                            <td>${translations.per_hour}</td>
                         </tr>
                         <tr>
-                            <td>plus_holiday_day</td>
+                            <td>${translations.plus_holiday_day}</td>
                             <td class="bg-success text-light">${response.data.plus_holiday_day}</td>
-                            <td>per hour</td>
+                            <td>${translations.per_hour}</td>
                         </tr>
                         <tr>
-                            <td>plus_holiday_night</td>
+                            <td>${translations.plus_holiday_night}</td>
                             <td class="bg-success text-light">${response.data.plus_holiday_night}</td>
-                            <td>per hour</td>
+                            <td>${translations.per_hour}</td>
                         </tr>
                         <tr>
-                            <td>Compensation</td>
+                            <td>${translations.compensation}</td>
                             <td class="bg-warning">
                                 <b>${response.data.compensation}</b><hr>
-                                <small>If this number is negative, it will be automatically deducted from your working hours</small>
+                                <small>${translations.text_of_compensation}</small>
                                 </td>
-                            <td>per hour</td>
+                            <td>${translations.per_hour}</td>
                         </tr>
                         <tr>
-                            <th>Daily Absence</th>
+                            <th>${translations.daily_absence}</th>
                             <th class="bg-danger">${response.data.dailyAbsence}</th>
-                            <th>per day</th>
+                            <th>${translations.per_hour}</th>
                         </tr>
                         <tr>
-                            <th>Allowed Leave</th>
+                            <th>${translations.allowed_leave}</th>
                             <th class="bg-info">${response.data.concediu_ore}</th>
-                            <th>per hour</th>
+                            <th>${translations.per_hour}</th>
                         </tr>
                         <tr>
-                            <th>Without Paid Leave</th>
+                            <th>${translations.without_paid_leave}</th>
                             <th class="bg-info">${response.data.without_paid_leave}</th>
-                            <th>per hour</th>
+                            <th>${translations.per_hour}</th>
                         </tr>
                         <tr>
-                            <th>Total working hours</th>
+                            <th>${translations.total_working_hours}</th>
                             <th><h4 class="shadow bg-white rounded-3"><strong>${response.data.totalHours}</strong></h4></th>
-                            <th>per hour</th>
+                            <th>${translations.per_hour}</th>
                         </tr>
                         <tr>
-                            <th>Unknown</th>
+                            <th>${translations.unknown}</th>
                             <th>${response.data.hourUnknown}</th>
-                            <th>per hour</th>
+                            <th>${translations.per_hour}</th>
                         </tr>
                         <tr>
-                            <th>Default Shift</th>
+                            <th>${translations.default_shift}</th>
                             <th>${response.data.turaImplicita}</th>
-                            <th>per hour</th>
+                            <th>${translations.per_hour}</th>
                         </tr>
-                        </tbody>
+                      </tbody>
                     </table>
                     </div>`;
                 })

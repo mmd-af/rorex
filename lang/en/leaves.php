@@ -35,6 +35,5 @@ return [
     'assigned_to' => 'Assigned To:',
     'send' => 'Send',
     'close' => 'Close',
-    'aaaaaaa' => 'aaaaaaa',
 
 ];
