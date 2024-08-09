@@ -20,7 +20,7 @@
                 </nav>
             </div>
 
-            <div class="sb-sidenav-menu-heading">{{ __('layouts.Requests') }}</div>
+            <div class="sb-sidenav-menu-heading">{{ __('layouts.requests') }}</div>
             <a class="nav-link" href="{{ route('user.leaves.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                 {{ __('layouts.leave_requests') }}

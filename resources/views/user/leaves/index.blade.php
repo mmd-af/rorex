@@ -126,25 +126,25 @@
                         @csrf
                         <div class="mb-3 lh-lg h5">
                             @if (empty(Auth::user()->employee->last_name))
-                            {{ __('leaves.last_name') }}
+                                {{ __('leaves.last_name') }}
                                 <input type="text" class="form-control" name="last_name" id="last_name" value="">
                             @else
                                 <input type="hidden" name="last_name" value="{{ Auth::user()->employee->last_name }}">
                             @endif
                             @if (empty(Auth::user()->employee->first_name))
-                            {{ __('leaves.first_name') }}
+                                {{ __('leaves.first_name') }}
                                 <input type="text" class="form-control" name="first_name" id="first_name" value="">
                             @else
                                 <input type="hidden" name="first_name" value="{{ Auth::user()->employee->first_name }}">
                             @endif
                             @if (empty(Auth::user()->employee->staff_code))
-                            {{ __('leaves.staff_code') }}
+                                {{ __('leaves.staff_code') }}
                                 <input type="text" class="form-control" name="staff_code" id="staff_code" value="">
                             @else
                                 <input type="hidden" name="staff_code" value="{{ Auth::user()->employee->staff_code }}">
                             @endif
                             @if (empty(Auth::user()->employee->department))
-                            {{ __('leaves.department') }}
+                                {{ __('leaves.department') }}
                                 <input type="text" class="form-control" name="department" id="department" value="">
                             @else
                                 <input type="hidden" name="department" value="{{ Auth::user()->employee->department }}">
@@ -159,7 +159,8 @@
                                     <option value="Speacial Event Leave">{{ __('leaves.speacial_event_leave') }}</option>
                                     <option value="Hourly Leave">{{ __('leaves.hourly_leave') }}</option>
                                     <option value="Without Paid Leave">{{ __('leaves.without_paid_leave') }}</option>
-                                    <option value="Without Paid Hourly Leave">{{ __('leaves.without_paid_hourly_leave') }}</option>
+                                    <option value="Without Paid Hourly Leave">{{ __('leaves.without_paid_hourly_leave') }}
+                                    </option>
                                 </select>
                             </div>
                             <div class="row mt-4" id="datesForLeave">
@@ -180,23 +181,27 @@
                         <div class="mb-3">
                             <div class="row">
                                 <div class="col-sm-12 col-lg-6">
-                                    <label for="departmentRole" class="col-form-label">{{ __('leaves.referred_to') }}</label>
+                                    <label for="departmentRole"
+                                        class="col-form-label">{{ __('leaves.referred_to') }}</label>
                                     <select class="form-select" name="departmentRole" id="departmentRole"
                                         onchange="getRelateUserWithRole()" required>
                                         <option value="">{{ __('leaves.select_department') }}</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-lg-6">
-                                    <label for="assigned_to" class="col-form-label">{{ __('leaves.assigned_to') }}</label>
+                                    <label for="assigned_to"
+                                        class="col-form-label">{{ __('leaves.assigned_to') }}</label>
                                     <div id="assigned_user">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success mt-3" id="performAction">{{ __('leaves.send') }}</button>
+                        <button type="submit" class="btn btn-success mt-3"
+                            id="performAction">{{ __('leaves.send') }}</button>
                     </form>
                     <div class="modal-footer mt-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('leaves.close') }}</button>
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">{{ __('leaves.close') }}</button>
                     </div>
                 </div>
             </div>
@@ -206,6 +211,28 @@
 
 @section('script')
     <script>
+        var translations = {
+            start_date: "{{ __('leaves.start_date') }}",
+            end_date: "{{ __('leaves.end_date') }}",
+            second_date_before_first_date: "{{ __('leaves.second_date_before_first_date') }}",
+            days_excluding_holiday: "{{ __('leaves.days_excluding_holiday') }}",
+            days_request_more_total: "{{ __('leaves.days_request_more_total') }}",
+            use_without_paid_leave: "{{ __('leaves.use_without_paid_leave') }}",
+            total_requested_days: "{{ __('leaves.total_requested_days') }}",
+            excluding_holidays: "{{ __('leaves.excluding_holidays') }}",
+            totally: "{{ __('leaves.totally') }}",
+            unpaid_leave: "{{ __('leaves.unpaid_leave') }}",
+            explain: "{{ __('leaves.explain') }}",
+            attached_file_required: "{{ __('leaves.attached_file_required') }}",
+            date: "{{ __('leaves.date') }}",
+            start_time: "{{ __('leaves.start_time') }}",
+            end_time: "{{ __('leaves.end_time') }}",
+            end_time_cannot_be_earlier_start: "{{ __('leaves.end_time_cannot_be_earlier_start') }}",
+            dont_remaining_allowable_leave: "{{ __('leaves.dont_remaining_allowable_leave') }}",
+            consider_without_paid: "{{ __('leaves.consider_without_paid') }}",
+            you_have_remaining_paid: "{{ __('leaves.you_have_remaining_paid') }}",
+            i_accept: "{{ __('leaves.i_accept') }}"
+        };
         $(document).ready(function() {
             $('#staffRequestTable').DataTable({
                 processing: true,
@@ -273,12 +300,12 @@
         function LeaveRequestForRest(datesForLeave) {
             datesForLeave.innerHTML = `
                                 <div class="col-md-6">
-                                    <label for="startDate" class="form-label">Start Date:</label>
+                                    <label for="startDate" class="form-label">${translations.start_date}</label>
                                     <input type="date" name="start_date" class="form-control" id="startDate"
                                            onchange="calculateDateDifference(1)" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="endDate" class="form-label">End Date:</label>
+                                    <label for="endDate" class="form-label">${translations.end_date}</label>
                                     <input type="date" name="end_date" class="form-control" id="endDate"
                                            onchange="calculateDateDifference(1)" required>
                                 </div>
@@ -293,12 +320,12 @@
         function LeaveRequestWithoutPaid(datesForLeave) {
             datesForLeave.innerHTML = `
                                 <div class="col-md-6">
-                                    <label for="startDate" class="form-label">Start Date:</label>
+                                    <label for="startDate" class="form-label">${translations.start_date}</label>
                                     <input type="date" name="start_date" class="form-control" id="startDate"
                                            onchange="calculateDateDifference(3)" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="endDate" class="form-label">End Date:</label>
+                                    <label for="endDate" class="form-label">${translations.end_date}</label>
                                     <input type="date" name="end_date" class="form-control" id="endDate"
                                            onchange="calculateDateDifference(3)" required>
                                 </div>
@@ -321,14 +348,14 @@
                 var endDate = new Date(endDateValue);
                 if (endDate < startDate) {
                     document.getElementById('dateDifference').innerHTML =
-                        `<p class="text-danger">The second date cannot be before the first date</p>`;
+                        `<p class="text-danger">${translations.second_date_before_first_date}</p>`;
                     return;
                 }
                 var timeDifference = Math.abs(endDate - startDate + 1);
                 var dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
                 let numberOfExcludingHolidays;
                 do {
-                    numberOfExcludingHolidays = prompt('How many days EXCLUDING Holidays? (Just enter the number)');
+                    numberOfExcludingHolidays = prompt(translations.days_excluding_holiday);
                 } while (numberOfExcludingHolidays === null || numberOfExcludingHolidays.trim() === '' || isNaN(
                         numberOfExcludingHolidays) || !Number.isInteger(parseFloat(numberOfExcludingHolidays)));
                 numberOfExcludingHolidays = parseInt(numberOfExcludingHolidays, 10);
@@ -337,15 +364,15 @@
                     if ((leave_balance / 8) < numberOfExcludingHolidays) {
                         showInformation.innerHTML +=
                             `<div class="m-3">
-                         <h4 class="text-danger">The number of days you request is more than the total number of days you are allowed</h4>
-                         <h6 class="text-info">You can use the without paid Leave option</h6>
+                         <h4 class="text-danger">${translations.days_request_more_total}</h4>
+                         <h6 class="text-info">${translations.use_without_paid_leave}</h6>
                          <input type="hidden" name="leave_days" value="${numberOfExcludingHolidays}" required>
                       </div>`;
                     } else {
                         showInformation.innerHTML =
                             `<div class="mt-2">
-                        <p class="text-primary">Total requested days= ${dayDifference} days</p>
-                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
+                        <p class="text-primary">${translations.total_requested_days} = ${dayDifference} days</p>
+                        <p class="text-info">${translations.excluding_holidays} = ${numberOfExcludingHolidays} days</p>
                         <input type="hidden" name="totally" value="${dayDifference}">
                         <input type="hidden" name="leave_balance" value="${leave_balance}">
                         <input type="hidden" name="leave_days" value="${numberOfExcludingHolidays}" required>
@@ -355,8 +382,8 @@
                 if (x === 2) {
                     showInformation.innerHTML =
                         `<div class="mt-3">
-                        <p class="text-primary">Totally= ${dayDifference} days</p>
-                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
+                        <p class="text-primary">${translations.totally} = ${dayDifference} days</p>
+                        <p class="text-info">${translations.excluding_holidays} = ${numberOfExcludingHolidays} days</p>
                         <input type="hidden" name="leave_days" value="${numberOfExcludingHolidays}">
                         <input type="hidden" name="totally" value="${dayDifference}">
                         <input type="hidden" name="leave_balance" value="${leave_balance}">
@@ -365,9 +392,9 @@
                 if (x === 3) {
                     showInformation.innerHTML =
                         `<div class="mt-2">
-                        <p class="text-primary">Total requested days= ${dayDifference} days</p>
-                        <p class="text-info">EXCLUDING Holidays= ${numberOfExcludingHolidays} days</p>
-                        <p class="text-danger">unpaid leave</p>
+                        <p class="text-primary">${translations.total_requested_days} = ${dayDifference} days</p>
+                        <p class="text-info">${translations.excluding_holidays} = ${numberOfExcludingHolidays} days</p>
+                        <p class="text-danger">${translations.unpaid_leave}</p>
                         <input type="hidden" name="totally" value="${dayDifference}">
                         <input type="hidden" name="leave_balance" value="${leave_balance}">
                         <input type="hidden" name="leave_days" value="${numberOfExcludingHolidays}" required>
@@ -380,12 +407,12 @@
         function LeaveRequestForMedicalLeave(datesForLeave) {
             datesForLeave.innerHTML = `
                                 <div class="col-md-6">
-                                    <label for="startDate" class="form-label">Start Date:</label>
+                                    <label for="startDate" class="form-label">${translations.start_date}</label>
                                     <input type="date" name="start_date" class="form-control" id="startDate"
                                            onchange="calculateDateDifference(2)" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="endDate" class="form-label">End Date:</label>
+                                    <label for="endDate" class="form-label">${translations.end_date}</label>
                                     <input type="date" name="end_date" class="form-control" id="endDate"
                                            onchange="calculateDateDifference(2)" required>
                                 </div>
@@ -397,25 +424,25 @@
                 `
                                 <input type="hidden" name="subject" value="Medical Leave">
                                 <div class="mb-3">
-                                <label for="description">explain:</label>
+                                <label for="description">${translations.explain}</label>
                                 <input type="text" class="form-control" name="description" id="description" value="" required>
                                 </div> 
                                 <div class="mb-3">
-                                   <label for="file">file:</label>
+                                   <label for="file">${translations.file}:</label>
                                    <input type="file" class="form-control" name="file" id="file" required/>
-                                  <small id="file" class="form-text text-muted">The attached file is required for Medical leave</small>
+                                  <small id="file" class="form-text text-muted">${translations.attached_file_required}</small>
                                   </div>`;
         }
 
         function LeaveRequestForSpecialEvents(datesForLeave) {
             datesForLeave.innerHTML = `
                                 <div class="col-md-6">
-                                    <label for="startDate" class="form-label">Start Date:</label>
+                                    <label for="startDate" class="form-label">${translations.start_date}</label>
                                     <input type="date" name="start_date" class="form-control" id="startDate"
                                            onchange="calculateDateDifference(2)" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="endDate" class="form-label">End Date:</label>
+                                    <label for="endDate" class="form-label">${translations.end_date}</label>
                                     <input type="date" name="end_date" class="form-control" id="endDate"
                                            onchange="calculateDateDifference(2)" required>
                                 </div>
@@ -427,13 +454,13 @@
                 `
                                 <input type="hidden" name="subject" value="leave for special events">
                                 <div class="mb-3">
-                                <label for="description">explain:</label>
+                                <label for="description">${translations.explain}:</label>
                                 <input type="text" class="form-control" name="description" id="description" value="" required>
                                 </div> 
                                 <div class="mb-3">
-                                   <label for="file">file:</label>
+                                   <label for="file">${translations.file}:</label>
                                    <input type="file" class="form-control" name="file" id="file" required/>
-                                  <small id="file" class="form-text text-muted">The attached file is required for Special Events leave</small>
+                                  <small id="file" class="form-text text-muted">${translations.attached_file_required}</small>
                                   </div>`;
         }
 
@@ -441,16 +468,16 @@
             datesForLeave.innerHTML = `
             <div class="row">
                 <div class="col-md-6">
-                    <label for="startDate" class="form-label">Date:</label>
+                    <label for="startDate" class="form-label">${translations.date}</label>
                     <input type="date" name="start_date" class="form-control" id="startDate" required>
                 </div>
             </div>
             <div class="col-md-6">
-                <label for="startTime" class="form-label">Start Time:</label>
+                <label for="startTime" class="form-label">${translations.start_time}</label>
                 <input type="time" name="start_time" class="form-control" id="startTime" onchange="calculateTimeDifference('${targetValue}')" required>
             </div>
             <div class="col-md-6">
-                <label for="endTime" class="form-label">End Time:</label>
+                <label for="endTime" class="form-label">${translations.end_time}</label>
                 <input type="time" name="end_time" class="form-control" id="endTime" onchange="calculateTimeDifference('${targetValue}')" required>
             </div>
             <div class="col-md-6">
@@ -489,7 +516,7 @@
                 var endTime = new Date('1970-01-01T' + endTimeValue + ':00Z').getTime();
                 if (endTime < startTime) {
                     document.getElementById('timeDifference').innerHTML =
-                        `<p class="text-danger">End time cannot be earlier than start time</p>`;
+                        `<p class="text-danger">${translations.end_time_cannot_be_earlier_start}</p>`;
                     return;
                 }
                 let modalSubject = document.getElementById('modalSubject');
@@ -504,10 +531,10 @@
                     modalSubject.innerHTML = `
                     <input type="hidden" name="subject" value="Without Paid Hourly Leave">`;
                     document.getElementById('timeDifference').innerHTML +=
-                        `<p class="text-danger">You don't have remaining allowable leave</p>
+                        `<p class="text-danger">${translations.dont_remaining_allowable_leave}</p>
                          <div class="custom-checkbox p-3 border shadow-lg">
                          <input onClick="changeTypeValueHourlyLeave(event)" class="" type="checkbox" id="consider_as_without_paid_leave" name="consider_as_without_paid_leave" value="true">
-                         <label class="text-warning mx-2" for="consider_as_without_paid_leave">Consider as without paid leave</label>
+                         <label class="text-warning mx-2" for="consider_as_without_paid_leave">${translations.consider_without_paid}</label>
                          </div>`;
 
                 }
@@ -515,10 +542,10 @@
                     modalSubject.innerHTML = `
                     <input type="hidden" name="subject" value="Without Paid Hourly Leave">`;
                     document.getElementById('timeDifference').innerHTML +=
-                        `<p class="text-danger">Although you have remaining paid leave, you are requesting unpaid leave.</p>
+                        `<p class="text-danger">${translations.you_have_remaining_paid}</p>
                          <div class="custom-checkbox p-3 border shadow-lg">
                          <input onClick="changeTypeValueHourlyLeave(event)" class="" type="checkbox" id="consider_as_without_paid_leave" name="consider_as_without_paid_leave" value="true">
-                         <label class="text-warning mx-2" for="consider_as_without_paid_leave">I accept</label>
+                         <label class="text-warning mx-2" for="consider_as_without_paid_leave">${translations.i_accept}</label>
                          </div>`;
                 } else {
                     modalSubject.innerHTML = `

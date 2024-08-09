@@ -35,5 +35,22 @@ return [
     'assigned_to' => 'Assigned To:',
     'send' => 'Send',
     'close' => 'Close',
-
+    'second_date_before_first_date' => 'The second date cannot be before the first date',
+    'days_excluding_holiday' => 'How many days EXCLUDING Holidays? (Just enter the number)',
+    'days_request_more_total' => 'The number of days you request is more than the total number of days you are allowed',
+    'use_without_paid_leave' => 'You can use the without paid Leave option',
+    'total_requested_days' => 'Total Requested Days',
+    'excluding_holidays' => 'EXCLUDING Holidays',
+    'totally' => 'Totally',
+    'unpaid_leave' => 'Unpaid Leave',
+    'explain' => 'Explain:',
+    'attached_file_required' => 'The attached file is required',
+    'date' => 'Date:',
+    'start_time' => 'Start Time:',
+    'end_time' => 'End Time:',
+    'end_time_cannot_be_earlier_start' => 'End time cannot be earlier than start time',
+    'dont_remaining_allowable_leave' => 'You don\'t have remaining allowable leave',
+    'consider_without_paid' => 'Consider as without paid leave',
+    'you_have_remaining_paid' => 'Although you have remaining paid leave, you are requesting unpaid leave.',
+    'i_accept' => 'I accept'
 ];
