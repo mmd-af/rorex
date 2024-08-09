@@ -18,8 +18,6 @@ return [
     'plus_week_night' => 'Plus Week Night',
     'plus_holiday_day' => 'Plus Holiday Day',
     'plus_holiday_night' => 'Plus Holiday Night',
-
-
     'compensation' => 'Compensation',
     'text_of_compensation' => 'If this number is negative, it will be automatically deducted from your working hours',
     'daily_absence' => 'Daily Absence',
