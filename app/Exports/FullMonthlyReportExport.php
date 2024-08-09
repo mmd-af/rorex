@@ -29,15 +29,15 @@ class FullMonthlyReportExport implements FromArray, WithHeadings, WithStyles
             'Morning Shift (Hour)',
             'Afternoon Shift (Hour)',
             'Daily Shift (Hour)',
-            // 'ot_ore (Hour)',
+            'Compensation',
             'plus_week_day (Hour)',
             'plus_week_night (Hour)',
             'plus_holiday_day (Hour)',
             'plus_holiday_night (Hour)',
             // 'total minus work(Hour)',
             'Daily Absence (Day)',
-            'concediu_ore',
-            'without_paid_leave',
+            'without Paid Leave',
+            'Allowed Leave',
             'Total (Hours)'
         ];
     }
