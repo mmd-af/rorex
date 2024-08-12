@@ -1,12 +1,11 @@
 <?php
 
 return [
-
     'app_name' => 'Rorex Pipe',
     'dashboard' => 'داشبورد',
-    'log_out' => 'Log out',
-    'user_register' => 'ثبت نام کاربر',
-    'login' => 'لاگین',
-    'company_register' => 'ثبت نام شرکت',
-    'account_under_review' => 'Your account is under review',
+    'log_out' => 'خروج',
+    'user_register' => 'ثبت‌نام کاربر',
+    'login' => 'ورود',
+    'company_register' => 'ثبت‌نام شرکت',
+    'account_under_review' => 'حساب شما در حال بررسی است',
 ];
