@@ -1,7 +1,7 @@
 @extends('user.layouts.index')
 
 @section('title')
-    Support
+    {{ __('staff_requests.request_archived') }}
 @endsection
 @section('style')
     <style id="printStyle">
@@ -17,7 +17,7 @@
 @endsection
 @section('content')
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Request Archived</li>
+        <li class="breadcrumb-item active">{{ __('staff_requests.request_archived') }}</li>
     </ol>
     @include('user.layouts.partial.errors')
     <div class="card mb-4">
@@ -25,16 +25,16 @@
             <table id="staffRequestTable" class="table table-bordered table-striped text-center">
                 <thead>
                     <tr>
-                        <th>Tracking Number</th>
-                        <th>Description</th>
-                        <th>Status</th>
+                        <th>{{ __('staff_requests.tracking_number') }}</th>
+                        <th>{{ __('staff_requests.description') }}</th>
+                        <th>{{ __('staff_requests.status') }}</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Tracking Number</th>
-                        <th>Description</th>
-                        <th>Status</th>
+                        <th>{{ __('staff_requests.tracking_number') }}</th>
+                        <th>{{ __('staff_requests.description') }}</th>
+                        <th>{{ __('staff_requests.status') }}</th>
                     </tr>
                 </tfoot>
 
@@ -80,7 +80,7 @@
                         }
                         var input = $(
                                 '<input type="text" class="form-control form-control-sm" placeholder="Search...">'
-                                )
+                            )
                             .appendTo($('<th></th>').appendTo(filterRow))
                             .on('keyup change', function() {
                                 if (column.search() !== this.value) {
@@ -93,54 +93,5 @@
                 }
             });
         });
-
-        {{-- function printDescription(id) { --}}
-        {{--    let content = ``; --}}
-        {{--    axios.post("{{route('user.manageRequests.ajax.getDescriptionForPrint')}}", {id: id}) --}}
-        {{--        .then(response => { --}}
-        {{--            content = response.data.data[0].request.description; --}}
-        {{--            content += `<table id="statusPrint" style="font-size: xx-small"> --}}
-        {{--               <tr> --}}
-        {{--                    <th>Applicant</th> --}}
-        {{--                    <th>to Department</th> --}}
-        {{--                    <th>Assigned_to</th> --}}
-        {{--                    <th>Approve</th> --}}
-        {{--                    <th>status</th> --}}
-        {{--               </tr>`; --}}
-        {{--            response.data.data.forEach(function (item) { --}}
-        {{--                content += `<tr style="border: 1px solid #000;"> --}}
-        {{--                    <td>${item.user.name}</td> --}}
-        {{--                    <td>${item.role.name}</td> --}}
-        {{--                    <td>${item.assigned_to.name}</td> --}}
-        {{--                    <td>${item.signed_by ? 'Sign' : ''}</td> --}}
-        {{--                    <td>${item.status}</td> --}}
-        {{--                            </tr>`; --}}
-        {{--            }); --}}
-        {{--            content += `</table>`; --}}
-        {{--            printContent(content); --}}
-        {{--        }) --}}
-        {{--        .catch(error => { --}}
-        {{--            console.error(error); --}}
-        {{--        }); --}}
-        {{-- } --}}
-
-        {{-- function printContent(content) { --}}
-        {{--    var printStyle = document.getElementById('printStyle'); --}}
-        {{--    let imageUrl = "{{asset('build/img/logo.png')}}"; --}}
-        {{--    var newWin = window.open('', 'Print-Window'); --}}
-        {{--    newWin.document.open(); --}}
-        {{--    newWin.document.write( --}}
-        {{--        '<html><head><style>' + printStyle.innerHTML + '</style></head><body id="printSection" onload="window.print()">' + --}}
-        {{--        '<div class="page" id="printPage"><div class="content-container"><div class="logo-container">' + --}}
-        {{--        '<img class="img-fluid w-25" src="' + imageUrl + '" alt="Rorex - Pipe"></div><div class="message">' + content + '</div>' + --}}
-        {{--        '</div><div class="content-container"><div class="logo-container">' + --}}
-        {{--        '<img class="img-fluid w-25" src="' + imageUrl + '" alt="Rorex - Pipe"></div>' + --}}
-        {{--        '<div class="message">' + content + '</div></div></div>' + --}}
-        {{--        '</body></html>'); --}}
-        {{--    newWin.document.close(); --}}
-        {{--    setTimeout(function () { --}}
-        {{--        newWin.close(); --}}
-        {{--    }, 10); --}}
-        {{-- } --}}
     </script>
 @endsection

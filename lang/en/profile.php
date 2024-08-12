@@ -18,6 +18,4 @@ return [
     'your_email_unverified' => 'Your email address is unverified.',
     'click_here_resend_verification' => 'Click here to re-send the verification email.',
     'verification_link_sent_your_email' => 'A new verification link has been sent to your email address.',
-    '' => '',
-
 ];

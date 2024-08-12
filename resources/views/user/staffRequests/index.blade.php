@@ -1,7 +1,7 @@
 @extends('user.layouts.index')
 
 @section('title')
-    Staff Requests
+    {{ __('staff_requests.staff_requests') }}
 @endsection
 @section('style')
     <style id="printStyle">
@@ -17,7 +17,7 @@
 @endsection
 @section('content')
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Staff Requests</li>
+        <li class="breadcrumb-item active">{{ __('staff_requests.staff_requests') }}</li>
     </ol>
     @include('user.layouts.partial.errors')
     <div class="row">
@@ -25,14 +25,15 @@
             <div class="card bg-primary text-white mb-4">
                 <div class="card-body" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#LeaveRequest"
                     data-info="Modal 1 Content" onclick="CustomRequest()">
-                    Send New Request <i class="fa-solid fa-square-arrow-up-right"></i>
+                    {{ __('staff_requests.send_new_request') }} <i class="fa-solid fa-square-arrow-up-right"></i>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-warning text-white mb-4">
                 <div class="card-body">
-                    <a class="text-white text-decoration-none" href="{{ route('user.staffRequests.archived') }}">Archive <i
+                    <a class="text-white text-decoration-none"
+                        href="{{ route('user.staffRequests.archived') }}">{{ __('staff_requests.archive') }} <i
                             class="fa-solid fa-square-arrow-up-right"></i></a>
 
                 </div>
@@ -49,16 +50,16 @@
             <table id="staffRequestTable" class="table table-bordered table-striped text-center">
                 <thead>
                     <tr>
-                        <th>Tracking Number</th>
-                        <th>Description</th>
-                        <th>Status</th>
+                        <th>{{ __('staff_requests.tracking_number') }}</th>
+                        <th>{{ __('staff_requests.description') }}</th>
+                        <th>{{ __('staff_requests.status') }}</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Tracking Number</th>
-                        <th>Description</th>
-                        <th>Status</th>
+                        <th>{{ __('staff_requests.tracking_number') }}</th>
+                        <th>{{ __('staff_requests.description') }}</th>
+                        <th>{{ __('staff_requests.status') }}</th>
                     </tr>
                 </tfoot>
 
@@ -71,35 +72,35 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="LeaveRequestLabel">create a new Request</h1>
+                    <h1 class="modal-title fs-5" id="LeaveRequestLabel">{{ __('staff_requests.create_new_request') }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="leaveForm">
                         <div class="mb-3 lh-lg h5">
-                            name:
+                            {{ __('staff_requests.name') }}
                             @if (empty(Auth::user()->employee->last_name))
-                                last name:
+                                {{ __('staff_requests.last_name') }}
                                 <input type="text" class="form-control" name="last_name" id="last_name" value="">
                             @else
                                 <text class="text-primary"> {{ Auth::user()->employee->last_name }}</text>
                                 <input type="hidden" name="last_name" value="{{ Auth::user()->employee->last_name }}">
                             @endif
                             @if (empty(Auth::user()->employee->first_name))
-                                first name:
+                                {{ __('staff_requests.first_name') }}
                                 <input type="text" class="form-control" name="first_name" id="first_name" value="">
                             @else
                                 <text class="text-primary"> {{ Auth::user()->employee->first_name }} </text>
                                 <input type="hidden" name="first_name" value="{{ Auth::user()->employee->first_name }}">
                             @endif
-                            Code Staff:
+                            {{ __('staff_requests.code_staff') }}
                             @if (empty(Auth::user()->employee->staff_code))
                                 <input type="text" class="form-control" name="staff_code" id="staff_code" value="">
                             @else
                                 <text class="text-primary">{{ Auth::user()->employee->staff_code }}</text>
                                 <input type="hidden" name="staff_code" value="{{ Auth::user()->employee->staff_code }}">
                             @endif
-                            Department:
+                            {{ __('staff_requests.department') }}
                             @if (empty(Auth::user()->employee->department))
                                 <input type="text" class="form-control" name="department" id="department" value="">
                             @else
@@ -112,7 +113,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="col-form-label">Your Email:</label>
+                            <label for="email" class="col-form-label">{{ __('staff_requests.your_email') }}</label>
                             @if (empty(Auth::user()->email))
                                 <input type="email" class="form-control" name="email" id="email" value=""
                                     required>
@@ -124,23 +125,27 @@
                         <div class="mb-3">
                             <div class="row">
                                 <div class="col-sm-12 col-lg-6">
-                                    <label for="departmentRole" class="col-form-label">Referred to:</label>
+                                    <label for="departmentRole"
+                                        class="col-form-label">{{ __('staff_requests.referred_to') }}</label>
                                     <select class="form-control" name="departmentRole" id="departmentRole"
                                         onchange="getRelateUserWithRole()" required>
-                                        <option value="">SELECT DEPARTMENT</option>
+                                        <option value="">{{ __('staff_requests.select_department') }}</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-12 col-lg-6">
-                                    <label for="assigned_to" class="col-form-label">Referred to:</label>
+                                    <label for="assigned_to"
+                                        class="col-form-label">{{ __('staff_requests.assign_to') }}</label>
                                     <div id="assigned_user">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success mt-3" id="performAction">Send</button>
+                        <button type="submit" class="btn btn-success mt-3"
+                            id="performAction">{{ __('staff_requests.send') }}</button>
                     </form>
                     <div class="modal-footer mt-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">{{ __('staff_requests.close') }}</button>
                     </div>
                 </div>
             </div>
@@ -150,6 +155,24 @@
 
 @section('script')
     <script>
+        var translations = {
+            subject: "{{ __('staff_requests.subject') }}",
+            select_subject: "{{ __('staff_requests.select_subject') }}",
+            forgot_punch: "{{ __('staff_requests.forgot_punch') }}",
+            forgot_bring_cart: "{{ __('staff_requests.forgot_bring_cart') }}",
+            over_time: "{{ __('staff_requests.over_time') }}",
+            work_home: "{{ __('staff_requests.work_home') }}",
+            mission: "{{ __('staff_requests.mission') }}",
+            change_shift: "{{ __('staff_requests.change_shift') }}",
+            other: "{{ __('staff_requests.other') }}",
+            description: "{{ __('staff_requests.description') }}",
+            choose_date: "{{ __('staff_requests.choose_date') }}",
+            what_time: "{{ __('staff_requests.what_time') }}",
+            message: "{{ __('staff_requests.message') }}",
+            please_describe: "{{ __('staff_requests.please_describe') }}",
+            write_date_list: "{{ __('staff_requests.write_date_list') }}",
+        };
+
         function CustomRequest() {
             let datesForLeave = document.getElementById('datesForLeave');
             datesForLeave.innerHTML = ``;
@@ -160,17 +183,17 @@
 <input type="hidden" class="form-control" name="vacation_day" value="0">
 <input type="hidden" class="form-control" name="start_date" value="${start_date.toISOString().split('T')[0]}">
 <div class="mb-4">
-                            <label for="subject" class="col-form-label">Subject:</label>
+                            <label for="subject" class="col-form-label">${translations.subject}</label>
                             <select class="form-control" name="subject" id="subject" onchange="handelRequestWithSubject()"
                                 required>
-                                <option value="">-- select subject --</option>
-                                <option value="Forgot Punch">Forgot Punch</option>
-                                <option value="Forgot Bring My Cart">Forgot Bring My Cart</option>
-                                <option value="OverTime">OverTime</option>
-                                <option value="Work at Home (Remote)">Work at Home (Remote)</option>
-                                <option value="Mission">Mission</option>
-                                <option value="Change Shift">Change Shift</option>
-                                <option value="other">other</option>
+                                <option value="">-- ${translations.select_subject} --</option>
+                                <option value="Forgot Punch">${translations.forgot_punch}</option>
+                                <option value="Forgot Bring My Cart">${translations.forgot_bring_cart}</option>
+                                <option value="OverTime">${translations.over_time}</option>
+                                <option value="Work at Home (Remote)">${translations.work_home}</option>
+                                <option value="Mission">${translations.mission}</option>
+                                <option value="Change Shift">${translations.change_shift}</option>
+                                <option value="other">${translations.other}</option>
                             </select>
                         </div>
                         <div class="mb-4" id="descriptionData">
@@ -186,9 +209,9 @@
             <input type="hidden" name="kind" value="CustomRequest">
             <input type="hidden" class="form-control" name="vacation_day" value="0">
             <input type="hidden" class="form-control" name="start_date" value="${start_date.toISOString().split('T')[0]}">
-            <label for="subject">Subject:</label>
+            <label for="subject">${translations.subject}</label>
             <input type="text" class="form-control" name="subject" id="subject" value="Request for Mission" readonly>
-            <label for="description">Description:</label>
+            <label for="description">${translations.description}</label>
             <textarea name="description" class="form-control" id="description" required>
               please consider mission on these days:
                ${start_date.toISOString().split('T')[0]}
@@ -204,57 +227,57 @@
             subject = subject.value;
             if (subject === "Forgot Punch") {
                 descriptionData.innerHTML = `
-                <label for"check-date" class="col-form-label">choose date:</label>
-                <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
-                <label for="description" class="col-form-label">At what time?</label>
-                            <input type="time" class="form-control" name="description" id="description" required>`;
+                    <label for"check-date" class="col-form-label">${translations.choose_date}</label>
+                    <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
+                    <label for="description" class="col-form-label">${translations.what_time}</label>
+                                <input type="time" class="form-control" name="description" id="description" required>`;
             }
             if (subject === "Forgot Bring My Cart") {
                 descriptionData.innerHTML =
                     `
-                <label for"check-date" class="col-form-label">choose date:</label>
-                <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
-                <label for="description" class="col-form-label">Message:</label>
-                <textarea class="form-control" name="description" id="description" required>I forgot to bring my card. enter and exit time: --:-- to --:--</textarea>`;
+                    <label for"check-date" class="col-form-label">${translations.choose_date}</label>
+                    <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
+                    <label for="description" class="col-form-label">${translations.message}</label>
+                    <textarea class="form-control" name="description" id="description" required>I forgot to bring my card. enter and exit time: --:-- to --:--</textarea>`;
             }
             if (subject === "OverTime") {
                 descriptionData.innerHTML =
                     `
-                    <label for"check-date" class="col-form-label">choose date:</label>
+                    <label for"check-date" class="col-form-label">${translations.choose_date}</label>
                     <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
-                   <label for="description" class="col-form-label">please describe it:</label>
+                    <label for="description" class="col-form-label">${translations.please_describe}</label>
                             <textarea class="form-control" name="description" id="description" required></textarea>`;
             }
             if (subject === "Work at Home (Remote)") {
                 descriptionData.innerHTML =
                     `
-                <label for"check_date_other_request" class="col-form-label">write the date on list</label>
+                <label for"check_date_other_request" class="col-form-label">${translations.write_date_list}</label>
                <input type="text" class="form-control" id="check_date_other_request" name="check_date_other_request" value="Below for Work at Home (Remote)" readonly required>
-                <label for="description" class="col-form-label">Message:</label>
+                <label for="description" class="col-form-label">${translations.message}</label>
                             <textarea class="form-control" name="description" id="description" required>I want to work at home from dd/mm/yyyy to dd/mm/yyyy from .......... to .........</textarea>`;
             }
             if (subject === "Mission") {
                 descriptionData.innerHTML =
                     `
-                <label for"check-date" class="col-form-label">choose date:</label>
+                <label for"check-date" class="col-form-label">${translations.choose_date}</label>
                 <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
-                <label for="description" class="col-form-label">please describe it:</label>
+                <label for="description" class="col-form-label">${translations.please_describe}</label>
                             <textarea class="form-control" name="description" id="description" required></textarea>`;
             }
             if (subject === "other") {
                 descriptionData.innerHTML =
                     `
-                <label for"check-date" class="col-form-label">choose date:</label>
+                <label for"check-date" class="col-form-label">${translations.choose_date}</label>
                <input type="date" class="form-control" id="check_date_other_request" name="check_date_other_request" value="" required>
-                <label for="description" class="col-form-label">Message:</label>
+                <label for="description" class="col-form-label">${translations.message}</label>
                             <textarea class="form-control" name="description" id="description" required></textarea>`;
             }
             if (subject === "Change Shift") {
                 descriptionData.innerHTML =
                     `
-                <label for"check_date_other_request" class="col-form-label">write the date on list</label>
+                <label for"check_date_other_request" class="col-form-label">${translations.write_date_list}</label>
                <input type="text" class="form-control" id="check_date_other_request" name="check_date_other_request" value="Below for Change Shift" readonly required>
-                <label for="description" class="col-form-label">Message:</label>
+                <label for="description" class="col-form-label">${translations.message}</label>
                             <textarea class="form-control" name="description" id="description" required>I request to change my shift from dd/mm/yyyy to dd/mm/yyyy from ........... to .........</textarea>`;
             }
         }
@@ -375,7 +398,8 @@
                     '</b></div><br>as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' + department +
                     '<br>' +
                     '<b>Check for date: ' + check_date_other_request + ' </b>' +
-                    '<br>' + description + '<br>Email: ' + email + '<hr><small>request from: dashboard/Other Requests</small>';
+                    '<br>' + description + '<br>Email: ' + email +
+                    '<hr><small>request from: dashboard/Other Requests</small>';
             }
             let data = {
                 first_name: first_name,
