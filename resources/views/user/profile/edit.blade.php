@@ -1,7 +1,7 @@
 @extends('user.layouts.index')
 @section('content')
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Profile</li>
+        <li class="breadcrumb-item active">{{ __('profile.profile') }}</li>
     </ol>
     @include('user.layouts.partial.errors')
     <div class="card mb-4">
@@ -17,11 +17,11 @@
                         @include('user.profile.partials.update-password-form')
                     </div>
                 </div>
-{{--                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">--}}
-{{--                    <div class="max-w-xl">--}}
-{{--                        @include('user.profile.partials.delete-user-form')--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                {{--                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg"> --}}
+                {{--                    <div class="max-w-xl"> --}}
+                {{--                        @include('user.profile.partials.delete-user-form') --}}
+                {{--                    </div> --}}
+                {{--                </div> --}}
             </div>
         </div>
     </div>
