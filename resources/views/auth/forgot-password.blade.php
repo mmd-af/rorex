@@ -9,9 +9,9 @@
                 <div class="col-md-6">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title text-center text-primary">{{ __('Forgot your password?') }}</h5>
+                            <h5 class="card-title text-center text-primary">{{ __('auth.forgot_your_password') }} </h5>
                             <p class="card-text text-center text-muted">
-                                {{ __('No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+                                {{ __('auth.let_us_your_email_for_password_reset') }}
                             </p>
                             @if (session('status'))
                                 <div class="alert alert-success" role="alert">
@@ -30,13 +30,13 @@
                             <form method="POST" action="{{ route('password.email') }}">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">{{ __('Email') }}</label>
+                                    <label for="email" class="form-label">{{ __('auth.email') }}</label>
                                     <input id="email" class="form-control" type="email" name="email"
                                         value="{{ old('email') }}" required autofocus />
                                 </div>
                                 <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-success">
-                                        {{ __('Email Password Reset Link') }}
+                                        {{ __('auth.email_password_reset_link') }}
                                     </button>
                                 </div>
                             </form>

@@ -1,7 +1,7 @@
 @extends('auth.layouts.index')
 
 @section('title')
-    Login
+    {{ __('auth.login') }}
 @endsection
 @section('content')
     <section class="vh-100" style="background-color: #009799;">
@@ -25,10 +25,11 @@
                                                     class="img-fluid" />
                                             </span>
                                         </div>
-                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your
-                                            account</h5>
+                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">
+                                            {{ __('auth.sign_into_account') }}
+                                        </h5>
                                         <div class="form-outline mb-4">
-                                            <label class="form-label" for="email">Email address or Staff Id</label>
+                                            <label class="form-label" for="email">{{ __('auth.email_address_staff') }}</label>
                                             <input type="text" name="email" id="email"
                                                 class="form-control form-control-lg" value="{{ old('email') }}" />
                                             @if ($errors->has('email'))
@@ -36,7 +37,7 @@
                                             @endif
                                         </div>
                                         <div class="form-outline mb-4">
-                                            <label class="form-label" for="form2Example27">Password</label>
+                                            <label class="form-label" for="form2Example27">{{ __('auth.insert_password') }}</label>
                                             <input type="password" id="password" name="password" required
                                                 autocomplete="current-password" class="form-control form-control-lg" />
                                             @if ($errors->has('password'))
@@ -45,16 +46,16 @@
                                         </div>
                                         <div class="form-outline mb-4 d-flex">
                                             <input type="checkbox" name="remember" id="remember_me"
-                                                class="form-check" />&nbsp;{{ __('Remember me') }}
+                                                class="form-check" />&nbsp;{{ __('auth.remember_me') }}
                                         </div>
 
                                         <div class="pt-1 mb-4">
-                                            <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+                                            <button class="btn btn-dark btn-lg btn-block" type="submit">{{ __('auth.login') }}</button>
                                         </div>
                                         @if (Route::has('password.request'))
                                             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                 href="{{ route('password.request') }}">
-                                                {{ __('Forgot your password?') }}
+                                                {{ __('auth.forgot_your_password') }}
                                             </a>
                                         @endif
                                         {{--                                    <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="#!" --}}
