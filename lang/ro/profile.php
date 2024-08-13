@@ -14,7 +14,7 @@ return [
     'first_name' => 'Prenume',
     'last_name' => 'Nume de Familie',
     'email' => 'Email',
-    'your_email_unverified' => 'Adresa dvs. de email nu este verificată.',
+    'your_email_unverified' => 'Adresa dvs. de email nu se verifica.',
     'click_here_resend_verification' => 'Faceți clic aici pentru a retrimite emailul de verificare.',
     'verification_link_sent_your_email' => 'Un nou link de verificare a fost trimis la adresa dvs. de email.'
 ];

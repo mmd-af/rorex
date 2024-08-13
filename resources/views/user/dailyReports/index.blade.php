@@ -171,8 +171,7 @@
             at_what_time: "{{ __('dailyReport.at_what_time') }}",
             message: "{{ __('dailyReport.message') }}",
             how_many_hour: "{{ __('dailyReport.how_many_hour') }}",
-            please_describe_it: "{{ __('dailyReport.please_describe_it') }}",
-            start_work: "{{ __('dailyReport.start_work') }}"
+            please_describe_it: "{{ __('dailyReport.please_describe_it') }}"
         };
     </script>
 
@@ -283,41 +282,32 @@
             let descriptionData = document.getElementById('descriptionData');
             descriptionData.innerHTML = ``;
             subject = subject.value;
-            if (subject === translations.forgot_punch) {
+            if (subject === "Forgot Punch") {
                 descriptionData.innerHTML = `<label for="description" class="col-form-label">${translations.at_what_time}</label>
                           <input type="time" class="form-control" name="description" id="description" required>`;
             }
-            if (subject === translations.forgot_bring_my_cart) {
+            if (subject === "Forgot Bring My Cart") {
                 descriptionData.innerHTML =
                     `<label for="description" class="col-form-label">${translations.message}</label>
                            <textarea class="form-control" name="description" id="description" required>${translations.forgot_bring_my_cart_des}</textarea>`;
             }
-            if (subject === translations.consider_as_allow_leave) {
-                descriptionData.innerHTML =
-                    `<label for="description" class="col-form-label">${translations.how_many_hour}</label>
-                            <input type="number" min="0" step="any" class="form-control" name="description" id="description" required>`;
-            }
-            if (subject === translations.consider_overtime) {
+            if (subject === "Consider OverTime") {
                 descriptionData.innerHTML =
                     `<label for="description" class="col-form-label">${translations.please_describe_it}</label>
                             <textarea class="form-control" name="description" id="description" required></textarea>`;
             }
-            if (subject === translations.work_at_home) {
+            if (subject === "Work at Home (Remote)") {
                 descriptionData.innerHTML =
-                    `<label for="description" class="col-form-label">${translations.start_work}</label>
+                    `<label for="description" class="col-form-label">${translations.please_describe_it}</label>
                             <textarea class="form-control" name="description" id="description" required>${translations.work_at_home}</textarea>`;
             }
-            if (subject === translations.mission) {
+            if (subject === "Mission") {
                 descriptionData.innerHTML =
                     `<label for="description" class="col-form-label">${translations.please_describe_it}</label>
                             <textarea class="form-control" name="description" id="description" required></textarea>`;
             }
-            if (subject === translations.other) {
-                descriptionData.innerHTML =
-                    `<label for="description" class="col-form-label">${translations.message}</label>
-                            <textarea class="form-control" name="description" id="description" required></textarea>`;
-            }
-            if (subject === translations.change_shift) {
+
+            if (subject === "Change Shift") {
                 descriptionData.innerHTML =
                     `<label for="description" class="col-form-label">${translations.message}</label>
                            <textarea class="form-control" name="description" id="description" required>${translations.change_shift}</textarea>`;

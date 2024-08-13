@@ -2,16 +2,16 @@
 
 return [
     'rorex' => 'Rorex',
-    'dashboard' => 'Tablou de Bord',
-    'copyright' => 'Drepturi de Autor',
+    'dashboard' => 'Panou',
+    'copyright' => 'Drepturi de autor',
     'rorex_ro' => 'rorex.ro',
-    'admin_panel' => 'Panou de Administrare',
+    'admin_panel' => 'Panou de administrare',
     'reports' => 'Rapoarte',
     'core' => 'Nucleu',
     'daily' => 'Zilnic',
     'monthly' => 'Lunar',
     'requests' => 'Cereri',
-    'leave_requests' => 'Cereri de Concediu',
-    'other_requests' => 'Alte Cereri',
+    'leave_requests' => 'Cereri de concediu',
+    'other_requests' => 'Alte cereri',
     'logged_in_as' => 'Conectat ca:'
 ];
