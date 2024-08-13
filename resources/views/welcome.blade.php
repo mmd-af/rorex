@@ -20,9 +20,28 @@
                 <img class="img-fluid w-25" src="{{ asset('build/img/logo.png') }}" alt="ROREX - PIPE">
             </a>
         </div>
-        <a href="{{ route('lang.switch', 'en') }}">English</a>
-        <a href="{{ route('lang.switch', 'ro') }}">Romanian</a>
-        <a href="{{ route('lang.switch', 'fa') }}">فارسی</a>
+        @php
+            $currentLanguage = session('locale', 'en');
+            $flags = [
+                'en' => '🇬🇧',
+                'ro' => '🇷🇴',
+                'fa' => '🇮🇷',
+            ];
+        @endphp
+        <div class="dropdown ms-auto me-3 me-md-0 my-2 my-md-0 border border-2 rounded-3 p-2 shadow text-center">
+            
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="me-2">{{ $flags[$currentLanguage] ?? '🇬🇧' }}</span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">🇬🇧 English</a></li>
+                <li><a class="dropdown-item" href="{{ route('lang.switch', 'ro') }}">🇷🇴 Romanian</a></li>
+                <li><a class="dropdown-item" href="{{ route('lang.switch', 'fa') }}">🇮🇷 Persian</a></li>
+            </ul>
+        </div>
+
+
 
         @if (Route::has('login'))
             <div class="row justify-content-center">
