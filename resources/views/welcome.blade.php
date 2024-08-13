@@ -21,6 +21,7 @@
             </a>
         </div>
         <a href="{{ route('lang.switch', 'en') }}">English</a>
+        <a href="{{ route('lang.switch', 'ro') }}">Romanian</a>
         <a href="{{ route('lang.switch', 'fa') }}">فارسی</a>
 
         @if (Route::has('login'))
