@@ -13,7 +13,7 @@
         ];
     @endphp
 
-    <div class="dropdown ms-auto me-3 me-md-0 my-2 my-md-0 border rounded-3 p-2 shadow">
+    <div class="dropdown ms-auto mx-1 rounded-3 p-2 shadow">
         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink"
             role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="me-2">{{ $flags[$currentLanguage] ?? '🇬🇧' }}</span>

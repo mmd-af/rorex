@@ -28,20 +28,19 @@
                 'fa' => '🇮🇷',
             ];
         @endphp
-        <div class="dropdown ms-auto me-3 me-md-0 my-2 my-md-0 border border-2 rounded-3 p-2 shadow text-center">
-            
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="me-2">{{ $flags[$currentLanguage] ?? '🇬🇧' }}</span>
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <li><a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">🇬🇧 English</a></li>
-                <li><a class="dropdown-item" href="{{ route('lang.switch', 'ro') }}">🇷🇴 Romanian</a></li>
-                <li><a class="dropdown-item" href="{{ route('lang.switch', 'fa') }}">🇮🇷 Persian</a></li>
-            </ul>
+        <div class="d-flex justify-content-center mt-2">
+            <div class="dropdown col-2 border border-2 rounded-3 p-2 shadow text-center">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="me-2">{{ $flags[$currentLanguage] ?? '🇬🇧' }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">🇬🇧 English</a></li>
+                    <li><a class="dropdown-item" href="{{ route('lang.switch', 'ro') }}">🇷🇴 Romanian</a></li>
+                    <li><a class="dropdown-item" href="{{ route('lang.switch', 'fa') }}">🇮🇷 Persian</a></li>
+                </ul>
+            </div>
         </div>
-
-
 
         @if (Route::has('login'))
             <div class="row justify-content-center">
