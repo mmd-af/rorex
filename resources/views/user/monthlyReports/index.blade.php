@@ -174,7 +174,7 @@
                         <tr>
                             <th>${translations.daily_absence}</th>
                             <th class="bg-danger">${response.data.dailyAbsence}</th>
-                            <th>${translations.per_hour}</th>
+                            <th>${translations.per_day}</th>
                         </tr>
                         <tr>
                             <th>${translations.allowed_leave}</th>
