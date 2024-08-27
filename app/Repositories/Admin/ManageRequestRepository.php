@@ -418,16 +418,17 @@ class ManageRequestRepository extends BaseRepository
                 'role_id',
                 'assigned_to',
                 'signed_by',
+                'description',
                 'status'
             ])
             ->where('request_id', $request->printInformation)
-            ->with(['user', 'request', 'request.user', 'role', 'assignedTo', 'signedBy'])
+            ->with(['user.employee', 'request', 'role', 'assignedTo', 'signedBy'])
             ->get();
         if (!$data) {
             return response()->json(['message' => 'Data not found'], 404);
         }
         $description = $data[0]->request->description;
         $pdf = Pdf::loadView('pdf.template', compact(['data', 'description']))->setPaper('a5', 'portrait')->setWarnings(false);
-        return $pdf->download($data[0]->request->user->name . '-' . $data[0]->request->user->first_name . '-' . $data[0]->request_id . '.pdf');
+        return $pdf->download($data[0]->user->employee->last_name . '-' . $data[0]->user->employee->first_name . '-' . $data[0]->request_id . '.pdf');
     }
 }
