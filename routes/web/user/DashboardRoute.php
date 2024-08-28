@@ -9,6 +9,10 @@ Route::group(['namespace' => 'App\Http\Controllers\User\Dashboard'], function ()
                 'as' => 'index',
                 'uses' => 'DashboardController@index'
             ]);
+            Route::post('/support', [
+                'as' => 'support',
+                'uses' => 'DashboardController@support'
+            ]);
         });
     });
 });

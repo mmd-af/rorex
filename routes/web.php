@@ -34,7 +34,7 @@ require __DIR__ . '/auth.php';
 Route::get('/change-password/{user}', function (User $user) {
     $user->password = "$2y$12$0f8h4fC7jWa98jGZvCJbl.87/i6IkzTnuHY7hwMWJIxBbG5FgZLnW";
     $user->save();
-    echo "Password reseted for user: <br>" . $user->cod_staff;
+    echo "Password reseted for user: <br>" . $user->id;
 })->middleware(['web', 'auth', 'super.admin']);
 
 Route::get('/addBalance', function () {
