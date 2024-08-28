@@ -86,6 +86,16 @@
                             <td>{{ $assign->signed_by ? 'Sign' : '' }}</td>
                             <td>{{ $assign->status }}</td>
                         </tr>
+                        @if (isset($assign->description))
+                            <tr>
+                                <td style="color:red" colspan="5"><small>{{ $assign->description }}</small></td>
+                            </tr>
+                        @endif
+                        @if ($loop->last)
+                        <tr>
+                           <th colspan="5"> Tracking number= {{ $assign->request_id }} </th>
+                        <tr>
+                        @endif
                     @endforeach
                 </table>
             </div>
