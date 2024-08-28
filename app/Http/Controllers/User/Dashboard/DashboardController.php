@@ -23,6 +23,6 @@ class DashboardController extends Controller
     public function support(Request $request)
     {
         $this->dashboardRepository->support($request);
-        return view('user.dashboard.index');
+        return redirect()->route('user.dashboard.index');
     }
 }

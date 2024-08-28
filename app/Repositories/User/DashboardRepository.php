@@ -10,12 +10,14 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use App\Models\LetterAssignment\LetterAssignment;
 use App\Notifications\RequestRegisteredNotification;
+use Carbon\Carbon;
 
 class DashboardRepository extends BaseRepository
 {
     public function support($request)
     {
         $user = Auth::user();
+        $dateOfRequest = Carbon::now()->format('Y/m/d');
         if ($user->company) {
             Session::flash('error', 'There is a No Support for Companies');
             return false;
@@ -23,6 +25,15 @@ class DashboardRepository extends BaseRepository
             $user = $user->load('employee');
             $employee = $user->employee;
             DB::beginTransaction();
+            $description =
+                'Date: ' . $dateOfRequest .
+                '<br><div id="box">Name: ' . $employee->last_name . ' ' . $employee->first_name . '<br>' .
+                'Code Staff: ' . $employee->staff_code . '</div><br>' .
+                '<div id="alignCenter"><b> User Assistant (Support) </b></div><br>' .
+                'as an Employee of S.C. ROREX PIPE S.R.L. in the Department of: ' . $employee->department .
+                '<br><h3>' . $request->description . '</h3><br>Email: ' . $user->email . '<hr><small>send from: user/dashboard/ Support Form</small>';
+
+
             try {
                 $staffRequest = new StaffRequest();
                 $staffRequest->user_id = $user->id;
@@ -30,7 +41,7 @@ class DashboardRepository extends BaseRepository
                 $staffRequest->email = $user->email;
                 $staffRequest->mobile_phone = $employee->phone;
                 $staffRequest->subject = "User Assistant (Support)";
-                $staffRequest->description = $request->description;
+                $staffRequest->description = $description;
                 $staffRequest->organization = $employee->department;
                 $staffRequest->cod_staff =  (int)$employee->staff_code;
                 $staffRequest->save();
@@ -52,7 +63,7 @@ class DashboardRepository extends BaseRepository
 
                         $user = User::find($assigned);
                         if ($user->email_verified_at && $user->receive_notifications) {
-                            $user->notify(new RequestRegisteredNotification("New Support Request", $request->description));
+                            $user->notify(new RequestRegisteredNotification("New Support Request", $description));
                         }
                         DB::commit();
                         Session::flash('message', 'Your request has been submitted');

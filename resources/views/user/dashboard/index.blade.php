@@ -8,7 +8,7 @@
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">{{ __('dashboard.user_dashboard') }}</li>
     </ol>
-
+    @include('user.layouts.partial.errors')
     @if (auth()->user()->id === 1001)
         <h6>Hello,<b> Engineer Amin </b>, this part is made just for you</h6>
         <div class="m-3">
