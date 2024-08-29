@@ -12,6 +12,7 @@ services:
         condition: service_healthy
     environment:
       APP_DEBUG: "true"
+      TZ: Europe/Bucharest
     volumes:
       - '.:/var/www/rorex'
       - ./php-dev.ini:/usr/local/etc/php/conf.d/dev-php.ini
@@ -30,6 +31,7 @@ services:
       - '127.0.0.1:8085:80'
     environment:
       FPM_HOST: "php:9000"
+      TZ: Europe/Bucharest
     volumes:
       - './public:/var/www/rorex/public'
     networks:
@@ -63,19 +65,20 @@ services:
       MYSQL_PASSWORD: rorex
       MYSQL_USER: rorex
       MYSQL_DATABASE: rorex
+      TZ: Europe/Bucharest
     networks:
       - rorex
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: rorex-phpmyadmin
-    restart: always
-    ports:
-      - "8082:80"
-    environment:
-      - PMA_HOST=database
-      - UPLOAD_LIMIT=64M
-    networks:
-      - rorex
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: rorex-phpmyadmin
+  #   restart: always
+  #   ports:
+  #     - "8082:80"
+  #   environment:
+  #     - PMA_HOST=database
+  #     - UPLOAD_LIMIT=64M
+  #   networks:
+  #     - rorex
 networks:
   rorex:
 

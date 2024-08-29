@@ -24,6 +24,7 @@
                         @endcan
                         @can('manage_leaves')
                             <a class="nav-link" href="{{ route('admin.manageStaffLeaves.index') }}">Leave Control</a>
+                            <a class="nav-link" href="{{ route('admin.leaves.index') }}">Leave Report</a>
                         @endcan
                         @can('daily_reports')
                             <a class="nav-link" href="{{ route('admin.dailyReports.singleReports.index') }}">Single records</a>
