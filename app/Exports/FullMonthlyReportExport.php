@@ -25,6 +25,7 @@ class FullMonthlyReportExport implements FromArray, WithHeadings, WithStyles
         return [
             'Code Staff',
             'Name',
+            'Department',
             'Night Shift (Hour)',
             'Morning Shift (Hour)',
             'Afternoon Shift (Hour)',

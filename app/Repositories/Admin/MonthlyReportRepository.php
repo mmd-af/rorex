@@ -264,7 +264,7 @@ class MonthlyReportRepository extends BaseRepository
                 ])
                 ->where('data', 'LIKE', "$request->dateOfExport%")
                 ->where('cod_staff', $staffCode)
-                ->with('users.employee')
+                ->with(['users.employee', 'employee'])
                 ->get();
             if ($dailyReports->isEmpty()) {
                 continue;
@@ -313,7 +313,8 @@ class MonthlyReportRepository extends BaseRepository
                 $dailyAbsence += $dailyReport->absenta_zile;
                 $delayWork += $dailyReport->tarziu_minute;
                 $earlyExit += $dailyReport->devreme_minute;
-                $userName = $dailyReport->users->employee->last_name . " " . $dailyReport->users->employee->first_name;
+                $userName = $dailyReport->employee->last_name . " " . $dailyReport->employee->first_name;
+                $departament = $dailyReport->employee->department;
             }
             $remainNotAllowedPlusWork = $this->remainNotAllowedPlusWork($ot_ore, $plus_week_day, $plus_week_night, $plus_holiday_day, $plus_holiday_night);
             $compensation = $this->compensation($remainNotAllowedPlusWork, $delayWork, $earlyExit);
@@ -321,6 +322,7 @@ class MonthlyReportRepository extends BaseRepository
             $data[] = [
                 'codeStaff' => $staffCode,
                 'Name' => $userName,
+                'Departament' => $departament,
                 'hourNight' => sprintf("%.2f", floor($hourNight * 100) / 100),
                 'hourMorning' => sprintf("%.2f", floor($hourMorning * 100) / 100),
                 'hourAfternoon' => sprintf("%.2f", floor($hourAfternoon * 100) / 100),
