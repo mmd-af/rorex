@@ -38,6 +38,16 @@ services:
         networks:
             - rorex
 
+    node:
+        image: node:18.18
+        container_name: rorex-node
+        working_dir: /var/www/rorex
+        volumes:
+            - '.:/var/www/rorex'
+        tty: true
+        networks:
+            - rorex
+
     database:
         image: mariadb:10.6
         container_name: rorex-database

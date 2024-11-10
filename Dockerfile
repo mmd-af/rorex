@@ -26,10 +26,6 @@ RUN docker-php-ext-install \
 
 COPY --from=composer/composer:2-bin /composer /usr/bin/composer
 
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt install -y nodejs && \
-    npm install -g npm
-
 RUN groupadd -g 1000 rorex && \
     useradd -u 1000 -g rorex -G www-data -m -d /var/www rorex
 
