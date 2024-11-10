@@ -21,6 +21,7 @@ class LeaveRepository extends BaseRepository
         $fromDate = $request->input('from_date');
         $toDate = $request->input('to_date');
         $userId = $request->input('user_id');
+        $leaveType = $request->input('leave_type');
         $query = $this->query();
         if ($fromDate) {
             $query->where('start_date', '>=', $fromDate);
@@ -30,6 +31,9 @@ class LeaveRepository extends BaseRepository
         }
         if ($userId) {
             $query->where('user_id', $userId);
+        }
+        if ($leaveType) {
+            $query->where('type', $leaveType);
         }
         $leaves = $query->get()->load('users.employee');
         foreach ($leaves as $leave) {
@@ -71,21 +75,7 @@ class LeaveRepository extends BaseRepository
     public function exportData($request)
     {
         $format = $request->input('format');
-        $fromDate = $request->input('from_date');
-        $toDate = $request->input('to_date');
-        $userId = $request->input('user_id');
-        $query = $this->query();
-        if ($fromDate) {
-            $query->where('start_date', '>=', $fromDate);
-        }
-        if ($toDate) {
-            $query->where('end_date', '<=', $toDate);
-        }
-        if ($userId) {
-            $query->where('user_id', $userId);
-        }
-
-        $leaves = $query->get()->load('users.employee');
+        $leaves = $this->getLeaves($request);
 
         foreach ($leaves as $leave) {
             $leave->formatted_start_date = $this->formatDate($leave->start_date, $leave->leave_days);
@@ -106,7 +96,8 @@ class LeaveRepository extends BaseRepository
                     'Start Date' => $leave->formatted_start_date,
                     'End Date' => $leave->formatted_end_date,
                     'Type' => $leave->type,
-                    'Leave Value' => $leave->formatted_leave_value
+                    'Leave Value' => $leave->formatted_leave_value,
+                    'Status' => $leave->status
                 ];
             })->toArray();
             return Excel::download(new LeavesExport($data), "leaves_report-" . rand(0000, 9999) . ".xlsx");

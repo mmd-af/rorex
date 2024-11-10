@@ -19,7 +19,6 @@ class User extends Authenticatable
     protected $table = 'users';
     protected $fillable = [
         'name',
-        // 'cod_staff',
         'email',
         'password',
         'is_active'
@@ -32,11 +31,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    //    public function getIsActiveAttribute($is_active)
-    //    {
-    //        return $is_active ? 'Active' : 'Deactivate';
-    //    }
 
     public function employee()
     {

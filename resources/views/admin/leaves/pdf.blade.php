@@ -26,26 +26,28 @@
     <h1>Leave Report</h1>
     <table>
         <thead>
-            <tr>
-                <th>Tracking Number</th>
-                <th>User Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Type</th>
-                <th>Leave Value</th>
-            </tr>
+        <tr>
+            <th>Tracking Number</th>
+            <th>User Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Type</th>
+            <th>Leave Value</th>
+            <th>Status</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach ($leaves as $leave)
-                <tr>
-                    <td>{{ $leave->id }}/{{ $leave->request_id }}</td>
-                    <td>{{ $leave->users->employee->last_name . " " . $leave->users->employee->first_name }}</td>
-                    <td>{{ $leave->formatted_start_date }}</td>
-                    <td>{{ $leave->formatted_end_date }}</td>
-                    <td>{{ $leave->type }}</td>
-                    <td>{{ $leave->formatted_leave_value }}</td>
-                </tr>
-            @endforeach
+        @foreach ($leaves as $leave)
+            <tr>
+                <td>{{ $leave->id }}/{{ $leave->request_id }}</td>
+                <td>{{ $leave->users->employee->last_name . " " . $leave->users->employee->first_name }}</td>
+                <td>{{ $leave->formatted_start_date }}</td>
+                <td>{{ $leave->formatted_end_date }}</td>
+                <td>{{ $leave->type }}</td>
+                <td>{{ $leave->formatted_leave_value }}</td>
+                <td>{{ ucfirst($leave->status) }}</td>
+            </tr>
+        @endforeach
         </tbody>
     </table>
 </body>

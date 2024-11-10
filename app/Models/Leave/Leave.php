@@ -12,19 +12,5 @@ class Leave extends Model
         LeaveModifiers;
 
     protected $table = 'leaves';
-    // protected $fillable = [
-    //     'user_id',
-    //     'activity_domain',
-    //     'vat_id',
-    //     'registration_number',
-    //     'country',
-    //     'county',
-    //     'city',
-    //     'zip_code',
-    //     'address',
-    //     'building',
-    //     'person_name',
-    //     'job_title',
-    //     'phone_number'
-    // ];
+
 }

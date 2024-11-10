@@ -45,6 +45,17 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="leave_type" class="form-label">Leave Type:</label>
+                        <select name="leave_type" id="leave_type" class="form-select">
+                            <option value="">--Select Leave Type--</option>
+                            @foreach ($leaveTypes as $type)
+                                <option value="{{ $type }}" {{ request('leave_type') == $type ? 'selected' : '' }}>
+                                    {{ ucfirst($type) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="col-12 d-flex justify-content-end align-items-center">
                         <button type="submit" class="btn btn-primary btn-lg me-3">Search</button>
                         <a href="{{ route('admin.leaves.export', ['format' => 'pdf'] + request()->query()) }}"
