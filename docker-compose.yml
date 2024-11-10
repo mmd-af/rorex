@@ -1,87 +1,77 @@
 version: "3.8"
 services:
-  php:
-    build:
-      context: .
-      target: php
-    image: rorex/php
-    container_name: rorex-php
-    restart: unless-stopped
-    depends_on:
-      database:
-        condition: service_healthy
-    environment:
-      APP_DEBUG: "true"
-      TZ: Europe/Bucharest
-    volumes:
-      - '.:/var/www/rorex'
-      - ./php-dev.ini:/usr/local/etc/php/conf.d/dev-php.ini
-    networks:
-      - rorex
+    php:
+        build:
+            context: .
+            target: php
+        image: rorex/php
+        container_name: rorex-php
+        restart: unless-stopped
+        depends_on:
+            database:
+                condition: service_healthy
+        environment:
+            APP_DEBUG: "true"
+            TZ: Europe/Bucharest
+        volumes:
+            - '.:/var/www/rorex'
+            - './php-dev.ini:/usr/local/etc/php/conf.d/dev-php.ini'
+        networks:
+            - rorex
 
-  nginx:
-    build:
-      context: .
-      target: nginx
-    image: rorex/nginx
-    container_name: rorex-nginx
-    restart: unless-stopped
-    depends_on: [ php ]
-    ports:
-      - '127.0.0.1:8085:80'
-    environment:
-      FPM_HOST: "php:9000"
-      TZ: Europe/Bucharest
-    volumes:
-      - './public:/var/www/rorex/public'
-    networks:
-      - rorex
+    nginx:
+        build:
+            context: .
+            target: nginx
+        image: rorex/nginx
+        container_name: rorex-nginx
+        restart: unless-stopped
+        depends_on:
+            - php
+        ports:
+            - '127.0.0.1:8085:80'
+        environment:
+            FPM_HOST: "php:9000"
+            TZ: Europe/Bucharest
+        volumes:
+            - '.:/var/www/rorex'
+        networks:
+            - rorex
 
-  database:
-    image: mariadb:10.6
-    container_name: rorex-database
-    restart: unless-stopped
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "healthcheck.sh",
-          "--su-mysql",
-          "--connect",
-          "--innodb_initialized"
-        ]
-      interval: 5s
-      timeout: 5s
-      retries: 3
-      start_period: 1m
-    ports:
-      - "127.0.0.1:3306:3306/tcp"
-    hostname: database
-    volumes:
-      - "database:/var/lib/mysql"
-    stop_signal: SIGINT
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_PASSWORD: rorex
-      MYSQL_USER: rorex
-      MYSQL_DATABASE: rorex
-      TZ: Europe/Bucharest
-    networks:
-      - rorex
-  # phpmyadmin:
-  #   image: phpmyadmin/phpmyadmin
-  #   container_name: rorex-phpmyadmin
-  #   restart: always
-  #   ports:
-  #     - "8082:80"
-  #   environment:
-  #     - PMA_HOST=database
-  #     - UPLOAD_LIMIT=64M
-  #   networks:
-  #     - rorex
+    database:
+        image: mariadb:10.6
+        container_name: rorex-database
+        restart: unless-stopped
+        healthcheck:
+            test:
+              [
+                      "CMD",
+                      "healthcheck.sh",
+                      "--su-mysql",
+                      "--connect",
+                      "--innodb_initialized"
+              ]
+            interval: 5s
+            timeout: 5s
+            retries: 3
+            start_period: 1m
+        ports:
+            - "127.0.0.1:3306:3306/tcp"
+        hostname: database
+        volumes:
+            - "database:/var/lib/mysql"
+        stop_signal: SIGINT
+        environment:
+            MYSQL_ROOT_PASSWORD: rorex
+            MYSQL_PASSWORD: rorex
+            MYSQL_USER: rorex
+            MYSQL_DATABASE: rorex
+            TZ: Europe/Bucharest
+        networks:
+            - rorex
+
 networks:
-  rorex:
-
+    rorex:
 
 volumes:
-  database:
+    database:
