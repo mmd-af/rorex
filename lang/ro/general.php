@@ -7,5 +7,6 @@ return [
     'user_register' => 'Înregistrare Utilizator',
     'login' => 'Autentificare',
     'company_register' => 'Înregistrare Companie',
-    'account_under_review' => 'Contul dvs. este în curs de verificare'
+    'account_under_review' => 'Contul dvs. este în curs de verificare',
+    'company_website' => 'Mergi la site-ul companiei'
 ];

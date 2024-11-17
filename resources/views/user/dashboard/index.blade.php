@@ -80,23 +80,23 @@
         </form>
     @endif
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h5 class="card-title mb-0">{{ __('dashboard.need_assistant') }}</h5>
-        </div>
-        <div class="card-body">
-            <p class="card-text">{{ __('dashboard.dont_hesitate_to_ask') }}</p>
-            <form action="{{ route('user.dashboard.support') }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label for="assistanceMessage" class="form-label">{{ __('dashboard.your_message') }}</label>
-                    <textarea class="form-control" id="assistanceMessage" name="description" rows="4" required
-                        placeholder="Type your message here..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-success">{{ __('dashboard.send') }}</button>
-            </form>
-        </div>
-    </div>
+{{--    <div class="card shadow-sm">--}}
+{{--        <div class="card-header bg-primary text-white">--}}
+{{--            <h5 class="card-title mb-0">{{ __('dashboard.need_assistant') }}</h5>--}}
+{{--        </div>--}}
+{{--        <div class="card-body">--}}
+{{--            <p class="card-text">{{ __('dashboard.dont_hesitate_to_ask') }}</p>--}}
+{{--            <form action="{{ route('user.dashboard.support') }}" method="POST">--}}
+{{--                @csrf--}}
+{{--                <div class="mb-3">--}}
+{{--                    <label for="assistanceMessage" class="form-label">{{ __('dashboard.your_message') }}</label>--}}
+{{--                    <textarea class="form-control" id="assistanceMessage" name="description" rows="4" required--}}
+{{--                        placeholder="Type your message here..."></textarea>--}}
+{{--                </div>--}}
+{{--                <button type="submit" class="btn btn-success">{{ __('dashboard.send') }}</button>--}}
+{{--            </form>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
 
 @endsection

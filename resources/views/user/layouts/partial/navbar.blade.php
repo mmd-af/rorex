@@ -6,29 +6,38 @@
 
     @php
         $currentLanguage = session('locale', 'en');
-        $flags = [
-            'en' => '🇬🇧',
-            'ro' => '🇷🇴',
-            'fa' => '🇮🇷',
+        $languages = [
+            'en' => ['flag' => 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg', 'name' => 'English'],
+            'ro' => ['flag' => 'https://upload.wikimedia.org/wikipedia/commons/7/73/Flag_of_Romania.svg', 'name' => 'Romanian'],
+            'fa' => ['flag' => 'https://upload.wikimedia.org/wikipedia/commons/c/ca/Flag_of_Iran.svg', 'name' => 'فارسی'],
         ];
     @endphp
 
     <div class="dropdown ms-auto mx-1 rounded-3 p-2 shadow">
         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink"
-            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="me-2">{{ $flags[$currentLanguage] ?? '🇬🇧' }}</span>
+           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{{ $languages[$currentLanguage]['flag'] ?? $languages['en']['flag'] }}"
+                 alt="{{ $languages[$currentLanguage]['name'] ?? 'English' }}"
+                 style="width: 20px; height: 15px;" class="me-2">
+            <span>{{ $languages[$currentLanguage]['name'] ?? 'English' }}</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">🇬🇧 English</a></li>
-            <li><a class="dropdown-item" href="{{ route('lang.switch', 'ro') }}">🇷🇴 Romanian</a></li>
-            <li><a class="dropdown-item" href="{{ route('lang.switch', 'fa') }}">🇮🇷 Persian</a></li>
+            @foreach($languages as $code => $lang)
+                <li>
+                    <a class="dropdown-item d-flex align-items-center" href="{{ route('lang.switch', $code) }}">
+                        <img src="{{ $lang['flag'] }}" alt="{{ $lang['name'] }}"
+                             style="width: 20px; height: 15px;" class="me-2">
+                        {{ $lang['name'] }}
+                    </a>
+                </li>
+            @endforeach
         </ul>
     </div>
 
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
+               data-bs-toggle="dropdown" aria-expanded="false">
                 {{ Auth::user()->employee?->last_name }}
                 ({{ Auth::user()->employee?->staff_code }})<i class="fas fa-user fa-fw"></i>
             </a>
@@ -36,10 +45,10 @@
                 <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
                 @if (!empty(auth()->user()->getRoleNames()->toArray()) || Auth::user()->rolles == 'admin')
                     <li><a class="dropdown-item"
-                            href="{{ route('admin.dashboard.index') }}">{{ __('layouts.admin_panel') }}</a></li>
+                           href="{{ route('admin.dashboard.index') }}">{{ __('layouts.admin_panel') }}</a></li>
                 @endif
                 <li>
-                    <hr class="dropdown-divider" />
+                    <hr class="dropdown-divider"/>
                 </li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}">

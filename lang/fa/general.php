@@ -8,4 +8,5 @@ return [
     'login' => 'ورود',
     'company_register' => 'ثبت‌نام شرکت',
     'account_under_review' => 'حساب شما در حال بررسی است',
+    'company_website' => 'رفتن به وب ‌سایت شرکت'
 ];
