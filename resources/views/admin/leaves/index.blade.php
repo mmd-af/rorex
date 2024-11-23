@@ -86,6 +86,7 @@
                                 <th>End Date</th>
                                 <th>Type</th>
                                 <th>Leave Value</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -98,6 +99,7 @@
                                     <td>{{ $leave->formatted_end_date }}</td>
                                     <td>{{ $leave->type }}</td>
                                     <td>{{ $leave->formatted_leave_value }}</td>
+                                    <td>{{ $leave->last_status }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

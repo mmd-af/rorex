@@ -28,7 +28,8 @@ class LeavesExport implements FromArray, WithHeadings
             'Start Date',
             'End Date',
             'Type',
-            'Leave Value'
+            'Leave Value',
+            'Status'
         ];
     }
 }

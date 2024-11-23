@@ -45,7 +45,7 @@
                 <td>{{ $leave->formatted_end_date }}</td>
                 <td>{{ $leave->type }}</td>
                 <td>{{ $leave->formatted_leave_value }}</td>
-                <td>{{ ucfirst($leave->status) }}</td>
+                <td>{{ $leave->last_status }}</td>
             </tr>
         @endforeach
         </tbody>
