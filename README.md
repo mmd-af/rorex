@@ -2,6 +2,6 @@
 ## Unauthorized reproduction or distribution is subject to legal consequences.
 
 ## LinkedIn:
-https://www.linkedin.com/in/mohammad-afshar-dev/
+https://www.linkedin.com/in/mmd-af
 ## Email:
 afshar.ro.mo@gmail.com
