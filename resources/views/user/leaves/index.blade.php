@@ -58,7 +58,7 @@
                         <select id="year" name="year" class="form-select" onchange="getLeaveDays(event)">
                             <option value="">-- {{ __('leaves.select_year') }} --</option>
                             <option value="2024">2024</option>
-                            <option value="2025" selected>2025</option>
+                            <option value="2025">2025</option>
                             <option value="2026">2026</option>
                         </select>
                     </div>
@@ -77,7 +77,7 @@
                         <select id="year" name="year" class="form-select" onchange="getHourlyLeave(event)">
                             <option value="">-- {{ __('leaves.select_year') }} --</option>
                             <option value="2024">2024</option>
-                            <option value="2025" selected>2025</option>
+                            <option value="2025">2025</option>
                             <option value="2026">2026</option>
                         </select>
                     </div>
